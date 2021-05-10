@@ -1,0 +1,20 @@
+NATURE:
+    0.1:
+        ☐ render loop
+        ☐ pymunk integration
+        ☐ circle-shaped beings
+        ☐ neural network inside
+        ☐ enviroment perception (simple)
+        ☐ beings movement (neural net based)
+        ☐ beings rotation (neural net based)
+        ☐ collisions between beings
+        ☐ collisions with rocks
+        ☐ seeing (simple)
+        ☐ eating plants
+        ☐ beings procreation (simple)
+        ☐ camera movement
+        ☐ plants growth
+        ☐ plant procreation (simple)
+    0.2:
+        ☐ gui ('Creatures' based)
+        ☐ camera zoom in/out
