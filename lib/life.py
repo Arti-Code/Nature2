@@ -1,13 +1,11 @@
 from typing import overload
 from random import random, randint
 from math import sin, cos, pi as PI
-import pygame as pg
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
 import pymunk as pm
-from pymunk import Vec2d, Space, Segment, Body, Circle
-#from pymunk.body import KINEMATIC, STATIC, DYNAMIC
-
+from pymunk import Vec2d, Body, Circle
+from lib.math2 import flipy
 
 class Life():
 
@@ -32,6 +30,7 @@ class Life():
             y = randint(0, world_size.y)
             self.body.position = x, y
         self.shape = Circle(body=self.body, radius=size, offset=(0, 0))
+        self.shape.collision_type = 1
 
     def get_body_and_shape(self) -> tuple:
         return (self.body, self.shape)
@@ -72,20 +71,20 @@ class Life():
         r = int(self.get_size())
         v = self.vdir
         # * -=MAIN BODY PART=- *
-        gfxdraw.filled_circle(self.screen, x, y, r, self.color0)
-        gfxdraw.filled_circle(self.screen, x, y, r-2, self.color1)
+        gfxdraw.filled_circle(self.screen, x, flipy(y), r, self.color0)
+        gfxdraw.filled_circle(self.screen, x, flipy(y), r-2, self.color1)
         # * -=FRONT BODY (HEAD)=- *
         if r > 2:
             x2 = round(x + v.x*r)
             y2 = round(y + v.y*r)
             r2 = round(r/2)
-            gfxdraw.filled_circle(self.screen, x2, y2, round(r/2), self.color2)
+            gfxdraw.filled_circle(self.screen, x2, flipy(y2), round(r/2), self.color2)
 
     def update(self, dT:float) -> None:
         self.random_move()
-        points_set = self.shape.shapes_collide()
-        if points_set != None:
-            print('collision')
+        #points_set = self.shape.shapes_collide()
+        #if points_set != None:
+        #    print('collision')
 
     def random_move(self) -> None:
         speed: float; rot_speed: float; move: float; turn: float

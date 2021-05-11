@@ -1,8 +1,9 @@
 NATURE:
     0.1:
-        ☐ render loop
-        ☐ pymunk integration
-        ☐ circle-shaped beings
+        ✔ render loop
+        ✔ pymunk integration
+        ✔ circle-shaped beings
+        ✔ cloud git repository
         ☐ neural network inside
         ☐ enviroment perception (simple)
         ☐ beings movement (neural net based)

@@ -4,8 +4,9 @@ import pygame
 import pygame.gfxdraw as gfx
 from pygame import Surface, Color, Rect
 import pymunk as pm
-from pymunk import Vec2d, Space, Segment, Body, Circle
+from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 from lib.life import Life
+from lib.wall import Wall
 
 def draw_collision(arbiter, space, data):
     for c in arbiter.contact_point_set.points:
@@ -15,37 +16,46 @@ def draw_collision(arbiter, space, data):
         pygame.draw.circle(data["surface"], Color("red"), p, r, 0)
         print('collision')
 
-def add_life(screen: Surface):
+def add_life(screen: Surface) -> tuple[Body, Shape, Life]:
+    """ function with add single life to simulated world """
     size = randint(3, 10)
     life = Life(screen=screen, world_size=Vec2d(900, 600), size=size, color0=Color('green'), color1=Color('yellow'), color2=Color('skyblue'))
     body, shape = life.get_body_and_shape()
     return (body, shape, life)
 
-def add_wall(body: Body, point0: tuple, point1: tuple, thickness: float) -> Segment:
-    segment = Segment(body, point0, point1, thickness)
-    segment.elasticity = 0.99
-    return segment
+def add_wall(screen: Surface, point0: tuple, point1: tuple, thickness: float) -> tuple[Body, Shape, Wall]:
+    """ function with add single wall to simulated world """
+    wall = Wall(screen, point0, point1, thickness, Color('gray'), Color('gray'))
+    body, shape = wall.get_body_and_shape()
+    return (body, shape, wall)
 
 def main(world_size: tuple=(900, 600), view_size: tuple=(900, 600)):
     pygame.init()
     screen = pygame.display.set_mode(view_size)
     clock = pygame.time.Clock()
-    running = True
-    dt = 330
+    running = True; dt = 330
     space = Space()
     space.gravity = (0.0, 0.0)
-    space.damping = 1.0
 
-    static_lines = [
-        add_wall(space.static_body, (0, 0), (900, 0), 20),
-        add_wall(space.static_body, (900, 0), (900, 600), 20),
-        add_wall(space.static_body, (900, 600), (0, 600), 20),
-        add_wall(space.static_body, (0, 600), (0, 0), 20)
-    ]
-    space.add(*static_lines)
+    life_list = []; wall_list = []
 
-    life_list = []
-    for i in range(10):
+    body, shape, wall = add_wall(screen, (5, 5), (895, 5), 5)
+    space.add(body, shape)
+    wall_list.append(wall)
+
+    body, shape, wall = add_wall(screen, (895, 5), (895, 595), 5)
+    space.add(body, shape)
+    wall_list.append(wall)
+
+    body, shape, wall = add_wall(screen, (895, 595), (5, 595), 5)
+    space.add(body, shape)
+    wall_list.append(wall)
+    
+    body, shape, wall = add_wall(screen, (5, 595), (5, 5), 5)
+    space.add(body, shape)
+    wall_list.append(wall)
+
+    for _ in range(50):
         body, shape, life = add_life(screen)
         space.add(body, shape)
         life_list.append(life)
@@ -68,18 +78,15 @@ def main(world_size: tuple=(900, 600), view_size: tuple=(900, 600)):
             life.update(dt)
             life.draw()
 
-        for line in static_lines:
-            body = line.body
-            p1 = tuple(map(int, body.position + line.a.rotated(body.angle)))
-            p2 = tuple(map(int, body.position + line.b.rotated(body.angle)))
-            pygame.draw.lines(screen, Color("lightgray"), False, [p1, p2])
+        for wall in wall_list:
+            wall.draw()
 
         dt = 1.0 / 30.0
         for x in range(1):
             space.step(dt)
         pygame.display.flip()
         clock.tick(30)
-        pygame.display.set_caption("fps: " + str(round(clock.get_fps(), 1)))
+        pygame.display.set_caption("NATURE v0.0.1      [fps: " + str(round(clock.get_fps(), 1)) + "]")
 
 
 if __name__ == "__main__":
