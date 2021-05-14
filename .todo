@@ -8,7 +8,7 @@ NATURE:
         ☐ enviroment perception (simple)
         ☐ beings movement (neural net based)
         ☐ beings rotation (neural net based)
-        ☐ collisions between beings
+        ✔ collisions between beings
         ☐ collisions with rocks
         ☐ seeing (simple)
         ☐ eating plants
