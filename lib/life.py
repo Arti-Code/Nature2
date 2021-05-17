@@ -18,7 +18,7 @@ class Life():
         self.vdir: Vec2d
         mass = size
         inertia = pm.moment_for_circle(mass=mass, inner_radius=0, outer_radius=size, offset=(0,0))
-        self.body = Body(mass=mass, moment=inertia, body_type=Body.DYNAMIC)
+        self.body = Body(mass=mass, moment=inertia, body_type=Body.KINEMATIC)
         if angle is None:
             self.angle = random()*2*PI
             self.body.angle = random()*2*PI
@@ -33,7 +33,7 @@ class Life():
             self.body.position = x, y
         self.shape = Circle(body=self.body, radius=size, offset=(0, 0))
         self.shape.collision_type = 1
-        self.shape.friction = 0.9
+        #self.shape.friction = 0.9
 
     def get_body_and_shape(self) -> tuple:
         return (self.body, self.shape)
@@ -50,8 +50,7 @@ class Life():
     def mod_pos(self, delta_pos: Vec2d) -> None:
         self.body.position += delta_pos
 
-    @overload
-    def set_pos(self, x: float, y:float) -> None:
+    def set_pos_xy(self, x: float, y:float) -> None:
         self.body.position = Vec2d(x, y)
 
     def get_size(self) -> float:
@@ -67,6 +66,9 @@ class Life():
         y: float = cos(angle)
         return (x, y)
 
+    def set_velocity(self, v: Vec2d):
+        self.shape.body.velocity = v
+
     def draw(self):
         # * -=VARs=-
         x: int; y: int; x2: int; y2: int; r: int; r2: int; v: Vec2d 
@@ -81,10 +83,10 @@ class Life():
             x2 = round(x + v.x*r)
             y2 = round(y + v.y*r)
             r2 = round(r/2)
-            gfxdraw.filled_circle(self.screen, x2, flipy(y2), round(r/2), self.color2)
+            gfxdraw.filled_circle(self.screen, x2, flipy(y2), r2, self.color2)
 
     def update(self, dt:float) -> None:
-        self.random_move2(dt)
+        self.random_move(dt)
         #points_set = self.shape.shapes_collide()
         #if points_set != None:
         #    print('collision')
@@ -98,13 +100,14 @@ class Life():
         direction = self.body.rotation_vector
         self.body.apply_impulse_at_local_point(direction*move*speed)
 
-    def random_move(self) -> None:
+    def random_move(self, dt: float) -> None:
         speed: float; rot_speed: float; move: float; turn: float
         speed = 1; rot_speed = 0.1
         move = random()*speed
         turn = randint(-1, 1)
-        self.angle = (self.angle+(turn*rot_speed))%(2*PI)
-        self.vdir = self.ang_to_vec2d(self.angle)
-        delta_pos = self.vdir*move
-        self.mod_pos(delta_pos=delta_pos)
+        self.body.angle = (self.body.angle+(turn*rot_speed))%(2*PI)
+        self.vdir = self.ang_to_vec2d(self.body.angle)
+        self.set_velocity(move*self.vdir/dt)
+        #delta_pos = self.vdir*move
+        #self.mod_pos(delta_pos=delta_pos)
 

@@ -10,9 +10,9 @@ NATURE:
         ☐ beings rotation (neural net based)
         ✔ collisions between beings
         ☐ collisions with rocks
-        ☐ seeing (simple)
+        ✔ edges collisions
+        ☐ seeing (simple) `code`
         ☐ eating plants
-        ☐ beings procreation (simple)
         ☐ camera movement
         ☐ plants growth
         ☐ plant procreation (simple)

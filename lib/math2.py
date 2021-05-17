@@ -1,2 +1,2 @@
 def flipy(y):
-    return -y + 700
+    return -y + 600

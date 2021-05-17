@@ -39,19 +39,19 @@ def events():
             pygame.image.save(screen, "contact_and_no_flipy.png")
 
 def draw_life_collisions(arbiter, space, data):
-    #for c in arbiter.contact_point_set.points:
-    #    r = max(3, abs(c.distance * 5))
-    #    r = int(r)
-    #    p = tuple(map(int, c.point_a))
-    #    gfxdraw.filled_circle(screen, p[0], flipy(p[1]), 6, Color("red"))
+    #normal = arbiter.normal
+    arbiter.shapes[0].body.position -= arbiter.normal
+    arbiter.shapes[1].body.position += arbiter.normal
     #print(f'collision!')
     return True
 
 def draw_edge_collisions(arbiter, space, data):
-    #for c in arbiter.contact_point_set.points:
-    #    p = tuple(map(int, c.point_a))
-    #    gfxdraw.filled_circle(screen, p[0], flipy(p[1]), 6, Color("orange"))
     #print(f'edge collision!')
+    # [x: {round(arbiter.shapes[0].normal.x, 3)}] | y: [{round(arbiter.normal.y, 3)}]')
+    #print(f'shapes: {arbiter.shapes[0]}, {arbiter.shapes[1]}')
+    #arbiter.shapes[0].body.position -= arbiter.shapes[0].normal
+    arbiter.shapes[0].body.position -= arbiter.normal
+    #arbiter.shapes[0].body.velocity = Vec2d(0,0)
     return True
 
 def add_life(world_size: tuple) -> tuple[Body, Shape, Life]:
@@ -97,17 +97,18 @@ def main(world: tuple=(900, 600), view: tuple=(900, 600)):
 
     life_collisions = space.add_collision_handler(1, 1)
     # life_collisions.data["surface"] = screen
-    life_collisions.begin = draw_life_collisions
+    life_collisions.pre_solve = draw_life_collisions
 
-    #edge_collisions = space.add_collision_handler(1, 2)
-    #edge_collisions.data["surface"] = screen
+    edge_collisions = space.add_collision_handler(1, 2)
+    edge_collisions.pre_solve = draw_edge_collisions
     #edge_collisions.begin = draw_edge_collisions
+    #edge_collisions.data["surface"] = screen
     dt = 1.0 / 30.0
     while running:
         events()
         update(dt)
         draw()
-        for x in range(1):
+        for _ in range(1):
             space.step(dt)
         pygame.display.flip()
         dt = clock.tick(30)
@@ -115,4 +116,5 @@ def main(world: tuple=(900, 600), view: tuple=(900, 600)):
 
 
 if __name__ == "__main__":
-    sys.exit(main((1200, 700), (1200, 700)))
+    sys.exit(main((600, 600), (600, 600)))
+    #sys.exit(main((1200, 700), (1200, 700)))
