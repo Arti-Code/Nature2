@@ -1,3 +1,5 @@
+""" MASTER BRANCH """
+
 import sys
 from random import random, randint
 import pygame
