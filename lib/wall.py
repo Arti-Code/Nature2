@@ -16,7 +16,7 @@ class Wall():
         self.body = Body()
         self.body.body_type = Body.STATIC
         self.shape = Segment(self.body, p1, p2, thickness)
-        self.shape.collision_type = 2
+        self.shape.collision_type = 8
 
     def get_body_and_shape(self) -> tuple:
         return (self.body, self.shape)
