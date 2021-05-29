@@ -98,8 +98,8 @@ def add_life(world_size: tuple) -> Life:
     return life
 
 def add_wall(point0: tuple, point1: tuple, thickness: float) -> Wall:
-    wall = Wall(screen, point0, point1, thickness, Color('gray'), Color('gray'))
-    space.add(wall.shape, wall.body)
+    wall = Wall(screen, space, point0, point1, thickness, Color('gray'), Color('gray'))
+    #space.add(wall.shape, wall.body)
     return wall
 
 def draw():

@@ -29,9 +29,10 @@ class Detector():
     def set_color(self, color: Color):
         self.color = color
 
-class Life():
+class Life(Body):
 
     def __init__(self, screen: Surface, space: Space, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color, angle: float=None, visual_range: int=100, position: Vec2d=None):
+        super().__init__(self, body_type=Body.KINEMATIC)
         self.screen = screen
         self.color0 = color0
         self.color1 = color1
@@ -39,30 +40,30 @@ class Life():
         self.detectors = []
         self.eye_colors = {}
         self.visual_range = visual_range
-        self.body = Body(body_type=Body.KINEMATIC)
+        #self.body = Body(body_type=Body.KINEMATIC)
         if position is not None:
             self.body.position = position
         else:
             x = randint(50, world_size[0]-50)
             y = randint(50, world_size[1]-50)
-            self.body.position = (x, y)
-        self.body.angle = random()*2*PI
-        space.add(self.body)
-        self.shape = Circle(body=self.body, radius=size, offset=(0, 0))
+            self.position = (x, y)
+        self.angle = random()*2*PI
+        space.add(self)
+        self.shape = Circle(body=self, radius=size, offset=(0, 0))
         self.shape.collision_type = 2
         space.add(self.shape)
         self.detectors = []
-        self.detectors.append(Detector(self.screen, self.body, 4, 0, 150))
+        self.detectors.append(Detector(screen, self, 4, 0, 150))
         space.add(self.detectors[0].shape)
-        self.detectors.append(Detector(self.screen, self.body, 4, 45, 150))
+        self.detectors.append(Detector(screen, self, 4, 45, 150))
         space.add(self.detectors[1].shape)
-        self.detectors.append(Detector(self.screen, self.body, 4, -45, 150))
+        self.detectors.append(Detector(screen, self, 4, -45, 150))
         space.add(self.detectors[2].shape)
 
     def draw(self):
-        x = self.body.position.x; y = self.body.position.y
+        x = self.position.x; y = self.position.y
         r = self.shape.radius
-        rot = self.body.rotation_vector
+        rot = self.rotation_vector
         self.draw_detectors()
         gfxdraw.filled_circle(self.screen, int(x), flipy(int(y)), int(r), self.color0)
         gfxdraw.filled_circle(self.screen, int(x), flipy(int(y)), int(r-2), self.color1)
@@ -92,7 +93,7 @@ class Life():
         speed = 1; rot_speed = 0.05
         move = random()*speed
         turn = random()*2-1
-        self.body.angle = (self.body.angle+(turn*rot_speed))%(2*PI)
-        self.vdir = self.body.rotation_vector
-        self.body.velocity = move*self.vdir/dt
+        self.angle = (self.angle+(turn*rot_speed))%(2*PI)
+        self.vdir = self.rotation_vector
+        self.velocity = move*self.vdir/dt
        
