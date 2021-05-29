@@ -1,5 +1,3 @@
-""" DEVELOPMENT BRANCH """
-
 import sys
 from math import degrees
 from random import randint
