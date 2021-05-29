@@ -11,15 +11,15 @@ class Wall():
 
     def __init__(self, screen: Surface, p1: tuple, p2: tuple, thickness: float, border_color: Color, fill_color: Color):
         self.screen = screen
-        self.border_color = border_color
-        self.fill_color = fill_color
         self.body = Body()
         self.body.body_type = Body.STATIC
+        self.border_color = border_color
+        self.fill_color = fill_color
         self.shape = Segment(self.body, p1, p2, thickness)
         self.shape.collision_type = 8
 
     def get_body_and_shape(self) -> tuple:
-        return (self.body, self.shape)
+        return (self, self.shape)
 
     def get_point1(self) -> tuple:
         return self.shape.a
