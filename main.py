@@ -7,22 +7,24 @@ from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 import pymunk.pygame_util
 from lib.life import Life, Detector
 from lib.wall import Wall
+from lib.math2 import set_world, world
 
 
 life_list = []
 wall_list = []
 red_detection = []
-dt = 0.03
 space = Space()
-screen_size = (600, 600)
-screen = pygame.display.set_mode(screen_size)
-FPS = 20
-life_num = 5
+world = (1100, 700)
+screen = pygame.display.set_mode(world)
+FPS = 30
+dt = 1/FPS
+life_num = 10
 running = True
 clock = pygame.time.Clock()
 
 def init(view_size: tuple):
     pygame.init()
+    set_world(world)
     space.gravity = (0.0, 0.0)
     set_collision_calls()
     pymunk.pygame_util.positive_y_is_up = True
@@ -91,16 +93,12 @@ def detect_life_end(arbiter, space, data):
         red_detection.remove(detector)
 
 def add_life(world_size: tuple) -> Life:
-    """ function with add single life to simulated world """
     size = randint(7, 10)
-    life = Life(screen=screen,space=space, world_size=Vec2d(world_size[0], world_size[1]), size=size, color0=Color('green'), color1=Color('yellow'), color2=Color('skyblue'))
-    #space.add(life.body, life.shape, life.detectors[0].shape, life.detectors[1].shape, life.detectors[2].shape)
+    life = Life(screen=screen, space=space, world_size=world, size=size, color0=Color('green'), color1=Color('yellow'), color2=Color('skyblue'))
     return life
 
 def add_wall(point0: tuple, point1: tuple, thickness: float) -> Wall:
-    """ function with add single wall to simulated world """
     wall = Wall(screen, point0, point1, thickness, Color('gray'), Color('gray'))
-    #space.add(wall, wall.shape)
     space.add(wall.shape, wall.body)
     return wall
 
@@ -115,24 +113,29 @@ def update(dt: float):
     for life in life_list:
         life.update(space, dt, red_detection)
 
-def main(world: tuple=(600, 600), view: tuple=(600, 600)):
-    init(view)
+def physics_step(step_num: int, dt: float):
+    for _ in range(1):
+        space.step(dt)
+
+def clock_step():
+    global dt
+    pygame.display.flip()
+    dt = clock.tick(FPS)
+    pygame.display.set_caption("NATURE v0.0.2      [fps: " + str(round(clock.get_fps(), 1)) + "]")
+
+def main():
+    init(world)
     create_enviro(world)
-    dt = 1.0 / FPS
+    #dt = 1.0 / FPS
     while running:
         events()
         update(dt)
-        screen.fill(Color("black"))
         draw()
         #space.debug_draw(options)
         red_detection.clear()
-        for _ in range(1):
-            space.step(dt)
-        pygame.display.flip()
-        dt = clock.tick(FPS)
-        pygame.display.set_caption("NATURE v0.0.1      [fps: " + str(round(clock.get_fps(), 1)) + "]")
+        physics_step(1, dt)
+        clock_step()
         
 
 if __name__ == "__main__":
-    #sys.exit(main(screen_size, screen_size))
-    sys.exit(main((600, 600), (600, 600)))
+    sys.exit(main())

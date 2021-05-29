@@ -43,8 +43,8 @@ class Life():
         if position is not None:
             self.body.position = position
         else:
-            x = randint(50, world_size.x-50)
-            y = randint(50, world_size.y-50)
+            x = randint(50, world_size[0]-50)
+            y = randint(50, world_size[1]-50)
             self.body.position = (x, y)
         self.body.angle = random()*2*PI
         space.add(self.body)
