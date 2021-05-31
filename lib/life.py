@@ -4,7 +4,7 @@ import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
 import pymunk as pm
 from pymunk import Vec2d, Body, Circle, Segment, Space
-from lib.math2 import flipy, ang2vec, ang2vec2
+from lib.math2 import flipy, ang2vec, ang2vec2, clamp
 
 class Detector():
 
@@ -15,7 +15,7 @@ class Detector():
         self.length = length
         x2, y2 = ang2vec2(radians(degree_angle))
         b = (x2*length, y2*length)
-        self.shape = Segment(body=body, a=(0,0), b=b, radius=1)
+        self.shape = Segment(body=body, a=(0,0), b=b, radius=3)
         self.shape.collision_type = collision_type
         self.shape.sensor = True
         self.color = Color('white')
@@ -24,10 +24,20 @@ class Detector():
         p1 = (self.shape.body.position.x, self.shape.body.position.y)
         rv = (self.body.rotation_vector.rotated_degrees(self.angle))*self.length
         p2 = (p1[0]+rv[0], p1[1]+rv[1])
+        gfxdraw.line(self.screen, int(p1[0]), flipy(int(p1[1])), int(p2[0]-1), flipy(int(p2[1]-1)), self.color)
         gfxdraw.line(self.screen, int(p1[0]), flipy(int(p1[1])), int(p2[0]), flipy(int(p2[1])), self.color)
+        gfxdraw.line(self.screen, int(p1[0]), flipy(int(p1[1])), int(p2[0]+1), flipy(int(p2[1]+1)), self.color)
 
     def set_color(self, color: Color):
         self.color = color
+
+    def change_angle(self, delta_rad: float):
+        self.angle = self.angle + delta_rad
+        self.angle = clamp(self.angle, -120, 120)
+        x2, y2 = ang2vec2(radians(self.angle))
+        b = (x2*self.length, y2*self.length)
+        #self.shape.b = b
+        self.shape.unsafe_set_endpoints((0, 0), b)
 
 class Life(Body):
 
@@ -90,10 +100,13 @@ class Life(Body):
 
     def random_move(self, space: Space, dt: float) -> None:
         speed: float; rot_speed: float; move: float; turn: float
-        speed = 1; rot_speed = 0.05
+        speed = 1; rot_speed = 0.02
         move = random()*speed
         turn = random()*2-1
+        look = randint(-2, 2)
         self.angle = (self.angle+(turn*rot_speed))%(2*PI)
         self.vdir = self.rotation_vector
         self.velocity = move*self.vdir/dt
+        self.detectors[1].change_angle(look)
+        self.detectors[2].change_angle(-look)
        

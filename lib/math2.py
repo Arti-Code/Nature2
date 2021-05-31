@@ -2,6 +2,9 @@ from math import sin, cos, radians
 
 world = (600, 600)
 
+def clamp(num, min_value, max_value):
+   return max(min(num, max_value), min_value)
+
 def set_world(size: tuple):
     global world
     try:

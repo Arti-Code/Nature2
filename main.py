@@ -18,7 +18,7 @@ world = (1100, 700)
 screen = pygame.display.set_mode(world)
 FPS = 30
 dt = 1/FPS
-life_num = 10
+life_num = 20
 running = True
 clock = pygame.time.Clock()
 
@@ -69,6 +69,8 @@ def set_collision_calls():
 def draw_life_collisions(arbiter, space, data):
     arbiter.shapes[0].body.position -= arbiter.normal
     arbiter.shapes[1].body.position += arbiter.normal
+    target = arbiter.shapes[1].body
+    target.color0 = Color('red')
     return True
 
 def draw_edge_collisions(arbiter, space, data):
