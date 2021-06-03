@@ -13,12 +13,13 @@ from lib.math2 import set_world, world
 life_list = []
 wall_list = []
 red_detection = []
-space = Space()
+
 world = (1100, 700)
-screen = pygame.display.set_mode(world)
+flags = pygame.DOUBLEBUF | pygame.HWSURFACE
+screen = pygame.display.set_mode(size=world, flags=flags, vsync=1)
 FPS = 30
 dt = 1/FPS
-life_num = 20
+life_num = 5
 running = True
 clock = pygame.time.Clock()
 
@@ -67,8 +68,8 @@ def set_collision_calls():
     detection_end.separate = detect_life_end
 
 def draw_life_collisions(arbiter, space, data):
-    arbiter.shapes[0].body.position -= arbiter.normal
-    arbiter.shapes[1].body.position += arbiter.normal
+    arbiter.shapes[0].body.position -= arbiter.normal*0.5
+    arbiter.shapes[1].body.position += arbiter.normal*0.5
     target = arbiter.shapes[1].body
     target.color0 = Color('red')
     return True
