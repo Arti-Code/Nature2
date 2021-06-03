@@ -5,7 +5,7 @@ import pygame
 from pygame import Color, Surface
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 import pymunk.pygame_util
-from lib.life import Life, Detector
+from lib.life import Life
 from lib.wall import Wall
 from lib.math2 import set_world, world
 
@@ -13,13 +13,13 @@ from lib.math2 import set_world, world
 life_list = []
 wall_list = []
 red_detection = []
-
+space = Space()
 world = (1100, 700)
 flags = pygame.DOUBLEBUF | pygame.HWSURFACE
 screen = pygame.display.set_mode(size=world, flags=flags, vsync=1)
 FPS = 30
 dt = 1/FPS
-life_num = 5
+life_num = 10
 running = True
 clock = pygame.time.Clock()
 
@@ -80,12 +80,18 @@ def draw_edge_collisions(arbiter, space, data):
     return True
 
 def detect_life(arbiter, space, data):
-    detector = arbiter.shapes[0]
-    if detector in red_detection:
-        return True
-    else:
-        red_detection.append(arbiter.shapes[0])
-        return True
+    life = arbiter.shapes[0].body
+    sensor_shape = arbiter.shapes[0]
+    for sensor in life.sensors:
+        if sensor.shape == sensor_shape:
+            sensor.set_color(Color('red'))
+            break
+    return True
+    #if detector in red_detection:
+    #    return True
+    #else:
+    #    red_detection.append(arbiter.shapes[0])
+    #    return True
 
 def detect_life_end(arbiter, space, data):
     detector = arbiter.shapes[0]
@@ -108,6 +114,8 @@ def add_wall(point0: tuple, point1: tuple, thickness: float) -> Wall:
 def draw():
     screen.fill(Color("black"))
     for life in life_list:
+        life.draw_detectors()
+    for life in life_list:
         life.draw()
     for wall in wall_list:
         wall.draw()
@@ -124,7 +132,7 @@ def clock_step():
     global dt
     pygame.display.flip()
     dt = clock.tick(FPS)
-    pygame.display.set_caption("NATURE v0.0.2      [fps: " + str(round(clock.get_fps(), 1)) + "]")
+    pygame.display.set_caption(f"NATURE [fps: {round(clock.get_fps())} | dT: {round(dt)}ms]")
 
 def main():
     init(world)
