@@ -18,14 +18,18 @@ class Sensor():
         self.shape = Segment(body=body, a=(0,0), b=b, radius=1)
         self.shape.collision_type = collision_type
         self.shape.sensor = True
-        self.color = Color('white')
+        global white
+        global red
+        white = (255, 255, 255, 75)
+        red = (255, 0, 0, 75)
+        self.color = Color(white)
 
     def draw(self):
         p1 = (self.shape.body.position.x, self.shape.body.position.y)
         rv = (self.body.rotation_vector.rotated(self.angle))*self.length
         p2 = (p1[0]+rv[0], p1[1]+rv[1])
         gfxdraw.line(self.screen, int(p1[0]), flipy(int(p1[1])), int(p2[0]), flipy(int(p2[1])), self.color)
-        self.set_color(Color('white'))
+        self.set_color(Color(white))
 
     def set_color(self, color: Color):
         self.color = color

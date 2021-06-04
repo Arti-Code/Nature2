@@ -1,7 +1,9 @@
+import os
 import sys
 from math import degrees
 from random import randint
 import pygame
+import pygame as pg
 from pygame import Color, Surface
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 import pymunk.pygame_util
@@ -14,14 +16,17 @@ life_list = []
 wall_list = []
 red_detection = []
 space = Space()
-world = (1100, 700)
+world = (1400, 750)
 flags = pygame.DOUBLEBUF | pygame.HWSURFACE
 screen = pygame.display.set_mode(size=world, flags=flags, vsync=1)
 FPS = 30
 dt = 1/FPS
-life_num = 10
+life_num = 20
 running = True
 clock = pygame.time.Clock()
+white = (255, 255, 255, 75)
+red = (255, 0, 0, 75)
+darkblue = (0, 0, 10, 255)
 
 def init(view_size: tuple):
     pygame.init()
@@ -84,7 +89,7 @@ def detect_life(arbiter, space, data):
     sensor_shape = arbiter.shapes[0]
     for sensor in life.sensors:
         if sensor.shape == sensor_shape:
-            sensor.set_color(Color('red'))
+            sensor.set_color(Color(red))
             break
     return True
     #if detector in red_detection:
@@ -94,12 +99,13 @@ def detect_life(arbiter, space, data):
     #    return True
 
 def detect_life_end(arbiter, space, data):
-    detector = arbiter.shapes[0]
-    black_list = []
-    if detector in red_detection:
-        black_list.append(detector)
-    for detector in black_list:
-        red_detection.remove(detector)
+    return True
+    #detector = arbiter.shapes[0]
+    #black_list = []
+    #if detector in red_detection:
+    #    black_list.append(detector)
+    #for detector in black_list:
+    #    red_detection.remove(detector)
 
 def add_life(world_size: tuple) -> Life:
     size = randint(7, 10)
@@ -112,7 +118,7 @@ def add_wall(point0: tuple, point1: tuple, thickness: float) -> Wall:
     return wall
 
 def draw():
-    screen.fill(Color("black"))
+    screen.fill(Color(darkblue))
     for life in life_list:
         life.draw_detectors()
     for life in life_list:
@@ -134,9 +140,28 @@ def clock_step():
     dt = clock.tick(FPS)
     pygame.display.set_caption(f"NATURE [fps: {round(clock.get_fps())} | dT: {round(dt)}ms]")
 
+def set_win_pos(x: int=20, y: int=20):
+    x_winpos = x
+    y_winpos = y
+    os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x_winpos, y_winpos)
+
+def set_icon(icon_name):
+    icon = pg.Surface((32,32))
+    icon.set_colorkey((0,0,0))
+    rawicon = pg.image.load(icon_name)
+    for i in range(0,32):
+        for j in range(0,32):
+            icon.set_at((i,j), rawicon.get_at((i,j)))
+    pg.display.set_icon(icon)
+
+def sort_by_fitness(creature):
+    return creature['fitness']
+
 def main():
+    set_win_pos(20, 20)
     init(world)
     create_enviro(world)
+    set_icon('planet32.png')
     #dt = 1.0 / FPS
     while running:
         events()

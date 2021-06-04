@@ -34,11 +34,11 @@ class Life(Body):
         self.shape.collision_type = 2
         space.add(self.shape)
         self.sensors = []
-        self.sensors.append(Sensor(screen, self, 4, 0, 180))
+        self.sensors.append(Sensor(screen, self, 4, 0, 220))
         space.add(self.sensors[0].shape)
-        self.sensors.append(Sensor(screen, self, 4, PI/3, 180))
+        self.sensors.append(Sensor(screen, self, 4, PI/3, 220))
         space.add(self.sensors[1].shape)
-        self.sensors.append(Sensor(screen, self, 4, -PI/3, 180))
+        self.sensors.append(Sensor(screen, self, 4, -PI/3, 220))
         space.add(self.sensors[2].shape)
 
     def draw(self):

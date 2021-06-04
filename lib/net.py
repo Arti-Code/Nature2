@@ -1,10 +1,10 @@
 from enum import Enum, IntEnum
 from random import random, randint, choice, gauss
-from lib.math2 import e, sigmoid, tanh, relu, leaky_relu, binary, rev_binary, wide_binary, linear,clamp
+from lib.math2 import sigmoid, tanh, relu, leaky_relu, binary, rev_binary, wide_binary, linear,clamp
 from copy import deepcopy, copy
 import json
 import numpy as np
-from lib.config import cfg
+#from lib.config import cfg
 
 class TYPE(IntEnum):
 
