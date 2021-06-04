@@ -1,113 +1,84 @@
-from typing import overload
 from random import random, randint
-from math import sin, cos, pi as PI
+from math import sin, cos, radians, degrees, pi as PI
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
 import pymunk as pm
-from pymunk import Vec2d, Body, Circle
-from lib.math2 import flipy
+from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
+from lib.math2 import flipy, ang2vec, ang2vec2, clamp
+from lib.sensor import Sensor, PolySensor
+from lib.net import Network
 
-class Life():
 
-    def __init__(self, screen: Surface, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color, angle: float=None, position: Vec2d=None):
+class Life(Body):
+
+    def __init__(self, screen: Surface, space: Space, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color, angle: float=None, visual_range: int=180, position: Vec2d=None):
+        super().__init__(self, body_type=Body.KINEMATIC)
         self.screen = screen
         self.color0 = color0
         self.color1 = color1
         self.color2 = color2
-        self.angle: float = 0.0
-        self.vdir: Vec2d
-        mass = size
-        inertia = pm.moment_for_circle(mass=mass, inner_radius=0, outer_radius=size, offset=(0,0))
-        self.body = Body(mass=mass, moment=inertia, body_type=Body.KINEMATIC)
-        if angle is None:
-            self.angle = random()*2*PI
-            self.body.angle = random()*2*PI
-        else:
-            self.angle = angle%(2*PI)
-            self.body.angle = angle%(2*PI)
+        self.neuro = Network()
+        self.neuro.BuildRandom([3, 0, 0, 0, 3], 0.2)
+        self.sensors = []
+        self.eye_colors = {}
+        self.visual_range = visual_range
         if position is not None:
             self.body.position = position
         else:
-            x = randint(0, world_size.x)
-            y = randint(0, world_size.y)
-            self.body.position = x, y
-        self.shape = Circle(body=self.body, radius=size, offset=(0, 0))
-        self.shape.collision_type = 1
-        #self.shape.friction = 0.9
-
-    def get_body_and_shape(self) -> tuple:
-        return (self.body, self.shape)
-
-    def get_pos(self) -> Vec2d:
-        return Vec2d(self.body.position.x, self.body.position.y)
-
-    def get_pos_xy(self) -> tuple:
-        return (int(self.body.position.x), int(self.body.position.y))
-
-    def set_pos(self, pos: Vec2d) -> None:
-        self.body.position = pos
-
-    def mod_pos(self, delta_pos: Vec2d) -> None:
-        self.body.position += delta_pos
-
-    def set_pos_xy(self, x: float, y:float) -> None:
-        self.body.position = Vec2d(x, y)
-
-    def get_size(self) -> float:
-            return self.shape.radius
-
-    def ang_to_vec2d(self, angle: float) -> Vec2d:
-        x: float = sin(angle)
-        y: float = cos(angle)
-        return Vec2d(x, y)
-
-    def ang_to_xy(self, angle: float) -> tuple:
-        x: float = sin(angle)
-        y: float = cos(angle)
-        return (x, y)
-
-    def set_velocity(self, v: Vec2d):
-        self.shape.body.velocity = v
+            x = randint(50, world_size[0]-50)
+            y = randint(50, world_size[1]-50)
+            self.position = (x, y)
+        self.angle = random()*2*PI
+        space.add(self)
+        self.shape = Circle(body=self, radius=size, offset=(0, 0))
+        self.shape.collision_type = 2
+        space.add(self.shape)
+        self.sensors = []
+        self.sensors.append(Sensor(screen, self, 4, 0, 220))
+        space.add(self.sensors[0].shape)
+        self.sensors.append(Sensor(screen, self, 4, PI/3, 220))
+        space.add(self.sensors[1].shape)
+        self.sensors.append(Sensor(screen, self, 4, -PI/3, 220))
+        space.add(self.sensors[2].shape)
 
     def draw(self):
-        # * -=VARs=-
-        x: int; y: int; x2: int; y2: int; r: int; r2: int; v: Vec2d 
-        x, y = self.get_pos_xy()
-        r = int(self.get_size())
-        v = self.ang_to_vec2d(self.body.angle)
-        # * -=MAIN BODY PART=- *
-        gfxdraw.filled_circle(self.screen, x, flipy(y), r, self.color0)
-        gfxdraw.filled_circle(self.screen, x, flipy(y), r-2, self.color1)
-        # * -=FRONT BODY (HEAD)=- *
+        x = self.position.x; y = self.position.y
+        r = self.shape.radius
+        rot = self.rotation_vector
+        #self.draw_detectors()
+        gfxdraw.filled_circle(self.screen, int(x), flipy(int(y)), int(r), self.color0)
+        gfxdraw.filled_circle(self.screen, int(x), flipy(int(y)), int(r-2), self.color1)
         if r > 2:
-            x2 = round(x + v.x*r)
-            y2 = round(y + v.y*r)
+            x2 = round(x + rot.x*r)
+            y2 = round(y + rot.y*r)
             r2 = round(r/2)
             gfxdraw.filled_circle(self.screen, x2, flipy(y2), r2, self.color2)
+        self.color0 = Color('green')
 
-    def update(self, dt:float) -> None:
-        self.random_move(dt)
-        #points_set = self.shape.shapes_collide()
-        #if points_set != None:
-        #    print('collision')
+    def draw_detectors(self):
+        for detector in self.sensors:
+            detector.draw()
 
-    def random_move2(self, dt: float) -> None:
+    def update(self, space: Space, dt:float, detections: list=[]) -> None:
+        #self.update_detections(detections)
+        self.random_move(space, dt)
+
+    def update_detections(self, detections: list):        
+        for detector in self.sensors:
+            if detector.shape in detections:
+                detector.set_color(Color('red'))
+            else:
+                detector.set_color(Color('white'))
+
+    def random_move(self, space: Space, dt: float) -> None:
         speed: float; rot_speed: float; move: float; turn: float
-        speed = 0.7; rot_speed = 0.1
+        speed = 1; rot_speed = 0.02
         move = random()*speed
         turn = random()*2-1
-        self.body.angular_velocity = turn*rot_speed/dt
-        direction = self.body.rotation_vector
-        self.body.apply_impulse_at_local_point(direction*move*speed)
-
-    def random_move(self, dt: float) -> None:
-        speed: float; rot_speed: float; move: float; turn: float
-        speed = 1; rot_speed = 0.1
-        move = random()*speed
-        turn = randint(-1, 1)
-        self.body.angle = (self.body.angle+(turn*rot_speed))%(2*PI)
-        self.vdir = self.ang_to_vec2d(self.body.angle)
-        self.set_velocity(move*self.vdir/dt)
-        #delta_pos = self.vdir*move
-        #self.mod_pos(delta_pos=delta_pos)
-
+        senor_turn = (random()*2-1)/dt
+        self.angle = (self.angle+(turn*rot_speed))%(2*PI)
+        self.vdir = self.rotation_vector
+        self.velocity = move*self.vdir/dt
+        self.sensors[1].rotate(senor_turn, 0, PI/1.5)
+        self.sensors[2].rotate(-senor_turn, -PI/1.5, 0)
+       

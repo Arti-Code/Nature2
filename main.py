@@ -1,78 +1,126 @@
-""" MASTER BRANCH """
-
+import os
 import sys
-from random import random, randint
+from math import degrees
+from random import randint
 import pygame
-import pygame.gfxdraw as gfxdraw
-from pygame import Surface, Color, Rect
-import pymunk as pm
+import pygame as pg
+from pygame import Color, Surface
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
+import pymunk.pygame_util
 from lib.life import Life
 from lib.wall import Wall
-from lib.math2 import flipy
+from lib.math2 import set_world, world
+
+
+life_list = []
+wall_list = []
+red_detection = []
+space = Space()
+world = (1400, 750)
+flags = pygame.DOUBLEBUF | pygame.HWSURFACE
+screen = pygame.display.set_mode(size=world, flags=flags, vsync=1)
+FPS = 30
+dt = 1/FPS
+life_num = 20
+running = True
+clock = pygame.time.Clock()
+white = (255, 255, 255, 75)
+red = (255, 0, 0, 75)
+darkblue = (0, 0, 10, 255)
 
 def init(view_size: tuple):
     pygame.init()
-    global screen
-    screen = pygame.display.set_mode(view_size)
-    global clock
-    clock = pygame.time.Clock()
-    global running
-    running = True
-    global dt
-    dt = 0.03
-    global space
-    space = Space()
+    set_world(world)
     space.gravity = (0.0, 0.0)
-    space.damping = 0.1
-    global life_list
-    life_list = []
-    global wall_list
-    wall_list = []
+    set_collision_calls()
+    pymunk.pygame_util.positive_y_is_up = True
+    global options
+    options = pymunk.pygame_util.DrawOptions(screen)
+    space.debug_draw(options)
+
+def create_enviro(world: tuple):
+    edges = [(5, 5), (world[0]-5, 5), (world[0]-5, world[1]-5), (5, world[1]-5), (5, 5)]
+    for e in range(4):
+        p1 = edges[e]
+        p2 = edges[e+1]
+        wall = add_wall(p1, p2, 5)
+        wall_list.append(wall)
+
+    for l in range(life_num):
+        life = add_life(world)
+        life_list.append(life)
 
 def events():
+    global running
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            global running
             running = False
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             running = False
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
-            pygame.image.save(screen, "contact_and_no_flipy.png")
+
+def set_collision_calls():
+    # 2: body | 8: wall | 4: sensor
+    life_collisions = space.add_collision_handler(2, 2)
+    life_collisions.pre_solve = draw_life_collisions
+
+    edge_collisions = space.add_collision_handler(2, 8)
+    edge_collisions.pre_solve = draw_edge_collisions
+
+    detection = space.add_collision_handler(4, 2)
+    detection.pre_solve = detect_life
+
+    detection_end = space.add_collision_handler(4, 2)
+    detection_end.separate = detect_life_end
 
 def draw_life_collisions(arbiter, space, data):
-    #normal = arbiter.normal
-    arbiter.shapes[0].body.position -= arbiter.normal
-    arbiter.shapes[1].body.position += arbiter.normal
-    #print(f'collision!')
+    arbiter.shapes[0].body.position -= arbiter.normal*0.5
+    arbiter.shapes[1].body.position += arbiter.normal*0.5
+    target = arbiter.shapes[1].body
+    target.color0 = Color('red')
     return True
 
 def draw_edge_collisions(arbiter, space, data):
-    #print(f'edge collision!')
-    # [x: {round(arbiter.shapes[0].normal.x, 3)}] | y: [{round(arbiter.normal.y, 3)}]')
-    #print(f'shapes: {arbiter.shapes[0]}, {arbiter.shapes[1]}')
-    #arbiter.shapes[0].body.position -= arbiter.shapes[0].normal
-    arbiter.shapes[0].body.position -= arbiter.normal
-    #arbiter.shapes[0].body.velocity = Vec2d(0,0)
+    arbiter.shapes[0].body.angle += arbiter.normal.angle
+    arbiter.shapes[0].body.position -= arbiter.normal * 10
     return True
 
-def add_life(world_size: tuple) -> tuple[Body, Shape, Life]:
-    """ function with add single life to simulated world """
-    size = randint(3, 10)
-    life = Life(screen=screen, world_size=Vec2d(world_size[0], world_size[1]), size=size, color0=Color('green'), color1=Color('yellow'), color2=Color('skyblue'))
-    body, shape = life.get_body_and_shape()
-    space.add(body, shape)
-    return (body, shape, life)
+def detect_life(arbiter, space, data):
+    life = arbiter.shapes[0].body
+    sensor_shape = arbiter.shapes[0]
+    for sensor in life.sensors:
+        if sensor.shape == sensor_shape:
+            sensor.set_color(Color(red))
+            break
+    return True
+    #if detector in red_detection:
+    #    return True
+    #else:
+    #    red_detection.append(arbiter.shapes[0])
+    #    return True
 
-def add_wall(point0: tuple, point1: tuple, thickness: float) -> tuple[Body, Shape, Wall]:
-    """ function with add single wall to simulated world """
-    wall = Wall(screen, point0, point1, thickness, Color('gray'), Color('gray'))
-    body, shape = wall.get_body_and_shape()
-    space.add(body, shape)
-    return (body, shape, wall)
+def detect_life_end(arbiter, space, data):
+    return True
+    #detector = arbiter.shapes[0]
+    #black_list = []
+    #if detector in red_detection:
+    #    black_list.append(detector)
+    #for detector in black_list:
+    #    red_detection.remove(detector)
+
+def add_life(world_size: tuple) -> Life:
+    size = randint(7, 10)
+    life = Life(screen=screen, space=space, world_size=world, size=size, color0=Color('green'), color1=Color('yellow'), color2=Color('skyblue'))
+    return life
+
+def add_wall(point0: tuple, point1: tuple, thickness: float) -> Wall:
+    wall = Wall(screen, space, point0, point1, thickness, Color('gray'), Color('gray'))
+    #space.add(wall.shape, wall.body)
+    return wall
 
 def draw():
-    screen.fill(Color("black"))
+    screen.fill(Color(darkblue))
+    for life in life_list:
+        life.draw_detectors()
     for life in life_list:
         life.draw()
     for wall in wall_list:
@@ -80,43 +128,50 @@ def draw():
 
 def update(dt: float):
     for life in life_list:
-        life.update(dt)
+        life.update(space, dt, red_detection)
 
-def main(world: tuple=(900, 600), view: tuple=(900, 600)):
-    init(view)
-    edges = [(5, 5), (world[0]-5, 5), (world[0]-5, world[1]-5), (5, world[1]-5), (5, 5)]
-    
-    for e in range(4):
-        p1 = edges[e]
-        p2 = edges[e+1]
-        _, _, wall = add_wall(p1, p2, 5)
-        wall_list.append(wall)
+def physics_step(step_num: int, dt: float):
+    for _ in range(1):
+        space.step(dt)
 
-    for _ in range(100):
-        _, _, life = add_life(world)
-        life_list.append(life)
+def clock_step():
+    global dt
+    pygame.display.flip()
+    dt = clock.tick(FPS)
+    pygame.display.set_caption(f"NATURE [fps: {round(clock.get_fps())} | dT: {round(dt)}ms]")
 
+def set_win_pos(x: int=20, y: int=20):
+    x_winpos = x
+    y_winpos = y
+    os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x_winpos, y_winpos)
 
-    life_collisions = space.add_collision_handler(1, 1)
-    # life_collisions.data["surface"] = screen
-    life_collisions.pre_solve = draw_life_collisions
+def set_icon(icon_name):
+    icon = pg.Surface((32,32))
+    icon.set_colorkey((0,0,0))
+    rawicon = pg.image.load(icon_name)
+    for i in range(0,32):
+        for j in range(0,32):
+            icon.set_at((i,j), rawicon.get_at((i,j)))
+    pg.display.set_icon(icon)
 
-    edge_collisions = space.add_collision_handler(1, 2)
-    edge_collisions.pre_solve = draw_edge_collisions
-    #edge_collisions.begin = draw_edge_collisions
-    #edge_collisions.data["surface"] = screen
-    dt = 1.0 / 30.0
+def sort_by_fitness(creature):
+    return creature['fitness']
+
+def main():
+    set_win_pos(20, 20)
+    init(world)
+    create_enviro(world)
+    set_icon('planet32.png')
+    #dt = 1.0 / FPS
     while running:
         events()
         update(dt)
         draw()
-        for _ in range(1):
-            space.step(dt)
-        pygame.display.flip()
-        dt = clock.tick(30)
-        pygame.display.set_caption("NATURE v0.0.1      [fps: " + str(round(clock.get_fps(), 1)) + "]")
-
+        #space.debug_draw(options)
+        red_detection.clear()
+        physics_step(1, dt)
+        clock_step()
+        
 
 if __name__ == "__main__":
-    sys.exit(main((600, 600), (600, 600)))
-    #sys.exit(main((1200, 700), (1200, 700)))
+    sys.exit(main())
