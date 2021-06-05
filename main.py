@@ -9,6 +9,7 @@ from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 import pymunk.pygame_util
 from lib.life import Life
 from lib.wall import Wall
+from lib.sensor import Sensor
 from lib.math2 import set_world, world
 
 
@@ -16,12 +17,12 @@ life_list = []
 wall_list = []
 red_detection = []
 space = Space()
-world = (1400, 750)
+world = (600, 500)
 flags = pygame.DOUBLEBUF | pygame.HWSURFACE
 screen = pygame.display.set_mode(size=world, flags=flags, vsync=1)
 FPS = 30
 dt = 1/FPS
-life_num = 20
+life_num = 3
 running = True
 clock = pygame.time.Clock()
 white = (255, 255, 255, 75)
@@ -86,10 +87,14 @@ def draw_edge_collisions(arbiter, space, data):
 
 def detect_life(arbiter, space, data):
     life = arbiter.shapes[0].body
+    enemy = arbiter.shapes[1].body
     sensor_shape = arbiter.shapes[0]
     for sensor in life.sensors:
         if sensor.shape == sensor_shape:
             sensor.set_color(Color(red))
+            pos0 = life.position
+            dist = pos0.get_distance(enemy.position)
+            sensor.send_data(detect=True, distance=dist)
             break
     return True
     #if detector in red_detection:

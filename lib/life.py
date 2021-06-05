@@ -61,6 +61,7 @@ class Life(Body):
 
     def update(self, space: Space, dt:float, detections: list=[]) -> None:
         #self.update_detections(detections)
+        self.analize()
         self.random_move(space, dt)
 
     def update_detections(self, detections: list):        
@@ -81,4 +82,17 @@ class Life(Body):
         self.velocity = move*self.vdir/dt
         self.sensors[1].rotate(senor_turn, 0, PI/1.5)
         self.sensors[2].rotate(-senor_turn, -PI/1.5, 0)
+
+    def analize(self):
+        input = []
+        for sensor in self.sensors:
+            e, d, a = sensor.get_input()
+            d = round(d, 3)
+            a = round(a%PI, 3)
+            input.append(e)
+            input.append(d)
+            input.append(a)
+            sensor.reset_data()
+            if e:
+                print(f'INPUT detected: {d} | distance: {d} | angle: {a}')
        

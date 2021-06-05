@@ -6,6 +6,30 @@ import pymunk as pm
 from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
 from lib.math2 import flipy, ang2vec, ang2vec2, clamp
 
+class SensorData():
+    def __init__(self, max_angle: float, detection_range: float):
+        self.max_angle = max_angle
+        self.detection_range = detection_range
+        self.enemy = False
+        self.distance = -1
+        self.direction = 0
+
+    def update(self, direction: float):
+        self.direction = (direction/abs(self.max_angle))%(2*PI)
+
+    def send_data(self, detect: bool, distance: float, direction: float):
+        self.enemy = detect
+        self.distance = 1 - (distance/self.detection_range)
+        self.direction = (direction/abs(self.max_angle))%(2*PI)
+
+    def reset(self):
+        self.enemy = False
+        self.distance = -1
+        self.direction = 0
+
+    def get_data(self):
+        return (self.enemy, self.distance, self.direction)
+        
 class Sensor():
 
     def __init__(self, screen: Surface, body: Body, collision_type: any, radians: float, length: int):
@@ -18,6 +42,7 @@ class Sensor():
         self.shape = Segment(body=body, a=(0,0), b=b, radius=1)
         self.shape.collision_type = collision_type
         self.shape.sensor = True
+        self.data = SensorData(max_angle=PI, detection_range=length)
         global white
         global red
         white = (255, 255, 255, 75)
@@ -41,6 +66,14 @@ class Sensor():
         b = (x2*self.length, y2*self.length)
         self.shape.unsafe_set_endpoints((0, 0), b)
 
+    def send_data(self, detect: bool, distance: float):
+        self.data.send_data(detect=detect, distance=distance, direction=self.angle)
+
+    def reset_data(self):
+        self.data.reset()
+
+    def get_input(self):
+        return self.data.get_data()
 
 class PolySensor():
 
