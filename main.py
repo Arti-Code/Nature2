@@ -17,12 +17,12 @@ life_list = []
 wall_list = []
 red_detection = []
 space = Space()
-world = (600, 500)
+world = (1000, 650)
 flags = pygame.DOUBLEBUF | pygame.HWSURFACE
 screen = pygame.display.set_mode(size=world, flags=flags, vsync=1)
 FPS = 30
 dt = 1/FPS
-life_num = 3
+life_num = 14
 running = True
 clock = pygame.time.Clock()
 white = (255, 255, 255, 75)

@@ -13,13 +13,16 @@ class Life(Body):
 
     def __init__(self, screen: Surface, space: Space, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color, angle: float=None, visual_range: int=180, position: Vec2d=None):
         super().__init__(self, body_type=Body.KINEMATIC)
-        self.enemy = 1000
+        self.world_size = world_size
+        self.max_energy = 200
+        self.energy = 200
+        self.output = []
         self.screen = screen
         self.color0 = color0
         self.color1 = color1
         self.color2 = color2
         self.neuro = Network()
-        self.neuro.BuildRandom([3, 0, 0, 0, 3], 0.2)
+        self.neuro.BuildRandom([12, 0, 0, 0, 3], 0.2)
         self.sensors = []
         self.eye_colors = {}
         self.visual_range = visual_range
@@ -77,19 +80,25 @@ class Life(Body):
 
     def random_move(self, space: Space, dt: float) -> None:
         speed: float; rot_speed: float; move: float; turn: float
-        speed = 1; rot_speed = 0.02
-        move = random()*speed
-        turn = random()*2-1
-        senor_turn = (random()*2-1)/dt
-        self.angle = (self.angle+(turn*rot_speed))%(2*PI)
+        speed = 1; rot_speed = 0.1
+        move = self.output[0]
+        turn = self.output[1]
+        sensor_turn = self.output[2]/dt*rot_speed
+        #self.angle = (self.angle+(turn*rot_speed)/dt)%(2*PI)
         self.vdir = self.rotation_vector
         self.velocity = move*self.vdir/dt
-        self.sensors[1].rotate(senor_turn, 0, PI/1.5)
-        self.sensors[2].rotate(-senor_turn, -PI/1.5, 0)
+        self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
+        self.sensors[2].rotate(-sensor_turn, -PI/1.5, 0)
         return move/dt
 
-    def analize(self):
+    def get_input(self):
         input = []
+        x = self.position[0]/self.world_size[0]
+        input.append(x)
+        y = self.position[1]/self.world_size[1]
+        input.append(y)
+        eng = self.energy/self.max_energy
+        input.append(eng)
         for sensor in self.sensors:
             e, d, a = sensor.get_input()
             d = round(d, 3)
@@ -97,12 +106,18 @@ class Life(Body):
             input.append(e)
             input.append(d)
             input.append(a)
+        return input
+
+    def analize(self):
+        input = self.get_input()
+        self.output = self.neuro.Calc(input)
+        for sensor in self.sensors:
             sensor.reset_data()
-            if e:
-                print(f'INPUT detected: {d} | distance: {d} | angle: {a}')
+            
        
     def draw_energy_bar(self, rx: int, ry: int):
         bar_red = Color(255, 0, 0)
         bar_green = Color(0, 255, 0)
-        gfxdraw.box(self.screen, Rect(rx-round(10), ry+round((self.size+3)), round(19), 1), bar_red)
-        gfxdraw.box(self.screen, Rect(rx-round(10), ry+round((self.size+3)), round(20*(self.energy/1000)), 1), bar_green)
+        size = self.shape.radius
+        gfxdraw.box(self.screen, Rect(rx-round(10), ry+round(size+3), round(19), 1), bar_red)
+        gfxdraw.box(self.screen, Rect(rx-round(10), ry+round(size+3), round(20*(self.energy/self.max_energy)), 1), bar_green)
