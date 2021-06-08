@@ -15,12 +15,12 @@ class SensorData():
         self.direction = 0
 
     def update(self, direction: float):
-        self.direction = (direction/abs(self.max_angle))%(2*PI)
+        self.direction = (direction/abs(self.max_angle))
 
     def send_data(self, detect: bool, distance: float, direction: float):
         self.enemy = detect
         self.distance = 1 - (distance/self.detection_range)
-        self.direction = (direction/abs(self.max_angle))%(2*PI)
+        self.direction = (direction/abs(self.max_angle))
 
     def reset(self):
         self.enemy = False
