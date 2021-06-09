@@ -139,12 +139,12 @@ class Creature(Life):
     def random_move(self, space: Space, dt: float) -> None:
         speed: float; rot_speed: float; move: float; turn: float
         speed = 1; rot_speed = 0.1
-        move = (self.output[0]+1)/2
+        move = (self.output[0]+1)/2/dt
         turn = self.output[1]
         sensor_turn = self.output[2]/dt*rot_speed
         #self.angle = (self.angle+(turn*rot_speed)/dt)%(2*PI)
         self.vdir = self.rotation_vector
-        self.velocity = move*self.vdir/dt
+        self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
         self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
         self.sensors[2].rotate(-sensor_turn, -PI/1.5, 0)
         return abs(move)*dt

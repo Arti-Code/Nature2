@@ -24,8 +24,8 @@ flags = pygame.DOUBLEBUF | pygame.HWSURFACE
 screen = pygame.display.set_mode(size=world, flags=flags, vsync=1)
 FPS = 30
 dt = 1/FPS
-creature_num = 6
-plant_num = 10
+creature_num = 20
+plant_num = 20
 running = True
 clock = pygame.time.Clock()
 white = (255, 255, 255, 75)
