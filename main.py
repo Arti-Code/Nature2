@@ -213,7 +213,7 @@ def main():
     set_win_pos(20, 20)
     init(world)
     create_enviro(world)
-    set_icon('planet32.png')
+    set_icon('planet05-32.png')
     #dt = 1.0 / FPS
     while running:
         events()
