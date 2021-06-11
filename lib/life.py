@@ -178,3 +178,9 @@ class Creature(Life):
         size = self.shape.radius
         gfxdraw.box(self.screen, Rect(rx-round(10), ry+round(size+3), round(19), 1), bar_red)
         gfxdraw.box(self.screen, Rect(rx-round(10), ry+round(size+3), round(20*(self.energy/self.max_energy)), 1), bar_green)
+
+    def kill(self, space: Space):
+        for sensor in self.sensors:
+            space.remove(sensor.shape)
+        space.remove(self.shape)
+        space.remove(self)
