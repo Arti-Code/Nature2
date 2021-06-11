@@ -57,24 +57,32 @@ class Life(Body):
 class Plant(Life):
 
     def __init__(self, screen: Surface, space: Space, world_size: Vec2d, size: int, color0: Color, color1: Color, position: Vec2d=None):
-        super().__init__(screen=screen, space=space, world_size=world_size, size=1, color0=color0, color1=color1, position=position)
-        self.max_size = size
-        self.max_energy = pow(size, 2)
-        self.size = 1
+        super().__init__(screen=screen, space=space, world_size=world_size, size=3, color0=color0, color1=color1, position=position)
+        self.size = size
+        self.max_size = PLANT_MAX_SIZE
+        self.max_energy = pow(PLANT_MAX_SIZE, 2)
         self.color0 = Color('yellowgreen')
         self.color1 = Color('green')
         self.energy = 1
 
     def update(self, dt: float):
-        if self.energy < self.max_energy:
-            self.energy += PLANT_GROWTH*dt
+        if self.energy < self.max_energy and self.energy > 0:
+            self.energy += PLANT_GROWTH/dt
             new_size = floor(sqrt(self.energy))
             if new_size != self.size:
-                self.shape.unsafe_set_radius(new_size)
+                if new_size <= PLANT_MAX_SIZE:
+                    self.shape.unsafe_set_radius(new_size)
+                else:
+                    self.shape.unsafe_set_radius(PLANT_MAX_SIZE)
         else:
             self.energy = self.max_energy
             self.size = self.max_size
+        self.energy = clamp(self.energy, 0, self.max_energy)
         return
+
+    def kill(self, space: Space):
+        space.remove(self.shape)
+        space.remove(self)
 
     def draw(self, selected: Body):
         super().draw(selected)
@@ -184,3 +192,7 @@ class Creature(Life):
             space.remove(sensor.shape)
         space.remove(self.shape)
         space.remove(self)
+
+    def eat(self, energy: float):
+        self.energy += energy
+        self.energy = clamp(self.energy, 0, self.max_energy)

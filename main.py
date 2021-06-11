@@ -5,6 +5,7 @@ from random import randint
 import pygame
 import pygame as pg
 from pygame import Color, Surface
+from pygame.font import Font, match_font 
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 import pymunk.pygame_util
 from lib.life import Life, Creature, Plant
@@ -19,7 +20,7 @@ plant_list = []
 wall_list = []
 red_detection = []
 space = Space()
-world = (1000, 650)
+world = (1200, 700)
 flags = pygame.DOUBLEBUF | pygame.HWSURFACE
 screen = pygame.display.set_mode(size=world, flags=flags, vsync=1)
 FPS = 30
@@ -108,13 +109,18 @@ def set_collision_calls():
 def draw_creature_collisions(arbiter, space, data):
     arbiter.shapes[0].body.position -= arbiter.normal*0.5
     arbiter.shapes[1].body.position += arbiter.normal*0.5
+    hunter = arbiter.shapes[0].body
     target = arbiter.shapes[1].body
     target.color0 = Color('red')
+    if isinstance(hunter, Creature):
+        target.energy = target.energy - EAT
+        if target.energy > 0:
+            hunter.eat(EAT)
     return True
 
 def draw_edge_collisions(arbiter, space, data):
     arbiter.shapes[0].body.angle += arbiter.normal.angle
-    arbiter.shapes[0].body.position -= arbiter.normal * 10
+    arbiter.shapes[0].body.position -= arbiter.normal * 1.5
     return True
 
 def detect_creature(arbiter, space, data):
@@ -150,9 +156,8 @@ def add_creature(world_size: tuple) -> Creature:
     return creature
 
 def add_plant(world_size: tuple):
-    plant = Plant(screen=screen, space=space, world_size=world, size=10, color0=Color('yellowgreen'), color1=Color('green'))
+    plant = Plant(screen=screen, space=space, world_size=world, size=3, color0=Color('yellowgreen'), color1=Color('green'))
     return plant
-
 
 def add_wall(point0: tuple, point1: tuple, thickness: float) -> Wall:
     wall = Wall(screen, space, point0, point1, thickness, Color('gray'), Color('gray'))
@@ -172,6 +177,14 @@ def draw():
     for wall in wall_list:
         wall.draw()
 
+    draw_text()
+
+def draw_text():
+    if selected != None:
+        font = Font(match_font('firacode'), 12)
+        info = font.render(f'energy: {round(selected.energy, 2)} | size: {round(selected.shape.radius)}', True, Color(0, 255, 255))
+        screen.blit(info, (10, 10), )
+
 def update(dt: float):
     for creature in creature_list:
         if creature.energy <= 0:
@@ -181,6 +194,9 @@ def update(dt: float):
         creature.update(space, dt, red_detection)
     
     for plant in plant_list:
+        if plant.energy <= 0:
+            plant.kill(space)
+            plant_list.remove(plant)
         plant.update(dt)
 
 def physics_step(step_num: int, dt: float):
