@@ -175,6 +175,7 @@ def draw():
 def update(dt: float):
     for creature in creature_list:
         if creature.energy <= 0:
+            creature.kill(space)
             creature_list.remove(creature)
     for creature in creature_list:
         creature.update(space, dt, red_detection)
