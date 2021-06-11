@@ -4,14 +4,14 @@ NATURE:
         ✔ pymunk integration
         ✔ circle-shaped beings
         ✔ cloud git repository
-        ☐ neural network inside
-        ☐ enviroment perception (simple)
-        ☐ beings movement (neural net based)
-        ☐ beings rotation (neural net based)
+        ✔ neural network inside
+        ✔ enviroment perception (simple)
+        ✔ beings movement (neural net based)
+        ✔ beings rotation (neural net based)
         ✔ collisions between beings
         ☐ collisions with rocks
         ✔ edges collisions
-        ☐ seeing (simple) `code`
+        ✔ seeing (simple)
         ☐ eating plants
         ☐ camera movement
         ☐ plants growth
