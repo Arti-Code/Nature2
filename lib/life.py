@@ -1,4 +1,4 @@
-from copy import copy
+from copy import copy, deepcopy
 from random import random, randint
 from math import sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt
 import pygame.gfxdraw as gfxdraw
@@ -12,7 +12,7 @@ from lib.config import *
 
 class Life(Body):
 
-    def __init__(self, screen: Surface, space: Space, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color=None, color3: Color=None, position: Vec2d=None):
+    def __init__(self, screen: Surface, space: Space, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color=None, color3: Color=None, position: Vec2d=None):
         super().__init__(self, body_type=Body.KINEMATIC)
         self.world_size = world_size
         self.max_energy = 200
@@ -34,8 +34,9 @@ class Life(Body):
         #    self.angle = random()*2*PI
         space.add(self)
         self.shape = Circle(body=self, radius=size, offset=(0, 0))
-        self.shape.collision_type = 2
+        self.shape.collision_type = collision_tag
         space.add(self.shape)
+        self.reproduction_time = REPRODUCTION_TIME
 
     def draw(self, selected: Body):
         x = self.position.x; y = self.position.y
@@ -52,6 +53,8 @@ class Life(Body):
 
     def update(self, dt: float):
         self.energy -= 1*dt*0.001
+        if self.reproduction_time > 0:
+            self.reproduction_time -= 1*dt*0.001
 
     def draw_selection(self, x, y, r):
         gfxdraw.aacircle(self.screen, int(x), int(flipy(y)), int(r*2), Color('turquoise'))
@@ -60,8 +63,8 @@ class Life(Body):
     
 class Plant(Life):
 
-    def __init__(self, screen: Surface, space: Space, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color=None, color3=None, position: Vec2d=None):
-        super().__init__(screen=screen, space=space, world_size=world_size, size=3, color0=color0, color1=color1, color3=color3, position=position)
+    def __init__(self, screen: Surface, space: Space, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color=None, color3=None, position: Vec2d=None):
+        super().__init__(screen=screen, space=space, collision_tag=collision_tag, world_size=world_size, size=3, color0=color0, color1=color1, color3=color3, position=position)
         self.life_time = PLANT_LIFE
         self.size = size
         self.max_size = PLANT_MAX_SIZE
@@ -100,8 +103,8 @@ class Plant(Life):
 
 class Creature(Life):
 
-    def __init__(self, screen: Surface, space: Space, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color, color3: Color, angle: float=None, visual_range: int=180, position: Vec2d=None):
-        super().__init__(screen=screen, space=space, world_size=world_size, size=size, color0=color0, color1=color1, position=position)
+    def __init__(self, screen: Surface, space: Space, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color, color3: Color, angle: float=None, visual_range: int=180, position: Vec2d=None):
+        super().__init__(screen=screen, space=space, collision_tag=collision_tag, world_size=world_size, size=size, color0=color0, color1=color1, position=position)
         if angle:
             self.angle = angle
         else:
@@ -110,11 +113,12 @@ class Creature(Life):
         self.color2 = color2
         self.color3 = color3
         self.neuro = Network()
-        self.neuro.BuildRandom([12, 6, 3], 0.15)
+        self.neuro.BuildRandom([12, 0, 3], 0.4)
         self.sensors = []
         self.eye_colors = {}
         self.visual_range = visual_range
         self.sensors = []
+        self.reproduction_time = REPRODUCTION_TIME
         self.sensors.append(Sensor(screen, self, 4, 0, 220))
         space.add(self.sensors[0].shape)
         self.sensors.append(Sensor(screen, self, 4, PI/3, 220))
@@ -139,20 +143,25 @@ class Creature(Life):
         for detector in self.sensors:
             detector.draw()
 
-    #def draw_selection(self, x, y, r):
-    #    gfxdraw.aacircle(self.screen, int(x), int(flipy(y)), int(r*1.6), Color('turquoise'))
-
     def update(self, space: Space, dt:float, detections: list=[]) -> None:
         #self.analize()
         move = self.move(dt)
         self.calc_energy(dt, move)
+        self.reproduction_time -= 1/dt
+        if self.reproduction_time <= 0:
+            pass #!  REPRODUCTION CODE
+            self.reproduction_time == REPRODUCTION_TIME
 
-    def update_detections(self, detections: list):        
+    def update_detections(self, detections: list): 
         for detector in self.sensors:
             if detector.shape in detections:
                 detector.set_color(Color('red'))
             else:
                 detector.set_color(Color('white'))
+
+    def reproduce(self):
+        new_creature = deepcopy(self)
+        
 
     def move(self, dt: float) -> None:
         move = ((self.output[0]+1)/2)*SPEED/dt

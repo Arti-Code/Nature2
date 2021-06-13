@@ -1,4 +1,3 @@
-#global PLANT_MAX_SIZE
 WORLD                       = (1200, 700)
 PLANT_MAX_SIZE              = 11
 PLANT_GROWTH                = 0.3
@@ -14,7 +13,7 @@ REP_ENERGY                  = 0.2
 SPEED                       = 1
 TURN                        = 0.2
 SENSOR_SPEED                = 1
-
+REPRODUCTION_TIME           = 30
 # colors
 BROWN = (110, 50, 9)
 LIME = (127, 255, 0)

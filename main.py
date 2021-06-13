@@ -20,13 +20,10 @@ plant_list = []
 wall_list = []
 red_detection = []
 space = Space()
-#world = (1200, 700)
 flags = pygame.DOUBLEBUF | pygame.HWSURFACE
 screen = pygame.display.set_mode(size=WORLD, flags=flags, vsync=1)
 FPS = 30
 dt = 1/FPS
-#creature_num = 20
-#plant_num = 20
 running = True
 clock = pygame.time.Clock()
 white = (255, 255, 255, 75)
@@ -97,6 +94,9 @@ def set_collision_calls():
     creature_collisions = space.add_collision_handler(2, 2)
     creature_collisions.pre_solve = draw_creature_collisions
 
+    creature_plant_collisions = space.add_collision_handler(2, 6)
+    creature_plant_collisions.pre_solve = process_creature_plant_collisions
+
     edge_collisions = space.add_collision_handler(2, 8)
     edge_collisions.pre_solve = draw_edge_collisions
 
@@ -106,16 +106,27 @@ def set_collision_calls():
     detection_end = space.add_collision_handler(4, 2)
     detection_end.separate = detect_creature_end
 
-def draw_creature_collisions(arbiter, space, data):
+    plant_detection = space.add_collision_handler(4, 6)
+    plant_detection.pre_solve = detect_plant
+
+    plant_detection_end = space.add_collision_handler(4, 6)
+    plant_detection_end.separate = detect_plant_end
+
+def process_creature_plant_collisions(arbiter, space, data):
     arbiter.shapes[0].body.position -= arbiter.normal*0.5
-    arbiter.shapes[1].body.position += arbiter.normal*0.5
+    arbiter.shapes[1].body.position += arbiter.normal*0.2
     hunter = arbiter.shapes[0].body
     target = arbiter.shapes[1].body
     target.color0 = Color('red')
-    if isinstance(hunter, Creature) and isinstance(target, Plant):
-        target.energy = target.energy - EAT
-        if target.energy > 0:
-            hunter.eat(EAT*20)
+    #if isinstance(hunter, Creature) and isinstance(target, Plant):
+    target.energy = target.energy - EAT
+    if target.energy > 0:
+        hunter.eat(EAT*20)
+    return True
+
+def draw_creature_collisions(arbiter, space, data):
+    arbiter.shapes[0].body.position -= arbiter.normal*0.5
+    arbiter.shapes[1].body.position += arbiter.normal*0.5
     return True
 
 def draw_edge_collisions(arbiter, space, data):
@@ -135,28 +146,33 @@ def detect_creature(arbiter, space, data):
             sensor.send_data(detect=True, distance=dist)
             break
     return True
-    #if detector in red_detection:
-    #    return True
-    #else:
-    #    red_detection.append(arbiter.shapes[0])
-    #    return True
+
+def detect_plant(arbiter, space, data):
+    creature = arbiter.shapes[0].body
+    plant = arbiter.shapes[1].body
+    sensor_shape = arbiter.shapes[0]
+    for sensor in creature.sensors:
+        if sensor.shape == sensor_shape:
+            sensor.set_color(Color('green'))
+            pos0 = creature.position
+            dist = pos0.get_distance(plant.position)
+            sensor.send_data(detect=True, distance=dist)
+            break
+    return True
+
+def detect_plant_end(arbiter, space, data):
+    return True
 
 def detect_creature_end(arbiter, space, data):
     return True
-    #detector = arbiter.shapes[0]
-    #black_list = []
-    #if detector in red_detection:
-    #    black_list.append(detector)
-    #for detector in black_list:
-    #    red_detection.remove(detector)
 
 def add_creature(world: tuple) -> Creature:
     size = randint(4, 13)
-    creature = Creature(screen=screen, space=space, world_size=world, size=size, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'))
+    creature = Creature(screen=screen, space=space, collision_tag=2, world_size=world, size=size, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'))
     return creature
 
 def add_plant(world: tuple):
-    plant = Plant(screen=screen, space=space, world_size=world, size=3, color0=Color(LIME), color1=Color('darkgreen'), color3=Color(BROWN))
+    plant = Plant(screen=screen, space=space, collision_tag=6, world_size=world, size=3, color0=Color(LIME), color1=Color('darkgreen'), color3=Color(BROWN))
     return plant
 
 def add_wall(point0: tuple, point1: tuple, thickness: float) -> Wall:
@@ -252,7 +268,6 @@ def main():
     init(WORLD)
     create_enviro(WORLD)
     set_icon('planet05-32.png')
-    #dt = 1.0 / FPS
     while running:
         events()
         update(dt)
