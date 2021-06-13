@@ -8,11 +8,11 @@ from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
 from lib.math2 import flipy, ang2vec, ang2vec2, clamp
 from lib.sensor import Sensor, PolySensor
 from lib.net import Network
-from lib.config import PLANT_MAX_SIZE, PLANT_GROWTH
+from lib.config import *
 
 class Life(Body):
 
-    def __init__(self, screen: Surface, space: Space, world_size: Vec2d, size: int, color0: Color, color1: Color, position: Vec2d=None):
+    def __init__(self, screen: Surface, space: Space, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color=None, color3: Color=None, position: Vec2d=None):
         super().__init__(self, body_type=Body.KINEMATIC)
         self.world_size = world_size
         self.max_energy = 200
@@ -20,6 +20,8 @@ class Life(Body):
         self.screen = screen
         self.color0 = color0
         self.color1 = color1
+        self.color2 = color2
+        self.color3 = color3
         self.base_color0 = copy(color0)
         self.base_color1 = copy(color1)
         if position is not None:
@@ -39,8 +41,10 @@ class Life(Body):
         x = self.position.x; y = self.position.y
         r = self.shape.radius
         gfxdraw.filled_circle(self.screen, int(x), flipy(int(y)), int(r), self.color0)
-        if r >= 3:
+        if r >= 3 and self.color1 != None:
             gfxdraw.filled_circle(self.screen, int(x), flipy(int(y)), int(r-2), self.color1)
+        if r >= 6 and self.color3 != None:
+            gfxdraw.filled_circle(self.screen, int(x), flipy(int(y)), int(2), self.color3)
         if self == selected:
             self.draw_selection(x, y, r)
         self.color0 = self.base_color0
@@ -56,14 +60,21 @@ class Life(Body):
     
 class Plant(Life):
 
-    def __init__(self, screen: Surface, space: Space, world_size: Vec2d, size: int, color0: Color, color1: Color, position: Vec2d=None):
-        super().__init__(screen=screen, space=space, world_size=world_size, size=3, color0=color0, color1=color1, position=position)
+    def __init__(self, screen: Surface, space: Space, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color=None, color3=None, position: Vec2d=None):
+        super().__init__(screen=screen, space=space, world_size=world_size, size=3, color0=color0, color1=color1, color3=color3, position=position)
+        self.life_time = PLANT_LIFE
         self.size = size
         self.max_size = PLANT_MAX_SIZE
         self.max_energy = pow(PLANT_MAX_SIZE, 2)
         self.color0 = Color('yellowgreen')
         self.color1 = Color('green')
         self.energy = 1
+
+    def life_time_calc(self, dt: int):
+        self.life_time -= dt/1000
+        if self.life_time <= 0:
+            return True
+        return False
 
     def update(self, dt: float):
         if self.energy < self.max_energy and self.energy > 0:
@@ -89,7 +100,7 @@ class Plant(Life):
 
 class Creature(Life):
 
-    def __init__(self, screen: Surface, space: Space, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color, angle: float=None, visual_range: int=180, position: Vec2d=None):
+    def __init__(self, screen: Surface, space: Space, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color, color3: Color, angle: float=None, visual_range: int=180, position: Vec2d=None):
         super().__init__(screen=screen, space=space, world_size=world_size, size=size, color0=color0, color1=color1, position=position)
         if angle:
             self.angle = angle
@@ -97,8 +108,9 @@ class Creature(Life):
             self.angle = random()*2*PI
         self.output = []
         self.color2 = color2
+        self.color3 = color3
         self.neuro = Network()
-        self.neuro.BuildRandom([12, 0, 0, 0, 3], 0.2)
+        self.neuro.BuildRandom([12, 6, 3], 0.15)
         self.sensors = []
         self.eye_colors = {}
         self.visual_range = visual_range
@@ -116,9 +128,9 @@ class Creature(Life):
         r = self.shape.radius
         rot = self.rotation_vector
         if r > 2:
-            x2 = round(x + rot.x*r)
-            y2 = round(y + rot.y*r)
-            r2 = round(r/2)
+            x2 = round(x + rot.x*(r-1))
+            y2 = round(y + rot.y*(r-1))
+            r2 = ceil(r/4)
             gfxdraw.filled_circle(self.screen, x2, flipy(y2), r2, self.color2)
         self.color0 = self.base_color0
         self.draw_energy_bar(int(x), flipy(int(y)))
@@ -131,11 +143,9 @@ class Creature(Life):
     #    gfxdraw.aacircle(self.screen, int(x), int(flipy(y)), int(r*1.6), Color('turquoise'))
 
     def update(self, space: Space, dt:float, detections: list=[]) -> None:
-        #self.update_detections(detections)
-        self.analize()
-        move_energy = self.random_move(space, dt)
-        base_energy = 1*dt
-        self.energy -= (move_energy + base_energy) * 0.001
+        #self.analize()
+        move = self.move(dt)
+        self.calc_energy(dt, move)
 
     def update_detections(self, detections: list):        
         for detector in self.sensors:
@@ -144,18 +154,22 @@ class Creature(Life):
             else:
                 detector.set_color(Color('white'))
 
-    def random_move(self, space: Space, dt: float) -> None:
-        speed: float; rot_speed: float; move: float; turn: float
-        speed = 1; rot_speed = 0.1
-        move = (self.output[0]+1)/2/dt
-        turn = self.output[1]
-        sensor_turn = self.output[2]/dt*rot_speed
-        #self.angle = (self.angle+(turn*rot_speed)/dt)%(2*PI)
+    def move(self, dt: float) -> None:
+        move = ((self.output[0]+1)/2)*SPEED/dt
+        turn = self.output[1]*TURN/dt
+        sensor_turn = self.output[2]*SENSOR_SPEED/dt
+        self.angle = (self.angle+(turn))
         self.vdir = self.rotation_vector
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
         self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
         self.sensors[2].rotate(-sensor_turn, -PI/1.5, 0)
         return abs(move)*dt
+
+    def calc_energy(self, dt: float, move: float):
+        base_energy = BASE_ENERGY * dt
+        move_energy = move * MOVE_ENERGY * dt
+        self.energy -= (base_energy + move_energy)
+        self.energy = clamp(self.energy, 0, self.max_energy)
 
     def get_input(self):
         input = []
@@ -194,5 +208,5 @@ class Creature(Life):
         space.remove(self)
 
     def eat(self, energy: float):
-        self.energy += energy
+        self.energy += energy * 20
         self.energy = clamp(self.energy, 0, self.max_energy)

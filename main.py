@@ -1,7 +1,7 @@
 import os
 import sys
 from math import degrees, hypot
-from random import randint
+from random import randint, random
 import pygame
 import pygame as pg
 from pygame import Color, Surface
@@ -20,13 +20,13 @@ plant_list = []
 wall_list = []
 red_detection = []
 space = Space()
-world = (1200, 700)
+#world = (1200, 700)
 flags = pygame.DOUBLEBUF | pygame.HWSURFACE
-screen = pygame.display.set_mode(size=world, flags=flags, vsync=1)
+screen = pygame.display.set_mode(size=WORLD, flags=flags, vsync=1)
 FPS = 30
 dt = 1/FPS
-creature_num = 20
-plant_num = 20
+#creature_num = 20
+#plant_num = 20
 running = True
 clock = pygame.time.Clock()
 white = (255, 255, 255, 75)
@@ -36,7 +36,7 @@ darkblue = (0, 0, 10, 255)
 
 def init(view_size: tuple):
     pygame.init()
-    set_world(world)
+    set_world(WORLD)
     space.gravity = (0.0, 0.0)
     set_collision_calls()
     pymunk.pygame_util.positive_y_is_up = True
@@ -112,10 +112,10 @@ def draw_creature_collisions(arbiter, space, data):
     hunter = arbiter.shapes[0].body
     target = arbiter.shapes[1].body
     target.color0 = Color('red')
-    if isinstance(hunter, Creature):
+    if isinstance(hunter, Creature) and isinstance(target, Plant):
         target.energy = target.energy - EAT
         if target.energy > 0:
-            hunter.eat(EAT)
+            hunter.eat(EAT*20)
     return True
 
 def draw_edge_collisions(arbiter, space, data):
@@ -150,13 +150,13 @@ def detect_creature_end(arbiter, space, data):
     #for detector in black_list:
     #    red_detection.remove(detector)
 
-def add_creature(world_size: tuple) -> Creature:
-    size = randint(7, 10)
-    creature = Creature(screen=screen, space=space, world_size=world, size=size, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'))
+def add_creature(world: tuple) -> Creature:
+    size = randint(4, 13)
+    creature = Creature(screen=screen, space=space, world_size=world, size=size, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'))
     return creature
 
-def add_plant(world_size: tuple):
-    plant = Plant(screen=screen, space=space, world_size=world, size=3, color0=Color('yellowgreen'), color1=Color('green'))
+def add_plant(world: tuple):
+    plant = Plant(screen=screen, space=space, world_size=world, size=3, color0=Color(LIME), color1=Color('darkgreen'), color3=Color(BROWN))
     return plant
 
 def add_wall(point0: tuple, point1: tuple, thickness: float) -> Wall:
@@ -186,18 +186,39 @@ def draw_text():
         screen.blit(info, (10, 10), )
 
 def update(dt: float):
+    update_creatures(dt)
+    update_plants(dt)
+    
+def update_creatures(dt: float):
     for creature in creature_list:
         if creature.energy <= 0:
             creature.kill(space)
             creature_list.remove(creature)
     for creature in creature_list:
+        creature.get_input()
+        creature.analize()
+    for creature in creature_list:
+        creature.move(dt)
+    for creature in creature_list:
         creature.update(space, dt, red_detection)
-    
+    if random() <= PLANT_MULTIPLY:
+        creature = add_creature(world)
+        creature_list.append(creature)
+
+def update_plants(dt: float):
+    for plant in plant_list:
+        if plant.life_time_calc(dt):
+            plant.kill(space)
+            plant_list.remove(plant)
     for plant in plant_list:
         if plant.energy <= 0:
             plant.kill(space)
             plant_list.remove(plant)
-        plant.update(dt)
+        else:
+            plant.update(dt)
+    if random() <= PLANT_MULTIPLY:
+        plant = add_plant(WORLD)
+        plant_list.append(plant)
 
 def physics_step(step_num: int, dt: float):
     for _ in range(1):
@@ -228,8 +249,8 @@ def sort_by_fitness(creature):
 
 def main():
     set_win_pos(20, 20)
-    init(world)
-    create_enviro(world)
+    init(WORLD)
+    create_enviro(WORLD)
     set_icon('planet05-32.png')
     #dt = 1.0 / FPS
     while running:
