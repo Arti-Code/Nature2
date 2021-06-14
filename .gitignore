@@ -7,3 +7,5 @@ __pycache__/main.cpython-38.pyc
 lib/__pycache__/config.cpython-39.pyc
 lib/__pycache__/net.cpython-39.pyc
 lib/__pycache__/sensor.cpython-39.pyc
+__pycache__/main.cpython-39.pyc
+lib/__pycache__/__init__.cpython-39.pyc

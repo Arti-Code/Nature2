@@ -33,7 +33,7 @@ class SensorData():
 class Sensor():
 
     def __init__(self, screen: Surface, body: Body, collision_type: any, radians: float, length: int):
-        self.screen = screen
+        #self.screen = screen
         self.body = body
         self.angle = radians
         self.length = length
@@ -49,11 +49,11 @@ class Sensor():
         red = (255, 0, 0, 75)
         self.color = Color(white)
 
-    def draw(self):
+    def draw(self, screen: Surface):
         p1 = (self.shape.body.position.x, self.shape.body.position.y)
         rv = (self.body.rotation_vector.rotated(self.angle))*self.length
         p2 = (p1[0]+rv[0], p1[1]+rv[1])
-        gfxdraw.line(self.screen, int(p1[0]), flipy(int(p1[1])), int(p2[0]), flipy(int(p2[1])), self.color)
+        gfxdraw.line(screen, int(p1[0]), flipy(int(p1[1])), int(p2[0]), flipy(int(p2[1])), self.color)
         self.set_color(Color(white))
 
     def set_color(self, color: Color):

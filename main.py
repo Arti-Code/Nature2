@@ -19,6 +19,7 @@ creature_list = []
 plant_list = []
 wall_list = []
 red_detection = []
+global space
 space = Space()
 flags = pygame.DOUBLEBUF | pygame.HWSURFACE
 screen = pygame.display.set_mode(size=WORLD, flags=flags, vsync=1)
@@ -168,7 +169,7 @@ def detect_creature_end(arbiter, space, data):
 
 def add_creature(world: tuple) -> Creature:
     size = randint(4, 13)
-    creature = Creature(screen=screen, space=space, collision_tag=2, world_size=world, size=size, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'))
+    creature = Creature(screen=screen, space=space, collision_tag=2, world_size=world, size=size, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=None)
     return creature
 
 def add_plant(world: tuple):
@@ -183,41 +184,47 @@ def add_wall(point0: tuple, point1: tuple, thickness: float) -> Wall:
 def draw():
     screen.fill(Color(darkblue))
     for creature in creature_list:
-        creature.draw_detectors()
+        if creature == selected:
+            creature.draw_detectors(screen=screen)
     for creature in creature_list:
-        creature.draw(selected)
+        creature.draw(screen=screen, selected=selected)
     
     for plant in plant_list:
-        plant.draw(selected)
+        plant.draw(screen=screen, selected=selected)
     
     for wall in wall_list:
-        wall.draw()
+        wall.draw(screen=screen)
 
     draw_text()
 
 def draw_text():
     if selected != None:
         font = Font(match_font('firacode'), 12)
-        info = font.render(f'energy: {round(selected.energy, 2)} | size: {round(selected.shape.radius)}', True, Color(0, 255, 255))
+        info = font.render(f'energy: {round(selected.energy, 2)} | size: {round(selected.shape.radius)} | rep_time: {round(selected.reproduction_time)} | gen: {selected.generation}', True, Color(0, 255, 255))
         screen.blit(info, (10, 10), )
 
 def update(dt: float):
-    update_creatures(dt)
-    update_plants(dt)
-    
-def update_creatures(dt: float):
     for creature in creature_list:
         if creature.energy <= 0:
             creature.kill(space)
             creature_list.remove(creature)
+    update_creatures(dt)
+    update_plants(dt)
+    
+def update_creatures(dt: float):
     for creature in creature_list:
         creature.get_input()
         creature.analize()
     for creature in creature_list:
         creature.move(dt)
     for creature in creature_list:
-        creature.update(space, dt, red_detection)
-    if random() <= PLANT_MULTIPLY:
+        s, p, n, g = creature.update(screen=screen, space=space, dt=dt)
+        if s!=False and p!=False and n!=False:
+            new_creature = Creature(screen=screen, space=space, collision_tag=2, world_size=WORLD, size=s, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=p, generation=g+1)
+            new_creature.neuro = n
+            new_creature.neuro.Mutate()
+            creature_list.append(new_creature)
+    if random() <= CREATURE_MULTIPLY:
         creature = add_creature(world)
         creature_list.append(creature)
 

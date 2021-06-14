@@ -17,7 +17,7 @@ class Life(Body):
         self.world_size = world_size
         self.max_energy = 200
         self.energy = self.max_energy
-        self.screen = screen
+        #self.screen = screen
         self.color0 = color0
         self.color1 = color1
         self.color2 = color2
@@ -25,11 +25,11 @@ class Life(Body):
         self.base_color0 = copy(color0)
         self.base_color1 = copy(color1)
         if position is not None:
-            self.body.position = position
+            self.position = position
         else:
             x = randint(50, world_size[0]-50)
             y = randint(50, world_size[1]-50)
-            self.position = (x, y)
+            self.position = Vec2d(x, y)
         #if not angle:
         #    self.angle = random()*2*PI
         space.add(self)
@@ -38,16 +38,16 @@ class Life(Body):
         space.add(self.shape)
         self.reproduction_time = REPRODUCTION_TIME
 
-    def draw(self, selected: Body):
+    def draw(self, screen: Surface, selected: Body):
         x = self.position.x; y = self.position.y
         r = self.shape.radius
-        gfxdraw.filled_circle(self.screen, int(x), flipy(int(y)), int(r), self.color0)
+        gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r), self.color0)
         if r >= 3 and self.color1 != None:
-            gfxdraw.filled_circle(self.screen, int(x), flipy(int(y)), int(r-2), self.color1)
+            gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r-2), self.color1)
         if r >= 6 and self.color3 != None:
-            gfxdraw.filled_circle(self.screen, int(x), flipy(int(y)), int(2), self.color3)
+            gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(2), self.color3)
         if self == selected:
-            self.draw_selection(x, y, r)
+            self.draw_selection(screen, x, y, r)
         self.color0 = self.base_color0
         self.color1 = self.base_color1
 
@@ -56,9 +56,9 @@ class Life(Body):
         if self.reproduction_time > 0:
             self.reproduction_time -= 1*dt*0.001
 
-    def draw_selection(self, x, y, r):
-        gfxdraw.aacircle(self.screen, int(x), int(flipy(y)), int(r*2), Color('turquoise'))
-        gfxdraw.aacircle(self.screen, int(x), int(flipy(y)), int(r*2+1), Color('turquoise'))
+    def draw_selection(self, screen: Surface, x, y, r):
+        gfxdraw.aacircle(screen, int(x), int(flipy(y)), int(r*2), Color('turquoise'))
+        gfxdraw.aacircle(screen, int(x), int(flipy(y)), int(r*2+1), Color('turquoise'))
 
     
 class Plant(Life):
@@ -98,36 +98,35 @@ class Plant(Life):
         space.remove(self.shape)
         space.remove(self)
 
-    def draw(self, selected: Body):
-        super().draw(selected)
+    def draw(self, screen: Surface, selected: Body):
+        super().draw(screen, selected)
 
 class Creature(Life):
 
-    def __init__(self, screen: Surface, space: Space, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color, color3: Color, angle: float=None, visual_range: int=180, position: Vec2d=None):
+    def __init__(self, screen: Surface, space: Space, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color, color3: Color, angle: float=None, visual_range: int=180, position: Vec2d=None, generation: int=0):
         super().__init__(screen=screen, space=space, collision_tag=collision_tag, world_size=world_size, size=size, color0=color0, color1=color1, position=position)
         if angle:
             self.angle = angle
         else:
             self.angle = random()*2*PI
-        self.output = []
+        self.output = [0, 0, 0]
         self.color2 = color2
         self.color3 = color3
+        self.generation = generation
         self.neuro = Network()
         self.neuro.BuildRandom([12, 0, 3], 0.4)
-        self.sensors = []
         self.eye_colors = {}
         self.visual_range = visual_range
         self.sensors = []
         self.reproduction_time = REPRODUCTION_TIME
         self.sensors.append(Sensor(screen, self, 4, 0, 220))
-        space.add(self.sensors[0].shape)
         self.sensors.append(Sensor(screen, self, 4, PI/3, 220))
-        space.add(self.sensors[1].shape)
         self.sensors.append(Sensor(screen, self, 4, -PI/3, 220))
-        space.add(self.sensors[2].shape)
+        for sensor in self.sensors:
+            space.add(sensor.shape)
 
-    def draw(self, selected: Body):
-        super().draw(selected)
+    def draw(self, screen: Surface, selected: Body):
+        super().draw(screen, selected)
         x = self.position.x; y = self.position.y
         r = self.shape.radius
         rot = self.rotation_vector
@@ -135,22 +134,27 @@ class Creature(Life):
             x2 = round(x + rot.x*(r-1))
             y2 = round(y + rot.y*(r-1))
             r2 = ceil(r/4)
-            gfxdraw.filled_circle(self.screen, x2, flipy(y2), r2, self.color2)
+            gfxdraw.filled_circle(screen, x2, flipy(y2), r2, self.color2)
         self.color0 = self.base_color0
-        self.draw_energy_bar(int(x), flipy(int(y)))
+        self.draw_energy_bar(screen, int(x), flipy(int(y)))
 
-    def draw_detectors(self):
+    def draw_detectors(self, screen):
         for detector in self.sensors:
-            detector.draw()
+            detector.draw(screen)
 
-    def update(self, space: Space, dt:float, detections: list=[]) -> None:
-        #self.analize()
+    def update(self, screen: Surface, space: Space, dt:float) -> None:
         move = self.move(dt)
         self.calc_energy(dt, move)
         self.reproduction_time -= 1/dt
         if self.reproduction_time <= 0:
-            pass #!  REPRODUCTION CODE
-            self.reproduction_time == REPRODUCTION_TIME
+            if self.energy >= (self.max_energy*0.8):
+                self.reproduction_time == REPRODUCTION_TIME
+                self.energy = self.energy * 0.6
+                return self.reproduce(screen, space)
+            else:
+                self.reproduction_time = 0
+                return (False, False, False, False)
+        return (False, False, False, False)
 
     def update_detections(self, detections: list): 
         for detector in self.sensors:
@@ -159,8 +163,17 @@ class Creature(Life):
             else:
                 detector.set_color(Color('white'))
 
-    def reproduce(self):
-        new_creature = deepcopy(self)
+    def reproduce(self, screen: Surface, space: Space):
+        size = self.shape.radius + randint(-2, 2)
+        size = clamp(size, CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
+        pos = Vec2d(self.position.x+randint(-50, 50), self.position.y+randint(-50, 50))
+        neuro = self.neuro.Replicate()
+        #pos.x += self.position.x
+        #pos.y += self.position.y
+        #new_creature = Creature(screen=screen, space=space, world_size=WORLD, collision_tag=2, size=size, color0=self.color0, color1=self.color1, color2=self.color2, color3=self.color3, angle=self.angle, visual_range=180, position=pos, generation=self.generation+1)
+        #new_creature.neuro = self.neuro.Replicate()
+        #new_creature.neuro.Mutate()
+        return (size, pos, neuro, self.generation)
         
 
     def move(self, dt: float) -> None:
@@ -203,16 +216,19 @@ class Creature(Life):
         for sensor in self.sensors:
             sensor.reset_data()
             
-    def draw_energy_bar(self, rx: int, ry: int):
+    def draw_energy_bar(self, screen: Surface, rx: int, ry: int):
         bar_red = Color(255, 0, 0)
         bar_green = Color(0, 255, 0)
         size = self.shape.radius
-        gfxdraw.box(self.screen, Rect(rx-round(10), ry+round(size+3), round(19), 1), bar_red)
-        gfxdraw.box(self.screen, Rect(rx-round(10), ry+round(size+3), round(20*(self.energy/self.max_energy)), 1), bar_green)
+        gfxdraw.box(screen, Rect(rx-round(10), ry+round(size+3), round(19), 1), bar_red)
+        gfxdraw.box(screen, Rect(rx-round(10), ry+round(size+3), round(20*(self.energy/self.max_energy)), 1), bar_green)
 
     def kill(self, space: Space):
+        to_kill = []
         for sensor in self.sensors:
-            space.remove(sensor.shape)
+            to_kill.append(sensor.shape)
+        for s in to_kill:
+            space.remove(s)
         space.remove(self.shape)
         space.remove(self)
 
