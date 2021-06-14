@@ -1,4 +1,4 @@
-from copy import copy
+from copy import copy, deepcopy
 from random import random, randint
 from math import sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt
 import pygame.gfxdraw as gfxdraw
@@ -8,146 +8,190 @@ from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
 from lib.math2 import flipy, ang2vec, ang2vec2, clamp
 from lib.sensor import Sensor, PolySensor
 from lib.net import Network
-from lib.config import PLANT_MAX_SIZE, PLANT_GROWTH
+from lib.config import *
 
 class Life(Body):
 
-    def __init__(self, screen: Surface, space: Space, world_size: Vec2d, size: int, color0: Color, color1: Color, position: Vec2d=None):
+    def __init__(self, screen: Surface, space: Space, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color=None, color3: Color=None, position: Vec2d=None):
         super().__init__(self, body_type=Body.KINEMATIC)
         self.world_size = world_size
         self.max_energy = 200
         self.energy = self.max_energy
-        self.screen = screen
+        #self.screen = screen
         self.color0 = color0
         self.color1 = color1
+        self.color2 = color2
+        self.color3 = color3
         self.base_color0 = copy(color0)
         self.base_color1 = copy(color1)
         if position is not None:
-            self.body.position = position
+            self.position = position
         else:
             x = randint(50, world_size[0]-50)
             y = randint(50, world_size[1]-50)
-            self.position = (x, y)
+            self.position = Vec2d(x, y)
         #if not angle:
         #    self.angle = random()*2*PI
         space.add(self)
         self.shape = Circle(body=self, radius=size, offset=(0, 0))
-        self.shape.collision_type = 2
+        self.shape.collision_type = collision_tag
         space.add(self.shape)
+        self.reproduction_time = REPRODUCTION_TIME
 
-    def draw(self, selected: Body):
+    def draw(self, screen: Surface, selected: Body):
         x = self.position.x; y = self.position.y
         r = self.shape.radius
-        gfxdraw.filled_circle(self.screen, int(x), flipy(int(y)), int(r), self.color0)
-        if r >= 3:
-            gfxdraw.filled_circle(self.screen, int(x), flipy(int(y)), int(r-2), self.color1)
+        gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r), self.color0)
+        if r >= 3 and self.color1 != None:
+            gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r-2), self.color1)
+        if r >= 6 and self.color3 != None:
+            gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(2), self.color3)
         if self == selected:
-            self.draw_selection(x, y, r)
+            self.draw_selection(screen, x, y, r)
         self.color0 = self.base_color0
         self.color1 = self.base_color1
 
     def update(self, dt: float):
         self.energy -= 1*dt*0.001
+        if self.reproduction_time > 0:
+            self.reproduction_time -= 1*dt*0.001
 
-    def draw_selection(self, x, y, r):
-        gfxdraw.aacircle(self.screen, int(x), int(flipy(y)), int(r*2), Color('turquoise'))
-        gfxdraw.aacircle(self.screen, int(x), int(flipy(y)), int(r*2+1), Color('turquoise'))
+    def draw_selection(self, screen: Surface, x, y, r):
+        gfxdraw.aacircle(screen, int(x), int(flipy(y)), int(r*2), Color('turquoise'))
+        gfxdraw.aacircle(screen, int(x), int(flipy(y)), int(r*2+1), Color('turquoise'))
 
     
 class Plant(Life):
 
-    def __init__(self, screen: Surface, space: Space, world_size: Vec2d, size: int, color0: Color, color1: Color, position: Vec2d=None):
-        super().__init__(screen=screen, space=space, world_size=world_size, size=1, color0=color0, color1=color1, position=position)
-        self.max_size = size
-        self.max_energy = pow(size, 2)
-        self.size = 1
+    def __init__(self, screen: Surface, space: Space, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color=None, color3=None, position: Vec2d=None):
+        super().__init__(screen=screen, space=space, collision_tag=collision_tag, world_size=world_size, size=3, color0=color0, color1=color1, color3=color3, position=position)
+        self.life_time = PLANT_LIFE
+        self.size = size
+        self.max_size = PLANT_MAX_SIZE
+        self.max_energy = pow(PLANT_MAX_SIZE, 2)
         self.color0 = Color('yellowgreen')
         self.color1 = Color('green')
         self.energy = 1
 
+    def life_time_calc(self, dt: int):
+        self.life_time -= dt/1000
+        if self.life_time <= 0:
+            return True
+        return False
+
     def update(self, dt: float):
-        if self.energy < self.max_energy:
-            self.energy += PLANT_GROWTH*dt
+        if self.energy < self.max_energy and self.energy > 0:
+            self.energy += PLANT_GROWTH/dt
             new_size = floor(sqrt(self.energy))
             if new_size != self.size:
-                self.shape.unsafe_set_radius(new_size)
+                if new_size <= PLANT_MAX_SIZE:
+                    self.shape.unsafe_set_radius(new_size)
+                else:
+                    self.shape.unsafe_set_radius(PLANT_MAX_SIZE)
         else:
             self.energy = self.max_energy
             self.size = self.max_size
+        self.energy = clamp(self.energy, 0, self.max_energy)
         return
 
-    def draw(self, selected: Body):
-        super().draw(selected)
+    def kill(self, space: Space):
+        space.remove(self.shape)
+        space.remove(self)
+
+    def draw(self, screen: Surface, selected: Body):
+        super().draw(screen, selected)
 
 class Creature(Life):
 
-    def __init__(self, screen: Surface, space: Space, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color, angle: float=None, visual_range: int=180, position: Vec2d=None):
-        super().__init__(screen=screen, space=space, world_size=world_size, size=size, color0=color0, color1=color1, position=position)
+    def __init__(self, screen: Surface, space: Space, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color, color3: Color, angle: float=None, visual_range: int=180, position: Vec2d=None, generation: int=0):
+        super().__init__(screen=screen, space=space, collision_tag=collision_tag, world_size=world_size, size=size, color0=color0, color1=color1, position=position)
         if angle:
             self.angle = angle
         else:
             self.angle = random()*2*PI
-        self.output = []
+        self.output = [0, 0, 0]
         self.color2 = color2
+        self.color3 = color3
+        self.generation = generation
         self.neuro = Network()
-        self.neuro.BuildRandom([12, 0, 0, 0, 3], 0.2)
-        self.sensors = []
+        self.neuro.BuildRandom([12, 0, 3], 0.4)
         self.eye_colors = {}
         self.visual_range = visual_range
         self.sensors = []
+        self.reproduction_time = REPRODUCTION_TIME
         self.sensors.append(Sensor(screen, self, 4, 0, 220))
-        space.add(self.sensors[0].shape)
         self.sensors.append(Sensor(screen, self, 4, PI/3, 220))
-        space.add(self.sensors[1].shape)
         self.sensors.append(Sensor(screen, self, 4, -PI/3, 220))
-        space.add(self.sensors[2].shape)
+        for sensor in self.sensors:
+            space.add(sensor.shape)
 
-    def draw(self, selected: Body):
-        super().draw(selected)
+    def draw(self, screen: Surface, selected: Body):
+        super().draw(screen, selected)
         x = self.position.x; y = self.position.y
         r = self.shape.radius
         rot = self.rotation_vector
         if r > 2:
-            x2 = round(x + rot.x*r)
-            y2 = round(y + rot.y*r)
-            r2 = round(r/2)
-            gfxdraw.filled_circle(self.screen, x2, flipy(y2), r2, self.color2)
+            x2 = round(x + rot.x*(r-1))
+            y2 = round(y + rot.y*(r-1))
+            r2 = ceil(r/4)
+            gfxdraw.filled_circle(screen, x2, flipy(y2), r2, self.color2)
         self.color0 = self.base_color0
-        self.draw_energy_bar(int(x), flipy(int(y)))
+        self.draw_energy_bar(screen, int(x), flipy(int(y)))
 
-    def draw_detectors(self):
+    def draw_detectors(self, screen):
         for detector in self.sensors:
-            detector.draw()
+            detector.draw(screen)
 
-    #def draw_selection(self, x, y, r):
-    #    gfxdraw.aacircle(self.screen, int(x), int(flipy(y)), int(r*1.6), Color('turquoise'))
+    def update(self, screen: Surface, space: Space, dt:float) -> None:
+        move = self.move(dt)
+        self.calc_energy(dt, move)
+        self.reproduction_time -= 1/dt
+        if self.reproduction_time <= 0:
+            if self.energy >= (self.max_energy*0.8):
+                self.reproduction_time == REPRODUCTION_TIME
+                self.energy = self.energy * 0.6
+                return self.reproduce(screen, space)
+            else:
+                self.reproduction_time = 0
+                return (False, False, False, False)
+        return (False, False, False, False)
 
-    def update(self, space: Space, dt:float, detections: list=[]) -> None:
-        #self.update_detections(detections)
-        self.analize()
-        move_energy = self.random_move(space, dt)
-        base_energy = 1*dt
-        self.energy -= (move_energy + base_energy) * 0.001
-
-    def update_detections(self, detections: list):        
+    def update_detections(self, detections: list): 
         for detector in self.sensors:
             if detector.shape in detections:
                 detector.set_color(Color('red'))
             else:
                 detector.set_color(Color('white'))
 
-    def random_move(self, space: Space, dt: float) -> None:
-        speed: float; rot_speed: float; move: float; turn: float
-        speed = 1; rot_speed = 0.1
-        move = (self.output[0]+1)/2/dt
-        turn = self.output[1]
-        sensor_turn = self.output[2]/dt*rot_speed
-        #self.angle = (self.angle+(turn*rot_speed)/dt)%(2*PI)
+    def reproduce(self, screen: Surface, space: Space):
+        size = self.shape.radius + randint(-2, 2)
+        size = clamp(size, CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
+        pos = Vec2d(self.position.x+randint(-50, 50), self.position.y+randint(-50, 50))
+        neuro = self.neuro.Replicate()
+        #pos.x += self.position.x
+        #pos.y += self.position.y
+        #new_creature = Creature(screen=screen, space=space, world_size=WORLD, collision_tag=2, size=size, color0=self.color0, color1=self.color1, color2=self.color2, color3=self.color3, angle=self.angle, visual_range=180, position=pos, generation=self.generation+1)
+        #new_creature.neuro = self.neuro.Replicate()
+        #new_creature.neuro.Mutate()
+        return (size, pos, neuro, self.generation)
+        
+
+    def move(self, dt: float) -> None:
+        move = ((self.output[0]+1)/2)*SPEED/dt
+        turn = self.output[1]*TURN/dt
+        sensor_turn = self.output[2]*SENSOR_SPEED/dt
+        self.angle = (self.angle+(turn))
         self.vdir = self.rotation_vector
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
         self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
         self.sensors[2].rotate(-sensor_turn, -PI/1.5, 0)
         return abs(move)*dt
+
+    def calc_energy(self, dt: float, move: float):
+        base_energy = BASE_ENERGY * dt
+        move_energy = move * MOVE_ENERGY * dt
+        self.energy -= (base_energy + move_energy)
+        self.energy = clamp(self.energy, 0, self.max_energy)
 
     def get_input(self):
         input = []
@@ -172,15 +216,22 @@ class Creature(Life):
         for sensor in self.sensors:
             sensor.reset_data()
             
-    def draw_energy_bar(self, rx: int, ry: int):
+    def draw_energy_bar(self, screen: Surface, rx: int, ry: int):
         bar_red = Color(255, 0, 0)
         bar_green = Color(0, 255, 0)
         size = self.shape.radius
-        gfxdraw.box(self.screen, Rect(rx-round(10), ry+round(size+3), round(19), 1), bar_red)
-        gfxdraw.box(self.screen, Rect(rx-round(10), ry+round(size+3), round(20*(self.energy/self.max_energy)), 1), bar_green)
+        gfxdraw.box(screen, Rect(rx-round(10), ry+round(size+3), round(19), 1), bar_red)
+        gfxdraw.box(screen, Rect(rx-round(10), ry+round(size+3), round(20*(self.energy/self.max_energy)), 1), bar_green)
 
     def kill(self, space: Space):
+        to_kill = []
         for sensor in self.sensors:
-            space.remove(sensor.shape)
+            to_kill.append(sensor.shape)
+        for s in to_kill:
+            space.remove(s)
         space.remove(self.shape)
         space.remove(self)
+
+    def eat(self, energy: float):
+        self.energy += energy * 20
+        self.energy = clamp(self.energy, 0, self.max_energy)
