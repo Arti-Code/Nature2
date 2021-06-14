@@ -9,13 +9,13 @@ NATURE:
         ✔ beings movement (neural net based)
         ✔ beings rotation (neural net based)
         ✔ collisions between beings
-        ☐ collisions with rocks
+        ✘ collisions with rocks
         ✔ edges collisions
         ✔ seeing (simple)
-        ☐ eating plants
+        ✔ eating plants
         ☐ camera movement
-        ☐ plants growth
-        ☐ plant procreation (simple)
+        ✔ plants growth
+        ✔ plant procreation (simple)
     0.2:
         ☐ gui ('Creatures' based)
         ☐ camera zoom in/out

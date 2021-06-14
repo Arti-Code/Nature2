@@ -251,7 +251,7 @@ def clock_step():
     global dt
     pygame.display.flip()
     dt = clock.tick(FPS)
-    pygame.display.set_caption(f"NATURE [fps: {round(clock.get_fps())} | dT: {round(dt)}ms]")
+    pygame.display.set_caption(f"NATURE v0.1.0 [fps: {round(clock.get_fps())} | dT: {round(dt)}ms]")
 
 def set_win_pos(x: int=20, y: int=20):
     x_winpos = x
