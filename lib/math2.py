@@ -4,6 +4,9 @@ import numpy as np
 
 world = (600, 600)
 
+def sort_by_fitness(record):
+    return record['points']
+
 def clamp(num, min_value, max_value):
    return max(min(num, max_value), min_value)
 

@@ -142,19 +142,17 @@ class Creature(Life):
         for detector in self.sensors:
             detector.draw(screen)
 
-    def update(self, screen: Surface, space: Space, dt:float) -> None:
+    def update(self, screen: Surface, space: Space, dt:float):
         move = self.move(dt)
         self.calc_energy(dt, move)
+
+    def check_reproduction(self, dt) -> bool:
         self.reproduction_time -= 1/dt
         if self.reproduction_time <= 0:
-            if self.energy >= (self.max_energy*0.8):
-                self.reproduction_time == REPRODUCTION_TIME
-                self.energy = self.energy * 0.6
-                return self.reproduce(screen, space)
-            else:
-                self.reproduction_time = 0
-                return (False, False, False, False)
-        return (False, False, False, False)
+            self.reproduction_time = 0
+            if self.energy >= (self.max_energy*(1-REP_ENERGY)):
+                return True
+        return False
 
     def update_detections(self, detections: list): 
         for detector in self.sensors:
@@ -164,16 +162,13 @@ class Creature(Life):
                 detector.set_color(Color('white'))
 
     def reproduce(self, screen: Surface, space: Space):
+        self.energy -= self.max_energy * REP_ENERGY
         size = self.shape.radius + randint(-2, 2)
         size = clamp(size, CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
         pos = Vec2d(self.position.x+randint(-50, 50), self.position.y+randint(-50, 50))
         neuro = self.neuro.Replicate()
-        #pos.x += self.position.x
-        #pos.y += self.position.y
-        #new_creature = Creature(screen=screen, space=space, world_size=WORLD, collision_tag=2, size=size, color0=self.color0, color1=self.color1, color2=self.color2, color3=self.color3, angle=self.angle, visual_range=180, position=pos, generation=self.generation+1)
-        #new_creature.neuro = self.neuro.Replicate()
-        #new_creature.neuro.Mutate()
-        return (size, pos, neuro, self.generation)
+        self.reproduction_time = REPRODUCTION_TIME
+        return (size, pos, neuro, self.generation+1)
         
 
     def move(self, dt: float) -> None:

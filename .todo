@@ -13,9 +13,11 @@ NATURE:
         ✔ edges collisions
         ✔ seeing (simple)
         ✔ eating plants
-        ☐ camera movement
         ✔ plants growth
         ✔ plant procreation (simple)
     0.2:
+        ☐ drawing neural network
+    0.3:
+        ☐ camera movement
         ☐ gui ('Creatures' based)
         ☐ camera zoom in/out

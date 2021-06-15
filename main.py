@@ -13,8 +13,11 @@ from lib.wall import Wall
 from lib.sensor import Sensor
 from lib.math2 import set_world, world, flipy
 from lib.config import *
+#from lib.manager import Manager
+#from lib.test import Test
 
-
+global project
+project = 'Nature'
 creature_list = []
 plant_list = []
 wall_list = []
@@ -30,6 +33,8 @@ clock = pygame.time.Clock()
 white = (255, 255, 255, 75)
 red = (255, 0, 0, 75)
 darkblue = (0, 0, 10, 255)
+#manager = Manager(screen=screen)
+sel_idx = 0
 
 
 def init(view_size: tuple):
@@ -61,14 +66,28 @@ def create_enviro(world: tuple):
         plant_list.append(plant)
 
 def events():
+    global selected
+    global sel_idx
     global running
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             running = False
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
+            if sel_idx > 0 and sel_idx <= len(creature_list):
+                sel_idx -= 1
+                selected = creature_list[sel_idx]
+            else:
+                sel_idx = 0
+                selected = creature_list[sel_idx]
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
+            if sel_idx >= 0 and sel_idx < (len(creature_list)-1):
+                sel_idx += 1
+                selected = creature_list[sel_idx]
         elif event.type == pg.MOUSEBUTTONDOWN:
                 mouse_events(event)
+
 
 def mouse_events(event):
     global selected
@@ -168,7 +187,7 @@ def detect_creature_end(arbiter, space, data):
     return True
 
 def add_creature(world: tuple) -> Creature:
-    size = randint(4, 13)
+    size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
     creature = Creature(screen=screen, space=space, collision_tag=2, world_size=world, size=size, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=None)
     return creature
 
@@ -198,10 +217,13 @@ def draw():
     draw_text()
 
 def draw_text():
+    font = Font(match_font('firacode'), 12)
+    font.set_bold(True)
     if selected != None:
-        font = Font(match_font('firacode'), 12)
-        info = font.render(f'energy: {round(selected.energy, 2)} | size: {round(selected.shape.radius)} | rep_time: {round(selected.reproduction_time)} | gen: {selected.generation}', True, Color(0, 255, 255))
-        screen.blit(info, (10, 10), )
+        info = font.render(f'energy: {round(selected.energy, 2)} | size: {round(selected.shape.radius)} | rep_time: {round(selected.reproduction_time)} | gen: {selected.generation}', True, Color('yellowgreen'))
+        screen.blit(info, (411, 10), )
+    count = font.render(f'creatures: {len(creature_list)} | plants: {len(plant_list)}', True, Color('yellow'))
+    screen.blit(count, (10, 10), )
 
 def update(dt: float):
     for creature in creature_list:
@@ -212,21 +234,26 @@ def update(dt: float):
     update_plants(dt)
     
 def update_creatures(dt: float):
+    temp_list = []
     for creature in creature_list:
         creature.get_input()
         creature.analize()
     for creature in creature_list:
         creature.move(dt)
     for creature in creature_list:
-        s, p, n, g = creature.update(screen=screen, space=space, dt=dt)
-        if s!=False and p!=False and n!=False:
+        creature.update(screen=screen, space=space, dt=dt)
+        if creature.check_reproduction(dt):
+            s, p, n, g = creature.reproduce(screen=screen, space=space)
             new_creature = Creature(screen=screen, space=space, collision_tag=2, world_size=WORLD, size=s, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=p, generation=g+1)
             new_creature.neuro = n
             new_creature.neuro.Mutate()
-            creature_list.append(new_creature)
+            temp_list.append(new_creature)
     if random() <= CREATURE_MULTIPLY:
         creature = add_creature(world)
         creature_list.append(creature)
+    for new_one in temp_list:
+        creature_list.append(new_one)
+    temp_list = []
 
 def update_plants(dt: float):
     for plant in plant_list:
@@ -274,7 +301,8 @@ def main():
     set_win_pos(20, 20)
     init(WORLD)
     create_enviro(WORLD)
-    set_icon('planet05-32.png')
+    set_icon('planet05.png')
+    #test = Test()
     while running:
         events()
         update(dt)
