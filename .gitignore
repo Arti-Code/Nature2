@@ -10,3 +10,10 @@ lib/__pycache__/sensor.cpython-39.pyc
 __pycache__/main.cpython-39.pyc
 lib/__pycache__/__init__.cpython-39.pyc
 lib/__pycache__/test.cpython-39.pyc
+lib/__pycache__/__init__.cpython-38.pyc
+lib/__pycache__/config.cpython-38.pyc
+lib/__pycache__/life.cpython-38.pyc
+lib/__pycache__/math2.cpython-38.pyc
+lib/__pycache__/net.cpython-38.pyc
+lib/__pycache__/sensor.cpython-38.pyc
+lib/__pycache__/wall.cpython-38.pyc

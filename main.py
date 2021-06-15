@@ -135,6 +135,7 @@ def set_collision_calls():
 def process_creature_plant_collisions(arbiter, space, data):
     arbiter.shapes[0].body.position -= arbiter.normal*0.5
     arbiter.shapes[1].body.position += arbiter.normal*0.2
+    #if arbiter.normal.angle <= 0.5 and arbiter.normal.angle >= -0.5:
     hunter = arbiter.shapes[0].body
     target = arbiter.shapes[1].body
     target.color0 = Color('red')
@@ -145,12 +146,19 @@ def process_creature_plant_collisions(arbiter, space, data):
     return True
 
 def draw_creature_collisions(arbiter, space, data):
+    global dt
     arbiter.shapes[0].body.position -= arbiter.normal*0.5
     arbiter.shapes[1].body.position += arbiter.normal*0.5
+    #if arbiter.normal.angle <= 0.5 and arbiter.normal.angle >= -0.5:
+    size0 = arbiter.shapes[0].radius
+    size1 = arbiter.shapes[1].radius
+    if (size0+randint(0, 6)) > (size1+randint(0, 6)):
+        arbiter.shapes[1].body.energy -= HIT/dt
+        arbiter.shapes[1].body.color0=Color('red')
     return True
 
 def draw_edge_collisions(arbiter, space, data):
-    arbiter.shapes[0].body.angle += arbiter.normal.angle
+    #arbiter.shapes[0].body.angle += arbiter.normal.angle
     arbiter.shapes[0].body.position -= arbiter.normal * 1.5
     return True
 
@@ -176,7 +184,7 @@ def detect_plant(arbiter, space, data):
             sensor.set_color(Color('green'))
             pos0 = creature.position
             dist = pos0.get_distance(plant.position)
-            sensor.send_data(detect=True, distance=dist)
+            sensor.send_data2(detect=True, distance=dist)
             break
     return True
 
@@ -217,7 +225,7 @@ def draw():
     draw_text()
 
 def draw_text():
-    font = Font(match_font('firacode'), 12)
+    font = Font(match_font('firacode'), 15)
     font.set_bold(True)
     if selected != None:
         info = font.render(f'energy: {round(selected.energy, 2)} | size: {round(selected.shape.radius)} | rep_time: {round(selected.reproduction_time)} | gen: {selected.generation}', True, Color('yellowgreen'))
