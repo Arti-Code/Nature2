@@ -5,6 +5,7 @@ from random import randint, random
 import pygame
 import pygame as pg
 from pygame import Color, Surface
+from pygame.constants import K_n
 from pygame.font import Font, match_font 
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 import pymunk.pygame_util
@@ -13,7 +14,7 @@ from lib.wall import Wall
 from lib.sensor import Sensor
 from lib.math2 import set_world, world, flipy
 from lib.config import *
-#from lib.manager import Manager
+from lib.manager import Manager
 #from lib.test import Test
 
 global project
@@ -33,8 +34,9 @@ clock = pygame.time.Clock()
 white = (255, 255, 255, 75)
 red = (255, 0, 0, 75)
 darkblue = (0, 0, 10, 255)
-#manager = Manager(screen=screen)
+manager = Manager(screen=screen)
 sel_idx = 0
+show_network = False
 
 
 def init(view_size: tuple):
@@ -69,25 +71,28 @@ def events():
     global selected
     global sel_idx
     global running
+    global show_network
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            running = False
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
-            if sel_idx > 0 and sel_idx <= len(creature_list):
-                sel_idx -= 1
-                selected = creature_list[sel_idx]
-            else:
-                sel_idx = 0
-                selected = creature_list[sel_idx]
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
-            if sel_idx >= 0 and sel_idx < (len(creature_list)-1):
-                sel_idx += 1
-                selected = creature_list[sel_idx]
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False
+            if event.key == pygame.K_LEFT:
+                if sel_idx > 0 and sel_idx <= len(creature_list):
+                    sel_idx -= 1
+                    selected = creature_list[sel_idx]
+                else:
+                    sel_idx = 0
+                    selected = creature_list[sel_idx]
+            if event.key == pygame.K_RIGHT:
+                if sel_idx >= 0 and sel_idx < (len(creature_list)-1):
+                    sel_idx += 1
+                    selected = creature_list[sel_idx]
+            if event.key == pygame.K_n:
+                show_network = not show_network
         elif event.type == pg.MOUSEBUTTONDOWN:
                 mouse_events(event)
-
 
 def mouse_events(event):
     global selected
@@ -221,7 +226,8 @@ def draw():
     
     for wall in wall_list:
         wall.draw(screen=screen)
-
+    
+    draw_network()
     draw_text()
 
 def draw_text():
@@ -232,6 +238,13 @@ def draw_text():
         screen.blit(info, (411, 10), )
     count = font.render(f'creatures: {len(creature_list)} | plants: {len(plant_list)}', True, Color('yellow'))
     screen.blit(count, (10, 10), )
+
+def draw_network():
+    global show_network
+    global selected
+    if show_network:
+        if isinstance(selected, Creature):
+            manager.DrawNet(selected.neuro)
 
 def update(dt: float):
     for creature in creature_list:
