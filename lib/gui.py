@@ -23,10 +23,17 @@ class NewSimWindow(UIWindow):
 
         super().__init__(rect, manager=manager, window_display_title='New Simulation', object_id="#new_win", visible=True)
         self.manager = manager
-        self.label = UILabel(Rect((25, 10), (250, 10)), text='Enter New Project Name', manager=manager, container=self, parent_element=self)
-        self.edit = UITextEntryLine(Rect((75, 30), (150, 20)), manager=manager, container=self, parent_element=self)
-        self.cancel = UIButton(Rect((50, 70), (75, 30)), text='Cancel', manager=manager, container=self, parent_element=self, object_id='#btn_cancel')
-        self.accept = UIButton(Rect((175, 70), (75, 30)), text='Accept', manager=manager, container=self, parent_element=self, object_id='#btn_accept')
+        self.label = UILabel(Rect((150, 15), (300, 15)), text='Enter New Project Name', manager=manager, container=self, parent_element=self)
+        self.edit = UITextEntryLine(Rect((150, 50), (300, 20)), manager=manager, container=self, parent_element=self)
+
+        self.label = UILabel(Rect((20, 100), (100, 20)), text='World Size (X)', manager=manager, container=self, parent_element=self)
+        self.world_x = UITextEntryLine(Rect((120, 100), (60, 20)), manager=manager, container=self, parent_element=self)
+        
+        self.label = UILabel(Rect((320, 100), (100, 20)), text='World Size (Y)', manager=manager, container=self, parent_element=self)
+        self.world_y = UITextEntryLine(Rect((420, 100), (60, 20)), manager=manager, container=self, parent_element=self)
+        
+        self.cancel = UIButton(Rect((150, 230), (100, 30)), text='Cancel', manager=manager, container=self, parent_element=self, object_id='#btn_cancel')
+        self.accept = UIButton(Rect((350, 230), (100, 30)), text='Accept', manager=manager, container=self, parent_element=self, object_id='#btn_accept')
 
 class SelectNet(UIWindow):
 
@@ -212,8 +219,8 @@ class GUI():
         self.set_win = SettingsWindow(manager=self.ui_mgr, rect=pos)
 
     def create_new_sim(self):
-        w = 300
-        h = 140
+        w = 600
+        h = 300
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.main_menu.kill()
         self.new_sim = NewSimWindow(manager=self.ui_mgr, rect=pos)
