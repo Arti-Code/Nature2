@@ -9,10 +9,10 @@ from pygame import Rect
 from pygame_gui import UIManager, PackageResource
 from pygame_gui.elements import UITextBox, UIWindow, UIButton, UILabel, UITextEntryLine, UIPanel
 from lib.config import *
-from lib.viewport import Viewport
 
-TITLE = "FORCE OF NATURE 2"
-SUBTITLE = "2019-2021 Artur Gwoździowski  v2.0.1"
+
+TITLE = "NATURE v0.2.1"
+SUBTITLE = "2019-2021 Artur Gwoździowski  v0.2.1"
 btn_w = 150
 btn_h = 30
 btn_s = 10
@@ -151,38 +151,36 @@ class SettingsWindow(UIWindow):
 
 class GUI():
 
-    def __init__(self, owner: object, view: Viewport, edytor=False):
+    def __init__(self, owner: object, view: tuple, edytor=False):
         self.view = view
         self.owner = owner
         self.edytor = edytor
-        self.cx = round(self.view.width/2)
-        self.cy = round(self.view.height/2)
-        self.ui_mgr = UIManager(window_resolution=(self.view.width, self.view.height), theme_path='res/themes/blue.json')
-        #self.ui_mgr.preload_fonts(font_list=[
-        #            {'name': 'fira_code10b', 'point_size': 10, 'style': 'bold'},
-        #            {'name': 'fira_code10r', 'point_size': 10, 'style': 'regular'},
-        #            {'name': 'fira_code9r', 'point_size': 9, 'style': 'regular'},
-        #            {'name': 'fira_code', 'point_size': 12, 'style': 'regular'},
-        #            {'name': 'fira_code', 'point_size': 14, 'style': 'regular'},
-        #            {'name': 'fira_code', 'point_size': 14, 'style': 'bold'}
-        #            ])
+        self.cx = round(self.view[0]/2)
+        self.cy = round(self.view[1]/2)
+        #self.ui_mgr = UIManager(window_resolution=(self.view[0], self.view[1]), theme_path='blue.json')
+        self.ui_mgr = UIManager(window_resolution=view, theme_path='res/themes/blue.json')
+        self.ui_mgr.preload_fonts(font_list=[
+                    {'name': 'fira_code10b', 'point_size': 10, 'style': 'bold'},
+                    {'name': 'fira_code10r', 'point_size': 10, 'style': 'regular'},
+                    {'name': 'fira_code9r', 'point_size': 9, 'style': 'regular'},
+                    {'name': 'fira_code', 'point_size': 12, 'style': 'regular'},
+                    {'name': 'fira_code', 'point_size': 14, 'style': 'regular'},
+                    {'name': 'fira_code', 'point_size': 14, 'style': 'bold'}
+        ])
+        #self.ui_mgr.load_theme('blue.json')
         self.buttons = []
-        if self.edytor:
-            self.btn_def = [('Stone', '#btn_stone'), ('Water', '#btn_water')]
-            self.rebuild_editor((self.view.width, self.view.height))
-        else:
-            self.title = None
-            self.subtitle = None
-            self.world = None
-            self.btn_menu = None
-            self.main_menu = None
-            self.new_sim = None
-            self.map_sim = None
-            self.load_menu = None
-            self.info_win = None
-            self.set_win = None
-            self.enviro_win = None
-            self.rebuild_ui((self.view.width, self.view.height))
+        self.title = None
+        self.subtitle = None
+        self.world = None
+        self.btn_menu = None
+        self.main_menu = None
+        self.new_sim = None
+        self.map_sim = None
+        self.load_menu = None
+        self.info_win = None
+        self.set_win = None
+        self.enviro_win = None
+        self.rebuild_ui(self.view)
 
     def rebuild_ui(self, new_size: tuple):         
         self.ui_mgr.set_window_resolution(new_size)
@@ -190,20 +188,9 @@ class GUI():
         self.size = new_size
         self.create_title(new_size)
         #self.create_enviro_win()
-        btn_pos = Rect((round(new_size[0]-40), 0), (40, 40))
+        btn_pos = Rect((round(new_size[0]-50), 10), (40, 40))
         self.create_menu_btn(btn_pos)
         #self.create_title(new_size)
-
-    def rebuild_editor(self, new_size: tuple):
-        self.ui_mgr.set_window_resolution(new_size)
-        self.ui_mgr.clear_and_reset()
-        self.size = new_size
-        self.create_title(new_size)
-        btn_num = 1
-        for n, i in self.btn_def:
-            btn_pos = Rect(40+40*btn_num, 40, 40, 40)
-            self.buttons.append(self.create_custom_btn(btn_pos, title=n, obj_id=i))
-            btn_num += 1
 
     def create_menu_btn(self, rect: Rect):
         self.btn_menu = UIButton(rect, 'MENU', self.ui_mgr, object_id='#btn_menu')
@@ -252,7 +239,7 @@ class GUI():
         world_rect = Rect((round(scr_size[0]/2-w/2), (50)), (w, h))
         self.title = UILabel(relative_rect=title_rect, text=TITLE, manager=self.ui_mgr, object_id='#lab_title')
         self.subtitle = UILabel(relative_rect=subtitle_rect, text=SUBTITLE, manager=self.ui_mgr, object_id='#lab_subtitle')
-        self.world = UILabel(relative_rect=world_rect, text=self.owner.project_name, manager=self.ui_mgr, object_id='#lab_world')
+        #self.world = UILabel(relative_rect=world_rect, text=self.owner.project_name, manager=self.ui_mgr, object_id='#lab_world')
 
     def kill_title(self):
         self.title.kill()
@@ -292,7 +279,7 @@ class GUI():
             data['DELTA'] = str(round(dT, 3))
         return data
 
-    def process_event(self, event, dT):
+    def process_event(self, event):
         self.ui_mgr.process_events(event)
         if event.type == pygame.USEREVENT:
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
@@ -339,7 +326,7 @@ class GUI():
                     self.owner.LoadLast(project_name)
                     self.load_menu.kill()   
                     self.kill_title()
-                    self.create_title((self.view.width, self.view.height)) 
+                    self.create_title((self.view[0], self.view[1])) 
                     self.create_info_win(text=f"Project {project_name.upper()} has been loaded", title='Load Simulation')
                 elif event.ui_object_id == '#load_win.#load_back':
                     self.load_menu.kill()
@@ -358,11 +345,11 @@ class GUI():
                     pygame.quit()
                     sys.exit(0)
 
-    def update(self, dT: float):
-        self.ui_mgr.update(3)
+    def update(self, dt: float):
+        self.ui_mgr.update(dt)
         if self.enviro_win:
-            data = self.update_enviroment(dT)
-            self.enviro_win.Update(data, dT)
+            data = self.update_enviroment(dt)
+            self.enviro_win.Update(data, dt)
 
     def draw_ui(self, screen):
         self.ui_mgr.draw_ui(screen)
@@ -391,10 +378,10 @@ class GUI():
 
 class NeuroGUI():
 
-    def __init__(self, owner: object, view: Viewport):
+    def __init__(self, owner: object, view: tuple):
         self.view = view
         self.owner = owner
-        self.ui_mgr = UIManager(window_resolution=(self.view.width, self.view.height), theme_path='res/themes/blue.json')
+        self.ui_mgr = UIManager(window_resolution=(self.view[0], self.view[1]), theme_path='res/themes/blue.json')
         #self.ui_mgr.preload_fonts([
         #    {'name': 'fira_code', 'point_size': 10, 'style': 'bold'},
         #    {'name': 'fira_code', 'point_size': 10, 'style': 'regular'},
@@ -404,7 +391,7 @@ class NeuroGUI():
         #    {'name': 'fira_code', 'point_size': 14, 'style': 'bold'}
         #])
         self.btn_names = [('Select Neural Network', '#btn_select_net')]
-        self.rebuild_viewer((self.view.width, self.view.height))
+        self.rebuild_viewer((self.view[0], self.view[1]))
         self.buttons = []
 
     def create_custom_btn(self, rect: Rect, title: str, obj_id: str):

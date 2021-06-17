@@ -40,14 +40,13 @@ show_network = False
 
 
 def init(view_size: tuple):
+    global selected, options
     pygame.init()
     set_world(WORLD)
     space.gravity = (0.0, 0.0)
     set_collision_calls()
     pymunk.pygame_util.positive_y_is_up = True
-    global selected
     selected = None
-    global options
     options = pymunk.pygame_util.DrawOptions(screen)
     space.debug_draw(options)
 
@@ -68,62 +67,64 @@ def create_enviro(world: tuple):
         plant_list.append(plant)
 
 def events():
-    global selected
-    global sel_idx
-    global running
-    global show_network
+    global running, manager, dt
     for event in pygame.event.get():
+        manager.user_event(event)
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                running = False
-            if event.key == pygame.K_LEFT:
-                if sel_idx > 0 and sel_idx <= len(creature_list):
-                    sel_idx -= 1
-                    selected = creature_list[sel_idx]
-                else:
-                    sel_idx = 0
-                    selected = creature_list[sel_idx]
-            if event.key == pygame.K_RIGHT:
-                if sel_idx >= 0 and sel_idx < (len(creature_list)-1):
-                    sel_idx += 1
-                    selected = creature_list[sel_idx]
-            if event.key == pygame.K_n:
-                show_network = not show_network
-        elif event.type == pg.MOUSEBUTTONDOWN:
-                mouse_events(event)
+        if event.type == pygame.KEYDOWN:
+            key_events(event)
+        if event.type == pg.MOUSEBUTTONDOWN:
+            mouse_events(event)
+
+def key_events(event):
+    global selected, sel_idx, show_network, running
+    if event.key == pygame.K_ESCAPE:
+        running = False
+    if event.key == pygame.K_LEFT:
+        if sel_idx > 0 and sel_idx <= len(creature_list):
+            sel_idx -= 1
+            selected = creature_list[sel_idx]
+        else:
+            sel_idx = 0
+            selected = creature_list[sel_idx]
+    if event.key == pygame.K_RIGHT:
+        if sel_idx >= 0 and sel_idx < (len(creature_list)-1):
+            sel_idx += 1
+            selected = creature_list[sel_idx]
+    if event.key == pygame.K_n:
+        show_network = not show_network
 
 def mouse_events(event):
     global selected
     selected = None
     mouseX, mouseY = pg.mouse.get_pos()
-    selected = FindCreature(mouseX, flipy(mouseY))
+    selected = find_creature(mouseX, flipy(mouseY))
     if selected == None:
-        selected = FindPlant(mouseX, flipy(mouseY))
+        selected = find_plant(mouseX, flipy(mouseY))
 
-def FindPlant(x, y):
+def find_plant(x, y):
     for plant in plant_list:
         if hypot(plant.position.x-x, plant.position.y-y) <= plant.shape.radius:
             return plant
     return None
 
-def FindCreature(x, y):
+def find_creature(x, y):
     for creature in creature_list:
         if hypot(creature.position.x-x, creature.position.y-y) <= creature.shape.radius:
             return creature
     return None
 
 def set_collision_calls():
-    # 2: body | 8: wall | 4: sensor
+    # 2: body | 8: wall | 4: sensor | 6: plant
     creature_collisions = space.add_collision_handler(2, 2)
-    creature_collisions.pre_solve = draw_creature_collisions
+    creature_collisions.pre_solve = process_creatures_collisions
 
     creature_plant_collisions = space.add_collision_handler(2, 6)
     creature_plant_collisions.pre_solve = process_creature_plant_collisions
 
     edge_collisions = space.add_collision_handler(2, 8)
-    edge_collisions.pre_solve = draw_edge_collisions
+    edge_collisions.pre_solve = process_edge_collisions
 
     detection = space.add_collision_handler(4, 2)
     detection.pre_solve = detect_creature
@@ -150,7 +151,7 @@ def process_creature_plant_collisions(arbiter, space, data):
         hunter.eat(EAT*20)
     return True
 
-def draw_creature_collisions(arbiter, space, data):
+def process_creatures_collisions(arbiter, space, data):
     global dt
     arbiter.shapes[0].body.position -= arbiter.normal*0.5
     arbiter.shapes[1].body.position += arbiter.normal*0.5
@@ -162,7 +163,7 @@ def draw_creature_collisions(arbiter, space, data):
         arbiter.shapes[1].body.color0=Color('red')
     return True
 
-def draw_edge_collisions(arbiter, space, data):
+def process_edge_collisions(arbiter, space, data):
     #arbiter.shapes[0].body.angle += arbiter.normal.angle
     arbiter.shapes[0].body.position -= arbiter.normal * 1.5
     return True
@@ -204,7 +205,7 @@ def add_creature(world: tuple) -> Creature:
     creature = Creature(screen=screen, space=space, collision_tag=2, world_size=world, size=size, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=None)
     return creature
 
-def add_plant(world: tuple):
+def add_plant(world: tuple) -> Plant:
     plant = Plant(screen=screen, space=space, collision_tag=6, world_size=world, size=3, color0=Color(LIME), color1=Color('darkgreen'), color3=Color(BROWN))
     return plant
 
@@ -229,9 +230,10 @@ def draw():
     
     draw_network()
     draw_text()
+    manager.draw_gui(screen=screen)
 
 def draw_text():
-    font = Font(match_font('firacode'), 15)
+    font = Font(match_font('firacode'), 10)
     font.set_bold(True)
     if selected != None:
         info = font.render(f'energy: {round(selected.energy, 2)} | size: {round(selected.shape.radius)} | rep_time: {round(selected.reproduction_time)} | gen: {selected.generation}', True, Color('yellowgreen'))
@@ -253,6 +255,7 @@ def update(dt: float):
             creature_list.remove(creature)
     update_creatures(dt)
     update_plants(dt)
+    manager.update_gui(dt/1000)
     
 def update_creatures(dt: float):
     temp_list = []

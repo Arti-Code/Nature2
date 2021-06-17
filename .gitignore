@@ -18,3 +18,5 @@ lib/__pycache__/net.cpython-38.pyc
 lib/__pycache__/sensor.cpython-38.pyc
 lib/__pycache__/wall.cpython-38.pyc
 lib/__pycache__/manager.cpython-38.pyc
+lib/__pycache__/gui.cpython-39.pyc
+lib/__pycache__/manager.cpython-39.pyc

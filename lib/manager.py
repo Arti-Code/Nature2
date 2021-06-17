@@ -6,12 +6,31 @@ from pygame import Surface, Color, Rect
 from lib.math2 import flipy, clamp
 from lib.net import Network, TYPE, ACTIVATION
 from lib.config import *
-
+from lib.gui import GUI
 
 class Manager:
 
     def __init__(self, screen: Surface):
+        pygame.font.init()
+        self.fira_code = pygame.font.Font("res/fonts/fira.ttf", 12)
+        self.creature_font = pygame.font.Font("res/fonts/fira.ttf", 10)
+        self.norm_font = pygame.font.Font("res/fonts/fira.ttf", 12)
+        self.titl_font = pygame.font.Font("res/fonts/fira.ttf", 18)
+        self.subtitl_font = pygame.font.Font("res/fonts/fira.ttf", 16)
+        self.small_font = pygame.font.Font("res/fonts/fira.ttf", 8)
+        self.titl_font.set_bold(True)
+        self.subtitl_font.set_bold(True)
         self.screen = screen
+        self.gui = GUI(owner=self, view=(1200, 700))
+
+    def user_event(self, event):
+        self.gui.process_event(event)
+
+    def update_gui(self, dt: float):
+        self.gui.update(dt)
+
+    def draw_gui(self, screen: Surface):
+        self.gui.draw_ui(screen)
 
     def DrawNet(self, network: Network):
         if network:

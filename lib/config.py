@@ -1,5 +1,7 @@
-WORLD                       = (1700, 850)
-SCREEN                      = (1700, 850)
+#WORLD                       = (1700, 850)
+#SCREEN                      = (1700, 850)
+WORLD                       = (1200, 750)
+SCREEN                      = (1200, 750)
 PLANT_MAX_SIZE              = 6
 PLANT_GROWTH                = 0.6
 PLANT_INIT_NUM              = 100

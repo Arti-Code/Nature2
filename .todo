@@ -16,7 +16,8 @@ NATURE:
         ✔ plants growth
         ✔ plant procreation (simple)
     0.2:
-        ☐ drawing neural network
+        ✔ drawing neural network
+        ✔ move gui from Evolution project (first step)
     0.3:
         ☐ camera movement
         ☐ gui ('Creatures' based)
