@@ -13,6 +13,9 @@ class SensorData():
         self.enemy = False
         self.distance = -1
         self.direction = 0
+        self.plant = False
+        self.p_distance = -1
+        self.p_direction = 0
 
     def update(self, direction: float):
         self.direction = (direction/abs(self.max_angle))
@@ -22,13 +25,21 @@ class SensorData():
         self.distance = 1 - (distance/self.detection_range)
         self.direction = (direction/abs(self.max_angle))
 
+    def send_data2(self, detect: bool, distance: float, direction: float):
+        self.plant = detect
+        self.p_distance = 1 - (distance/self.detection_range)
+        self.p_direction = (direction/abs(self.max_angle))
+
     def reset(self):
         self.enemy = False
+        self.plant = False
         self.distance = -1
         self.direction = 0
+        self.p_distance = -1
+        self.p_direction = 0
 
     def get_data(self):
-        return (self.enemy, self.distance, self.direction)
+        return (self.enemy, self.distance, self.direction, self.plant, self.p_distance, self.p_direction)
         
 class Sensor():
 
@@ -68,6 +79,9 @@ class Sensor():
 
     def send_data(self, detect: bool, distance: float):
         self.data.send_data(detect=detect, distance=distance, direction=self.angle)
+
+    def send_data2(self, detect: bool, distance: float):
+        self.data.send_data2(detect=detect, distance=distance, direction=self.angle)
 
     def reset_data(self):
         self.data.reset()
