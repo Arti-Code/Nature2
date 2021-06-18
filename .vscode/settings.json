@@ -3,6 +3,8 @@
     "cSpell.ignoreWords": [
         "aacircle",
         "aaline",
-        "dists"
+        "dists",
+        "doublebuf",
+        "hwsurface"
     ]
 }

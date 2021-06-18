@@ -32,7 +32,10 @@ class Manager:
     def draw_gui(self, screen: Surface):
         self.gui.draw_ui(screen)
 
-    def DrawNet(self, network: Network):
+    def new_sim(self, project_name: str):
+       pass 
+    
+    def draw_net(self, network: Network):
         if network:
             h_space = 40
             v_space = 10

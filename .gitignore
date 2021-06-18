@@ -20,3 +20,5 @@ lib/__pycache__/wall.cpython-38.pyc
 lib/__pycache__/manager.cpython-38.pyc
 lib/__pycache__/gui.cpython-39.pyc
 lib/__pycache__/manager.cpython-39.pyc
+lib/__pycache__/collisions.cpython-38.pyc
+lib/__pycache__/gui.cpython-38.pyc
