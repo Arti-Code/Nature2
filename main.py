@@ -1,6 +1,8 @@
 import os
 import sys
+from time import time
 from math import degrees, hypot
+from statistics import mean
 from random import randint, random
 from typing import Union
 import pygame
@@ -26,6 +28,10 @@ darkblue = (0, 0, 10, 255)
 class Simulation():
 
     def __init__(self, view_size: tuple):
+        self.times = []
+        self.time_text = 1
+        self.physics_single_times = []
+        self.physics_avg_time = 1
         self.project_name = None
         self.creature_list = []
         self.plant_list = []
@@ -175,7 +181,7 @@ class Simulation():
         if self.selected != None:
             info = font.render(f'energy: {round(self.selected.energy, 2)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation}', True, Color('yellowgreen'))
             self.screen.blit(info, (SCREEN[0]/2-200, SCREEN[1]-25), )
-        count = font.render(f'creatures: {len(self.creature_list)} | plants: {len(self.plant_list)}', True, Color('yellow'))
+        count = font.render(f'creatures: {len(self.creature_list)} | plants: {len(self.plant_list)} | neural time: {round(self.time_text, 5)}s | physics time: {round(self.physics_avg_time , 5)}s', True, Color('yellow'))
         self.screen.blit(count, (20, SCREEN[1]-25), )
 
     def draw_network(self):
@@ -194,9 +200,15 @@ class Simulation():
 
     def update_creatures(self, dt: float):
         temp_list = []
+        neuro_time = time()
         for creature in self.creature_list:
             creature.get_input()
             creature.analize()
+        neuro_time = time()-neuro_time
+        self.times.append(neuro_time)
+        if len(self.times) >= 150:
+            self.time_text = mean(self.times)
+            self.times = []
         for creature in self.creature_list:
             creature.move(dt)
         for creature in self.creature_list:
@@ -249,7 +261,13 @@ class Simulation():
             self.update()
             self.draw()
             #space.debug_draw(options)
+            physics_time = time()
             self.physics_step(1, self.dt)
+            physics_time = time()-physics_time
+            self.physics_single_times.append(physics_time)
+            if len(self.physics_single_times) >= 150:
+                self.physics_avg_time = mean(self.physics_single_times)
+                self.physics_single_times = []
             self.clock_step()
         
 def set_win_pos(x: int=20, y: int=20):

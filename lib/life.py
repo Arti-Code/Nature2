@@ -232,5 +232,5 @@ class Creature(Life):
         space.remove(self)
 
     def eat(self, energy: float):
-        self.energy += energy * 20
+        self.energy += energy
         self.energy = clamp(self.energy, 0, self.max_energy)

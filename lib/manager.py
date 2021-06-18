@@ -21,7 +21,7 @@ class Manager:
         self.titl_font.set_bold(True)
         self.subtitl_font.set_bold(True)
         self.screen = screen
-        self.gui = GUI(owner=self, view=(1200, 700))
+        self.gui = GUI(owner=self, view=WORLD)
 
     def user_event(self, event):
         self.gui.process_event(event)

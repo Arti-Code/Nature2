@@ -14,9 +14,9 @@ def process_creature_plant_collisions(arbiter, space, data):
     target = arbiter.shapes[1].body
     target.color0 = Color('red')
     #if isinstance(hunter, Creature) and isinstance(target, Plant):
-    target.energy = target.energy - EAT/dt
+    target.energy = target.energy - EAT*dt
     if target.energy > 0:
-        hunter.eat(EAT/dt*10)
+        hunter.eat(EAT*dt)
     return True
 
 def process_creatures_collisions(arbiter, space, data):
@@ -27,7 +27,7 @@ def process_creatures_collisions(arbiter, space, data):
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
     if (size0+randint(0, 6)) > (size1+randint(0, 6)):
-        arbiter.shapes[1].body.energy -= HIT/dt*10
+        arbiter.shapes[1].body.energy -= HIT*dt
         arbiter.shapes[1].body.color0=Color('red')
     return True
 
