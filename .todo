@@ -4,18 +4,31 @@ NATURE:
         ✔ pymunk integration
         ✔ circle-shaped beings
         ✔ cloud git repository
-        ☐ neural network inside
-        ☐ enviroment perception (simple)
-        ☐ beings movement (neural net based)
-        ☐ beings rotation (neural net based)
+        ✔ neural network inside
+        ✔ enviroment perception (simple)
+        ✔ beings movement (neural net based)
+        ✔ beings rotation (neural net based)
         ✔ collisions between beings
-        ☐ collisions with rocks
+        ✘ collisions with rocks
         ✔ edges collisions
         ✔ seeing (simple)
-        ☐ eating plants
-        ☐ camera movement
-        ☐ plants growth
-        ☐ plant procreation (simple)
+        ✔ eating plants
+        ✔ plants growth
+        ✔ plant procreation (simple)
     0.2:
+        ✔ drawing neural network
+        ✔ move gui from Evolution project (first step)
+        ✔ main Simulation class
+        ☐ create named simulations
+        ☐ save simulations state
+        ☐ load simulations state
+        ☐ save single creature
+        ☐ load single creature
+        ☐ save single network
+        ☐ load single network
+        ☐ real-time bokeh network display
+        ☐ creature skills (size, strength, speed, resistance, attack)
+    0.3:
+        ☐ camera movement
         ☐ gui ('Creatures' based)
         ☐ camera zoom in/out
