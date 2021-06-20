@@ -7,7 +7,7 @@ from random import randint, random
 from typing import Union
 import pygame
 import pygame as pg
-from pygame import Color, Surface
+from pygame import Color, Surface, image
 from pygame.constants import K_n
 from pygame.font import Font, match_font 
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
@@ -18,7 +18,8 @@ from lib.sensor import Sensor
 from lib.math2 import set_world, world, flipy
 from lib.config import *
 from lib.manager import Manager
-from lib.collisions import process_creature_plant_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end
+from lib.autoterrain import Terrain
+from lib.collisions import process_creature_plant_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end
 #from lib.test import Test
 
 white = (255, 255, 255, 75)
@@ -53,8 +54,8 @@ class Simulation():
         self.set_collision_calls()
         pymunk.pygame_util.positive_y_is_up = True
         self.selected = None
-        options = pymunk.pygame_util.DrawOptions(self.screen)
-        self.space.debug_draw(options)
+        self.options = pymunk.pygame_util.DrawOptions(self.screen)
+        self.space.debug_draw(self.options)
 
     def create_enviro(self, world: tuple):
         edges = [(5, 5), (world[0]-5, 5), (world[0]-5, world[1]-5), (5, world[1]-5), (5, 5)]
@@ -63,6 +64,9 @@ class Simulation():
             p2 = edges[e+1]
             wall = self.add_wall(p1, p2, 5)
             self.wall_list.append(wall)
+        self.terr_img = image.load('water2.png')
+        self.terr_img.convert_alpha()
+        terrain = Terrain(self.screen, self.space, 'water2.png', 8)
 
         for c in range(CREATURE_INIT_NUM):
             creature = self.add_creature(world)
@@ -86,16 +90,19 @@ class Simulation():
         if event.key == pygame.K_ESCAPE:
             self.running = False
         if event.key == pygame.K_LEFT:
-            if self.sel_idx > 0 and self.sel_idx <= len(self.creature_list):
-                self.sel_idx -= 1
-                self.selected = self.creature_list[self.sel_idx]
-            else:
-                self.sel_idx = 0
-                self.selected = self.creature_list[self.sel_idx]
+            if self.creature_list != []:
+                if self.sel_idx > 0 and self.sel_idx <= len(self.creature_list):
+                    self.sel_idx -= 1
+                    self.selected = self.creature_list[self.sel_idx]
+                else:
+                    self.sel_idx = 0
+                    self.selected = self.creature_list[self.sel_idx]
+
         if event.key == pygame.K_RIGHT:
-            if self.sel_idx >= 0 and self.sel_idx < (len(self.creature_list)-1):
-                self.sel_idx += 1
-                self.selected = self.creature_list[self.sel_idx]
+            if self.creature_list != []:
+                if self.sel_idx >= 0 and self.sel_idx < (len(self.creature_list)-1):
+                    self.sel_idx += 1
+                    self.selected = self.creature_list[self.sel_idx]
         if event.key == pygame.K_n:
             self.show_network = not self.show_network
 
@@ -143,6 +150,12 @@ class Simulation():
         plant_detection_end = self.space.add_collision_handler(4, 6)
         plant_detection_end.separate = detect_plant_end
 
+        obstacle_detection = self.space.add_collision_handler(4, 8)
+        obstacle_detection.pre_solve = detect_obstacle
+
+        obstacle_detection_end = self.space.add_collision_handler(4, 8)
+        obstacle_detection_end.separate = detect_obstacle_end
+
     def add_creature(self, world: tuple) -> Creature:
         size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
         creature = Creature(screen=self.screen, space=self.space, collision_tag=2, world_size=world, size=size, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=None)
@@ -159,6 +172,7 @@ class Simulation():
 
     def draw(self):
         self.screen.fill(Color(darkblue))
+        self.screen.blit(self.terr_img, (0, 0))
         for creature in self.creature_list:
             if creature == self.selected:
                 creature.draw_detectors(screen=self.screen)
@@ -176,12 +190,12 @@ class Simulation():
         self.manager.draw_gui(screen=self.screen)
 
     def draw_text(self):
-        font = Font(match_font('firacode'), 16)
+        font = Font(match_font('firacode'), 10)
         font.set_bold(True)
         if self.selected != None:
             info = font.render(f'energy: {round(self.selected.energy, 2)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation}', True, Color('yellowgreen'))
-            self.screen.blit(info, (SCREEN[0]/2-200, SCREEN[1]-25), )
-        count = font.render(f'creatures: {len(self.creature_list)} | plants: {len(self.plant_list)} | neural time: {round(self.time_text, 5)}s | physics time: {round(self.physics_avg_time , 5)}s', True, Color('yellow'))
+            self.screen.blit(info, (SCREEN[0]/2-150, SCREEN[1]-25), )
+        count = font.render(f'creatures: {len(self.creature_list)} | plants: {len(self.plant_list)} | neuro time: {round(self.time_text, 4)}s | physx time: {round(self.physics_avg_time , 4)}s', True, Color('yellow'))
         self.screen.blit(count, (20, SCREEN[1]-25), )
 
     def draw_network(self):
@@ -260,7 +274,7 @@ class Simulation():
             self.events()
             self.update()
             self.draw()
-            #space.debug_draw(options)
+            #self.space.debug_draw(self.options)
             physics_time = time()
             self.physics_step(1, self.dt)
             physics_time = time()-physics_time

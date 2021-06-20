@@ -62,8 +62,25 @@ def detect_plant(arbiter, space, data):
             break
     return True
 
+def detect_obstacle(arbiter, space, data):
+    creature = arbiter.shapes[0].body
+    obstacle = arbiter.shapes[1].body
+    contact = arbiter.contact_point_set.points[0].point_a
+    sensor_shape = arbiter.shapes[0]
+    for sensor in creature.sensors:
+        if sensor.shape == sensor_shape:
+            sensor.set_color(Color('skyblue'))
+            pos0 = creature.position
+            dist = pos0.get_distance(contact)
+            sensor.send_data3(detect=True, distance=dist)
+            break
+    return True
+
 def detect_plant_end(arbiter, space, data):
     return True
 
 def detect_creature_end(arbiter, space, data):
+    return True
+
+def detect_obstacle_end(arbiter, space, data):
     return True

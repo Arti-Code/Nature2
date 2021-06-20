@@ -28,6 +28,9 @@ NATURE:
         ☐ load single network
         ☐ real-time bokeh network display
         ☐ creature skills (size, strength, speed, resistance, attack)
+        ✔ obstacles detection
+        ✔ obstacles collision
+        ☐ fix: create inside obstacles
     0.3:
         ☐ camera movement
         ☐ gui ('Creatures' based)
