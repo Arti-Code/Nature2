@@ -11,8 +11,6 @@ from pygame_gui.elements import UITextBox, UIWindow, UIButton, UILabel, UITextEn
 from lib.config import *
 
 
-TITLE = "NATURE v0.2.1"
-SUBTITLE = "2019-2021 Artur Gwoździowski  v0.2.1"
 btn_w = 150
 btn_h = 30
 btn_s = 10

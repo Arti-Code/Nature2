@@ -115,7 +115,7 @@ class Creature(Life):
         self.color3 = color3
         self.generation = generation
         self.neuro = Network()
-        self.neuro.BuildRandom([21, 0, 0, 0, 3], 0.25)
+        self.neuro.BuildRandom([30, 0, 0, 0, 0, 0, 3], 0.1)
         self.eye_colors = {}
         self.visual_range = visual_range
         self.sensors = []
@@ -142,6 +142,7 @@ class Creature(Life):
     def draw_detectors(self, screen):
         for detector in self.sensors:
             detector.draw(screen)
+            detector.reset_data()
 
     def update(self, screen: Surface, space: Space, dt:float):
         move = self.move(dt)
@@ -170,14 +171,12 @@ class Creature(Life):
         neuro = self.neuro.Replicate()
         self.reproduction_time = REPRODUCTION_TIME
         return (size, pos, neuro, self.generation+1)
-        
-
+      
     def move(self, dt: float) -> None:
         move = ((self.output[0]+1)/2)*SPEED/dt
         turn = self.output[1]*TURN/dt
         sensor_turn = self.output[2]*SENSOR_SPEED/dt
         self.angle = (self.angle+(turn))%(2*PI)
-        self.vdir = self.rotation_vector
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
         self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
         self.sensors[2].rotate(-sensor_turn, -PI/1.5, 0)
@@ -198,24 +197,29 @@ class Creature(Life):
         eng = self.energy/self.max_energy
         input.append(eng)
         for sensor in self.sensors:
-            e, d, a, p, pd, pa = sensor.get_input()
+            e, d, a, p, pd, pa, o, od, oa = sensor.get_input()
             d = round(d, 3)
             a = round(a%PI, 3)
             pd = round(pd, 3)
             pa = round(pa%PI, 3)
+            od = round(od, 3)
+            oa = round(oa%PI, 3)
             input.append(e)
             input.append(d)
             input.append(a)
             input.append(p)
             input.append(pd)
             input.append(pa)
+            input.append(o)
+            input.append(od)
+            input.append(oa)
         return input
 
     def analize(self):
         input = self.get_input()
         self.output = self.neuro.Calc(input)
-        for sensor in self.sensors:
-            sensor.reset_data()
+        #for sensor in self.sensors:
+        #    sensor.reset_data()
             
     def draw_energy_bar(self, screen: Surface, rx: int, ry: int):
         bar_red = Color(255, 0, 0)
@@ -234,5 +238,5 @@ class Creature(Life):
         space.remove(self)
 
     def eat(self, energy: float):
-        self.energy += energy * 20
+        self.energy += energy
         self.energy = clamp(self.energy, 0, self.max_energy)

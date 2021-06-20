@@ -1,10 +1,13 @@
 import os
 import sys
+from time import time
 from math import degrees, hypot
+from statistics import mean
 from random import randint, random
+from typing import Union
 import pygame
 import pygame as pg
-from pygame import Color, Surface
+from pygame import Color, Surface, image
 from pygame.constants import K_n
 from pygame.font import Font, match_font 
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
@@ -15,295 +18,272 @@ from lib.sensor import Sensor
 from lib.math2 import set_world, world, flipy
 from lib.config import *
 from lib.manager import Manager
+from lib.autoterrain import Terrain
+from lib.collisions import process_creature_plant_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end
 #from lib.test import Test
 
-global project
-project = 'Nature'
-creature_list = []
-plant_list = []
-wall_list = []
-red_detection = []
-global space
-space = Space()
-flags = pygame.DOUBLEBUF | pygame.HWSURFACE
-screen = pygame.display.set_mode(size=WORLD, flags=flags, vsync=1)
-FPS = 30
-dt = 1/FPS
-running = True
-clock = pygame.time.Clock()
 white = (255, 255, 255, 75)
 red = (255, 0, 0, 75)
 darkblue = (0, 0, 10, 255)
-manager = Manager(screen=screen)
-sel_idx = 0
-show_network = False
 
+class Simulation():
 
-def init(view_size: tuple):
-    global selected, options
-    pygame.init()
-    set_world(WORLD)
-    space.gravity = (0.0, 0.0)
-    set_collision_calls()
-    pymunk.pygame_util.positive_y_is_up = True
-    selected = None
-    options = pymunk.pygame_util.DrawOptions(screen)
-    space.debug_draw(options)
+    def __init__(self, view_size: tuple):
+        self.times = []
+        self.time_text = 1
+        self.physics_single_times = []
+        self.physics_avg_time = 1
+        self.project_name = None
+        self.creature_list = []
+        self.plant_list = []
+        self.wall_list = []
+        flags = pygame.DOUBLEBUF | pygame.HWSURFACE
+        self.screen = pygame.display.set_mode(size=view_size, flags=flags, vsync=1)
+        self.space = Space()
+        self.FPS = 30
+        self.dt = 1/self.FPS
+        self.running = True
+        self.clock = pygame.time.Clock()
+        self.sel_idx = 0
+        self.show_network = False
+        self.manager = Manager(screen=self.screen)
 
-def create_enviro(world: tuple):
-    edges = [(5, 5), (world[0]-5, 5), (world[0]-5, world[1]-5), (5, world[1]-5), (5, 5)]
-    for e in range(4):
-        p1 = edges[e]
-        p2 = edges[e+1]
-        wall = add_wall(p1, p2, 5)
-        wall_list.append(wall)
+        pygame.init()
+        #self.create_enviro(WORLD)
+        self.space.gravity = (0.0, 0.0)
+        self.set_collision_calls()
+        pymunk.pygame_util.positive_y_is_up = True
+        self.selected = None
+        self.options = pymunk.pygame_util.DrawOptions(self.screen)
+        self.space.debug_draw(self.options)
 
-    for c in range(CREATURE_INIT_NUM):
-        creature = add_creature(world)
-        creature_list.append(creature)
+    def create_enviro(self, world: tuple):
+        edges = [(5, 5), (world[0]-5, 5), (world[0]-5, world[1]-5), (5, world[1]-5), (5, 5)]
+        for e in range(4):
+            p1 = edges[e]
+            p2 = edges[e+1]
+            wall = self.add_wall(p1, p2, 5)
+            self.wall_list.append(wall)
+        self.terr_img = image.load('water2.png')
+        self.terr_img.convert_alpha()
+        terrain = Terrain(self.screen, self.space, 'water2.png', 8)
 
-    for p in range(PLANT_INIT_NUM):
-        plant = add_plant(world)
-        plant_list.append(plant)
+        for c in range(CREATURE_INIT_NUM):
+            creature = self.add_creature(world)
+            self.creature_list.append(creature)
 
-def events():
-    global running, manager, dt
-    for event in pygame.event.get():
-        manager.user_event(event)
-        if event.type == pygame.QUIT:
-            running = False
-        if event.type == pygame.KEYDOWN:
-            key_events(event)
-        if event.type == pg.MOUSEBUTTONDOWN:
-            mouse_events(event)
+        for p in range(PLANT_INIT_NUM):
+            plant = self.add_plant(world)
+            self.plant_list.append(plant)
 
-def key_events(event):
-    global selected, sel_idx, show_network, running
-    if event.key == pygame.K_ESCAPE:
-        running = False
-    if event.key == pygame.K_LEFT:
-        if sel_idx > 0 and sel_idx <= len(creature_list):
-            sel_idx -= 1
-            selected = creature_list[sel_idx]
-        else:
-            sel_idx = 0
-            selected = creature_list[sel_idx]
-    if event.key == pygame.K_RIGHT:
-        if sel_idx >= 0 and sel_idx < (len(creature_list)-1):
-            sel_idx += 1
-            selected = creature_list[sel_idx]
-    if event.key == pygame.K_n:
-        show_network = not show_network
+    def events(self):
+        for event in pygame.event.get():
+            self.manager.user_event(event)
+            if event.type == pygame.QUIT:
+                self.running = False
+            if event.type == pygame.KEYDOWN:
+                self.key_events(event)
+            if event.type == pg.MOUSEBUTTONDOWN:
+                self.mouse_events(event)
 
-def mouse_events(event):
-    global selected
-    selected = None
-    mouseX, mouseY = pg.mouse.get_pos()
-    selected = find_creature(mouseX, flipy(mouseY))
-    if selected == None:
-        selected = find_plant(mouseX, flipy(mouseY))
+    def key_events(self, event):
+        if event.key == pygame.K_ESCAPE:
+            self.running = False
+        if event.key == pygame.K_LEFT:
+            if self.creature_list != []:
+                if self.sel_idx > 0 and self.sel_idx <= len(self.creature_list):
+                    self.sel_idx -= 1
+                    self.selected = self.creature_list[self.sel_idx]
+                else:
+                    self.sel_idx = 0
+                    self.selected = self.creature_list[self.sel_idx]
 
-def find_plant(x, y):
-    for plant in plant_list:
-        if hypot(plant.position.x-x, plant.position.y-y) <= plant.shape.radius:
-            return plant
-    return None
+        if event.key == pygame.K_RIGHT:
+            if self.creature_list != []:
+                if self.sel_idx >= 0 and self.sel_idx < (len(self.creature_list)-1):
+                    self.sel_idx += 1
+                    self.selected = self.creature_list[self.sel_idx]
+        if event.key == pygame.K_n:
+            self.show_network = not self.show_network
 
-def find_creature(x, y):
-    for creature in creature_list:
-        if hypot(creature.position.x-x, creature.position.y-y) <= creature.shape.radius:
-            return creature
-    return None
+    def mouse_events(self, event):
+        self.selected = None
+        mouseX, mouseY = pg.mouse.get_pos()
+        self.selected = self.find_creature(mouseX, flipy(mouseY))
+        if self.selected == None:
+            self.selected = self.find_plant(mouseX, flipy(mouseY))
 
-def set_collision_calls():
-    # 2: body | 8: wall | 4: sensor | 6: plant
-    creature_collisions = space.add_collision_handler(2, 2)
-    creature_collisions.pre_solve = process_creatures_collisions
+    def find_plant(self, x: float, y: float) -> Union[Plant, None]:
+        for plant in self.plant_list:
+            if hypot(plant.position.x-x, plant.position.y-y) <= plant.shape.radius:
+                return plant
+        return None
 
-    creature_plant_collisions = space.add_collision_handler(2, 6)
-    creature_plant_collisions.pre_solve = process_creature_plant_collisions
+    def find_creature(self, x: float, y: float) -> Union[Creature, None]:
+        for creature in self.creature_list:
+            if hypot(creature.position.x-x, creature.position.y-y) <= creature.shape.radius:
+                return creature
+        return None
 
-    edge_collisions = space.add_collision_handler(2, 8)
-    edge_collisions.pre_solve = process_edge_collisions
+    def set_collision_calls(self):
+        # 2: body | 8: wall | 4: sensor | 6: plant
+        creature_collisions = self.space.add_collision_handler(2, 2)
+        creature_collisions.pre_solve = process_creatures_collisions
+        creature_collisions.data['dt'] = self.dt
 
-    detection = space.add_collision_handler(4, 2)
-    detection.pre_solve = detect_creature
+        creature_plant_collisions = self.space.add_collision_handler(2, 6)
+        creature_plant_collisions.pre_solve = process_creature_plant_collisions
+        creature_plant_collisions.data['dt'] = self.dt
 
-    detection_end = space.add_collision_handler(4, 2)
-    detection_end.separate = detect_creature_end
+        edge_collisions = self.space.add_collision_handler(2, 8)
+        edge_collisions.pre_solve = process_edge_collisions
 
-    plant_detection = space.add_collision_handler(4, 6)
-    plant_detection.pre_solve = detect_plant
+        detection = self.space.add_collision_handler(4, 2)
+        detection.pre_solve = detect_creature
 
-    plant_detection_end = space.add_collision_handler(4, 6)
-    plant_detection_end.separate = detect_plant_end
+        detection_end = self.space.add_collision_handler(4, 2)
+        detection_end.separate = detect_creature_end
 
-def process_creature_plant_collisions(arbiter, space, data):
-    arbiter.shapes[0].body.position -= arbiter.normal*0.5
-    arbiter.shapes[1].body.position += arbiter.normal*0.2
-    #if arbiter.normal.angle <= 0.5 and arbiter.normal.angle >= -0.5:
-    hunter = arbiter.shapes[0].body
-    target = arbiter.shapes[1].body
-    target.color0 = Color('red')
-    #if isinstance(hunter, Creature) and isinstance(target, Plant):
-    target.energy = target.energy - EAT
-    if target.energy > 0:
-        hunter.eat(EAT*20)
-    return True
+        plant_detection = self.space.add_collision_handler(4, 6)
+        plant_detection.pre_solve = detect_plant
 
-def process_creatures_collisions(arbiter, space, data):
-    global dt
-    arbiter.shapes[0].body.position -= arbiter.normal*0.5
-    arbiter.shapes[1].body.position += arbiter.normal*0.5
-    #if arbiter.normal.angle <= 0.5 and arbiter.normal.angle >= -0.5:
-    size0 = arbiter.shapes[0].radius
-    size1 = arbiter.shapes[1].radius
-    if (size0+randint(0, 6)) > (size1+randint(0, 6)):
-        arbiter.shapes[1].body.energy -= HIT/dt
-        arbiter.shapes[1].body.color0=Color('red')
-    return True
+        plant_detection_end = self.space.add_collision_handler(4, 6)
+        plant_detection_end.separate = detect_plant_end
 
-def process_edge_collisions(arbiter, space, data):
-    #arbiter.shapes[0].body.angle += arbiter.normal.angle
-    arbiter.shapes[0].body.position -= arbiter.normal * 1.5
-    return True
+        obstacle_detection = self.space.add_collision_handler(4, 8)
+        obstacle_detection.pre_solve = detect_obstacle
 
-def detect_creature(arbiter, space, data):
-    creature = arbiter.shapes[0].body
-    enemy = arbiter.shapes[1].body
-    sensor_shape = arbiter.shapes[0]
-    for sensor in creature.sensors:
-        if sensor.shape == sensor_shape:
-            sensor.set_color(Color(red))
-            pos0 = creature.position
-            dist = pos0.get_distance(enemy.position)
-            sensor.send_data(detect=True, distance=dist)
-            break
-    return True
+        obstacle_detection_end = self.space.add_collision_handler(4, 8)
+        obstacle_detection_end.separate = detect_obstacle_end
 
-def detect_plant(arbiter, space, data):
-    creature = arbiter.shapes[0].body
-    plant = arbiter.shapes[1].body
-    sensor_shape = arbiter.shapes[0]
-    for sensor in creature.sensors:
-        if sensor.shape == sensor_shape:
-            sensor.set_color(Color('green'))
-            pos0 = creature.position
-            dist = pos0.get_distance(plant.position)
-            sensor.send_data2(detect=True, distance=dist)
-            break
-    return True
+    def add_creature(self, world: tuple) -> Creature:
+        size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
+        creature = Creature(screen=self.screen, space=self.space, collision_tag=2, world_size=world, size=size, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=None)
+        return creature
 
-def detect_plant_end(arbiter, space, data):
-    return True
+    def add_plant(self, world: tuple) -> Plant:
+        plant = Plant(screen=self.screen, space=self.space, collision_tag=6, world_size=world, size=3, color0=Color(LIME), color1=Color('darkgreen'), color3=Color(BROWN))
+        return plant
 
-def detect_creature_end(arbiter, space, data):
-    return True
+    def add_wall(self, point0: tuple, point1: tuple, thickness: float) -> Wall:
+        wall = Wall(self.screen, self.space, point0, point1, thickness, Color('gray'), Color('gray'))
+        #space.add(wall.shape, wall.body)
+        return wall
 
-def add_creature(world: tuple) -> Creature:
-    size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
-    creature = Creature(screen=screen, space=space, collision_tag=2, world_size=world, size=size, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=None)
-    return creature
+    def draw(self):
+        self.screen.fill(Color(darkblue))
+        self.screen.blit(self.terr_img, (0, 0))
+        for creature in self.creature_list:
+            if creature == self.selected:
+                creature.draw_detectors(screen=self.screen)
+        for creature in self.creature_list:
+            creature.draw(screen=self.screen, selected=self.selected)
 
-def add_plant(world: tuple) -> Plant:
-    plant = Plant(screen=screen, space=space, collision_tag=6, world_size=world, size=3, color0=Color(LIME), color1=Color('darkgreen'), color3=Color(BROWN))
-    return plant
+        for plant in self.plant_list:
+            plant.draw(screen=self.screen, selected=self.selected)
 
-def add_wall(point0: tuple, point1: tuple, thickness: float) -> Wall:
-    wall = Wall(screen, space, point0, point1, thickness, Color('gray'), Color('gray'))
-    #space.add(wall.shape, wall.body)
-    return wall
+        for wall in self.wall_list:
+            wall.draw(screen=self.screen)
 
-def draw():
-    screen.fill(Color(darkblue))
-    for creature in creature_list:
-        if creature == selected:
-            creature.draw_detectors(screen=screen)
-    for creature in creature_list:
-        creature.draw(screen=screen, selected=selected)
-    
-    for plant in plant_list:
-        plant.draw(screen=screen, selected=selected)
-    
-    for wall in wall_list:
-        wall.draw(screen=screen)
-    
-    draw_network()
-    draw_text()
-    manager.draw_gui(screen=screen)
+        self.draw_network()
+        self.draw_text()
+        self.manager.draw_gui(screen=self.screen)
 
-def draw_text():
-    font = Font(match_font('firacode'), 10)
-    font.set_bold(True)
-    if selected != None:
-        info = font.render(f'energy: {round(selected.energy, 2)} | size: {round(selected.shape.radius)} | rep_time: {round(selected.reproduction_time)} | gen: {selected.generation}', True, Color('yellowgreen'))
-        screen.blit(info, (411, 10), )
-    count = font.render(f'creatures: {len(creature_list)} | plants: {len(plant_list)}', True, Color('yellow'))
-    screen.blit(count, (10, 10), )
+    def draw_text(self):
+        font = Font(match_font('firacode'), 10)
+        font.set_bold(True)
+        if self.selected != None:
+            info = font.render(f'energy: {round(self.selected.energy, 2)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation}', True, Color('yellowgreen'))
+            self.screen.blit(info, (SCREEN[0]/2-150, SCREEN[1]-25), )
+        count = font.render(f'creatures: {len(self.creature_list)} | plants: {len(self.plant_list)} | neuro time: {round(self.time_text, 4)}s | physx time: {round(self.physics_avg_time , 4)}s', True, Color('yellow'))
+        self.screen.blit(count, (20, SCREEN[1]-25), )
 
-def draw_network():
-    global show_network
-    global selected
-    if show_network:
-        if isinstance(selected, Creature):
-            manager.DrawNet(selected.neuro)
+    def draw_network(self):
+        if self.show_network:
+            if isinstance(self.selected, Creature):
+                self.manager.draw_net(self.selected.neuro)
 
-def update(dt: float):
-    for creature in creature_list:
-        if creature.energy <= 0:
-            creature.kill(space)
-            creature_list.remove(creature)
-    update_creatures(dt)
-    update_plants(dt)
-    manager.update_gui(dt/1000)
-    
-def update_creatures(dt: float):
-    temp_list = []
-    for creature in creature_list:
-        creature.get_input()
-        creature.analize()
-    for creature in creature_list:
-        creature.move(dt)
-    for creature in creature_list:
-        creature.update(screen=screen, space=space, dt=dt)
-        if creature.check_reproduction(dt):
-            s, p, n, g = creature.reproduce(screen=screen, space=space)
-            new_creature = Creature(screen=screen, space=space, collision_tag=2, world_size=WORLD, size=s, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=p, generation=g+1)
-            new_creature.neuro = n
-            new_creature.neuro.Mutate()
-            temp_list.append(new_creature)
-    if random() <= CREATURE_MULTIPLY:
-        creature = add_creature(world)
-        creature_list.append(creature)
-    for new_one in temp_list:
-        creature_list.append(new_one)
-    temp_list = []
+    def update(self):
+        for creature in self.creature_list:
+            if creature.energy <= 0:
+                creature.kill(self.space)
+                self.creature_list.remove(creature)
+        self.update_creatures(self.dt)
+        self.update_plants(self.dt)
+        self.manager.update_gui(self.dt/1000)
 
-def update_plants(dt: float):
-    for plant in plant_list:
-        if plant.life_time_calc(dt):
-            plant.kill(space)
-            plant_list.remove(plant)
-    for plant in plant_list:
-        if plant.energy <= 0:
-            plant.kill(space)
-            plant_list.remove(plant)
-        else:
-            plant.update(dt)
-    if random() <= PLANT_MULTIPLY:
-        plant = add_plant(WORLD)
-        plant_list.append(plant)
+    def update_creatures(self, dt: float):
+        temp_list = []
+        neuro_time = time()
+        for creature in self.creature_list:
+            creature.get_input()
+            creature.analize()
+        neuro_time = time()-neuro_time
+        self.times.append(neuro_time)
+        if len(self.times) >= 150:
+            self.time_text = mean(self.times)
+            self.times = []
+        for creature in self.creature_list:
+            creature.move(dt)
+        for creature in self.creature_list:
+            creature.update(screen=self.screen, space=self.space, dt=dt)
+            if creature.check_reproduction(dt):
+                s, p, n, g = creature.reproduce(screen=self.screen, space=self.space)
+                new_creature = Creature(screen=self.screen, space=self.space, collision_tag=2, world_size=WORLD, size=s, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=p, generation=g+1)
+                new_creature.neuro = n
+                new_creature.neuro.Mutate()
+                temp_list.append(new_creature)
+        if random() <= CREATURE_MULTIPLY:
+            creature = self.add_creature(world)
+            self.creature_list.append(creature)
+        for new_one in temp_list:
+            self.creature_list.append(new_one)
+        temp_list = []
 
-def physics_step(step_num: int, dt: float):
-    for _ in range(1):
-        space.step(dt)
+    def update_plants(self, dt: float):
+        for plant in self.plant_list:
+            if plant.life_time_calc(dt):
+                plant.kill(self.space)
+                self.plant_list.remove(plant)
+        for plant in self.plant_list:
+            if plant.energy <= 0:
+                plant.kill(self.space)
+                self.plant_list.remove(plant)
+            else:
+                plant.update(dt)
+        if random() <= PLANT_MULTIPLY:
+            plant = self.add_plant(WORLD)
+            self.plant_list.append(plant)
 
-def clock_step():
-    global dt
-    pygame.display.flip()
-    dt = clock.tick(FPS)
-    pygame.display.set_caption(f"NATURE v0.1.0 [fps: {round(clock.get_fps())} | dT: {round(dt)}ms]")
+    def physics_step(self, step_num: int, dt: float):
+        for _ in range(1):
+            self.space.step(dt)
 
+    def clock_step(self):
+        pygame.display.flip()
+        self.dt = self.clock.tick(self.FPS)
+        pygame.display.set_caption(f"NATURE v0.1.0 [fps: {round(self.clock.get_fps())} | dT: {round(self.dt)}ms]")
+
+    def main(self):
+        set_win_pos(20, 20)
+        #self.init(WORLD)
+        self.create_enviro(WORLD)
+        set_icon('planet05.png')
+        #test = Test()
+        while self.running:
+            self.events()
+            self.update()
+            self.draw()
+            #self.space.debug_draw(self.options)
+            physics_time = time()
+            self.physics_step(1, self.dt)
+            physics_time = time()-physics_time
+            self.physics_single_times.append(physics_time)
+            if len(self.physics_single_times) >= 150:
+                self.physics_avg_time = mean(self.physics_single_times)
+                self.physics_single_times = []
+            self.clock_step()
+        
 def set_win_pos(x: int=20, y: int=20):
     x_winpos = x
     y_winpos = y
@@ -321,21 +301,7 @@ def set_icon(icon_name):
 def sort_by_fitness(creature):
     return creature['fitness']
 
-def main():
-    set_win_pos(20, 20)
-    init(WORLD)
-    create_enviro(WORLD)
-    set_icon('planet05.png')
-    #test = Test()
-    while running:
-        events()
-        update(dt)
-        draw()
-        #space.debug_draw(options)
-        red_detection.clear()
-        physics_step(1, dt)
-        clock_step()
-        
-
 if __name__ == "__main__":
-    sys.exit(main())
+    set_world(WORLD)
+    sim = Simulation(WORLD)
+    sys.exit(sim.main())
