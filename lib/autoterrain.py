@@ -46,7 +46,7 @@ class Terrain:
     def generate(self, terrain: Surface, space: Space):
         line_set = autogeometry.march_soft(BB(0, 0, 1499, 749), 150, 75, 50, self.sample_func)
         for polyline in line_set:
-            line = autogeometry.simplify_curves(polyline, 1.0)
+            line = autogeometry.simplify_curves(polyline, 0.2)
             for i in range(len(line) - 1):
                 p1 = line[i]
                 p2 = line[i + 1]

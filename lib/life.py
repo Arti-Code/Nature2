@@ -37,6 +37,9 @@ class Life(Body):
         self.shape.collision_type = collision_tag
         space.add(self.shape)
         self.reproduction_time = REPRODUCTION_TIME
+        self.collide_creature = False
+        self.collide_plant = False
+        self.collide_something = False
 
     def draw(self, screen: Surface, selected: Body):
         x = self.position.x; y = self.position.y
@@ -115,7 +118,7 @@ class Creature(Life):
         self.color3 = color3
         self.generation = generation
         self.neuro = Network()
-        self.neuro.BuildRandom([30, 0, 0, 0, 0, 0, 3], 0.1)
+        self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 3], 0.1)
         self.eye_colors = {}
         self.visual_range = visual_range
         self.sensors = []
@@ -143,6 +146,9 @@ class Creature(Life):
         for detector in self.sensors:
             detector.draw(screen)
             detector.reset_data()
+        self.collide_creature = False
+        self.collide_plant = False
+        self.collide_something = False
 
     def update(self, screen: Surface, space: Space, dt:float):
         move = self.move(dt)
@@ -190,6 +196,9 @@ class Creature(Life):
 
     def get_input(self):
         input = []
+        input.append(self.collide_creature)
+        input.append(self.collide_plant)
+        input.append(self.collide_something)
         x = self.position[0]/self.world_size[0]
         input.append(x)
         y = self.position[1]/self.world_size[1]

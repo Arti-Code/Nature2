@@ -17,6 +17,7 @@ def process_creature_plant_collisions(arbiter, space, data):
     target.energy = target.energy - EAT*dt
     if target.energy > 0:
         hunter.eat(EAT*dt)
+    hunter.collide_plant = True
     return True
 
 def process_creatures_collisions(arbiter, space, data):
@@ -29,11 +30,13 @@ def process_creatures_collisions(arbiter, space, data):
     if (size0+randint(0, 6)) > (size1+randint(0, 6)):
         arbiter.shapes[1].body.energy -= HIT*dt
         arbiter.shapes[1].body.color0=Color('red')
+    arbiter.shapes[0].body.collide_creature = True
     return True
 
 def process_edge_collisions(arbiter, space, data):
     #arbiter.shapes[0].body.angle += arbiter.normal.angle
     arbiter.shapes[0].body.position -= arbiter.normal * 1.5
+    arbiter.shapes[0].body.collide_something = True
     return True
 
 def detect_creature(arbiter, space, data):

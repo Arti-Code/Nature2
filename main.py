@@ -64,9 +64,9 @@ class Simulation():
             p2 = edges[e+1]
             wall = self.add_wall(p1, p2, 5)
             self.wall_list.append(wall)
-        self.terr_img = image.load('water2.png')
+        self.terr_img = image.load('water3.png')
         self.terr_img.convert_alpha()
-        terrain = Terrain(self.screen, self.space, 'water2.png', 8)
+        terrain = Terrain(self.screen, self.space, 'water3.png', 8)
 
         for c in range(CREATURE_INIT_NUM):
             creature = self.add_creature(world)
