@@ -9,7 +9,7 @@ import pygame
 from pygame import Color, Surface, image
 from pygame.constants import K_n
 from pygame.font import Font, match_font 
-from pymunk import BB, Vec2d, Space, Segment, Body, Circle, Shape, autogeometry
+from pymunk import BB, Vec2d, Space, Segment, Body, Circle, Shape, Poly, autogeometry
 import pymunk.pygame_util
 from lib.life import Life, Creature, Plant
 from lib.wall import Wall
@@ -44,16 +44,19 @@ class Terrain:
             return 0
 
     def generate(self, terrain: Surface, space: Space):
-        line_set = autogeometry.march_soft(BB(0, 0, 1499, 749), 150, 75, 50, self.sample_func)
+        line_set = autogeometry.march_hard(BB(0, 0, 1499, 749), 1500, 750, 50, self.sample_func)
         for polyline in line_set:
-            line = autogeometry.simplify_curves(polyline, 0.2)
-            for i in range(len(line) - 1):
-                p1 = line[i]
-                p2 = line[i + 1]
-                shape = Segment(self.space.static_body, p1, p2, 2)
-                shape.friction = 0.5
-                shape.collision_type = self.collision_tag
-                shape.color = pygame.Color("gray")
-                shape.generated = True
-                self.space.add(shape)
+            line = autogeometry.simplify_curves(polyline, 0.1)
+            poly = Poly(self.space.static_body, autogeometry.to_convex_hull(line, 1.0))
+            poly.collision_type = 8
+            self.space.add(poly)
+            #for i in range(len(line) - 1):
+            #    p1 = line[i]
+            #    p2 = line[i + 1]
+            #    shape = Segment(self.space.static_body, p1, p2, 2)
+            #    shape.friction = 0.5
+            #    shape.collision_type = self.collision_tag
+            #    shape.color = pygame.Color("gray")
+            #    shape.generated = True
+            #    self.space.add(shape)
 

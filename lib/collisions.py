@@ -28,8 +28,10 @@ def process_creatures_collisions(arbiter, space, data):
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
     if (size0+randint(0, 6)) > (size1+randint(0, 6)):
-        arbiter.shapes[1].body.energy -= HIT*dt
+        dmg = HIT * dt
+        arbiter.shapes[1].body.energy -= dmg
         arbiter.shapes[1].body.color0=Color('red')
+        arbiter.shapes[0].body.eat(dmg*0.66)
     arbiter.shapes[0].body.collide_creature = True
     return True
 

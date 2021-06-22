@@ -66,7 +66,7 @@ class Simulation():
             self.wall_list.append(wall)
         self.terr_img = image.load('water3.png')
         self.terr_img.convert_alpha()
-        terrain = Terrain(self.screen, self.space, 'water3.png', 8)
+        #terrain = Terrain(self.screen, self.space, 'water3.png', 8)
 
         for c in range(CREATURE_INIT_NUM):
             creature = self.add_creature(world)
@@ -172,7 +172,7 @@ class Simulation():
 
     def draw(self):
         self.screen.fill(Color(darkblue))
-        self.screen.blit(self.terr_img, (0, 0))
+        #self.screen.blit(self.terr_img, (0, 0))
         for creature in self.creature_list:
             if creature == self.selected:
                 creature.draw_detectors(screen=self.screen)
@@ -190,7 +190,7 @@ class Simulation():
         self.manager.draw_gui(screen=self.screen)
 
     def draw_text(self):
-        font = Font(match_font('firacode'), 10)
+        font = Font(match_font('firacode'), FONT_SIZE)
         font.set_bold(True)
         if self.selected != None:
             info = font.render(f'energy: {round(self.selected.energy, 2)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation}', True, Color('yellowgreen'))
@@ -262,7 +262,7 @@ class Simulation():
     def clock_step(self):
         pygame.display.flip()
         self.dt = self.clock.tick(self.FPS)
-        pygame.display.set_caption(f"NATURE v0.1.0 [fps: {round(self.clock.get_fps())} | dT: {round(self.dt)}ms]")
+        pygame.display.set_caption(f"{TITLE} [fps: {round(self.clock.get_fps())} | dT: {round(self.dt)}ms]")
 
     def main(self):
         set_win_pos(20, 20)
