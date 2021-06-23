@@ -15,7 +15,7 @@ from lib.config import *
 class Plant(Life):
 
     def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color=None, color3=None, position: Vec2d=None):
-        super().__init__(screen=screen, space=space, collision_tag=collision_tag, world_size=world_size, size=3, color0=color0, color1=color1, color3=color3, position=position)
+        super().__init__(screen=screen, space=space, owner=sim, collision_tag=collision_tag, world_size=world_size, size=3, color0=color0, color1=color1, color3=color3, position=position)
         self.life_time = PLANT_LIFE
         self.size = size
         self.max_size = PLANT_MAX_SIZE

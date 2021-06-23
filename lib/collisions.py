@@ -31,7 +31,7 @@ def process_creatures_collisions(arbiter, space, data):
         dmg = HIT * dt
         arbiter.shapes[1].body.energy -= dmg
         arbiter.shapes[1].body.color0=Color('red')
-        arbiter.shapes[0].body.eat(dmg*0.66)
+        arbiter.shapes[0].body.eat(dmg*0.85)
     arbiter.shapes[0].body.collide_creature = True
     return True
 

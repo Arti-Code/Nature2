@@ -11,7 +11,7 @@ from pygame.constants import K_n
 from pygame.font import Font, match_font 
 from pymunk import BB, Vec2d, Space, Segment, Body, Circle, Shape, Poly, autogeometry
 import pymunk.pygame_util
-from lib.life import Life, Creature, Plant
+#from lib.life import Life, Creature, Plant
 from lib.wall import Wall
 from lib.sensor import Sensor
 from lib.math2 import set_world, world, flipy

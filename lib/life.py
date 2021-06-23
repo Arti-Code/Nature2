@@ -11,7 +11,7 @@ from lib.sensor import Sensor, PolySensor
 from lib.net import Network
 from lib.config import *
 
-class Life(Object):
+class Life(Body):
 
     def __init__(self, screen: Surface, space: Space, owner: object, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color=None, color3: Color=None, position: Vec2d=None):
         super().__init__(self, body_type=Body.KINEMATIC)

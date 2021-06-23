@@ -15,7 +15,7 @@ from lib.config import *
 class Creature(Life):
 
     def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color, color3: Color, angle: float=None, visual_range: int=180, position: Vec2d=None, generation: int=0):
-        super().__init__(screen=screen, space=space, collision_tag=collision_tag, world_size=world_size, size=size, color0=color0, color1=color1, position=position)
+        super().__init__(screen=screen, space=space, owner=sim, collision_tag=collision_tag, world_size=world_size, size=size, color0=color0, color1=color1, position=position)
         if angle:
             self.angle = angle
         else:
@@ -77,10 +77,10 @@ class Creature(Life):
                 detector.set_color(Color('white'))
 
     def reproduce(self, screen: Surface, space: Space):
-        self.energy -= self.max_energy * REP_ENERGY
+        self.energy -= self.max_energy * REP_ENERGY/3
         size = self.shape.radius + randint(-2, 2)
         size = clamp(size, CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
-        pos = Vec2d(self.position.x+randint(-50, 50), self.position.y+randint(-50, 50))
+        pos = Vec2d(self.position.x+randint(-100, 100), self.position.y+randint(-100, 100))
         neuro = self.neuro.Replicate()
         self.reproduction_time = REPRODUCTION_TIME
         return (size, pos, neuro, self.generation+1)
