@@ -25,14 +25,15 @@ class Creature(Life):
         self.color3 = color3
         self.generation = generation
         self.neuro = Network()
-        self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 3], 0.2)
+        self.neuro.BuildRandom([26, 0, 0, 0, 0, 0, 3], 0.3)
         self.eye_colors = {}
         self.visual_range = visual_range
         self.sensors = []
         self.reproduction_time = REPRODUCTION_TIME
+        self.side_angle = 0
         self.sensors.append(Sensor(screen, self, 4, 0, 220))
-        self.sensors.append(Sensor(screen, self, 4, PI/3, 220))
-        self.sensors.append(Sensor(screen, self, 4, -PI/3, 220))
+        self.sensors.append(Sensor(screen, self, 4, SENSOR_MAX_ANGLE, 220))
+        self.sensors.append(Sensor(screen, self, 4, -SENSOR_MAX_ANGLE, 220))
         self.mem_time = 0
         for sensor in self.sensors:
             space.add(sensor.shape)
@@ -109,6 +110,10 @@ class Creature(Life):
         input.append(self.collide_creature)
         input.append(self.collide_plant)
         input.append(self.collide_something)
+        angle = self.angle/(2*PI)
+        side_angle = self.sensors[1].angle/(SENSOR_MAX_ANGLE*2)
+        input.append(angle)
+        input.append(side_angle)
         x = self.position[0]/self.world_size[0]
         input.append(x)
         y = self.position[1]/self.world_size[1]
@@ -118,20 +123,20 @@ class Creature(Life):
         for sensor in self.sensors:
             e, d, a, p, pd, pa, o, od, oa = sensor.get_input()
             d = round(d, 3)
-            a = round(a%PI, 3)
+            #a = round(a%PI, 3)
             pd = round(pd, 3)
-            pa = round(pa%PI, 3)
+            #pa = round(pa%PI, 3)
             od = round(od, 3)
-            oa = round(oa%PI, 3)
+            #oa = round(oa%PI, 3)
             input.append(e)
             input.append(d)
-            input.append(a)
+            #input.append(a)
             input.append(p)
             input.append(pd)
-            input.append(pa)
+            #input.append(pa)
             input.append(o)
             input.append(od)
-            input.append(oa)
+            #input.append(oa)
         return input
 
     def analize(self):
