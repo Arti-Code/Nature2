@@ -25,7 +25,7 @@ class Creature(Life):
         self.color3 = color3
         self.generation = generation
         self.neuro = Network()
-        self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 3], 0.3)
+        self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 3], 0.2)
         self.eye_colors = {}
         self.visual_range = visual_range
         self.sensors = []
@@ -33,6 +33,7 @@ class Creature(Life):
         self.sensors.append(Sensor(screen, self, 4, 0, 220))
         self.sensors.append(Sensor(screen, self, 4, PI/3, 220))
         self.sensors.append(Sensor(screen, self, 4, -PI/3, 220))
+        self.mem_time = 0
         for sensor in self.sensors:
             space.add(sensor.shape)
 
@@ -60,6 +61,8 @@ class Creature(Life):
     def update(self, screen: Surface, space: Space, dt:float):
         move = self.move(dt)
         self.calc_energy(dt, move)
+        self.mem_time -= 1/dt
+        self.mem_time = clamp(self.mem_time, 0, MEM_TIME)
 
     def check_reproduction(self, dt) -> bool:
         self.reproduction_time -= 1/dt
@@ -132,8 +135,10 @@ class Creature(Life):
         return input
 
     def analize(self):
-        input = self.get_input()
-        self.output = self.neuro.Calc(input)
+        if self.mem_time <= 0:
+            input = self.get_input()
+            self.output = self.neuro.Calc(input)
+            self.mem_time = MEM_TIME
         #for sensor in self.sensors:
         #    sensor.reset_data()
             

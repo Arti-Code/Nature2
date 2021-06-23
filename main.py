@@ -218,7 +218,7 @@ class Simulation():
         temp_list = []
         neuro_time = time()
         for creature in self.creature_list:
-            creature.get_input()
+            #creature.get_input()
             creature.analize()
         neuro_time = time()-neuro_time
         self.times.append(neuro_time)

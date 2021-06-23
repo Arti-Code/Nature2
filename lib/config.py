@@ -25,6 +25,7 @@ REPRODUCTION_TIME           = 60
 CREATURE_MIN_SIZE           = 3
 CREATURE_MAX_SIZE           = 7
 HIT                         = 400
+MEM_TIME                    = 0.3
 # colors
 BROWN = (110, 50, 9)
 LIME = (127, 255, 0)
