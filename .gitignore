@@ -25,3 +25,7 @@ lib/__pycache__/gui.cpython-38.pyc
 lib/__pycache__/collisions.cpython-39.pyc
 env.rar
 lib/__pycache__/autoterrain.cpython-39.pyc
+main.py
+lib/__pycache__/creature.cpython-39.pyc
+lib/__pycache__/object.cpython-39.pyc
+lib/__pycache__/plant.cpython-39.pyc

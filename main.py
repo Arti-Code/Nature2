@@ -12,7 +12,9 @@ from pygame.constants import K_n
 from pygame.font import Font, match_font 
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 import pymunk.pygame_util
-from lib.life import Life, Creature, Plant
+from lib.life import Life
+from lib.creature import Creature
+from lib.plant import Plant
 from lib.wall import Wall
 from lib.sensor import Sensor
 from lib.math2 import set_world, world, flipy
@@ -64,8 +66,8 @@ class Simulation():
             p2 = edges[e+1]
             wall = self.add_wall(p1, p2, 5)
             self.wall_list.append(wall)
-        self.terr_img = image.load('water3.png')
-        self.terr_img.convert_alpha()
+        #self.terr_img = image.load('res/fonts/water3.png')
+        #self.terr_img.convert_alpha()
         #terrain = Terrain(self.screen, self.space, 'water3.png', 8)
 
         for c in range(CREATURE_INIT_NUM):
@@ -158,11 +160,11 @@ class Simulation():
 
     def add_creature(self, world: tuple) -> Creature:
         size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
-        creature = Creature(screen=self.screen, space=self.space, collision_tag=2, world_size=world, size=size, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=None)
+        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=world, size=size, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=None)
         return creature
 
     def add_plant(self, world: tuple) -> Plant:
-        plant = Plant(screen=self.screen, space=self.space, collision_tag=6, world_size=world, size=3, color0=Color(LIME), color1=Color('darkgreen'), color3=Color(BROWN))
+        plant = Plant(screen=self.screen, space=self.space, sim=self, collision_tag=6, world_size=world, size=3, color0=Color(LIME), color1=Color('darkgreen'), color3=Color(BROWN))
         return plant
 
     def add_wall(self, point0: tuple, point1: tuple, thickness: float) -> Wall:
@@ -228,11 +230,12 @@ class Simulation():
         for creature in self.creature_list:
             creature.update(screen=self.screen, space=self.space, dt=dt)
             if creature.check_reproduction(dt):
-                s, p, n, g = creature.reproduce(screen=self.screen, space=self.space)
-                new_creature = Creature(screen=self.screen, space=self.space, collision_tag=2, world_size=WORLD, size=s, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=p, generation=g+1)
-                new_creature.neuro = n
-                new_creature.neuro.Mutate()
-                temp_list.append(new_creature)
+                for _ in range(3):
+                    s, p, n, g = creature.reproduce(screen=self.screen, space=self.space)
+                    new_creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=s, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=p, generation=g)
+                    new_creature.neuro = n
+                    new_creature.neuro.Mutate()
+                    temp_list.append(new_creature)
         if random() <= CREATURE_MULTIPLY:
             creature = self.add_creature(world)
             self.creature_list.append(creature)
@@ -268,7 +271,7 @@ class Simulation():
         set_win_pos(20, 20)
         #self.init(WORLD)
         self.create_enviro(WORLD)
-        set_icon('planet05.png')
+        set_icon('res/images/planet05.png')
         #test = Test()
         while self.running:
             self.events()
