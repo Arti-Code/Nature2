@@ -25,7 +25,7 @@ class Creature(Life):
         self.color3 = color3
         self.generation = generation
         self.neuro = Network()
-        self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 3], 0.1)
+        self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 3], 0.3)
         self.eye_colors = {}
         self.visual_range = visual_range
         self.sensors = []

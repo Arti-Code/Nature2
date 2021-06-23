@@ -2,6 +2,7 @@ from random import random, randint
 from math import sin, cos, radians, degrees, pi as PI
 import pygame
 import pygame.gfxdraw as gfxdraw
+from pygame.font import Font, match_font 
 from pygame import Surface, Color, Rect
 from lib.math2 import flipy, clamp
 from lib.net import Network, TYPE, ACTIVATION
@@ -22,6 +23,7 @@ class Manager:
         self.subtitl_font.set_bold(True)
         self.screen = screen
         self.gui = GUI(owner=self, view=WORLD)
+        self.font_small = Font(match_font('firacode'), FONT_SIZE)
 
     def user_event(self, event):
         self.gui.process_event(event)
@@ -34,7 +36,11 @@ class Manager:
 
     def new_sim(self, project_name: str):
        pass 
-    
+
+    def add_text(self, text: str, x: int, y: int, small_font: bool=True, color: Color=Color('white')):
+       render_text = self.small_font.render(text, True, color)
+       self.screen.blit(render_text, (x, y), )
+
     def draw_net(self, network: Network):
         if network:
             h_space = 40
@@ -51,12 +57,7 @@ class Manager:
             l = 0
             base_line = []
 
-            inp_desc = ["sid", 
-                        "lpd", "lps", "lcd", "lcs", "lca", "lmd", "lms", "lob",
-                        "fpd", "fps", "fcd", "fcs", "fca", "fmd", "fms", "fob",
-                        "rpd", "rps", "rcd", "rcs", "rca", "rmd", "rms", "rob",
-                        "eng", "atk", "hrt", "hid", "enmy", "good", "run", "stam",
-                         "collid", "x", "y"]
+            inp_desc = ['col_cr', 'col_pl', 'col_ob', 'x_pos', 'y_pos', 'eng', 'enemy0', 'dist0', 'angle0', 'plant0', 'dist0', 'angle0', 'obst0', 'dist0', 'angle0', 'enemy1', 'dist1', 'angle1', 'plant1', 'dist1', 'angle1', 'obst1', 'dist1', 'angle1', 'enemy2', 'dist2', 'angle2', 'plant2', 'dist2', 'angle2', 'obst2', 'dist2', 'angle2']
             out_desc = ["mov", "turn", "run", "hid", "atk", "eat"]
 
             input_keys = network.GetNodeKeyList([TYPE.INPUT])
@@ -129,7 +130,7 @@ class Manager:
                 gfxdraw.aacircle(self.screen, 40 + l * h_space, SCREEN[1] - base_line[l] + d + round(d/2), 3, c)
                 if r:
                     gfxdraw.aacircle(self.screen, 40 + l * h_space, SCREEN[1] - base_line[l] + d*n + round(d/2), 5, c)
-                #if l == 0:
-                #    self.AddText(f'{n}', 20 + l * (h_space+10), SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, Color('white'), small=True)
+                if l == 0:
+                    self.add_text(f'{inp_desc[n]}', 6 + l * (h_space+10), SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                 #if desc:
                 #    self.AddText(desc, 40 + l * (h_space+10), SCREEN[1] - base_line[l] + d*n + round(d/2), Color('#069ab8'), small=True)
