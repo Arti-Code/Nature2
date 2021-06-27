@@ -79,15 +79,22 @@ class Simulation():
             self.plant_list.append(plant)
 
     def events(self):
+        save_selected = False
+        selected = self.selected
         for event in pygame.event.get():
-            self.manager.user_event(event)
-            if event.type == pygame.QUIT:
+            #if event.type == pygame.USEREVENT:
+            if self.manager.user_event(event):
+                save_selected = True
+                break
+            elif event.type == pygame.QUIT:
                 self.running = False
-            if event.type == pygame.KEYDOWN:
+            elif event.type == pygame.KEYDOWN:
                 self.key_events(event)
-            if event.type == pg.MOUSEBUTTONDOWN:
-                self.mouse_events(event)
-
+            elif event.type == pg.MOUSEBUTTONDOWN:
+                pass
+                #self.mouse_events(event, save_selected)
+        if save_selected:
+            self.selected = selected
     def key_events(self, event):
         if event.key == pygame.K_ESCAPE:
             self.running = False
@@ -108,12 +115,13 @@ class Simulation():
         if event.key == pygame.K_n:
             self.show_network = not self.show_network
 
-    def mouse_events(self, event):
-        self.selected = None
-        mouseX, mouseY = pg.mouse.get_pos()
-        self.selected = self.find_creature(mouseX, flipy(mouseY))
-        if self.selected == None:
-            self.selected = self.find_plant(mouseX, flipy(mouseY))
+    def mouse_events(self, event, save_selected: bool):
+        if not save_selected:
+            self.selected = None
+            mouseX, mouseY = pg.mouse.get_pos()
+            self.selected = self.find_creature(mouseX, flipy(mouseY))
+            if self.selected == None:
+                self.selected = self.find_plant(mouseX, flipy(mouseY))
 
     def find_plant(self, x: float, y: float) -> Union[Plant, None]:
         for plant in self.plant_list:

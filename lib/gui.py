@@ -284,7 +284,7 @@ class GUI():
             data['DELTA'] = str(round(dT, 3))
         return data
 
-    def process_event(self, event):
+    def process_event(self, event) -> bool:
         self.ui_mgr.process_events(event)
         if event.type == pygame.USEREVENT:
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
@@ -349,6 +349,9 @@ class GUI():
                 elif event.ui_object_id == '#menu_win.#btn_quit':
                     pygame.quit()
                     sys.exit(0)
+            return True
+        else:
+            return False
 
     def update(self, dt: float):
         self.ui_mgr.update(dt)

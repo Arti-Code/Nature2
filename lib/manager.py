@@ -25,8 +25,8 @@ class Manager:
         self.gui = GUI(owner=self, view=WORLD)
         self.font_small = Font(match_font('firacode'), FONT_SIZE)
 
-    def user_event(self, event):
-        self.gui.process_event(event)
+    def user_event(self, event) -> bool:
+        return self.gui.process_event(event)
 
     def update_gui(self, dt: float):
         self.gui.update(dt)
