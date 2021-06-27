@@ -79,22 +79,20 @@ class Simulation():
             self.plant_list.append(plant)
 
     def events(self):
-        save_selected = False
-        selected = self.selected
         for event in pygame.event.get():
             #if event.type == pygame.USEREVENT:
             if self.manager.user_event(event):
-                save_selected = True
-                break
-            elif event.type == pygame.QUIT:
-                self.running = False
-            elif event.type == pygame.KEYDOWN:
-                self.key_events(event)
-            elif event.type == pg.MOUSEBUTTONDOWN:
                 pass
-                #self.mouse_events(event, save_selected)
-        if save_selected:
-            self.selected = selected
+            else:
+                if event.type == pygame.QUIT:
+                    self.running = False
+                if event.type == pygame.KEYDOWN:
+                    self.key_events(event)
+                if event.type == pg.MOUSEBUTTONDOWN:
+                    print(f'button: {event.button}')
+                    if event.button == 3:
+                        self.mouse_events(event)
+        
     def key_events(self, event):
         if event.key == pygame.K_ESCAPE:
             self.running = False
@@ -106,7 +104,6 @@ class Simulation():
                 else:
                     self.sel_idx = 0
                     self.selected = self.creature_list[self.sel_idx]
-
         if event.key == pygame.K_RIGHT:
             if self.creature_list != []:
                 if self.sel_idx >= 0 and self.sel_idx < (len(self.creature_list)-1):
@@ -115,13 +112,12 @@ class Simulation():
         if event.key == pygame.K_n:
             self.show_network = not self.show_network
 
-    def mouse_events(self, event, save_selected: bool):
-        if not save_selected:
-            self.selected = None
-            mouseX, mouseY = pg.mouse.get_pos()
-            self.selected = self.find_creature(mouseX, flipy(mouseY))
-            if self.selected == None:
-                self.selected = self.find_plant(mouseX, flipy(mouseY))
+    def mouse_events(self, event):
+        self.selected = None
+        mouseX, mouseY = pg.mouse.get_pos()
+        self.selected = self.find_creature(mouseX, flipy(mouseY))
+        if self.selected == None:
+            self.selected = self.find_plant(mouseX, flipy(mouseY))
 
     def find_plant(self, x: float, y: float) -> Union[Plant, None]:
         for plant in self.plant_list:
