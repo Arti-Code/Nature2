@@ -11,7 +11,7 @@ from lib.gui import GUI
 
 class Manager:
 
-    def __init__(self, screen: Surface):
+    def __init__(self, screen: Surface, enviro: object):
         pygame.font.init()
         self.fira_code = pygame.font.Font("res/fonts/fira.ttf", 12)
         self.creature_font = pygame.font.Font("res/fonts/fira.ttf", 10)
@@ -24,6 +24,7 @@ class Manager:
         self.screen = screen
         self.gui = GUI(owner=self, view=WORLD)
         self.font_small = Font(match_font('firacode'), FONT_SIZE)
+        self.enviro = enviro
 
     def user_event(self, event):
         self.gui.process_event(event)

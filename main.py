@@ -48,7 +48,7 @@ class Simulation():
         self.clock = pygame.time.Clock()
         self.sel_idx = 0
         self.show_network = False
-        self.manager = Manager(screen=self.screen)
+        self.manager = Manager(screen=self.screen, enviro=self)
 
         pygame.init()
         #self.create_enviro(WORLD)
@@ -59,8 +59,11 @@ class Simulation():
         self.options = pymunk.pygame_util.DrawOptions(self.screen)
         self.space.debug_draw(self.options)
 
-    def create_enviro(self, world: tuple):
-        edges = [(5, 5), (world[0]-5, 5), (world[0]-5, world[1]-5), (5, world[1]-5), (5, 5)]
+    def create_enviro(self, world: tuple=None):
+        self.creature_list = []
+        self.plant_list = []
+        self.wall_list = []
+        edges = [(0, 0), (WORLD[0]-1, 0), (WORLD[0]-1, WORLD[1]-1), (0, WORLD[1]-1), (0, 0)]
         for e in range(4):
             p1 = edges[e]
             p2 = edges[e+1]
@@ -71,11 +74,11 @@ class Simulation():
         #terrain = Terrain(self.screen, self.space, 'water3.png', 8)
 
         for c in range(CREATURE_INIT_NUM):
-            creature = self.add_creature(world)
+            creature = self.add_creature(WORLD)
             self.creature_list.append(creature)
 
         for p in range(PLANT_INIT_NUM):
-            plant = self.add_plant(world)
+            plant = self.add_plant(WORLD)
             self.plant_list.append(plant)
 
     def events(self):
@@ -86,7 +89,8 @@ class Simulation():
             if event.type == pygame.KEYDOWN:
                 self.key_events(event)
             if event.type == pg.MOUSEBUTTONDOWN:
-                self.mouse_events(event)
+                if event.button == 3:
+                    self.mouse_events(event)
 
     def key_events(self, event):
         if event.key == pygame.K_ESCAPE:
@@ -99,7 +103,6 @@ class Simulation():
                 else:
                     self.sel_idx = 0
                     self.selected = self.creature_list[self.sel_idx]
-
         if event.key == pygame.K_RIGHT:
             if self.creature_list != []:
                 if self.sel_idx >= 0 and self.sel_idx < (len(self.creature_list)-1):
@@ -160,7 +163,7 @@ class Simulation():
 
     def add_creature(self, world: tuple) -> Creature:
         size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
-        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=world, size=size, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=None)
+        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=size, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=None)
         return creature
 
     def add_plant(self, world: tuple) -> Plant:

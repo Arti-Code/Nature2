@@ -24,8 +24,8 @@ class NewSimWindow(UIWindow):
         self.label = UILabel(Rect((150, 15), (300, 15)), text='Enter New Project Name', manager=manager, container=self, parent_element=self)
         self.edit = UITextEntryLine(Rect((150, 50), (300, 20)), manager=manager, container=self, parent_element=self)
 
-        self.label = UILabel(Rect((20, 100), (100, 20)), text='World Size (X)', manager=manager, container=self, parent_element=self)
-        self.world_x = UITextEntryLine(Rect((120, 100), (60, 20)), manager=manager, container=self, parent_element=self)
+        self.label = UILabel(Rect((20, 100), (60, 20)), text='World Size (X)', manager=manager, container=self, parent_element=self)
+        self.world_x = UITextEntryLine(Rect((100, 100), (40, 20)), manager=manager, container=self, parent_element=self)
         
         self.label = UILabel(Rect((320, 100), (100, 20)), text='World Size (Y)', manager=manager, container=self, parent_element=self)
         self.world_y = UITextEntryLine(Rect((420, 100), (60, 20)), manager=manager, container=self, parent_element=self)
@@ -312,7 +312,7 @@ class GUI():
                     self.owner.project_name = new_name
                     self.new_project_name(new_name)
                     self.new_sim.kill()
-                    self.owner.enviro.CreateWorld(dT)
+                    self.owner.enviro.create_enviro()
                     self.create_info_win(text='Project created with name: ' + new_name, title=new_name)
                 elif event.ui_object_id == '#menu_win.#btn_set':
                     self.main_menu.kill()
