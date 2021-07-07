@@ -1,3 +1,5 @@
+import os
+import json
 from random import random, randint
 from math import sin, cos, radians, degrees, pi as PI
 import pygame
@@ -25,6 +27,28 @@ class Manager:
         self.gui = GUI(owner=self, view=WORLD)
         self.font_small = Font(match_font('firacode'), FONT_SIZE)
         self.enviro = enviro
+
+    def new_project(self, new_name: str):
+        self.add_to_project_list(new_name)
+        try:
+            os.mkdir('saves/' + new_name)
+        except FileExistsError:
+            pass
+
+    def add_to_project_list(self, new_name: str):
+        f = open("saves/projects.json", "r+")
+        proj_list = f.read()
+        f.close()
+        projects_list = json.loads(proj_list)
+        if not new_name in projects_list["projects"]:
+            projects_list["projects"].append(new_name)
+            proj_json = json.dumps(projects_list)
+            f = open("saves/projects.json", "w+")
+            f.write(proj_json)
+            f.close()
+            return True
+        else:
+            return False
 
     def user_event(self, event):
         self.gui.process_event(event)
