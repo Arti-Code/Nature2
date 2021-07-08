@@ -1,12 +1,12 @@
 from math import pi as PI
 
-TITLE = 'NATURE v0.2.3'
+TITLE = 'NATURE v0.2.4'
 SUBTITLE = "2019-2021 Artur Gwoździowski"
 #WORLD                       = (1700, 850)
 #SCREEN                      = (1700, 850)
 #FONT_SIZE                   = 16
-WORLD                       = (1500, 750)
-SCREEN                      = (1500, 750)
+WORLD                       = (1500, 700)
+SCREEN                      = (1500, 700)
 FONT_SIZE                   = 10
 PLANT_MAX_SIZE              = 11
 PLANT_GROWTH                = 0.6

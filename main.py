@@ -58,8 +58,12 @@ class Simulation():
         self.selected = None
         self.options = pymunk.pygame_util.DrawOptions(self.screen)
         self.space.debug_draw(self.options)
+        self.time = 0
+        self.cycles = 0
 
     def create_enviro(self, world: tuple=None):
+        self.time = 0
+        self.cycles = 0
         self.creature_list = []
         self.plant_list = []
         self.wall_list = []
@@ -83,7 +87,7 @@ class Simulation():
 
     def events(self):
         for event in pygame.event.get():
-            self.manager.user_event(event)
+            self.manager.user_event(event, 1/self.dt)
             if event.type == pygame.QUIT:
                 self.running = False
             if event.type == pygame.KEYDOWN:
@@ -208,7 +212,18 @@ class Simulation():
             if isinstance(self.selected, Creature):
                 self.manager.draw_net(self.selected.neuro)
 
+    def calc_time(self):
+        self.time += 0.01/self.dt
+        if self.time > 1000:
+            self.cycles += 1
+            self.time = self.time%1000
+
+    def get_time(self, digits: int=0):
+        t = self.cycles*1000 + round(self.time, digits)
+        return t
+
     def update(self):
+        self.calc_time()
         for creature in self.creature_list:
             if creature.energy <= 0:
                 creature.kill(self.space)

@@ -6,6 +6,7 @@ import pygame
 import pygame.gfxdraw as gfxdraw
 from pygame.font import Font, match_font 
 from pygame import Surface, Color, Rect
+from pymunk import Vec2d, Shape, Circle, Poly
 from lib.math2 import flipy, clamp
 from lib.net import Network, TYPE, ACTIVATION
 from lib.config import *
@@ -13,7 +14,7 @@ from lib.gui import GUI
 
 class Manager:
 
-    def __init__(self, screen: Surface, enviro: object):
+    def __init__(self, screen: Surface, enviro):
         pygame.font.init()
         self.fira_code = pygame.font.Font("res/fonts/fira.ttf", 12)
         self.creature_font = pygame.font.Font("res/fonts/fira.ttf", 10)
@@ -24,9 +25,10 @@ class Manager:
         self.titl_font.set_bold(True)
         self.subtitl_font.set_bold(True)
         self.screen = screen
+        self.enviro = enviro
         self.gui = GUI(owner=self, view=WORLD)
         self.font_small = Font(match_font('firacode'), FONT_SIZE)
-        self.enviro = enviro
+        pass
 
     def new_project(self, new_name: str):
         self.add_to_project_list(new_name)
@@ -50,8 +52,8 @@ class Manager:
         else:
             return False
 
-    def user_event(self, event):
-        self.gui.process_event(event)
+    def user_event(self, event, dt: float):
+        self.gui.process_event(event, dt)
 
     def update_gui(self, dt: float):
         self.gui.update(dt)
@@ -65,6 +67,67 @@ class Manager:
     def add_text(self, text: str, x: int, y: int, small_font: bool=True, color: Color=Color('white')):
        render_text = self.small_font.render(text, True, color)
        self.screen.blit(render_text, (x, y), )
+
+    def save_project(self):
+        project_name = self.enviro.project_name
+        if project_name != '' and isinstance(project_name, str):
+            self.add_to_projects_list(project_name)
+            i = 0
+            project = {}
+            creatures = []
+            project['name'] = project_name
+            project['time'] = self.enviro.get_time()
+            for creature in self.enviro.creature_list:
+                creature_to_save = {}
+                creature_to_save['gen'] = creature.generation
+                creature_to_save['size'] = creature.shape.radius
+                creature_to_save['x'] = creature.position.x
+                creature_to_save['y'] = creature.position.y
+                creature_to_save['color0'] = [creature.color0.r, creature.color0.g, creature.color0.b, creature.color0.a]
+                creature_to_save['color1'] = [creature.color1.r, creature.color1.g, creature.color1.b, creature.color1.a]
+                creature_to_save['color2'] = [creature.color2.r, creature.color2.g, creature.color2.b, creature.color2.a]
+                creature_to_save['neuro'] = creature.neuro.ToJSON()
+                creatures.append(creature_to_save)
+            project['creatures'] = creatures
+            if self.add_to_save_list(project_name, str(self.enviro.get_time(1))):
+                with open("saves/" + project_name + "/" + str(self.enviro.get_time(1)) + ".json", 'w+') as json_file:
+                    json.dump(project, json_file)
+                if not json_file.closed:
+                    json_file.close()
+    
+    def add_to_projects_list(self, project_name: str):
+        f = open("saves/projects.json", "r+")
+        proj_list = f.read()
+        f.close()
+        projects_list = json.loads(proj_list)
+        if not project_name in projects_list["projects"]:
+            projects_list["projects"].append(project_name)
+            proj_json = json.dumps(projects_list)
+            f = open("saves/projects.json", "w+")
+            f.write(proj_json)
+            f.close()
+            return True
+        else:
+            return False
+
+    def add_to_save_list(self, project_name: str, save_time: str):
+        saves_list = {}
+        try:
+            f = open("saves/" + project_name + "/saves.json", "r")
+            save_list = f.read()
+            f.close()
+            saves_list = json.loads(save_list)
+        except FileNotFoundError:
+            saves_list["saves"] = []
+        if not save_time in saves_list["saves"]:
+            saves_list["saves"].append(save_time)
+            save_json = json.dumps(saves_list)
+            f = open("saves/" + project_name + "/saves.json", "w+")
+            f.write(save_json)
+            f.close()
+            return True
+        else:
+            return False
 
     def draw_net(self, network: Network):
         if network:
