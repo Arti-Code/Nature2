@@ -22,11 +22,6 @@ from lib.config import *
 from lib.manager import Manager
 from lib.autoterrain import Terrain
 from lib.collisions import process_creature_plant_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end
-#from lib.test import Test
-
-white = (255, 255, 255, 75)
-red = (255, 0, 0, 75)
-darkblue = (0, 0, 10, 255)
 
 class Simulation():
 
