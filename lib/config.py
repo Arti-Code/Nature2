@@ -29,3 +29,6 @@ CREATURE_MAX_SIZE           = 7
 HIT                         = 400
 MEM_TIME                    = 0.3
 SENSOR_MAX_ANGLE            = PI/3
+# colors
+BROWN = (110, 50, 9)
+LIME = (127, 255, 0)

@@ -193,7 +193,7 @@ class Simulation():
         return wall
 
     def draw(self):
-        self.screen.fill(Color(darkblue))
+        self.screen.fill(Color('black'))
         #self.screen.blit(self.terr_img, (0, 0))
         for creature in self.creature_list:
             if creature == self.selected:
