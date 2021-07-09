@@ -85,6 +85,19 @@ class Simulation():
             plant = self.add_plant(WORLD)
             self.plant_list.append(plant)
 
+    def create_empty_world(self, world: tuple):
+        self.time = 0
+        self.cycles = 0
+        self.creature_list = []
+        self.plant_list = []
+        self.wall_list = []
+        edges = [(0, 0), (WORLD[0]-1, 0), (WORLD[0]-1, WORLD[1]-1), (0, WORLD[1]-1), (0, 0)]
+        for e in range(4):
+            p1 = edges[e]
+            p2 = edges[e+1]
+            wall = self.add_wall(p1, p2, 5)
+            self.wall_list.append(wall)
+
     def events(self):
         for event in pygame.event.get():
             self.manager.user_event(event, 1/self.dt)
@@ -167,8 +180,13 @@ class Simulation():
 
     def add_creature(self, world: tuple) -> Creature:
         size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
-        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=size, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=None)
+        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=size, color0=Color('blue'), color1=Color('skyblue'), color2=Color('orange'), color3=Color('red'))
         return creature
+
+    def add_saved_creature(self, size: int, color0: Color, color1: Color, color2: Color, position: tuple, generation: int, network_json: any):
+        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=size, color0=color0, color1=color1, color2=color2, color3=Color('red'), position=position, generation=generation, network=network_json)
+        creature.generation = generation
+        self.creature_list.append(creature)
 
     def add_plant(self, world: tuple) -> Plant:
         plant = Plant(screen=self.screen, space=self.space, sim=self, collision_tag=6, world_size=world, size=3, color0=Color(LIME), color1=Color('darkgreen'), color3=Color(BROWN))
@@ -213,7 +231,7 @@ class Simulation():
                 self.manager.draw_net(self.selected.neuro)
 
     def calc_time(self):
-        self.time += 0.01/self.dt
+        self.time += 0.1/self.dt
         if self.time > 1000:
             self.cycles += 1
             self.time = self.time%1000

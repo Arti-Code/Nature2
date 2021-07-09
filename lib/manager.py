@@ -129,6 +129,50 @@ class Manager:
         else:
             return False
 
+    def load_last_state(self, project_name: str):
+        f = open("saves/" + project_name + "/saves.json", "r")
+        save_list = f.read()
+        f.close()
+        saves = json.loads(save_list)
+        total_num = len(saves["saves"])
+        save_name = saves["saves"][total_num - 1]
+        self.load_project(project_name, save_name)
+
+    def load_project(self, project_name: str, save_num):
+        f = open("saves/" + project_name + "/" + str(save_num) + ".json", "r")
+        json_list = f.read()
+        obj_list = json.loads(json_list)
+        self.enviro.creature_list.clear()
+        self.enviro.create_empty_world(WORLD)
+        self.project_name = project_name
+        self.enviro.time = obj_list['time'] % 1000
+        self.enviro.cycle = round((obj_list['time'] / 100))
+        #obj_list['ranking1'].sort(key=Sort_By_Fitness, reverse=True)
+        #obj_list['ranking2'].sort(key=Sort_By_Fitness, reverse=True)
+        #self.enviro.ranking1 = []
+        #self.enviro.ranking2 = []
+        for c in obj_list['creatures']:
+            #neuro = Network()
+            #neuro.FromJSON(c['neuro'])
+            size = c['size']
+            gen = c['gen']
+            position = (c['x'], c['y'])
+            color0 = Color(c['color0'][0], c['color0'][1], c['color0'][2], c['color0'][3])
+            color1 = Color(c['color0'][0], c['color0'][1], c['color0'][2], c['color0'][3])
+            color2 = Color(c['color0'][0], c['color0'][1], c['color0'][2], c['color0'][3])
+            self.enviro.add_saved_creature(size, color0, color1, color2, position, gen, c['neuro'])
+        if not f.closed:
+            f.close()
+
+    def load_last(self, project_name: str):
+        f = open("saves/" + project_name + "/saves.json", "r")
+        save_list = f.read()
+        f.close()
+        saves = json.loads(save_list)
+        total_num = len(saves["saves"])
+        save_name = saves["saves"][total_num - 1]
+        self.load_project(project_name, save_name)
+
     def draw_net(self, network: Network):
         if network:
             h_space = 40

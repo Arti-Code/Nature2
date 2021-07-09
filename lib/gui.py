@@ -243,7 +243,8 @@ class GUI():
     def kill_title(self):
         self.title.kill()
         self.subtitle.kill()
-        self.world.kill()
+        if self.world:
+            self.world.kill()
 
     def create_enviro_win(self, dT: float):
         data = {}
@@ -319,8 +320,8 @@ class GUI():
                         #print(f"{sim_to_del} deleted!")
                 elif event.ui_object_id[0: 15] == '#load_win.#btn_':
                     project_name = event.ui_element.text
-                    self.owner.project_name = project_name
-                    self.owner.LoadLast(project_name)
+                    self.owner.enviro.project_name = project_name
+                    self.owner.load_last(project_name)
                     self.load_menu.kill()   
                     self.kill_title()
                     self.create_title(WORLD) 

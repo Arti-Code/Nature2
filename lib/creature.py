@@ -14,7 +14,7 @@ from lib.config import *
 
 class Creature(Life):
 
-    def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color, color3: Color, angle: float=None, visual_range: int=180, position: Vec2d=None, generation: int=0):
+    def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color, color3: Color, angle: float=None, visual_range: int=180, position: Vec2d=None, generation: int=0, network: Network=None):
         super().__init__(screen=screen, space=space, owner=sim, collision_tag=collision_tag, world_size=world_size, size=size, color0=color0, color1=color1, position=position)
         if angle:
             self.angle = angle
@@ -25,7 +25,10 @@ class Creature(Life):
         self.color3 = color3
         self.generation = generation
         self.neuro = Network()
-        self.neuro.BuildRandom([26, 0, 0, 0, 0, 0, 3], 0.3)
+        if network == None:
+            self.neuro.BuildRandom([26, 0, 0, 0, 0, 0, 3], 0.3)
+        else:
+            self.neuro.FromJSON(network)
         self.eye_colors = {}
         self.visual_range = visual_range
         self.sensors = []
