@@ -26,6 +26,10 @@ def process_creatures_collisions(arbiter, space, data):
     target.position += arbiter.normal*0.5
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
+    PA = target.position - agent.position
+    PA = PA.normalized()
+    #target_position = target.position
+    #angle_to = agent.rotation_vector(target.position-agent.position)
     if (size0+randint(0, 6)) > (size1+randint(0, 6)):
         dmg = HIT * dt
         target.energy -= dmg
