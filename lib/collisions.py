@@ -7,13 +7,11 @@ from lib.config import *
 
 def process_creature_plant_collisions(arbiter, space, data):
     dt = data['dt']
-    arbiter.shapes[0].body.position -= arbiter.normal*0.5
-    arbiter.shapes[1].body.position += arbiter.normal*0.2
-    #if arbiter.normal.angle <= 0.5 and arbiter.normal.angle >= -0.5:
     hunter = arbiter.shapes[0].body
     target = arbiter.shapes[1].body
+    hunter.position -= arbiter.normal*0.5
+    target.position += arbiter.normal*0.2
     target.color0 = Color('red')
-    #if isinstance(hunter, Creature) and isinstance(target, Plant):
     target.energy = target.energy - EAT*dt
     if target.energy > 0:
         hunter.eat(EAT*dt)
@@ -22,21 +20,21 @@ def process_creature_plant_collisions(arbiter, space, data):
 
 def process_creatures_collisions(arbiter, space, data):
     dt = data['dt']
-    arbiter.shapes[0].body.position -= arbiter.normal*0.5
-    arbiter.shapes[1].body.position += arbiter.normal*0.5
-    #if arbiter.normal.angle <= 0.5 and arbiter.normal.angle >= -0.5:
+    agent = arbiter.shapes[0].body
+    target = arbiter.shapes[1].body
+    agent.position -= arbiter.normal*0.5
+    target.position += arbiter.normal*0.5
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
     if (size0+randint(0, 6)) > (size1+randint(0, 6)):
         dmg = HIT * dt
-        arbiter.shapes[1].body.energy -= dmg
-        arbiter.shapes[1].body.color0=Color('red')
-        arbiter.shapes[0].body.eat(dmg*0.85)
-    arbiter.shapes[0].body.collide_creature = True
+        target.energy -= dmg
+        target.color0=Color('red')
+        agent.eat(dmg*0.85)
+    agent.collide_creature = True
     return True
 
 def process_edge_collisions(arbiter, space, data):
-    #arbiter.shapes[0].body.angle += arbiter.normal.angle
     arbiter.shapes[0].body.position -= arbiter.normal * 1.5
     arbiter.shapes[0].body.collide_something = True
     return True
