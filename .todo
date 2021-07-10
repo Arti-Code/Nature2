@@ -19,9 +19,9 @@ NATURE:
         ✔ drawing neural network
         ✔ move gui from Evolution project (first step)
         ✔ main Simulation class
-        ☐ create named simulations
-        ☐ save simulations state
-        ☐ load simulations state
+        ✔ create named simulations
+        ✔ save simulations state
+        ✔ load simulations state
         ☐ save single creature
         ☐ load single creature
         ☐ save single network

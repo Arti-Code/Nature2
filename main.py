@@ -22,11 +22,6 @@ from lib.config import *
 from lib.manager import Manager
 from lib.autoterrain import Terrain
 from lib.collisions import process_creature_plant_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end
-#from lib.test import Test
-
-white = (255, 255, 255, 75)
-red = (255, 0, 0, 75)
-darkblue = (0, 0, 10, 255)
 
 class Simulation():
 
@@ -48,7 +43,7 @@ class Simulation():
         self.clock = pygame.time.Clock()
         self.sel_idx = 0
         self.show_network = False
-        self.manager = Manager(screen=self.screen)
+        self.manager = Manager(screen=self.screen, enviro=self)
 
         pygame.init()
         #self.create_enviro(WORLD)
@@ -58,9 +53,16 @@ class Simulation():
         self.selected = None
         self.options = pymunk.pygame_util.DrawOptions(self.screen)
         self.space.debug_draw(self.options)
+        self.time = 0
+        self.cycles = 0
 
-    def create_enviro(self, world: tuple):
-        edges = [(5, 5), (world[0]-5, 5), (world[0]-5, world[1]-5), (5, world[1]-5), (5, 5)]
+    def create_enviro(self, world: tuple=None):
+        self.time = 0
+        self.cycles = 0
+        self.kill_all_creatures()
+        self.kill_all_plants()
+        self.wall_list = []
+        edges = [(0, 0), (WORLD[0]-1, 0), (WORLD[0]-1, WORLD[1]-1), (0, WORLD[1]-1), (0, 0)]
         for e in range(4):
             p1 = edges[e]
             p2 = edges[e+1]
@@ -71,28 +73,37 @@ class Simulation():
         #terrain = Terrain(self.screen, self.space, 'water3.png', 8)
 
         for c in range(CREATURE_INIT_NUM):
-            creature = self.add_creature(world)
+            creature = self.add_creature(WORLD)
             self.creature_list.append(creature)
 
         for p in range(PLANT_INIT_NUM):
-            plant = self.add_plant(world)
+            plant = self.add_plant(WORLD)
             self.plant_list.append(plant)
+
+    def create_empty_world(self, world: tuple):
+        self.time = 0
+        self.cycles = 0
+        self.kill_all_creatures()
+        self.kill_all_plants()
+        self.wall_list = []
+        edges = [(0, 0), (WORLD[0]-1, 0), (WORLD[0]-1, WORLD[1]-1), (0, WORLD[1]-1), (0, 0)]
+        for e in range(4):
+            p1 = edges[e]
+            p2 = edges[e+1]
+            wall = self.add_wall(p1, p2, 5)
+            self.wall_list.append(wall)
 
     def events(self):
         for event in pygame.event.get():
-            #if event.type == pygame.USEREVENT:
-            if self.manager.user_event(event):
-                pass
-            else:
-                if event.type == pygame.QUIT:
-                    self.running = False
-                if event.type == pygame.KEYDOWN:
-                    self.key_events(event)
-                if event.type == pg.MOUSEBUTTONDOWN:
-                    print(f'button: {event.button}')
-                    if event.button == 3:
-                        self.mouse_events(event)
-        
+            self.manager.user_event(event, 1/self.dt)
+            if event.type == pygame.QUIT:
+                self.running = False
+            if event.type == pygame.KEYDOWN:
+                self.key_events(event)
+            if event.type == pg.MOUSEBUTTONDOWN:
+                if event.button == 3:
+                    self.mouse_events(event)
+
     def key_events(self, event):
         if event.key == pygame.K_ESCAPE:
             self.running = False
@@ -164,8 +175,13 @@ class Simulation():
 
     def add_creature(self, world: tuple) -> Creature:
         size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
-        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=world, size=size, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=None)
+        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=size, color0=Color('blue'), color1=Color('skyblue'), color2=Color('orange'), color3=Color('red'))
         return creature
+
+    def add_saved_creature(self, size: int, color0: Color, color1: Color, color2: Color, color3: Color, position: tuple, generation: int, network_json: any):
+        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=size, color0=color0, color1=color1, color2=color2, color3=color3, position=position, generation=generation, network=network_json)
+        creature.generation = generation
+        self.creature_list.append(creature)
 
     def add_plant(self, world: tuple) -> Plant:
         plant = Plant(screen=self.screen, space=self.space, sim=self, collision_tag=6, world_size=world, size=3, color0=Color(LIME), color1=Color('darkgreen'), color3=Color(BROWN))
@@ -177,7 +193,7 @@ class Simulation():
         return wall
 
     def draw(self):
-        self.screen.fill(Color(darkblue))
+        self.screen.fill(Color('black'))
         #self.screen.blit(self.terr_img, (0, 0))
         for creature in self.creature_list:
             if creature == self.selected:
@@ -209,7 +225,28 @@ class Simulation():
             if isinstance(self.selected, Creature):
                 self.manager.draw_net(self.selected.neuro)
 
+    def calc_time(self):
+        self.time += 0.1/self.dt
+        if self.time > 1000:
+            self.cycles += 1
+            self.time = self.time%1000
+
+    def get_time(self, digits: int=0):
+        t = self.cycles*1000 + round(self.time, digits)
+        return t
+
+    def kill_all_creatures(self):
+        for creature in self.creature_list:
+            creature.kill(self.space)
+        self.creature_list = []
+
+    def kill_all_plants(self):
+        for plant in self.plant_list:
+            plant.kill(self.space)
+        self.plant_list = []
+
     def update(self):
+        self.calc_time()
         for creature in self.creature_list:
             if creature.energy <= 0:
                 creature.kill(self.space)

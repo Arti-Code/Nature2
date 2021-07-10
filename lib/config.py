@@ -1,23 +1,23 @@
 from math import pi as PI
 
-TITLE = 'NATURE v0.2.3'
+TITLE = 'NATURE v0.2.5'
 SUBTITLE = "2019-2021 Artur Gwoździowski"
-WORLD                       = (1700, 850)
-SCREEN                      = (1700, 850)
-FONT_SIZE                   = 14
-#WORLD                       = (1500, 750)
-#SCREEN                      = (1500, 750)
-#FONT_SIZE                   = 10
+#WORLD                       = (1700, 850)
+#SCREEN                      = (1700, 850)
+#FONT_SIZE                   = 16
+WORLD                       = (600, 400)
+SCREEN                      = (600, 400)
+FONT_SIZE                   = 10
 PLANT_MAX_SIZE              = 11
 PLANT_GROWTH                = 0.6
-PLANT_INIT_NUM              = 100
+PLANT_INIT_NUM              = 25
 PLANT_LIFE                  = 300
 PLANT_MULTIPLY              = 0.04
 CREATURE_MULTIPLY           = 0.004
 EAT                         = 400
-CREATURE_INIT_NUM           = 100
-BASE_ENERGY                 = 0.0008
-MOVE_ENERGY                 = 0.002
+CREATURE_INIT_NUM           = 10
+BASE_ENERGY                 = 0.001
+MOVE_ENERGY                 = 0.003
 REP_TIME                    = 20
 REP_ENERGY                  = 0.25
 SPEED                       = 1
