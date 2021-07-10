@@ -59,8 +59,8 @@ class Simulation():
     def create_enviro(self, world: tuple=None):
         self.time = 0
         self.cycles = 0
-        self.creature_list = []
-        self.plant_list = []
+        self.kill_all_creatures()
+        self.kill_all_plants()
         self.wall_list = []
         edges = [(0, 0), (WORLD[0]-1, 0), (WORLD[0]-1, WORLD[1]-1), (0, WORLD[1]-1), (0, 0)]
         for e in range(4):
@@ -83,8 +83,8 @@ class Simulation():
     def create_empty_world(self, world: tuple):
         self.time = 0
         self.cycles = 0
-        self.creature_list = []
-        self.plant_list = []
+        self.kill_all_creatures()
+        self.kill_all_plants()
         self.wall_list = []
         edges = [(0, 0), (WORLD[0]-1, 0), (WORLD[0]-1, WORLD[1]-1), (0, WORLD[1]-1), (0, 0)]
         for e in range(4):
@@ -178,8 +178,8 @@ class Simulation():
         creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=size, color0=Color('blue'), color1=Color('skyblue'), color2=Color('orange'), color3=Color('red'))
         return creature
 
-    def add_saved_creature(self, size: int, color0: Color, color1: Color, color2: Color, position: tuple, generation: int, network_json: any):
-        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=size, color0=color0, color1=color1, color2=color2, color3=Color('red'), position=position, generation=generation, network=network_json)
+    def add_saved_creature(self, size: int, color0: Color, color1: Color, color2: Color, color3: Color, position: tuple, generation: int, network_json: any):
+        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=size, color0=color0, color1=color1, color2=color2, color3=color3, position=position, generation=generation, network=network_json)
         creature.generation = generation
         self.creature_list.append(creature)
 
@@ -234,6 +234,16 @@ class Simulation():
     def get_time(self, digits: int=0):
         t = self.cycles*1000 + round(self.time, digits)
         return t
+
+    def kill_all_creatures(self):
+        for creature in self.creature_list:
+            creature.kill(self.space)
+        self.creature_list = []
+
+    def kill_all_plants(self):
+        for plant in self.plant_list:
+            plant.kill(self.space)
+        self.plant_list = []
 
     def update(self):
         self.calc_time()

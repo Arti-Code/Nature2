@@ -81,11 +81,12 @@ class Manager:
                 creature_to_save = {}
                 creature_to_save['gen'] = creature.generation
                 creature_to_save['size'] = creature.shape.radius
-                creature_to_save['x'] = creature.position.x
-                creature_to_save['y'] = creature.position.y
+                creature_to_save['x'] = round(creature.position.x)
+                creature_to_save['y'] = round(creature.position.y)
                 creature_to_save['color0'] = [creature.color0.r, creature.color0.g, creature.color0.b, creature.color0.a]
                 creature_to_save['color1'] = [creature.color1.r, creature.color1.g, creature.color1.b, creature.color1.a]
                 creature_to_save['color2'] = [creature.color2.r, creature.color2.g, creature.color2.b, creature.color2.a]
+                creature_to_save['color3'] = [creature.color3.r, creature.color3.g, creature.color3.b, creature.color3.a]
                 creature_to_save['neuro'] = creature.neuro.ToJSON()
                 creatures.append(creature_to_save)
             project['creatures'] = creatures
@@ -142,7 +143,7 @@ class Manager:
         f = open("saves/" + project_name + "/" + str(save_num) + ".json", "r")
         json_list = f.read()
         obj_list = json.loads(json_list)
-        self.enviro.creature_list.clear()
+        #self.enviro.creature_list.clear()
         self.enviro.create_empty_world(WORLD)
         self.project_name = project_name
         self.enviro.time = obj_list['time'] % 1000
@@ -158,9 +159,10 @@ class Manager:
             gen = c['gen']
             position = (c['x'], c['y'])
             color0 = Color(c['color0'][0], c['color0'][1], c['color0'][2], c['color0'][3])
-            color1 = Color(c['color0'][0], c['color0'][1], c['color0'][2], c['color0'][3])
-            color2 = Color(c['color0'][0], c['color0'][1], c['color0'][2], c['color0'][3])
-            self.enviro.add_saved_creature(size, color0, color1, color2, position, gen, c['neuro'])
+            color1 = Color(c['color1'][0], c['color1'][1], c['color1'][2], c['color1'][3])
+            color2 = Color(c['color2'][0], c['color2'][1], c['color2'][2], c['color2'][3])
+            color3 = Color(c['color3'][0], c['color3'][1], c['color3'][2], c['color3'][3])
+            self.enviro.add_saved_creature(size, color0, color1, color2, color3, position, gen, c['neuro'])
         if not f.closed:
             f.close()
 
