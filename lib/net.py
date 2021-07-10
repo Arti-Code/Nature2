@@ -158,7 +158,7 @@ class Network():
         self.log = []
 
     def BuildRandom(self, node_list=[83, 0, 0, 0, 0, 0, 5], link_rate=0.5):
-        """Method for setup new neural network based on node_list and link_rate parameters. This method shoud be run just after object creation."""
+        """Method for setup new neural network based on node_list and link_rate parameters. This method should be run just after object creation."""
         for lay1 in range(len(node_list)):
             if lay1 == 0:
                 layer_type = TYPE.INPUT

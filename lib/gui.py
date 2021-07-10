@@ -11,8 +11,6 @@ from pygame_gui.elements import UITextBox, UIWindow, UIButton, UILabel, UITextEn
 from lib.config import *
 
 
-TITLE = "NATURE v0.2.1"
-SUBTITLE = "2019-2021 Artur Gwoździowski  v0.2.2"
 btn_w = 150
 btn_h = 30
 btn_s = 10
@@ -23,17 +21,10 @@ class NewSimWindow(UIWindow):
 
         super().__init__(rect, manager=manager, window_display_title='New Simulation', object_id="#new_win", visible=True)
         self.manager = manager
-        self.label = UILabel(Rect((150, 15), (300, 15)), text='Enter New Project Name', manager=manager, container=self, parent_element=self)
-        self.edit = UITextEntryLine(Rect((150, 50), (300, 20)), manager=manager, container=self, parent_element=self)
-
-        self.label = UILabel(Rect((20, 100), (100, 20)), text='World Size (X)', manager=manager, container=self, parent_element=self)
-        self.world_x = UITextEntryLine(Rect((120, 100), (60, 20)), manager=manager, container=self, parent_element=self)
-        
-        self.label = UILabel(Rect((320, 100), (100, 20)), text='World Size (Y)', manager=manager, container=self, parent_element=self)
-        self.world_y = UITextEntryLine(Rect((420, 100), (60, 20)), manager=manager, container=self, parent_element=self)
-        
-        self.cancel = UIButton(Rect((150, 230), (100, 30)), text='Cancel', manager=manager, container=self, parent_element=self, object_id='#btn_cancel')
-        self.accept = UIButton(Rect((350, 230), (100, 30)), text='Accept', manager=manager, container=self, parent_element=self, object_id='#btn_accept')
+        self.label = UILabel(Rect((50, 15), (200, 15)), text='Enter New Project Name', manager=manager, container=self, parent_element=self)
+        self.edit = UITextEntryLine(Rect((50, 50), (200, 20)), manager=manager, container=self, parent_element=self)
+        self.cancel = UIButton(Rect((50, 100), (75, 30)), text='Cancel', manager=manager, container=self, parent_element=self, object_id='#btn_cancel')
+        self.accept = UIButton(Rect((175, 100), (75, 30)), text='Accept', manager=manager, container=self, parent_element=self, object_id='#btn_accept')
 
 class SelectNet(UIWindow):
 
@@ -219,9 +210,9 @@ class GUI():
         self.set_win = SettingsWindow(manager=self.ui_mgr, rect=pos)
 
     def create_new_sim(self):
-        w = 600
-        h = 300
-        pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
+        w = 300
+        h = 150
+        pos = Rect((self.cx-w/2, self.cy-h/2), (w, h+25))
         self.main_menu.kill()
         self.new_sim = NewSimWindow(manager=self.ui_mgr, rect=pos)
 
@@ -239,30 +230,30 @@ class GUI():
 
     def create_title(self, scr_size: tuple):
         w = 350
-        h = 40
+        h = 25
         h2 = 15
-        title_rect = Rect((round(scr_size[0]/2-w/2), (10)), (w, h))
-        subtitle_rect = Rect((round(scr_size[0]/2-w/2), (35)), (w, h2))
-        world_rect = Rect((round(scr_size[0]/2-w/2), (50)), (w, h))
+        title_rect = Rect((round(SCREEN[0]/2-w/2), (10)), (w, h))
+        subtitle_rect = Rect((round(SCREEN[0]/2-w/2), (40)), (w, h2))
+        world_rect = Rect((round(SCREEN[0]/2-w/2), (55)), (w, h2))
         self.title = UILabel(relative_rect=title_rect, text=TITLE, manager=self.ui_mgr, object_id='#lab_title')
         self.subtitle = UILabel(relative_rect=subtitle_rect, text=SUBTITLE, manager=self.ui_mgr, object_id='#lab_subtitle')
-        #self.world = UILabel(relative_rect=world_rect, text=self.owner.project_name, manager=self.ui_mgr, object_id='#lab_world')
+        if self.owner.enviro.project_name != None:
+            self.world = UILabel(relative_rect=world_rect, text=self.owner.enviro.project_name, manager=self.ui_mgr, object_id='#lab_world')
 
     def kill_title(self):
         self.title.kill()
         self.subtitle.kill()
-        self.world.kill()
+        if self.world:
+            self.world.kill()
 
     def create_enviro_win(self, dT: float):
         data = {}
-        data['FPS'] = str(round(self.owner.enviro.fps))
-        data['TIME'] = str(self.owner.enviro.Time())
-        data['CREATURES'] = str(len(self.owner.enviro.my_creatures))
-        data['PREDATORS'] = str(self.owner.enviro.hunter_num)
-        data['HERBIVORES'] = str(self.owner.enviro.herbs_num)
-        data['PLANTS'] = str(len(self.owner.enviro.my_plants))
-        if self.owner.enviro.dt:
-            data['DELTA'] = str(round(self.owner.enviro.dt*1000))
+        data['FPS'] = str(round(self.owner.enviro.FPS))
+        data['TIME'] = str(round(self.owner.enviro.get_time()))
+        #data['CREATURES'] = str(len(self.owner.enviro.my_creatures))
+        #data['PREDATORS'] = str(self.owner.enviro.hunter_num)
+        #data['HERBIVORES'] = str(self.owner.enviro.herbs_num)
+        #data['PLANTS'] = str(len(self.owner.enviro.my_plants))
         self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((5, 5), (200, 150)), data=data, dT=dT)
 
     def select_map(self):
@@ -276,17 +267,17 @@ class GUI():
 
     def update_enviroment(self, dT: float) -> dict:
         data = {}
-        data['FPS'] = str(round(self.owner.enviro.fps))
-        data['TIME'] = str(self.owner.enviro.Time())
-        data['CREATURES'] = str(len(self.owner.enviro.my_creatures))
-        data['PREDATORS'] = str(self.owner.enviro.hunter_num)
-        data['HERBIVORES'] = str(self.owner.enviro.herbs_num)
-        data['PLANTS'] = str(len(self.owner.enviro.my_plants))
-        if dT:
-            data['DELTA'] = str(round(dT, 3))
+        data['FPS'] = str(self.owner.enviro.FPS)
+        data['TIME'] = str(self.owner.enviro.get_time(1))
+        #data['CREATURES'] = str(len(self.owner.enviro.my_creatures))
+        #data['PREDATORS'] = str(self.owner.enviro.hunter_num)
+        #data['HERBIVORES'] = str(self.owner.enviro.herbs_num)
+        #data['PLANTS'] = str(len(self.owner.enviro.my_plants))
+        #if dT:
+        #    data['DELTA'] = str(round(dT, 3))
         return data
 
-    def process_event(self, event):
+    def process_event(self, event, dt: float):
         self.ui_mgr.process_events(event)
         if event.type == pygame.USEREVENT:
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
@@ -299,10 +290,9 @@ class GUI():
                     self.main_menu.kill()
                     self.select_map()
                 elif event.ui_object_id == '#menu_win.#btn_save':
-                    project_name = self.owner.project_name
-                    self.owner.SaveProject(project_name)
+                    self.owner.save_project()
                     self.main_menu.kill()
-                    self.create_info_win(text=f"Project {project_name.upper()} has been saved", title='Save Simulation')
+                    self.create_info_win(text=f"Project {self.owner.enviro.project_name.upper()} has been saved", title='Save Simulation')
                 elif event.ui_object_id == '#menu_win.#btn_load':
                     self.main_menu.kill()
                     self.create_load_menu()
@@ -311,10 +301,11 @@ class GUI():
                     self.create_main_menu()
                 elif event.ui_object_id == '#new_win.#btn_accept':
                     new_name = self.new_sim.edit.get_text()                    
-                    self.owner.project_name = new_name
+                    self.owner.enviro.project_name = new_name
                     self.new_project_name(new_name)
                     self.new_sim.kill()
-                    self.owner.enviro.CreateWorld(dT)
+                    self.create_title(WORLD)
+                    self.owner.enviro.create_enviro()
                     self.create_info_win(text='Project created with name: ' + new_name, title=new_name)
                 elif event.ui_object_id == '#menu_win.#btn_set':
                     self.main_menu.kill()
@@ -329,11 +320,11 @@ class GUI():
                         #print(f"{sim_to_del} deleted!")
                 elif event.ui_object_id[0: 15] == '#load_win.#btn_':
                     project_name = event.ui_element.text
-                    self.owner.project_name = project_name
-                    self.owner.LoadLast(project_name)
+                    self.owner.enviro.project_name = project_name
+                    self.owner.load_last(project_name)
                     self.load_menu.kill()   
                     self.kill_title()
-                    self.create_title((self.view[0], self.view[1])) 
+                    self.create_title(WORLD) 
                     self.create_info_win(text=f"Project {project_name.upper()} has been loaded", title='Load Simulation')
                 elif event.ui_object_id == '#load_win.#load_back':
                     self.load_menu.kill()
@@ -345,7 +336,7 @@ class GUI():
                     self.create_main_menu()
                 elif event.ui_object_id == '#set_win.#btn_gui':
                     self.set_win.kill()
-                    self.create_enviro_win(dT)
+                    self.create_enviro_win(dt)
                 elif event.ui_object_id == '#enviro_win.#btn_quit':
                     self.enviro_win.kill()
                 elif event.ui_object_id == '#menu_win.#btn_quit':
@@ -362,7 +353,6 @@ class GUI():
         self.ui_mgr.draw_ui(screen)
 
     def new_project_name(self, name: str):
-        PROJECT_NAME = copy(name)
         try:
             os.mkdir('saves/' + name)
             #print(f"new project name set: {name.upper()} with new directory")

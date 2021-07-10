@@ -5,6 +5,10 @@
         "aaline",
         "dists",
         "doublebuf",
-        "hwsurface"
+        "fira",
+        "font",
+        "hwsurface",
+        "subtitl",
+        "titl"
     ]
 }

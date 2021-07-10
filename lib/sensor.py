@@ -16,6 +16,9 @@ class SensorData():
         self.plant = False
         self.p_distance = -1
         self.p_direction = 0
+        self.obstacle = False
+        self.obst_distance = -1
+        self.obst_direction = 0
 
     def update(self, direction: float):
         self.direction = (direction/abs(self.max_angle))
@@ -30,16 +33,24 @@ class SensorData():
         self.p_distance = 1 - (distance/self.detection_range)
         self.p_direction = (direction/abs(self.max_angle))
 
+    def send_data3(self, detect: bool, distance: float, direction: float):
+        self.obstacle = detect
+        self.obst_distance = 1 - (distance/self.detection_range)
+        self.obst_direction = (direction/abs(self.max_angle))
+
     def reset(self):
         self.enemy = False
         self.plant = False
+        self.obstacle = False
         self.distance = -1
         self.direction = 0
         self.p_distance = -1
         self.p_direction = 0
+        self.obst_distance = -1
+        self.obst_direction = 0
 
     def get_data(self):
-        return (self.enemy, self.distance, self.direction, self.plant, self.p_distance, self.p_direction)
+        return (self.enemy, self.distance, self.direction, self.plant, self.p_distance, self.p_direction, self.obstacle, self.obst_distance, self.obst_direction)
         
 class Sensor():
 
@@ -56,15 +67,18 @@ class Sensor():
         self.data = SensorData(max_angle=PI, detection_range=length)
         global white
         global red
-        white = (255, 255, 255, 75)
+        white = (255, 255, 255, 150)
         red = (255, 0, 0, 75)
         self.color = Color(white)
 
     def draw(self, screen: Surface):
         p1 = (self.shape.body.position.x, self.shape.body.position.y)
-        rv = (self.body.rotation_vector.rotated(self.angle))*self.length
-        p2 = (p1[0]+rv[0], p1[1]+rv[1])
+        rv = self.body.rotation_vector.rotated(self.angle)
+        p2 = (p1[0]+rv[0]*self.length, p1[1]+rv[1]*self.length)
         gfxdraw.line(screen, int(p1[0]), flipy(int(p1[1])), int(p2[0]), flipy(int(p2[1])), self.color)
+        if self.data.obstacle:
+            c = (p1[0]+rv[0]*(1-self.data.obst_distance)*self.length, p1[1]+rv[1]*(1-self.data.obst_distance)*self.length)
+            gfxdraw.filled_circle(screen, int(c[0]), flipy(int(c[1])), 5, Color('red'))
         self.set_color(Color(white))
 
     def set_color(self, color: Color):
@@ -82,6 +96,9 @@ class Sensor():
 
     def send_data2(self, detect: bool, distance: float):
         self.data.send_data2(detect=detect, distance=distance, direction=self.angle)
+
+    def send_data3(self, detect: bool, distance: float):
+        self.data.send_data3(detect=detect, distance=distance, direction=self.angle)
 
     def reset_data(self):
         self.data.reset()
