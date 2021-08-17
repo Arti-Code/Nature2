@@ -1,6 +1,6 @@
 from math import pi as PI
 
-TITLE = 'NATURE v0.2.6'
+TITLE = 'NATURE v0.2.7'
 SUBTITLE = "2019-2021 Artur Gwoździowski"
 WORLD                       = (1900, 950)
 SCREEN                      = (1900, 950)
