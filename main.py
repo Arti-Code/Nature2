@@ -68,7 +68,7 @@ class Simulation():
             x = sin(vert_ang)*size + (random()*2-1)*size*0.4
             y = cos(vert_ang)*size + (random()*2-1)*size*0.4
             vertices.append(Vec2d(x, y)+position)
-        rock = Rock(self.screen, self.space, vertices, 5, Color('navy'), Color('grey'))
+        rock = Rock(self.screen, self.space, vertices, 1, Color('gray8'), Color('gray88'))
         self.wall_list.append(rock)
         # for v in range(len(vertices)):
         #    if v < len(vertices)-1:
@@ -93,7 +93,7 @@ class Simulation():
         #self.terr_img = image.load('res/fonts/water3.png')
         # self.terr_img.convert_alpha()
         #terrain = Terrain(self.screen, self.space, 'water3.png', 8)
-        self.create_rocks(5)
+        self.create_rocks(8)
 
         for c in range(CREATURE_INIT_NUM):
             creature = self.add_creature(WORLD)
@@ -103,7 +103,7 @@ class Simulation():
         
     def create_rocks(self, rock_num: int):
         for _r in range(rock_num):
-            self.create_rock(11, 150, random_position(WORLD))
+            self.create_rock(8, 150, random_position(WORLD))
 
     def create_plants(self, plant_num: int):
         for p in range(plant_num):
