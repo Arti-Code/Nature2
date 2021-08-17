@@ -1,15 +1,15 @@
 import os
 import sys
 from time import time
-from math import degrees, hypot
+from math import degrees, hypot, sin, cos
 from statistics import mean
 from random import randint, random
 from typing import Union
 import pygame
 import pygame as pg
 from pygame import Color, Surface, image
-from pygame.constants import K_n
-from pygame.font import Font, match_font 
+from pygame.constants import *
+from pygame.font import Font, match_font
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 import pymunk.pygame_util
 from lib.life import Life
@@ -21,7 +21,9 @@ from lib.math2 import set_world, world, flipy
 from lib.config import *
 from lib.manager import Manager
 from lib.autoterrain import Terrain
+from lib.rock import Rock
 from lib.collisions import process_creature_plant_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end
+
 
 class Simulation():
 
@@ -35,7 +37,8 @@ class Simulation():
         self.plant_list = []
         self.wall_list = []
         flags = pygame.DOUBLEBUF | pygame.HWSURFACE
-        self.screen = pygame.display.set_mode(size=view_size, flags=flags, vsync=1)
+        self.screen = pygame.display.set_mode(
+            size=view_size, flags=flags, vsync=1)
         self.space = Space()
         self.FPS = 30
         self.dt = 1/self.FPS
@@ -46,7 +49,7 @@ class Simulation():
         self.manager = Manager(screen=self.screen, enviro=self)
 
         pygame.init()
-        #self.create_enviro(WORLD)
+        # self.create_enviro(WORLD)
         self.space.gravity = (0.0, 0.0)
         self.set_collision_calls()
         pymunk.pygame_util.positive_y_is_up = True
@@ -55,13 +58,32 @@ class Simulation():
         self.space.debug_draw(self.options)
         self.time = 0
         self.cycles = 0
+        self.draw_debug: bool=False
 
-    def create_enviro(self, world: tuple=None):
+    def create_rock(self, vert_num: int, size: int, position: Vec2d):
+        ang_step = (2*PI)/vert_num
+        vertices = []
+        for v in range(vert_num):
+            vert_ang = v*ang_step + (random()*2-1)*ang_step*0.4
+            x = sin(vert_ang)*size + (random()*2-1)*size*0.4
+            y = cos(vert_ang)*size + (random()*2-1)*size*0.4
+            vertices.append(Vec2d(x, y)+position)
+        rock = Rock(self.screen, self.space, vertices, 5, Color('navy'), Color('grey'))
+        self.wall_list.append(rock)
+        # for v in range(len(vertices)):
+        #    if v < len(vertices)-1:
+        #        wall = self.add_wall(vertices[v], vertices[v+1], 5)
+        #        self.wall_list.append(wall)
+        #    else:
+        #        wall = self.add_wall(vertices[v], vertices[0], 5)
+        #        self.wall_list.append(wall)
+
+    def create_enviro(self, world: tuple = None):
         self.time = 0
         self.cycles = 0
         self.kill_all_creatures()
         self.kill_all_plants()
-        self.wall_list = []
+        self.kill_things()
         edges = [(0, 0), (WORLD[0]-1, 0), (WORLD[0]-1, WORLD[1]-1), (0, WORLD[1]-1), (0, 0)]
         for e in range(4):
             p1 = edges[e]
@@ -69,14 +91,22 @@ class Simulation():
             wall = self.add_wall(p1, p2, 5)
             self.wall_list.append(wall)
         #self.terr_img = image.load('res/fonts/water3.png')
-        #self.terr_img.convert_alpha()
+        # self.terr_img.convert_alpha()
         #terrain = Terrain(self.screen, self.space, 'water3.png', 8)
+        self.create_rocks(5)
 
         for c in range(CREATURE_INIT_NUM):
             creature = self.add_creature(WORLD)
             self.creature_list.append(creature)
 
-        for p in range(PLANT_INIT_NUM):
+        self.create_plants(PLANT_INIT_NUM)
+        
+    def create_rocks(self, rock_num: int):
+        for _r in range(rock_num):
+            self.create_rock(11, 150, random_position(WORLD))
+
+    def create_plants(self, plant_num: int):
+        for p in range(plant_num):
             plant = self.add_plant(WORLD)
             self.plant_list.append(plant)
 
@@ -85,7 +115,7 @@ class Simulation():
         self.cycles = 0
         self.kill_all_creatures()
         self.kill_all_plants()
-        self.wall_list = []
+        self.kill_things()
         edges = [(0, 0), (WORLD[0]-1, 0), (WORLD[0]-1, WORLD[1]-1), (0, WORLD[1]-1), (0, 0)]
         for e in range(4):
             p1 = edges[e]
@@ -122,6 +152,8 @@ class Simulation():
                     self.selected = self.creature_list[self.sel_idx]
         if event.key == pygame.K_n:
             self.show_network = not self.show_network
+        if event.key == pygame.K_d:
+            self.draw_debug = not self.draw_debug
 
     def mouse_events(self, event):
         self.selected = None
@@ -175,31 +207,37 @@ class Simulation():
 
     def add_creature(self, world: tuple) -> Creature:
         size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
-        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=size, color0=Color('blue'), color1=Color('skyblue'), color2=Color('orange'), color3=Color('red'))
+        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD,
+                            size=size, color0=Color('blue'), color1=Color('skyblue'), color2=Color('orange'), color3=Color('red'))
         return creature
 
     def add_saved_creature(self, size: int, color0: Color, color1: Color, color2: Color, color3: Color, position: tuple, generation: int, network_json: any):
-        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=size, color0=color0, color1=color1, color2=color2, color3=color3, position=position, generation=generation, network=network_json)
+        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=size, color0=color0,
+                            color1=color1, color2=color2, color3=color3, position=position, generation=generation, network=network_json)
         creature.generation = generation
         self.creature_list.append(creature)
 
     def add_plant(self, world: tuple) -> Plant:
-        plant = Plant(screen=self.screen, space=self.space, sim=self, collision_tag=6, world_size=world, size=3, color0=Color(LIME), color1=Color('darkgreen'), color3=Color(BROWN))
+        plant = Plant(screen=self.screen, space=self.space, sim=self, collision_tag=6, world_size=world,
+                      size=3, color0=Color(LIME), color1=Color('darkgreen'), color3=Color(BROWN))
         return plant
 
     def add_wall(self, point0: tuple, point1: tuple, thickness: float) -> Wall:
-        wall = Wall(self.screen, self.space, point0, point1, thickness, Color('gray'), Color('gray'))
+        wall = Wall(self.screen, self.space, point0, point1,
+                    thickness, Color('gray'), Color('navy'))
         #space.add(wall.shape, wall.body)
         return wall
 
     def draw(self):
         self.screen.fill(Color('black'))
         #self.screen.blit(self.terr_img, (0, 0))
-        for creature in self.creature_list:
-            if creature == self.selected:
-                creature.draw_detectors(screen=self.screen)
+        # for creature in self.creature_list:
+        #    if creature == self.selected:
+        #        creature.draw_detectors(screen=self.screen)
+
         for creature in self.creature_list:
             creature.draw(screen=self.screen, selected=self.selected)
+            creature.draw_detectors(screen=self.screen)
 
         for plant in self.plant_list:
             plant.draw(screen=self.screen, selected=self.selected)
@@ -215,9 +253,11 @@ class Simulation():
         font = Font(match_font('firacode'), FONT_SIZE)
         font.set_bold(True)
         if self.selected != None:
-            info = font.render(f'energy: {round(self.selected.energy, 2)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation}', True, Color('yellowgreen'))
+            info = font.render(
+                f'energy: {round(self.selected.energy, 2)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation}', True, Color('yellowgreen'))
             self.screen.blit(info, (SCREEN[0]/2-150, SCREEN[1]-25), )
-        count = font.render(f'creatures: {len(self.creature_list)} | plants: {len(self.plant_list)} | neuro time: {round(self.time_text, 4)}s | physx time: {round(self.physics_avg_time , 4)}s', True, Color('yellow'))
+        count = font.render(
+            f'creatures: {len(self.creature_list)} | plants: {len(self.plant_list)} | neuro time: {round(self.time_text, 4)}s | physx time: {round(self.physics_avg_time , 4)}s', True, Color('yellow'))
         self.screen.blit(count, (20, SCREEN[1]-25), )
 
     def draw_network(self):
@@ -229,9 +269,9 @@ class Simulation():
         self.time += 0.1/self.dt
         if self.time > 1000:
             self.cycles += 1
-            self.time = self.time%1000
+            self.time = self.time % 1000
 
-    def get_time(self, digits: int=0):
+    def get_time(self, digits: int = 0):
         t = self.cycles*1000 + round(self.time, digits)
         return t
 
@@ -244,6 +284,11 @@ class Simulation():
         for plant in self.plant_list:
             plant.kill(self.space)
         self.plant_list = []
+
+    def kill_things(self):
+        for wall in self.wall_list:
+            wall.kill(self.space)
+        self.wall_list = []
 
     def update(self):
         self.calc_time()
@@ -259,7 +304,7 @@ class Simulation():
         temp_list = []
         neuro_time = time()
         for creature in self.creature_list:
-            #creature.get_input()
+            # creature.get_input()
             creature.analize()
         neuro_time = time()-neuro_time
         self.times.append(neuro_time)
@@ -272,8 +317,10 @@ class Simulation():
             creature.update(screen=self.screen, space=self.space, dt=dt)
             if creature.check_reproduction(dt):
                 for _ in range(3):
-                    s, p, n, g = creature.reproduce(screen=self.screen, space=self.space)
-                    new_creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=s, color0=Color('blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=p, generation=g)
+                    s, p, n, g = creature.reproduce(
+                        screen=self.screen, space=self.space)
+                    new_creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=s, color0=Color(
+                        'blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=p, generation=g)
                     new_creature.neuro = n
                     new_creature.neuro.Mutate()
                     temp_list.append(new_creature)
@@ -306,11 +353,12 @@ class Simulation():
     def clock_step(self):
         pygame.display.flip()
         self.dt = self.clock.tick(self.FPS)
-        pygame.display.set_caption(f"{TITLE} [fps: {round(self.clock.get_fps())} | dT: {round(self.dt)}ms]")
+        pygame.display.set_caption(
+            f"{TITLE} [fps: {round(self.clock.get_fps())} | dT: {round(self.dt)}ms]")
 
     def main(self):
         set_win_pos(20, 20)
-        #self.init(WORLD)
+        # self.init(WORLD)
         self.create_enviro(WORLD)
         set_icon('res/images/planet05.png')
         #test = Test()
@@ -318,7 +366,8 @@ class Simulation():
             self.events()
             self.update()
             self.draw()
-            #self.space.debug_draw(self.options)
+            if self.draw_debug:
+                self.space.debug_draw(self.options)
             physics_time = time()
             self.physics_step(1, self.dt)
             physics_time = time()-physics_time
@@ -327,23 +376,33 @@ class Simulation():
                 self.physics_avg_time = mean(self.physics_single_times)
                 self.physics_single_times = []
             self.clock_step()
-        
-def set_win_pos(x: int=20, y: int=20):
+
+
+def set_win_pos(x: int = 20, y: int = 20):
     x_winpos = x
     y_winpos = y
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x_winpos, y_winpos)
 
+
+def random_position(space: Vec2d) -> tuple:
+    x = randint(0, space[0])
+    y = randint(0, space[1])
+    return (x, y)
+
+
 def set_icon(icon_name):
-    icon = pg.Surface((32,32))
-    icon.set_colorkey((0,0,0))
+    icon = pg.Surface((32, 32))
+    icon.set_colorkey((0, 0, 0))
     rawicon = pg.image.load(icon_name)
-    for i in range(0,32):
-        for j in range(0,32):
-            icon.set_at((i,j), rawicon.get_at((i,j)))
+    for i in range(0, 32):
+        for j in range(0, 32):
+            icon.set_at((i, j), rawicon.get_at((i, j)))
     pg.display.set_icon(icon)
+
 
 def sort_by_fitness(creature):
     return creature['fitness']
+
 
 if __name__ == "__main__":
     set_world(WORLD)

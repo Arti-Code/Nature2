@@ -145,6 +145,7 @@ class Manager:
         obj_list = json.loads(json_list)
         #self.enviro.creature_list.clear()
         self.enviro.create_empty_world(WORLD)
+        self.enviro.create_rocks(5)
         self.project_name = project_name
         self.enviro.time = obj_list['time'] % 1000
         self.enviro.cycle = round((obj_list['time'] / 100))

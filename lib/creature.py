@@ -35,8 +35,8 @@ class Creature(Life):
         self.reproduction_time = REPRODUCTION_TIME
         self.side_angle = 0
         self.sensors.append(Sensor(screen, self, 4, 0, 220))
-        self.sensors.append(Sensor(screen, self, 4, SENSOR_MAX_ANGLE, 220))
-        self.sensors.append(Sensor(screen, self, 4, -SENSOR_MAX_ANGLE, 220))
+        self.sensors.append(Sensor(screen, self, 4, SENSOR_MAX_ANGLE, 250))
+        self.sensors.append(Sensor(screen, self, 4, -SENSOR_MAX_ANGLE, 250))
         self.mem_time = 0
         for sensor in self.sensors:
             space.add(sensor.shape)
