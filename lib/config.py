@@ -1,19 +1,20 @@
 from math import pi as PI
 
-TITLE = 'NATURE v0.2.7'
+TITLE = 'NATURE v0.3.1'
 SUBTITLE = "2019-2021 Artur Gwoździowski"
-WORLD                       = (1900, 950)
-SCREEN                      = (1900, 950)
-FONT_SIZE                   = 16
-#WORLD                       = (600, 400)
-#SCREEN                      = (600, 400)
-#FONT_SIZE                   = 10
+#WORLD                       = (1500, 750)
+#SCREEN                      = (1500, 750)
+#FONT_SIZE                   = 12
+WORLD                       = (1800, 850)
+SCREEN                      = (1800, 850)
+FONT_SIZE                   = 12
 PLANT_MAX_SIZE              = 11
 PLANT_GROWTH                = 0.6
 PLANT_INIT_NUM              = 50
 PLANT_LIFE                  = 300
 PLANT_MULTIPLY              = 0.04
 CREATURE_MULTIPLY           = 0.004
+CREATURE_MIN_NUM            = 10
 EAT                         = 400
 CREATURE_INIT_NUM           = 50
 BASE_ENERGY                 = 0.001
@@ -29,6 +30,8 @@ CREATURE_MAX_SIZE           = 7
 HIT                         = 400
 MEM_TIME                    = 0.3
 SENSOR_MAX_ANGLE            = PI/3
+ROCK_NUM                    = 5
+RANK_SIZE                   = 10
 # colors
 BROWN = (110, 50, 9)
 LIME = (127, 255, 0)

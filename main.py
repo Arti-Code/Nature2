@@ -2,8 +2,9 @@ import os
 import sys
 from time import time
 from math import degrees, hypot, sin, cos
+from lib.math2 import clamp
 from statistics import mean
-from random import randint, random
+from random import randint, random, choice
 from typing import Union
 import pygame
 import pygame as pg
@@ -59,6 +60,8 @@ class Simulation():
         self.time = 0
         self.cycles = 0
         self.draw_debug: bool=False
+        self.ranking1 = []
+        self.ranking2 = []
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -68,7 +71,7 @@ class Simulation():
             x = sin(vert_ang)*size + (random()*2-1)*size*0.4
             y = cos(vert_ang)*size + (random()*2-1)*size*0.4
             vertices.append(Vec2d(x, y)+position)
-        rock = Rock(self.screen, self.space, vertices, 1, Color('gray8'), Color('gray88'))
+        rock = Rock(self.screen, self.space, vertices, 1, Color('navy'), Color('grey'))
         self.wall_list.append(rock)
         # for v in range(len(vertices)):
         #    if v < len(vertices)-1:
@@ -93,7 +96,7 @@ class Simulation():
         #self.terr_img = image.load('res/fonts/water3.png')
         # self.terr_img.convert_alpha()
         #terrain = Terrain(self.screen, self.space, 'water3.png', 8)
-        self.create_rocks(8)
+        self.create_rocks(ROCK_NUM)
 
         for c in range(CREATURE_INIT_NUM):
             creature = self.add_creature(WORLD)
@@ -103,7 +106,7 @@ class Simulation():
         
     def create_rocks(self, rock_num: int):
         for _r in range(rock_num):
-            self.create_rock(8, 150, random_position(WORLD))
+            self.create_rock(5, 150, random_position(WORLD))
 
     def create_plants(self, plant_num: int):
         for p in range(plant_num):
@@ -122,6 +125,28 @@ class Simulation():
             p2 = edges[e+1]
             wall = self.add_wall(p1, p2, 5)
             self.wall_list.append(wall)
+
+    def add_to_ranking(self, creature: Creature):
+        #if creature.food > 6:
+        #    ranking = self.ranking2
+        #else:
+        #    ranking = self.ranking1
+        ranking = self.ranking1
+        ranking.sort(key=sort_by_fitness, reverse=False)
+        if len(ranking) <= RANK_SIZE:
+            cr = creature.get_genome()
+            cr['fitness'] = round(cr['fitness'])
+            ranking.append(cr)
+        else:
+            for r in ranking:
+                if r['fitness'] <= creature.fitness:
+                    ranking.remove(r)
+                    cr = creature.get_genome()
+                    cr['fitness'] = round(cr['fitness'])
+                    ranking.append(cr)
+        ranking.sort(key=sort_by_fitness, reverse=True)
+        if len(ranking) > RANK_SIZE:
+            ranking.pop(len(ranking)-1)
 
     def events(self):
         for event in pygame.event.get():
@@ -205,10 +230,15 @@ class Simulation():
         obstacle_detection_end = self.space.add_collision_handler(4, 8)
         obstacle_detection_end.separate = detect_obstacle_end
 
-    def add_creature(self, world: tuple) -> Creature:
-        size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
-        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD,
-                            size=size, color0=Color('blue'), color1=Color('skyblue'), color2=Color('orange'), color3=Color('red'))
+    def add_creature(self, world: tuple, genome: dict=None) -> Creature:
+        creature: Creature
+        if not genome:
+            size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
+            creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD,
+                                size=size, color0=Color('blue'), color1=Color('skyblue'), color2=Color('orange'), color3=Color('red'))
+        else:
+            creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD,
+                                size=genome['size'], color0=genome['color0'], color1=genome['color1'], color2=genome['color2'], color3=genome['color3'], genome=genome)
         return creature
 
     def add_saved_creature(self, size: int, color0: Color, color1: Color, color2: Color, color3: Color, position: tuple, generation: int, network_json: any):
@@ -254,7 +284,7 @@ class Simulation():
         font.set_bold(True)
         if self.selected != None:
             info = font.render(
-                f'energy: {round(self.selected.energy, 2)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation}', True, Color('yellowgreen'))
+                f'energy: {round(self.selected.energy, 2)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation} | fit: {round(self.selected.fitness)}', True, Color('yellowgreen'))
             self.screen.blit(info, (SCREEN[0]/2-150, SCREEN[1]-25), )
         count = font.render(
             f'creatures: {len(self.creature_list)} | plants: {len(self.plant_list)} | neuro time: {round(self.time_text, 4)}s | physx time: {round(self.physics_avg_time , 4)}s', True, Color('yellow'))
@@ -294,6 +324,7 @@ class Simulation():
         self.calc_time()
         for creature in self.creature_list:
             if creature.energy <= 0:
+                self.add_to_ranking(creature)
                 creature.kill(self.space)
                 self.creature_list.remove(creature)
         self.update_creatures(self.dt)
@@ -317,12 +348,10 @@ class Simulation():
             creature.update(screen=self.screen, space=self.space, dt=dt)
             if creature.check_reproduction(dt):
                 for _ in range(3):
-                    s, p, n, g = creature.reproduce(
-                        screen=self.screen, space=self.space)
-                    new_creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=s, color0=Color(
-                        'blue'), color1=Color('turquoise'), color2=Color('orange'), color3=Color('red'), position=p, generation=g)
-                    new_creature.neuro = n
-                    new_creature.neuro.Mutate()
+                    genome, position = creature.reproduce(screen=self.screen, space=self.space)
+                    new_creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=genome['size'], color0=genome['color0'], color1=genome['color1'], color2=genome['color2'], color3=genome['color3'], position=position, generation=genome['gen'], genome=genome)
+                    #new_creature.neuro = n
+                    #new_creature.neuro.Mutate()
                     temp_list.append(new_creature)
         if random() <= CREATURE_MULTIPLY:
             creature = self.add_creature(world)
@@ -330,6 +359,7 @@ class Simulation():
         for new_one in temp_list:
             self.creature_list.append(new_one)
         temp_list = []
+        self.check_populatiom()
 
     def update_plants(self, dt: float):
         for plant in self.plant_list:
@@ -355,6 +385,17 @@ class Simulation():
         self.dt = self.clock.tick(self.FPS)
         pygame.display.set_caption(
             f"{TITLE} [fps: {round(self.clock.get_fps())} | dT: {round(self.dt)}ms]")
+
+    def check_populatiom(self):
+        if len(self.creature_list) < CREATURE_MIN_NUM:
+            r = randint(0, 1)
+            creature = None
+            if r == 0:
+                creature = self.add_creature(WORLD)
+            else:
+                genome = choice(self.ranking1)
+                creature = self.add_creature(WORLD, genome)
+            self.creature_list.append(creature)
 
     def main(self):
         set_win_pos(20, 20)

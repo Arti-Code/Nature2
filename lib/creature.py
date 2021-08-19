@@ -14,7 +14,7 @@ from lib.config import *
 
 class Creature(Life):
 
-    def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color, color3: Color, angle: float=None, visual_range: int=180, position: Vec2d=None, generation: int=0, network: Network=None):
+    def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color, color3: Color, angle: float=None, visual_range: int=180, position: Vec2d=None, genome: dict=None):
         super().__init__(screen=screen, space=space, owner=sim, collision_tag=collision_tag, world_size=world_size, size=size, color0=color0, color1=color1, position=position)
         if angle:
             self.angle = angle
@@ -23,12 +23,27 @@ class Creature(Life):
         self.output = [0, 0, 0]
         self.color2 = color2
         self.color3 = color3
-        self.generation = generation
+        self.generation = 0
+        self.fitness = 0
         self.neuro = Network()
-        if network == None:
+        if genome == None:
+            self.meat = randint(1, 10)
+            self.vege = randint(1, 10)
+            self.power = randint(1, 10)
+            self.size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
             self.neuro.BuildRandom([26, 0, 0, 0, 0, 0, 3], 0.3)
         else:
-            self.neuro.FromJSON(network)
+            self.neuro = genome['neuro']
+            self.neuro.Mutate()
+            self.size = genome['size'] + randint(-1, 1)
+            self.meat = genome['meat'] + randint(-1, 1)
+            self.vege = genome['vege'] + randint(-1, 1)
+            self.power = genome['power'] + randint(-1, 1)
+            self.meat = clamp(self.meat, 1, 10)
+            self.size = clamp(self.size, CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
+            self.vege = clamp(self.vege, 1, 10)
+            self.power = clamp(self.power, 1, 10)
+            self.generation = genome['gen']+1
         self.eye_colors = {}
         self.visual_range = visual_range
         self.sensors = []
@@ -38,8 +53,10 @@ class Creature(Life):
         self.sensors.append(Sensor(screen, self, 4, SENSOR_MAX_ANGLE, 250))
         self.sensors.append(Sensor(screen, self, 4, -SENSOR_MAX_ANGLE, 250))
         self.mem_time = 0
+        self.name = 'creature'
         for sensor in self.sensors:
             space.add(sensor.shape)
+        self.base_color0 = self.color0
 
     def draw(self, screen: Surface, selected: Body):
         super().draw(screen, selected)
@@ -84,13 +101,11 @@ class Creature(Life):
                 detector.set_color(Color('white'))
 
     def reproduce(self, screen: Surface, space: Space):
-        self.energy -= self.max_energy * REP_ENERGY/3
-        size = self.shape.radius + randint(-2, 2)
-        size = clamp(size, CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
         pos = Vec2d(self.position.x+randint(-100, 100), self.position.y+randint(-100, 100))
-        neuro = self.neuro.Replicate()
+        genome: dict=self.get_genome()
+        genome['neuro'] = self.neuro.Replicate()
         self.reproduction_time = REPRODUCTION_TIME
-        return (size, pos, neuro, self.generation+1)
+        return (genome, pos)
       
     def move(self, dt: float) -> None:
         move = ((self.output[0]+1)/2)*SPEED/dt
@@ -165,6 +180,22 @@ class Creature(Life):
             space.remove(s)
         space.remove(self.shape)
         space.remove(self)
+
+    def get_genome(self) -> dict:
+        genome: dict = {}
+        genome['name'] = copy(self.name)
+        genome['gen'] = self.generation
+        genome['meat'] = self.meat
+        genome['vege'] = self.vege
+        genome['size'] = self.size
+        genome['fitness'] = self.fitness
+        genome['power'] = self.power
+        genome['color0'] = self.color0
+        genome['color1'] = self.color1
+        genome['color2'] = self.color2
+        genome['color3'] = self.color3
+        genome['neuro'] = self.neuro.Replicate()
+        return genome
 
     def eat(self, energy: float):
         self.energy += energy
