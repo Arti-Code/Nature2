@@ -56,6 +56,7 @@ class Creature(Life):
         self.name = 'creature'
         for sensor in self.sensors:
             space.add(sensor.shape)
+        self.base_color0 = self.color0
 
     def draw(self, screen: Surface, selected: Body):
         super().draw(screen, selected)
