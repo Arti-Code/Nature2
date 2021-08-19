@@ -303,7 +303,7 @@ class GUI():
         data = {}
         data['FPS'] = str(self.owner.enviro.FPS)
         data['TIME'] = str(self.owner.enviro.get_time(1))
-        data['RANKING'] = []
+        #data['RANKING'] = []
         #for r in self.owner.enviro.ranking1:
         #    data['RANKING'].append((r['generation'], r['fitness']))
         #data['CREATURES'] = str(len(self.owner.enviro.my_creatures))

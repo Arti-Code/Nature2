@@ -31,7 +31,7 @@ class Creature(Life):
             self.vege = randint(1, 10)
             self.power = randint(1, 10)
             self.size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
-            self.neuro.BuildRandom([26, 0, 0, 0, 0, 0, 3], 0.3)
+            self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 3], 0.3)
         else:
             self.neuro = genome['neuro']
             self.neuro.Mutate()
@@ -67,7 +67,12 @@ class Creature(Life):
             x2 = round(x + rot.x*(r-1))
             y2 = round(y + rot.y*(r-1))
             r2 = ceil(r/4)
-            gfxdraw.filled_circle(screen, x2, flipy(y2), r2, self.color2)
+            r: int; g: int; b: int
+            if self.meat > vege:
+                r = round(225*(self.meat/(self.meat+self.vege)))
+                g = round(225*(self.vege/(self.meat+self.vege)))
+                b = 0
+            gfxdraw.filled_circle(screen, x2, flipy(y2), r2, Color(r, g, b))
         self.color0 = self.base_color0
         self.draw_energy_bar(screen, int(x), flipy(int(y)))
 
@@ -78,6 +83,7 @@ class Creature(Life):
         self.collide_creature = False
         self.collide_plant = False
         self.collide_something = False
+        self.collide_meat = False
 
     def update(self, screen: Surface, space: Space, dt:float):
         move = self.move(dt)
@@ -128,6 +134,7 @@ class Creature(Life):
         input.append(self.collide_creature)
         input.append(self.collide_plant)
         input.append(self.collide_something)
+        input.append(self.collide_meat)
         angle = self.angle/(2*PI)
         side_angle = self.sensors[1].angle/(SENSOR_MAX_ANGLE*2)
         input.append(angle)
@@ -139,13 +146,10 @@ class Creature(Life):
         eng = self.energy/self.max_energy
         input.append(eng)
         for sensor in self.sensors:
-            e, d, a, p, pd, pa, o, od, oa = sensor.get_input()
-            d = round(d, 3)
-            #a = round(a%PI, 3)
+            e, d, a, p, pd, pa, o, od, oa, m, md, ma = sensor.get_input()
             pd = round(pd, 3)
-            #pa = round(pa%PI, 3)
             od = round(od, 3)
-            #oa = round(oa%PI, 3)
+            md = round(md, 3)
             input.append(e)
             input.append(d)
             #input.append(a)
@@ -155,6 +159,8 @@ class Creature(Life):
             input.append(o)
             input.append(od)
             #input.append(oa)
+            input.append(m)
+            input.append(md)
         return input
 
     def analize(self):
@@ -190,7 +196,7 @@ class Creature(Life):
         genome['size'] = self.size
         genome['fitness'] = self.fitness
         genome['power'] = self.power
-        genome['color0'] = self.color0
+        genome['color0'] = self.base_color0
         genome['color1'] = self.color1
         genome['color2'] = self.color2
         genome['color3'] = self.color3
@@ -198,5 +204,6 @@ class Creature(Life):
         return genome
 
     def eat(self, energy: float):
+        energy *= self.meat/10
         self.energy += energy
         self.energy = clamp(self.energy, 0, self.max_energy)

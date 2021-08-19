@@ -11,12 +11,27 @@ def process_creature_plant_collisions(arbiter, space, data):
     target = arbiter.shapes[1].body
     hunter.position -= arbiter.normal*0.5
     target.position += arbiter.normal*0.2
-    target.color0 = Color('red')
+    target.color0 = Color('green')
+    target.energy = target.energy - EAT*dt
+    plant_value = EAT*dt*hunter.vege/10
+    hunter.eat(plant_value)
+    hunter.fitness += plant_value
+    hunter.collide_plant = True
+    return True
+
+def process_creature_meat_collisions(arbiter, space, data):
+    dt = data['dt']
+    hunter = arbiter.shapes[0].body
+    target = arbiter.shapes[1].body
+    hunter.position -= arbiter.normal*0.5
+    target.position += arbiter.normal*0.2
+    target.color0 = Color('yellow')
     target.energy = target.energy - EAT*dt
     if target.energy > 0:
-        hunter.eat(EAT*dt)
-        hunter.fitness += EAT*dt
-    hunter.collide_plant = True
+        meat_value = 4*EAT*dt*(target.time/MEAT_TIME)*hunter.meat/10
+        hunter.eat(meat_value)
+        hunter.fitness += meat_value
+    hunter.collide_meat = True
     return True
 
 def process_creatures_collisions(arbiter, space, data):
@@ -35,8 +50,8 @@ def process_creatures_collisions(arbiter, space, data):
         dmg = HIT * dt
         target.energy -= dmg
         target.color0=Color('red')
-        agent.eat(dmg*0.85)
-        agent.fitness += dmg*0.85
+        #agent.eat(dmg*0.85)
+        agent.fitness += dmg*0.3
     agent.collide_creature = True
     return True
 
@@ -51,7 +66,7 @@ def detect_creature(arbiter, space, data):
     sensor_shape = arbiter.shapes[0]
     for sensor in creature.sensors:
         if sensor.shape == sensor_shape:
-            sensor.set_color(Color('red'))
+            sensor.set_color(Color('orange'))
             pos0 = creature.position
             dist = pos0.get_distance(enemy.position)
             sensor.send_data(detect=True, distance=dist)
@@ -85,6 +100,20 @@ def detect_obstacle(arbiter, space, data):
             break
     return True
 
+def detect_meat(arbiter, space, data):
+    creature = arbiter.shapes[0].body
+    meat = arbiter.shapes[1].body
+    contact = arbiter.contact_point_set.points[0].point_a
+    sensor_shape = arbiter.shapes[0]
+    for sensor in creature.sensors:
+        if sensor.shape == sensor_shape:
+            sensor.set_color(Color('red'))
+            pos0 = creature.position
+            dist = pos0.get_distance(contact)
+            sensor.send_data4(detect=True, distance=dist)
+            break
+    return True
+
 def detect_plant_end(arbiter, space, data):
     return True
 
@@ -92,4 +121,7 @@ def detect_creature_end(arbiter, space, data):
     return True
 
 def detect_obstacle_end(arbiter, space, data):
+    return True
+
+def detect_meat_end(arbiter, space, data):
     return True

@@ -27,8 +27,7 @@ class Manager:
         self.screen = screen
         self.enviro = enviro
         self.gui = GUI(owner=self, view=WORLD)
-        self.font_small = Font(match_font('firacode'), FONT_SIZE)
-        pass
+        self.font_small = pygame.font.Font("res/fonts/fira.ttf", 8)
 
     def new_project(self, new_name: str):
         self.add_to_project_list(new_name)

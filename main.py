@@ -23,8 +23,8 @@ from lib.config import *
 from lib.manager import Manager
 from lib.autoterrain import Terrain
 from lib.rock import Rock
-from lib.collisions import process_creature_plant_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end
-
+from lib.collisions import process_creature_plant_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end, detect_meat, detect_meat_end
+from lib.meat import Meat
 
 class Simulation():
 
@@ -37,6 +37,7 @@ class Simulation():
         self.creature_list = []
         self.plant_list = []
         self.wall_list = []
+        self.meat_list = []
         flags = pygame.DOUBLEBUF | pygame.HWSURFACE
         self.screen = pygame.display.set_mode(
             size=view_size, flags=flags, vsync=1)
@@ -179,6 +180,13 @@ class Simulation():
             self.show_network = not self.show_network
         if event.key == pygame.K_d:
             self.draw_debug = not self.draw_debug
+        if event.key == pygame.K_r:
+            i = 0
+            print("RANKING")
+            for r in self.ranking1:
+                i += 1
+                print(f"{i}. gen: {r['gen']} | fit: {round(r['fitness'])}")
+            print("_______________________________")
 
     def mouse_events(self, event):
         self.selected = None
@@ -200,7 +208,7 @@ class Simulation():
         return None
 
     def set_collision_calls(self):
-        # 2: body | 8: wall | 4: sensor | 6: plant
+        # 2: body | 8: wall | 4: sensor | 6: plant | 10: meat
         creature_collisions = self.space.add_collision_handler(2, 2)
         creature_collisions.pre_solve = process_creatures_collisions
         creature_collisions.data['dt'] = self.dt
@@ -220,6 +228,9 @@ class Simulation():
 
         plant_detection = self.space.add_collision_handler(4, 6)
         plant_detection.pre_solve = detect_plant
+
+        meat_detection = self.space.add_collision_handler(4, 10)
+        meat_detection.pre_solve = detect_meat
 
         plant_detection_end = self.space.add_collision_handler(4, 6)
         plant_detection_end.separate = detect_plant_end
@@ -275,12 +286,15 @@ class Simulation():
         for wall in self.wall_list:
             wall.draw(screen=self.screen)
 
+        for meat in self.meat_list:
+            meat.draw(screen=self.screen)
+
         self.draw_network()
         self.draw_text()
         self.manager.draw_gui(screen=self.screen)
 
     def draw_text(self):
-        font = Font(match_font('firacode'), FONT_SIZE)
+        font = Font('res/fonts/fira.ttf', FONT_SIZE)
         font.set_bold(True)
         if self.selected != None:
             info = font.render(
@@ -325,11 +339,21 @@ class Simulation():
         for creature in self.creature_list:
             if creature.energy <= 0:
                 self.add_to_ranking(creature)
+                meat = Meat(space=self.space, position=creature.position, collision_tag=6, radius=creature.size, energy=creature.max_energy)
+                self.meat_list.append(meat)
                 creature.kill(self.space)
                 self.creature_list.remove(creature)
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
+        self.update_meat(self.dt)
         self.manager.update_gui(self.dt/1000)
+
+    def update_meat(self, dT: float):
+        for meat in self.meat_list:
+            meat.update(dT)
+            if meat.time <= 0:
+                meat.kill(self.space)
+                self.meat_list.remove(meat)
 
     def update_creatures(self, dt: float):
         temp_list = []
@@ -349,7 +373,7 @@ class Simulation():
             if creature.check_reproduction(dt):
                 for _ in range(3):
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)
-                    new_creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=genome['size'], color0=genome['color0'], color1=genome['color1'], color2=genome['color2'], color3=genome['color3'], position=position, generation=genome['gen'], genome=genome)
+                    new_creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=genome['size'], color0=genome['color0'], color1=genome['color1'], color2=genome['color2'], color3=genome['color3'], position=position, genome=genome)
                     #new_creature.neuro = n
                     #new_creature.neuro.Mutate()
                     temp_list.append(new_creature)
@@ -394,6 +418,7 @@ class Simulation():
                 creature = self.add_creature(WORLD)
             else:
                 genome = choice(self.ranking1)
+                genome['fitness'] *= 0.75
                 creature = self.add_creature(WORLD, genome)
             self.creature_list.append(creature)
 
@@ -401,7 +426,7 @@ class Simulation():
         set_win_pos(20, 20)
         # self.init(WORLD)
         self.create_enviro(WORLD)
-        set_icon('res/images/planet05.png')
+        set_icon('planet32.png')
         #test = Test()
         while self.running:
             self.events()
