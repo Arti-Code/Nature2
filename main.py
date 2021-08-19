@@ -388,11 +388,13 @@ class Simulation():
     def check_populatiom(self):
         if len(self.creature_list) < CREATURE_MIN_SIZE:
             r = randint(0, 1)
+            creature = None
             if r == 0:
-                self.add_creature(WORLD)
+                creature = self.add_creature(WORLD)
             else:
                 genome = choice(self.ranking1)
-                self.add_creature(WORLD, genome)
+                creature = self.add_creature(WORLD, genome)
+            self.creature_list.append(creature)
 
     def main(self):
         set_win_pos(20, 20)
