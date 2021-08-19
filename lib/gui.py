@@ -98,21 +98,22 @@ class RankWindow(UIWindow):
         ranking = self.owner.owner.enviro.ranking1
         rank_count = len(ranking)
         self.labels = []
-        for i in range(rank_count):
-            text = str(i) + '. gen: ' + str(ranking[i]['gen']) + ' fit: ' + str(round(ranking[i]['fitness']))
-            lab = UILabel(Rect((10, 20*i+20), (self.rect.width-10, 40)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position')
+        for i in range(RANK_SIZE):
+            #text = str(i) + '. gen: ' + str(ranking[i]['gen']) + ' fit: ' + str(round(ranking[i]['fitness']))
+            text = '.'
+            lab = UILabel(Rect((10, 15*i+10), (self.rect.width-10, 40)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position')
             self.labels.append(lab)
         self.btn_close = UIButton(Rect((75, (40+20*rank_count)), (50, 20)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
 
     def update(self, dt: float):
         ranking = self.owner.owner.enviro.ranking1
         rank_count = len(ranking)
-        self.labels = []
+        #self.labels = []
         for i in range(rank_count):
             text = str(i) + '. gen: ' + str(ranking[i]['gen']) + ' fit: ' + str(round(ranking[i]['fitness']))
-            lab = UILabel(Rect((10, 20*i+20), (self.rect.width-10, 40)), text=text, manager=self.manager, container=self, parent_element=self, object_id='rank_position')
-            self.labels.append(lab)
-        self.btn_close = UIButton(Rect((75, (40+20*rank_count)), (50, 20)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
+            #lab = UILabel(Rect((10, 20*i+20), (self.rect.width-10, 40)), text=text, manager=self.manager, container=self, parent_element=self, object_id='rank_position')
+            self.labels[i].text = text
+        #self.btn_close = UIButton(Rect((75, (40+20*rank_count)), (50, 20)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
 
 class InfoWindow(UIWindow):
 
