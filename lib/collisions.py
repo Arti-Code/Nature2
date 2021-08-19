@@ -15,6 +15,7 @@ def process_creature_plant_collisions(arbiter, space, data):
     target.energy = target.energy - EAT*dt
     if target.energy > 0:
         hunter.eat(EAT*dt)
+        hunter.fitness += EAT*dt
     hunter.collide_plant = True
     return True
 
@@ -35,6 +36,7 @@ def process_creatures_collisions(arbiter, space, data):
         target.energy -= dmg
         target.color0=Color('red')
         agent.eat(dmg*0.85)
+        agent.fitness += dmg*0.85
     agent.collide_creature = True
     return True
 
