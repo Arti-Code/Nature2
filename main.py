@@ -231,6 +231,7 @@ class Simulation():
         obstacle_detection_end.separate = detect_obstacle_end
 
     def add_creature(self, world: tuple, genome: dict=None) -> Creature:
+        creature: Creature
         if not genome:
             size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
             creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD,
@@ -386,7 +387,7 @@ class Simulation():
             f"{TITLE} [fps: {round(self.clock.get_fps())} | dT: {round(self.dt)}ms]")
 
     def check_populatiom(self):
-        if len(self.creature_list) < CREATURE_MIN_SIZE:
+        if len(self.creature_list) < CREATURE_MIN_NUM:
             r = randint(0, 1)
             creature = None
             if r == 0:

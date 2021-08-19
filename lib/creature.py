@@ -35,13 +35,15 @@ class Creature(Life):
         else:
             self.neuro = genome['neuro']
             self.neuro.Mutate()
-            self.meat = genome.meat + randint(-1, 1)
-            self.vege = genome.vege + randint(-1, 1)
-            self.power = genome.power + randint(-1, 1)
+            self.size = genome['size'] + randint(-1, 1)
+            self.meat = genome['meat'] + randint(-1, 1)
+            self.vege = genome['vege'] + randint(-1, 1)
+            self.power = genome['power'] + randint(-1, 1)
             self.meat = clamp(self.meat, 1, 10)
+            self.size = clamp(self.size, CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
             self.vege = clamp(self.vege, 1, 10)
             self.power = clamp(self.power, 1, 10)
-            self.generation = genome['generation']+1
+            self.generation = genome['gen']+1
         self.eye_colors = {}
         self.visual_range = visual_range
         self.sensors = []
