@@ -23,7 +23,7 @@ from lib.config import *
 from lib.manager import Manager
 from lib.autoterrain import Terrain
 from lib.rock import Rock
-from lib.collisions import process_creature_plant_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end, detect_meat, detect_meat_end
+from lib.collisions import process_creature_plant_collisions, process_creature_meat_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end, detect_meat, detect_meat_end
 from lib.meat import Meat
 
 class Simulation():
@@ -217,6 +217,10 @@ class Simulation():
         creature_plant_collisions.pre_solve = process_creature_plant_collisions
         creature_plant_collisions.data['dt'] = self.dt
 
+        creature_meat_collisions = self.space.add_collision_handler(2, 10)
+        creature_meat_collisions.pre_solve = process_creature_meat_collisions
+        creature_meat_collisions.data['dt'] = self.dt
+
         edge_collisions = self.space.add_collision_handler(2, 8)
         edge_collisions.pre_solve = process_edge_collisions
 
@@ -229,11 +233,14 @@ class Simulation():
         plant_detection = self.space.add_collision_handler(4, 6)
         plant_detection.pre_solve = detect_plant
 
+        plant_detection_end = self.space.add_collision_handler(4, 6)
+        plant_detection_end.separate = detect_plant_end
+
         meat_detection = self.space.add_collision_handler(4, 10)
         meat_detection.pre_solve = detect_meat
 
-        plant_detection_end = self.space.add_collision_handler(4, 6)
-        plant_detection_end.separate = detect_plant_end
+        meat_detection_end = self.space.add_collision_handler(4, 10)
+        meat_detection_end.separate = detect_meat_end
 
         obstacle_detection = self.space.add_collision_handler(4, 8)
         obstacle_detection.pre_solve = detect_obstacle
@@ -241,21 +248,20 @@ class Simulation():
         obstacle_detection_end = self.space.add_collision_handler(4, 8)
         obstacle_detection_end.separate = detect_obstacle_end
 
-    def add_creature(self, world: tuple, genome: dict=None) -> Creature:
+    def add_creature(self, world: tuple, genome: dict=None, pos: Vec2d=None) -> Creature:
         creature: Creature
-        if not genome:
-            size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
-            creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD,
-                                size=size, color0=Color('blue'), color1=Color('skyblue'), color2=Color('orange'), color3=Color('red'))
+        if pos is None:
+            pos = random_position(WORLD)
+        if genome is None:
+            #size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
+            creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=pos, color0=Color('blue'), color1=Color('skyblue'), color2=Color('orange'), color3=Color('red'))
         else:
-            creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD,
-                                size=genome['size'], color0=genome['color0'], color1=genome['color1'], color2=genome['color2'], color3=genome['color3'], genome=genome)
+            creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=pos, genome=genome)
         return creature
 
-    def add_saved_creature(self, size: int, color0: Color, color1: Color, color2: Color, color3: Color, position: tuple, generation: int, network_json: any):
-        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=size, color0=color0,
-                            color1=color1, color2=color2, color3=color3, position=position, generation=generation, network=network_json)
-        creature.generation = generation
+    def add_saved_creature(self, size: int, color0: Color, color1: Color, color2: Color, color3: Color, position: tuple, genome: dict):
+        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=position, genome=genome)
+        #creature.generation = generation
         self.creature_list.append(creature)
 
     def add_plant(self, world: tuple) -> Plant:
@@ -297,11 +303,14 @@ class Simulation():
         font = Font('res/fonts/fira.ttf', FONT_SIZE)
         font.set_bold(True)
         if self.selected != None:
-            info = font.render(
-                f'energy: {round(self.selected.energy, 2)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation} | fit: {round(self.selected.fitness)}', True, Color('yellowgreen'))
+            if isinstance(self.selected, Creature):
+                info = font.render(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation} | fit: {round(self.selected.fitness)}', True, Color('yellowgreen'))
+            elif isinstance(self.selected, Plant):
+                info = font.render(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)}', True, Color('yellowgreen'))
+            else:
+                info = font.render(f'no info', True, Color('yellowgreen'))
             self.screen.blit(info, (SCREEN[0]/2-150, SCREEN[1]-25), )
-        count = font.render(
-            f'creatures: {len(self.creature_list)} | plants: {len(self.plant_list)} | neuro time: {round(self.time_text, 4)}s | physx time: {round(self.physics_avg_time , 4)}s', True, Color('yellow'))
+        count = font.render(f'creatures: {len(self.creature_list)} | plants: {len(self.plant_list)} | neuro time: {round(self.time_text, 4)}s | physx time: {round(self.physics_avg_time , 4)}s', True, Color('yellow'))
         self.screen.blit(count, (20, SCREEN[1]-25), )
 
     def draw_network(self):
@@ -339,7 +348,7 @@ class Simulation():
         for creature in self.creature_list:
             if creature.energy <= 0:
                 self.add_to_ranking(creature)
-                meat = Meat(space=self.space, position=creature.position, collision_tag=6, radius=creature.size, energy=creature.max_energy)
+                meat = Meat(space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
                 self.meat_list.append(meat)
                 creature.kill(self.space)
                 self.creature_list.remove(creature)
@@ -351,7 +360,7 @@ class Simulation():
     def update_meat(self, dT: float):
         for meat in self.meat_list:
             meat.update(dT)
-            if meat.time <= 0:
+            if meat.time <= 0 or meat.energy <= 0:
                 meat.kill(self.space)
                 self.meat_list.remove(meat)
 
@@ -371,9 +380,9 @@ class Simulation():
         for creature in self.creature_list:
             creature.update(screen=self.screen, space=self.space, dt=dt)
             if creature.check_reproduction(dt):
-                for _ in range(3):
+                for _ in range(CHILDS_NUM):
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)
-                    new_creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, world_size=WORLD, size=genome['size'], color0=genome['color0'], color1=genome['color1'], color2=genome['color2'], color3=genome['color3'], position=position, genome=genome)
+                    new_creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=position, genome=genome)
                     #new_creature.neuro = n
                     #new_creature.neuro.Mutate()
                     temp_list.append(new_creature)

@@ -162,7 +162,7 @@ class Manager:
             color1 = Color(c['color1'][0], c['color1'][1], c['color1'][2], c['color1'][3])
             color2 = Color(c['color2'][0], c['color2'][1], c['color2'][2], c['color2'][3])
             color3 = Color(c['color3'][0], c['color3'][1], c['color3'][2], c['color3'][3])
-            self.enviro.add_saved_creature(size, color0, color1, color2, color3, position, gen, c['neuro'])
+            self.enviro.add_saved_creature(size, color0, color1, color2, color3, position, c['neuro'])
         if not f.closed:
             f.close()
 
@@ -191,7 +191,12 @@ class Manager:
             l = 0
             base_line = []
 
-            inp_desc = ['col_cr', 'col_pl', 'col_ob', 'angle', 'sid_ang', 'x_pos', 'y_pos', 'eng', 'enemy0', 'dist0', 'plant0', 'dist0', 'obst0', 'dist0', 'enemy1', 'dist1', 'plant1', 'dist1', 'obst1', 'dist1', 'enemy2', 'dist2', 'plant2', 'dist2', 'obst2', 'dist2']
+            inp_desc = [
+                'col_cr', 'col_pl', 'col_ob', 'col_meat', 'angle', 'sid_ang', 'x_pos', 'y_pos', 'eng', 
+                'enemy0', 'dist0', 'plant0', 'dist0', 'obst0', 'dist0', 'meat0', 'dist0',
+                'enemy1', 'dist1', 'plant1', 'dist1', 'obst1', 'dist1', 'meat1', 'dist1', 
+                'enemy2', 'dist2', 'plant2', 'dist2', 'obst2', 'dist2', 'meat2', 'dist2'
+            ]
             out_desc = ["mov", "turn", "run", "hid", "atk", "eat"]
 
             input_keys = network.GetNodeKeyList([TYPE.INPUT])

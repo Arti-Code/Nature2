@@ -41,7 +41,7 @@ class SensorData():
         self.obst_distance = 1 - (distance/self.detection_range)
         self.obst_direction = (direction/abs(self.max_angle))
 
-    def send_data3(self, detect: bool, distance: float, direction: float):
+    def send_data4(self, detect: bool, distance: float, direction: float):
         self.meat = detect
         self.meat_distance = 1 - (distance/self.detection_range)
         self.meat_direction = (direction/abs(self.max_angle))

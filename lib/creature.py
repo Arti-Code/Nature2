@@ -14,25 +14,36 @@ from lib.config import *
 
 class Creature(Life):
 
-    def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color, color3: Color, angle: float=None, visual_range: int=180, position: Vec2d=None, genome: dict=None):
-        super().__init__(screen=screen, space=space, owner=sim, collision_tag=collision_tag, world_size=world_size, size=size, color0=color0, color1=color1, position=position)
-        if angle:
-            self.angle = angle
-        else:
-            self.angle = random()*2*PI
+    def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('blue'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
+        super().__init__(screen=screen, space=space, owner=sim, collision_tag=collision_tag, position=position)
+        self.angle = random()*2*PI
         self.output = [0, 0, 0]
-        self.color2 = color2
-        self.color3 = color3
         self.generation = 0
         self.fitness = 0
         self.neuro = Network()
         if genome == None:
+            self.color0 = color0
+            self.color1 = color1
+            self.color2 = color2
+            self.color3 = color3
+            self._color0 = color0
+            self._color1 = color1
+            self._color2 = color2
+            self._color3 = color3
             self.meat = randint(1, 10)
             self.vege = randint(1, 10)
             self.power = randint(1, 10)
             self.size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
             self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 3], 0.3)
         else:
+            self.color0 = genome['color0']
+            self.color1 = genome['color1']
+            self.color2 = genome['color2']
+            self.color3 = genome['color3']
+            self._color0 = genome['color0']
+            self._color1 = genome['color1']
+            self._color2 = genome['color2']
+            self._color3 = genome['color3']
             self.neuro = genome['neuro']
             self.neuro.Mutate()
             self.size = genome['size'] + randint(-1, 1)
@@ -44,36 +55,48 @@ class Creature(Life):
             self.vege = clamp(self.vege, 1, 10)
             self.power = clamp(self.power, 1, 10)
             self.generation = genome['gen']+1
+        self.shape = Circle(self, self.size)
+        self.shape.collision_type = collision_tag
+        space.add(self.shape)
         self.eye_colors = {}
-        self.visual_range = visual_range
+        self.visual_range = VISUAL_RANGE
         self.sensors = []
-        self.reproduction_time = REPRODUCTION_TIME
         self.side_angle = 0
         self.sensors.append(Sensor(screen, self, 4, 0, 220))
         self.sensors.append(Sensor(screen, self, 4, SENSOR_MAX_ANGLE, 250))
         self.sensors.append(Sensor(screen, self, 4, -SENSOR_MAX_ANGLE, 250))
         self.mem_time = 0
         self.name = 'creature'
+        self.max_energy = self.size*SIZE2ENG
+        self.reproduction_time = REP_TIME
+        self.energy = self.max_energy
         for sensor in self.sensors:
             space.add(sensor.shape)
-        self.base_color0 = self.color0
+        #self.base_color0 = self.color0
 
     def draw(self, screen: Surface, selected: Body):
         super().draw(screen, selected)
         x = self.position.x; y = self.position.y
         r = self.shape.radius
         rot = self.rotation_vector
+        gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r), self.color0)
+        gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r-2), self.color1)
+        gfxdraw.filled_circle(screen, int(x), flipy(int(y)), 2, self.color2)
         if r > 2:
             x2 = round(x + rot.x*(r-1))
             y2 = round(y + rot.y*(r-1))
             r2 = ceil(r/4)
             r: int; g: int; b: int
-            if self.meat > vege:
+            if self.meat >= self.vege:
+                r = round(225*(self.meat/(self.meat+self.vege)))
+                g = round(225*(self.vege/(self.meat+self.vege)))
+                b = 0
+            else:
                 r = round(225*(self.meat/(self.meat+self.vege)))
                 g = round(225*(self.vege/(self.meat+self.vege)))
                 b = 0
             gfxdraw.filled_circle(screen, x2, flipy(y2), r2, Color(r, g, b))
-        self.color0 = self.base_color0
+        self.color0 = self._color0
         self.draw_energy_bar(screen, int(x), flipy(int(y)))
 
     def draw_detectors(self, screen):
@@ -110,7 +133,7 @@ class Creature(Life):
         pos = Vec2d(self.position.x+randint(-100, 100), self.position.y+randint(-100, 100))
         genome: dict=self.get_genome()
         genome['neuro'] = self.neuro.Replicate()
-        self.reproduction_time = REPRODUCTION_TIME
+        self.reproduction_time = REP_TIME
         return (genome, pos)
       
     def move(self, dt: float) -> None:
@@ -126,7 +149,7 @@ class Creature(Life):
     def calc_energy(self, dt: float, move: float):
         base_energy = BASE_ENERGY * dt
         move_energy = move * MOVE_ENERGY * dt
-        self.energy -= (base_energy + move_energy)
+        self.energy -= (base_energy + move_energy) * self.size * SIZE_COST
         self.energy = clamp(self.energy, 0, self.max_energy)
 
     def get_input(self):
@@ -139,9 +162,9 @@ class Creature(Life):
         side_angle = self.sensors[1].angle/(SENSOR_MAX_ANGLE*2)
         input.append(angle)
         input.append(side_angle)
-        x = self.position[0]/self.world_size[0]
+        x = self.position[0]/WORLD[0]
         input.append(x)
-        y = self.position[1]/self.world_size[1]
+        y = self.position[1]/WORLD[1]
         input.append(y)
         eng = self.energy/self.max_energy
         input.append(eng)
@@ -196,14 +219,14 @@ class Creature(Life):
         genome['size'] = self.size
         genome['fitness'] = self.fitness
         genome['power'] = self.power
-        genome['color0'] = self.base_color0
-        genome['color1'] = self.color1
-        genome['color2'] = self.color2
-        genome['color3'] = self.color3
+        genome['color0'] = self._color0
+        genome['color1'] = self._color1
+        genome['color2'] = self._color2
+        genome['color3'] = self._color3
         genome['neuro'] = self.neuro.Replicate()
         return genome
 
     def eat(self, energy: float):
-        energy *= self.meat/10
+        #energy *= self.meat/10
         self.energy += energy
         self.energy = clamp(self.energy, 0, self.max_energy)
