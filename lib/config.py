@@ -1,7 +1,8 @@
 from math import pi as PI
 from json import loads, dumps
 
-cfg: dict = []
+
+#cfg: dict = {}
 
 
 TITLE = 'NATURE v0.3.5'
@@ -12,6 +13,8 @@ SUBTITLE = "2019-2021 Artur Gwoździowski"
 WORLD                       = (1900, 900)
 SCREEN                      = (1900, 900)
 FONT_SIZE                   = 14
+#global EAT
+#EAT: int
 PLANT_MAX_SIZE              = 16
 PLANT_GROWTH                = 0.4
 PLANT_INIT_NUM              = 50
@@ -49,6 +52,7 @@ def load_config(filename: str):
     f = open(filename, 'r')
     json_cfg = f.read()
     f.close()
+    global cfg
     cfg = loads(json_cfg)
     global PLANT_MAX_SIZE, PLANT_GROWTH, PLANT_INIT_NUM, PLANT_LIFE, PLANT_MULTIPLY, CREATURE_MULTIPLY, CREATURE_MIN_NUM, EAT, CREATURE_INIT_NUM, BASE_ENERGY, MOVE_ENERGY
     global REP_TIME, REP_ENERGY, SPEED, TURN, SENSOR_SPEED, REPRODUCTION_TIME, CREATURE_MIN_SIZE, CREATURE_MAX_SIZE, HIT, MEM_TIME, SENSOR_MAX_ANGLE, ROCK_NUM

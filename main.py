@@ -252,11 +252,13 @@ class Simulation():
         creature: Creature
         if pos is None:
             pos = random_position(WORLD)
+        x = clamp(pos[0], 0, WORLD[0])
+        y = clamp(pos[1], 0, WORLD[1])
+        cpos = Vec2d(x, y)
         if genome is None:
-            #size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
-            creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=pos, color0=Color('blue'), color1=Color('skyblue'), color2=Color('orange'), color3=Color('red'))
+            creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, color0=Color('blue'), color1=Color('skyblue'), color2=Color('orange'), color3=Color('red'))
         else:
-            creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=pos, genome=genome)
+            creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, genome=genome)
         return creature
 
     def add_saved_creature(self, size: int, color0: Color, color1: Color, color2: Color, color3: Color, position: tuple, genome: dict):
@@ -459,10 +461,10 @@ def set_win_pos(x: int = 20, y: int = 20):
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x_winpos, y_winpos)
 
 
-def random_position(space: Vec2d) -> tuple:
+def random_position(space: Vec2d) -> Vec2d:
     x = randint(0, space[0])
     y = randint(0, space[1])
-    return (x, y)
+    return Vec2d(x, y)
 
 
 def set_icon(icon_name):

@@ -130,7 +130,11 @@ class Creature(Life):
                 detector.set_color(Color('white'))
 
     def reproduce(self, screen: Surface, space: Space):
-        pos = Vec2d(self.position.x+randint(-100, 100), self.position.y+randint(-100, 100))
+        x2: float=self.position.x+randint(-100, 100)
+        y2: float=self.position.y+randint(-100, 100)
+        x2 = clamp(x2, 50, WORLD[0]-50)
+        y2 = clamp(y2, 50, WORLD[1]-50)
+        pos = Vec2d(x2, y2)
         genome: dict=self.get_genome()
         genome['neuro'] = self.neuro.Replicate()
         self.reproduction_time = REP_TIME
