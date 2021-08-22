@@ -157,6 +157,14 @@ class Network():
         self.links = dict()
         self.log = []
 
+    def BuildFromGenome(self, genome):
+        self.node_num = genome.node_num
+        self.layer_num = genome.layer_num
+        self.link_num = genome.link_num
+        self.layers = genome.layers
+        self.nodes = genome.nodes
+        self.links = genome.links
+
     def BuildRandom(self, node_list=[83, 0, 0, 0, 0, 0, 5], link_rate=0.5):
         """Method for setup new neural network based on node_list and link_rate parameters. This method should be run just after object creation."""
         for lay1 in range(len(node_list)):

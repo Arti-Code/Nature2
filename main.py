@@ -261,8 +261,8 @@ class Simulation():
             creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, genome=genome)
         return creature
 
-    def add_saved_creature(self, size: int, color0: Color, color1: Color, color2: Color, color3: Color, position: tuple, genome: dict):
-        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=position, genome=genome)
+    def add_saved_creature(self, genome: dict):
+        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=random_position(WORLD), genome=genome)
         #creature.generation = generation
         self.creature_list.append(creature)
 
