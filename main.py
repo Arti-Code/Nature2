@@ -263,7 +263,6 @@ class Simulation():
 
     def add_saved_creature(self, genome: dict):
         creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=random_position(WORLD), genome=genome)
-        #creature.generation = generation
         self.creature_list.append(creature)
 
     def add_plant(self, world: tuple) -> Plant:
@@ -357,7 +356,7 @@ class Simulation():
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
         self.update_meat(self.dt)
-        self.manager.update_gui(self.dt/1000)
+        self.manager.update_gui(self.dt/1000, self.ranking1)
 
     def update_meat(self, dT: float):
         for meat in self.meat_list:

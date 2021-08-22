@@ -3,6 +3,7 @@ from random import random, randint
 from math import sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
+from pygame.font import Font
 import pymunk as pm
 from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
 from lib.life import Life
@@ -10,6 +11,7 @@ from lib.math2 import flipy, ang2vec, ang2vec2, clamp
 from lib.sensor import Sensor, PolySensor
 from lib.net import Network
 from lib.config import *
+from lib.names import random_name
 
 
 class Creature(Life):
@@ -35,6 +37,7 @@ class Creature(Life):
             self.power = randint(1, 10)
             self.size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
             self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 3], 0.3)
+            self.name = random_name(4, True)
         else:
             self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
             self.color1 = Color(genome['color1'][0], genome['color1'][1], genome['color1'][2], genome['color1'][3])
@@ -55,6 +58,7 @@ class Creature(Life):
             self.vege = clamp(self.vege, 1, 10)
             self.power = clamp(self.power, 1, 10)
             self.generation = genome['gen']+1
+            self.name = genome['name']
         self.shape = Circle(self, self.size)
         self.shape.collision_type = collision_tag
         space.add(self.shape)
@@ -66,7 +70,6 @@ class Creature(Life):
         self.sensors.append(Sensor(screen, self, 4, SENSOR_MAX_ANGLE, 250))
         self.sensors.append(Sensor(screen, self, 4, -SENSOR_MAX_ANGLE, 250))
         self.mem_time = 0
-        self.name = 'creature'
         self.max_energy = self.size*SIZE2ENG
         self.reproduction_time = REP_TIME
         self.energy = self.max_energy
@@ -98,6 +101,7 @@ class Creature(Life):
             gfxdraw.filled_circle(screen, x2, flipy(y2), r2, Color(r, g, b))
         self.color0 = self._color0
         self.draw_energy_bar(screen, int(x), flipy(int(y)))
+        self.draw_name(screen)
 
     def draw_detectors(self, screen):
         for detector in self.sensors:
@@ -107,6 +111,12 @@ class Creature(Life):
         self.collide_plant = False
         self.collide_something = False
         self.collide_meat = False
+
+    def draw_name(self, screen: Surface):
+        font = Font('res/fonts/fira.ttf', FONT_SIZE-4)
+        font.set_bold(True)
+        name = font.render(f'{self.name}', True, Color('skyblue'))
+        screen.blit(name, (self.position.x-20, flipy(self.position.y-14)), )
 
     def update(self, screen: Surface, space: Space, dt:float):
         move = self.move(dt)

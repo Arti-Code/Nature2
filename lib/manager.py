@@ -54,8 +54,8 @@ class Manager:
     def user_event(self, event, dt: float):
         self.gui.process_event(event, dt)
 
-    def update_gui(self, dt: float):
-        self.gui.update(dt)
+    def update_gui(self, dt: float, ranking: list):
+        self.gui.update(dt, ranking)
 
     def draw_gui(self, screen: Surface):
         self.gui.draw_ui(screen)
@@ -78,6 +78,7 @@ class Manager:
             project['time'] = self.enviro.get_time()
             for creature in self.enviro.creature_list:
                 creature_to_save = {}
+                creature_to_save['name'] = creature.name
                 creature_to_save['gen'] = creature.generation
                 creature_to_save['size'] = creature.shape.radius
                 creature_to_save['power'] = creature.power

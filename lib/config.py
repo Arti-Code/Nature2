@@ -7,12 +7,12 @@ from json import loads, dumps
 
 TITLE = 'NATURE v0.3.6'
 SUBTITLE = "2019-2021 Artur Gwoździowski"
-#WORLD                       = (1500, 750)
-#SCREEN                      = (1500, 750)
-#FONT_SIZE                   = 12
-WORLD                       = (1900, 900)
-SCREEN                      = (1900, 900)
-FONT_SIZE                   = 14
+WORLD                       = (1500, 750)
+SCREEN                      = (1500, 750)
+FONT_SIZE                   = 12
+#WORLD                       = (1900, 900)
+#SCREEN                      = (1900, 900)
+#FONT_SIZE                   = 14
 #global EAT
 #EAT: int
 PLANT_MAX_SIZE              = 16
