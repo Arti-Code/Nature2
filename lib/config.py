@@ -5,7 +5,7 @@ from json import loads, dumps
 #cfg: dict = {}
 
 
-TITLE = 'NATURE v0.3.5'
+TITLE = 'NATURE v0.3.6'
 SUBTITLE = "2019-2021 Artur Gwoździowski"
 WORLD                       = (1500, 750)
 SCREEN                      = (1500, 750)
