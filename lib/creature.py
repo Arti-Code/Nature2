@@ -36,14 +36,14 @@ class Creature(Life):
             self.size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
             self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 3], 0.3)
         else:
-            self.color0 = genome['color0']
-            self.color1 = genome['color1']
-            self.color2 = genome['color2']
-            self.color3 = genome['color3']
-            self._color0 = genome['color0']
-            self._color1 = genome['color1']
-            self._color2 = genome['color2']
-            self._color3 = genome['color3']
+            self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
+            self.color1 = Color(genome['color1'][0], genome['color1'][1], genome['color1'][2], genome['color1'][3])
+            self.color2 = Color(genome['color2'][0], genome['color2'][1], genome['color2'][2], genome['color2'][3])
+            self.color3 = Color(genome['color3'][0], genome['color3'][1], genome['color3'][2], genome['color3'][3])
+            self._color0 = self.color0
+            self._color1 = self.color1
+            self._color2 = self.color2
+            self._color3 = self.color3
             self.neuro = genome['neuro']
             self.neuro.Mutate()
             self.size = genome['size'] + randint(-1, 1)

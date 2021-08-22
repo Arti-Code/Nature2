@@ -85,6 +85,10 @@ class Manager:
                 creature_to_save['vege'] = creature.vege
                 creature_to_save['x'] = round(creature.position.x)
                 creature_to_save['y'] = round(creature.position.y)
+                #creature_to_save['color0'] = creature.color0
+                #creature_to_save['color1'] = creature.color1
+                #creature_to_save['color2'] = creature.color2
+                #creature_to_save['color3'] = creature.color3
                 creature_to_save['color0'] = [creature.color0.r, creature.color0.g, creature.color0.b, creature.color0.a]
                 creature_to_save['color1'] = [creature.color1.r, creature.color1.g, creature.color1.b, creature.color1.a]
                 creature_to_save['color2'] = [creature.color2.r, creature.color2.g, creature.color2.b, creature.color2.a]
