@@ -28,6 +28,7 @@ class Manager:
         self.enviro = enviro
         self.gui = GUI(owner=self, view=WORLD)
         self.font_small = pygame.font.Font("res/fonts/fira.ttf", 8)
+        self.text_list: list = []
 
     def new_project(self, new_name: str):
         self.add_to_project_list(new_name)
@@ -66,6 +67,31 @@ class Manager:
     def add_text(self, text: str, x: int, y: int, small_font: bool=True, color: Color=Color('white')):
        render_text = self.small_font.render(text, True, color)
        self.screen.blit(render_text, (x, y), )
+
+    def add_text2(self, text, x, y, color, title=False, subtitle=False, creature=False, small=False):
+        if title:
+            txt_render = self.titl_font.render(text, True, Color(color))
+            txt_rect = txt_render.get_rect()
+            txt_rect.center = (x, y)
+        elif subtitle:
+            txt_render = self.subtitl_font.render(text, True, Color(color))
+            txt_rect = txt_render.get_rect()
+            txt_rect.center = (x, y)
+        elif creature:
+            txt_render = self.creature_font.render(text, True, Color(color))
+            txt_rect = txt_render.get_rect()
+            txt_rect.center = (x, y)
+        elif small:
+            txt_render = self.small_font.render(text, True, Color(color))
+            txt_rect = txt_render.get_rect()
+            txt_rect.left = x
+            txt_rect.top = y
+        else:
+            txt_render = self.norm_font.render(text, True, Color(color))
+            txt_rect = txt_render.get_rect()
+            txt_rect.left = x
+            txt_rect.top = y
+        self.text_list.append((txt_render, txt_rect))
 
     def save_project(self):
         project_name = self.enviro.project_name

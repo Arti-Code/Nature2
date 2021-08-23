@@ -23,6 +23,7 @@ class Creature(Life):
         self.generation = 0
         self.fitness = 0
         self.neuro = Network()
+        self.normal: Vec2d=None
         if genome == None:
             self.color0 = color0
             self.color1 = color1
@@ -101,7 +102,13 @@ class Creature(Life):
             gfxdraw.filled_circle(screen, x2, flipy(y2), r2, Color(r, g, b))
         self.color0 = self._color0
         self.draw_energy_bar(screen, int(x), flipy(int(y)))
-        self.draw_name(screen)
+        #self.draw_name(screen)
+        #self.draw_normal(screen)
+
+    def draw_normal(self, screen):
+        if self.normal != None:
+            gfxdraw.line(screen, int(self.position.x), int(flipy(self.position.y)), int(self.position.x+self.normal.x*50), int(flipy(self.position.y+self.normal.y*50)), Color('yellow'))
+            #self.normal = None
 
     def draw_detectors(self, screen):
         for detector in self.sensors:
@@ -112,11 +119,8 @@ class Creature(Life):
         self.collide_something = False
         self.collide_meat = False
 
-    def draw_name(self, screen: Surface):
-        font = Font('res/fonts/fira.ttf', FONT_SIZE-4)
-        font.set_bold(True)
-        name = font.render(f'{self.name}', True, Color('skyblue'))
-        screen.blit(name, (self.position.x-20, flipy(self.position.y-14)), )
+    def draw_name(self):
+        return self.name, self.position.x-20, flipy(self.position.y-14)
 
     def update(self, screen: Surface, space: Space, dt:float):
         move = self.move(dt)

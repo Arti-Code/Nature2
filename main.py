@@ -286,6 +286,8 @@ class Simulation():
         for creature in self.creature_list:
             creature.draw(screen=self.screen, selected=self.selected)
             creature.draw_detectors(screen=self.screen)
+            name, x, y = creature.draw_name()
+            self.manager.add_text2(name, x, y, Color('skyblue'))
 
         for plant in self.plant_list:
             plant.draw(screen=self.screen, selected=self.selected)
@@ -298,21 +300,23 @@ class Simulation():
 
         self.draw_network()
         self.draw_text()
+        self.write_text()
         self.manager.draw_gui(screen=self.screen)
 
     def draw_text(self):
-        font = Font('res/fonts/fira.ttf', FONT_SIZE)
-        font.set_bold(True)
         if self.selected != None:
             if isinstance(self.selected, Creature):
-                info = font.render(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation} | fit: {round(self.selected.fitness)}', True, Color('yellowgreen'))
+                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation} | fit: {round(self.selected.fitness)}', WORLD[0]/2-150, WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
             elif isinstance(self.selected, Plant):
-                info = font.render(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)}', True, Color('yellowgreen'))
-            else:
-                info = font.render(f'no info', True, Color('yellowgreen'))
-            self.screen.blit(info, (SCREEN[0]/2-150, SCREEN[1]-25), )
-        count = font.render(f'creatures: {len(self.creature_list)} | plants: {len(self.plant_list)} | neuro time: {round(self.time_text, 4)}s | physx time: {round(self.physics_avg_time , 4)}s', True, Color('yellow'))
-        self.screen.blit(count, (20, SCREEN[1]-25), )
+                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)}', WORLD[0]/2-150, WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
+            else:                
+                self.manager.add_text2(f'no info', WORLD[0]/2-150, WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
+        self.manager.add_text2(f'creatures: {len(self.creature_list)} | plants: {len(self.plant_list)} | neuro time: {round(self.time_text, 4)}s | physx time: {round(self.physics_avg_time , 4)}s', 250, WORLD[1]-25, Color('yellow'), False, False, True, False)
+    
+    def write_text(self):
+        for txt, rect in self.manager.text_list:
+            self.screen.blit(txt, rect)
+        self.manager.text_list.clear()
 
     def draw_network(self):
         if self.show_network:

@@ -5,7 +5,7 @@ from json import loads, dumps
 #cfg: dict = {}
 
 
-TITLE = 'NATURE v0.3.6'
+TITLE = 'NATURE v0.4.0'
 SUBTITLE = "2019-2021 Artur Gwoździowski"
 WORLD                       = (1500, 750)
 SCREEN                      = (1500, 750)
@@ -16,9 +16,9 @@ FONT_SIZE                   = 12
 #global EAT
 #EAT: int
 PLANT_MAX_SIZE              = 16
-PLANT_GROWTH                = 0.4
+PLANT_GROWTH                = 0.5
 PLANT_INIT_NUM              = 50
-PLANT_LIFE                  = 300
+PLANT_LIFE                  = 400
 PLANT_MULTIPLY              = 0.02
 CREATURE_MULTIPLY           = 0.001
 CREATURE_MIN_NUM            = 10

@@ -394,7 +394,7 @@ class GUI():
 
     def update(self, dt: float, ranking: list):
         data: dict = {}
-        self.ui_mgr.update(1)
+        self.ui_mgr.update(dt)
         if self.enviro_win:
             data = self.update_enviroment(dt)
             self.enviro_win.Update(data, dt)
