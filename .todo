@@ -22,16 +22,32 @@ NATURE:
         ✔ create named simulations
         ✔ save simulations state
         ✔ load simulations state
-        ☐ save single creature
-        ☐ load single creature
-        ☐ save single network
-        ☐ load single network
-        ☐ real-time bokeh network display
-        ☐ creature skills (size, strength, speed, resistance, attack)
+        ✘ save single creature
+        ✘ load single creature
+        ✘ save single network
+        ✘ load single network
+        ✘ real-time bokeh network display
+        ✔ creature skills (size, strength, speed, attack)
         ✔ obstacles detection
         ✔ obstacles collision
-        ☐ fix: create inside obstacles
+        ✔ fix: create inside obstacles
     0.3:
-        ☐ camera movement
-        ☐ gui ('Creatures' based)
-        ☐ camera zoom in/out
+        ✘ camera movement
+        ✔ gui ('Creatures' based)
+        ✘ camera zoom in/out
+        ✔ attack only ahead
+        ✔ inherite
+        ✔ mutations
+        ✔ gui based ranking
+        ✔ fix: saving state
+        ✔ fix: loading state
+        ✔ performance issue
+        ✔ compilation to executable
+        ✔ meat
+    0.4:
+        ☐ config drom .py to .json
+        ☐ species
+        ☐ similarity
+        ☐ health and energy
+        ☐ water needs
+        ☐ memory neurons
