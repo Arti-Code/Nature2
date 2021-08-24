@@ -1,48 +1,48 @@
 from math import pi as PI
 from json import loads, dumps
 
-
-#cfg: dict = {}
+global cfg
+cfg: dict = {}
 
 
 TITLE = 'NATURE v0.4.0'
 SUBTITLE = "2019-2021 Artur Gwoździowski"
-WORLD                       = (1500, 750)
-SCREEN                      = (1500, 750)
-FONT_SIZE                   = 12
-#WORLD                       = (1900, 900)
-#SCREEN                      = (1900, 900)
-#FONT_SIZE                   = 14
+#WORLD                       = (1500, 750)
+#SCREEN                      = (1500, 750)
+#FONT_SIZE                   = 12
+WORLD                       = (1900, 900)
+SCREEN                      = (1900, 900)
+FONT_SIZE                   = 14
 #global EAT
 #EAT: int
-PLANT_MAX_SIZE              = 16
-PLANT_GROWTH                = 0.5
+PLANT_MAX_SIZE              = 10
+PLANT_GROWTH                = 0.3
 PLANT_INIT_NUM              = 50
-PLANT_LIFE                  = 400
-PLANT_MULTIPLY              = 0.02
+PLANT_LIFE                  = 500
+PLANT_MULTIPLY              = 0.01
 CREATURE_MULTIPLY           = 0.001
-CREATURE_MIN_NUM            = 10
+CREATURE_MIN_NUM            = 16
 EAT                         = 200
-CREATURE_INIT_NUM           = 50
-BASE_ENERGY                 = 0.001
-MOVE_ENERGY                 = 0.0025
+CREATURE_INIT_NUM           = 75
+BASE_ENERGY                 = 0.0008
+MOVE_ENERGY                 = 0.0015
 REP_TIME                    = 60
 REP_ENERGY                  = 0.25
 SPEED                       = 1
-TURN                        = 0.1
-SENSOR_SPEED                = 1
+TURN                        = 0.13
+SENSOR_SPEED                = 0.8
 REPRODUCTION_TIME           = 60
 CREATURE_MIN_SIZE           = 3
-CREATURE_MAX_SIZE           = 10
+CREATURE_MAX_SIZE           = 12
 HIT                         = 150
 MEM_TIME                    = 0.3
 SENSOR_MAX_ANGLE            = PI/3
-ROCK_NUM                    = 7
-RANK_SIZE                   = 10
+ROCK_NUM                    = 14
+RANK_SIZE                   = 20
 MEAT_TIME                   = 30
-VISUAL_RANGE                = 180
+VISUAL_RANGE                = 200
 SIZE2ENG                    = 80
-SIZE_COST                   = 0.2
+SIZE_COST                   = 0.3
 CHILDS_NUM                  = 1
 # colors
 BROWN = (110, 50, 9)
@@ -64,6 +64,7 @@ def load_config(filename: str):
     PLANT_MULTIPLY              = cfg['PLANT_MULTIPLY']
     CREATURE_MULTIPLY           = cfg['CREATURE_MULTIPLY']
     CREATURE_MIN_NUM            = cfg['CREATURE_MIN_NUM']
+    global EAT
     EAT                         = cfg['EAT']
     CREATURE_INIT_NUM           = cfg['CREATURE_INIT_NUM']
     BASE_ENERGY                 = cfg['BASE_ENERGY']

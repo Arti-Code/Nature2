@@ -179,6 +179,7 @@ class Manager:
         #self.enviro.creature_list.clear()
         self.enviro.create_empty_world(WORLD)
         self.enviro.create_rocks(ROCK_NUM)
+        self.enviro.create_plants(PLANT_INIT_NUM)
         self.project_name = project_name
         self.enviro.time = obj_list['time'] % 1000
         self.enviro.cycle = round((obj_list['time'] / 100))

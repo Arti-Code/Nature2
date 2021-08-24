@@ -1,4 +1,5 @@
 from math import sqrt, floor
+from random import random, randint
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
 from pymunk import Segment, Poly, Body, Circle, Space, Vec2d
@@ -20,13 +21,35 @@ class Meat(Body):
         self.shape = Circle(self, self.radius)
         self.shape.collision_type = collision_tag
         space.add(self, self.shape)
+        #x = int(self.position.x); y = int(self.position.y)
+        r = int(self.shape.radius)
+        self.circles = []
+        if r >= 3:
+            for m in range(0, r, 2):
+                rx = randint(-10, 10)
+                ry = randint(-10, 10)
+                self.circles.append([rx, ry, m])
+        else:
+            self.circles.append(0, 0, 0)
 
     def draw(self, screen: Surface):
-        x = self.position.x; y = self.position.y
-        r = self.shape.radius
-        gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r), self.color1)
-        if r >= 3:
-            gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r-2), self.color0)
+        x = int(self.position.x); y = int(self.position.y)
+        r = int(self.shape.radius)
+        for rx, ry, m in self.circles:
+            if r-m > 0:
+                gfxdraw.filled_circle(screen, x+rx, flipy(y+ry), r-m+1, self.color1)
+                gfxdraw.filled_circle(screen, x+rx, flipy(y+ry), r-m, self.color0)
+            else:
+                break
+        #gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r), self.color1)
+        #if r >= 3:
+        #    for m in range(0, r, 2):
+        #        rx = randint(-10, 10)
+        #        ry = randint(-10, 10)
+        #        gfxdraw.filled_circle(screen, x+rx, flipy(y+ry), r-m+1, self.color1)
+        #        gfxdraw.filled_circle(screen, x+rx, flipy(y+ry), r-m, self.color0)
+        #else:
+        #    gfxdraw.filled_circle(screen, x, flipy(y), r, self.color1)
 
     def update(self, dT: float):
         self.time -= dT/1000

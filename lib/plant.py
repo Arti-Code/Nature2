@@ -24,7 +24,7 @@ class Plant(Life):
         self.color1 = Color('green')
         self._color0 = Color('yellowgreen')
         self._color1 = Color('green')
-        self.energy = 1
+        self.energy = pow(self.size, 2)
         self.generation = 0
         self.shape = Circle(self, self.size)
         self.shape.collision_type = collision_tag

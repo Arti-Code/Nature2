@@ -129,10 +129,10 @@ class EnviroWindow(UIWindow):
         i=0
         self.labs = {}
         for key, val in data.items():
-            lab = UILabel(Rect((10, 10*i+5), (self.rect.width-10, 40)), text=f"{key}: {val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info'+str(i))
+            lab = UILabel(Rect((10, 30*i+10), (self.rect.width-10, 30)), text=f"{key}: {val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info'+str(i))
             i+=1
             self.labs[key] = lab
-        self.btn_close = UIButton(Rect((75, (25+10*i+5)), (50, 20)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
+        self.btn_close = UIButton(Rect((75, (25+30*i+10)), (50, 20)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
         self.refresh = 0
         self.Update(data, dT)
 
@@ -256,7 +256,7 @@ class GUI():
 
     def create_rank_win(self):
         w = 250
-        h = 350
+        h = 600
         title = 'RANKING'
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)
@@ -286,11 +286,11 @@ class GUI():
         data = {}
         data['dT'] = ''
         data['TIME'] = ''
-        #data['CREATURES'] = str(len(self.owner.enviro.my_creatures))
+        data['CREATURES'] = str(len(self.owner.enviro.creature_list))
         #data['PREDATORS'] = str(self.owner.enviro.hunter_num)
         #data['HERBIVORES'] = str(self.owner.enviro.herbs_num)
-        #data['PLANTS'] = str(len(self.owner.enviro.my_plants))
-        self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((5, 5), (200, 150)), data=data, dT=dT)
+        data['PLANTS'] = str(len(self.owner.enviro.plant_list))
+        self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (200, 250)), data=data, dT=dT)
 
     def select_map(self):
         w = 300
@@ -306,6 +306,8 @@ class GUI():
         #data = {}
         data['dT'] = str(round(dT, 2)) + 's'
         data['TIME'] = str(self.owner.enviro.get_time(1))
+        data['CREATURES'] = str(len(self.owner.enviro.creature_list))
+        data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         #data['RANKING'] = []
         #for r in ranking:
         #    data['RANKING'].append((r['name'], r['gen'], r['fitness']))

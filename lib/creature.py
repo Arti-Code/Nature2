@@ -38,7 +38,7 @@ class Creature(Life):
             self.power = randint(1, 10)
             self.size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
             self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 3], 0.3)
-            self.name = random_name(4, True)
+            self.name = random_name(3, True)
         else:
             self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
             self.color1 = Color(genome['color1'][0], genome['color1'][1], genome['color1'][2], genome['color1'][3])
@@ -152,6 +152,7 @@ class Creature(Life):
         genome: dict=self.get_genome()
         genome['neuro'] = self.neuro.Replicate()
         self.reproduction_time = REP_TIME
+        self.fitness += 10
         return (genome, pos)
       
     def move(self, dt: float) -> None:

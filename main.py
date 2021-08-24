@@ -107,11 +107,11 @@ class Simulation():
         
     def create_rocks(self, rock_num: int):
         for _r in range(rock_num):
-            self.create_rock(5, 150, random_position(WORLD))
+            self.create_rock(7, 110, random_position(WORLD))
 
     def create_plants(self, plant_num: int):
         for p in range(plant_num):
-            plant = self.add_plant(WORLD)
+            plant = self.add_plant(WORLD, True)
             self.plant_list.append(plant)
 
     def create_empty_world(self, world: tuple):
@@ -133,7 +133,16 @@ class Simulation():
         #else:
         #    ranking = self.ranking1
         ranking = self.ranking1
-        ranking.sort(key=sort_by_fitness, reverse=False)
+        ranking.sort(key=sort_by_fitness, reverse=True)
+        for rank in reversed(ranking):
+            if rank['name'] == creature.name:
+                if creature.fitness >= rank['fitness']:
+                    ranking.remove(rank)
+                    ranking.append(creature.get_genome())
+                    ranking.sort(key=sort_by_fitness, reverse=True)
+                    return
+                else:
+                    return
         if len(ranking) <= RANK_SIZE:
             cr = creature.get_genome()
             cr['fitness'] = round(cr['fitness'])
@@ -265,9 +274,13 @@ class Simulation():
         creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=random_position(WORLD), genome=genome)
         self.creature_list.append(creature)
 
-    def add_plant(self, world: tuple) -> Plant:
+    def add_plant(self, world: tuple, mature: bool=False) -> Plant:
+        if mature:
+            size = PLANT_MAX_SIZE
+        else:
+            size = 3
         plant = Plant(screen=self.screen, space=self.space, sim=self, collision_tag=6, world_size=world,
-                      size=3, color0=Color(LIME), color1=Color('darkgreen'), color3=Color(BROWN))
+                      size=size, color0=Color(LIME), color1=Color('darkgreen'), color3=Color(BROWN))
         return plant
 
     def add_wall(self, point0: tuple, point1: tuple, thickness: float) -> Wall:
@@ -431,8 +444,11 @@ class Simulation():
             if r == 0:
                 creature = self.add_creature(WORLD)
             else:
-                genome = choice(self.ranking1)
-                genome['fitness'] *= 0.75
+                rank_size = len(self.ranking1)
+                rnd = randint(0, rank_size-1)
+                genome = self.ranking1[rnd]
+                self.ranking1[rnd]['fitness'] *= 0.66
+                #genome['fitness'] *= 0.75
                 creature = self.add_creature(WORLD, genome)
             self.creature_list.append(creature)
 
