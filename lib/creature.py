@@ -156,7 +156,9 @@ class Creature(Life):
         return (genome, pos)
       
     def move(self, dt: float) -> None:
-        move = ((self.output[0]+1)/2)*SPEED/dt
+        move = (self.output[0])*SPEED/dt
+        if move < 0:
+            move = 0
         turn = self.output[1]*TURN/dt
         sensor_turn = self.output[2]*SENSOR_SPEED/dt
         self.angle = (self.angle+(turn))%(2*PI)

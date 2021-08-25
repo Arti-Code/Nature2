@@ -29,8 +29,8 @@ from lib.meat import Meat
 class Simulation():
 
     def __init__(self, view_size: tuple):
-        self.times = []
-        self.time_text = 1
+        self.neuro_single_times = []
+        self.neuro_avg_time = 1
         self.physics_single_times = []
         self.physics_avg_time = 1
         self.project_name = None
@@ -107,7 +107,7 @@ class Simulation():
         
     def create_rocks(self, rock_num: int):
         for _r in range(rock_num):
-            self.create_rock(7, 110, random_position(WORLD))
+            self.create_rock(5, 110, random_position(WORLD))
 
     def create_plants(self, plant_num: int):
         for p in range(plant_num):
@@ -291,11 +291,6 @@ class Simulation():
 
     def draw(self):
         self.screen.fill(Color('black'))
-        #self.screen.blit(self.terr_img, (0, 0))
-        # for creature in self.creature_list:
-        #    if creature == self.selected:
-        #        creature.draw_detectors(screen=self.screen)
-
         for creature in self.creature_list:
             creature.draw(screen=self.screen, selected=self.selected)
             creature.draw_detectors(screen=self.screen)
@@ -324,7 +319,7 @@ class Simulation():
                 self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)}', WORLD[0]/2-150, WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
             else:                
                 self.manager.add_text2(f'no info', WORLD[0]/2-150, WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
-        self.manager.add_text2(f'creatures: {len(self.creature_list)} | plants: {len(self.plant_list)} | neuro time: {round(self.time_text, 4)}s | physx time: {round(self.physics_avg_time , 4)}s', 250, WORLD[1]-25, Color('yellow'), False, False, True, False)
+        self.manager.add_text2(f'creatures: {len(self.creature_list)} | plants: {len(self.plant_list)} | neuro time: {round(self.neuro_avg_time*1000)}ms | physx time: {round(self.physics_avg_time*1000)}ms', 250, WORLD[1]-25, Color('yellow'), False, False, True, False)
     
     def write_text(self):
         for txt, rect in self.manager.text_list:
@@ -389,10 +384,10 @@ class Simulation():
             # creature.get_input()
             creature.analize()
         neuro_time = time()-neuro_time
-        self.times.append(neuro_time)
-        if len(self.times) >= 150:
-            self.time_text = mean(self.times)
-            self.times = []
+        self.neuro_single_times.append(neuro_time)
+        if len(self.neuro_single_times) >= 150:
+            self.neuro_avg_time = mean(self.neuro_single_times)
+            self.neuro_single_times = []
         for creature in self.creature_list:
             creature.move(dt)
         for creature in self.creature_list:

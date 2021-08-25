@@ -99,9 +99,9 @@ class RankWindow(UIWindow):
         for i in range(RANK_SIZE):
             #text = str(i) + '. gen: ' + str(ranking[i]['gen']) + ' fit: ' + str(round(ranking[i]['fitness']))
             text = ''
-            lab = UILabel(Rect((round((self.rect.width/2)-(btn_w)), 25*i+10), (self.rect.width, 20)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position')
+            lab = UILabel(Rect((round((rect.width/2)-(btn_w)), 15*i+5), (rect.width, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position')
             self.labels.append(lab)
-        self.btn_close = UIButton(Rect((round((self.rect.width/2)-(btn_w/2)), (25*i+40)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
+        self.btn_close = UIButton(Rect((round((rect.width/2)-(btn_w/2)), (20*i+25)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
 
     def Update(self, ranking: list):
         #ranking = self.owner.owner.enviro.ranking1
@@ -129,10 +129,11 @@ class EnviroWindow(UIWindow):
         i=0
         self.labs = {}
         for key, val in data.items():
-            lab = UILabel(Rect((10, 30*i+10), (self.rect.width-10, 30)), text=f"{key}: {val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info'+str(i))
+            lab1 = UILabel(Rect((10, 15*i+5), (90, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
+            lab2 = UILabel(Rect((120, 15*i+5), (self.rect.width/2-20, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
             i+=1
-            self.labs[key] = lab
-        self.btn_close = UIButton(Rect((75, (25+30*i+10)), (50, 20)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
+            self.labs[key] = (lab1, lab2)
+        self.btn_close = UIButton(Rect((rect.width/2-btn_w/2, (15+15*i)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
         self.refresh = 0
         self.Update(data, dT)
 
@@ -144,7 +145,8 @@ class EnviroWindow(UIWindow):
             data = data
             for key, val in data.items():
                 #self.labs[key] = UILabel(Rect((10, 15*i), (self.rect.width-10, 40)), text=f"{key}: {val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info'+str(i))
-                self.labs[key].set_text(f"{key}: {val}")
+                self.labs[key][0].set_text(f"{key}:")
+                self.labs[key][1].set_text(f"{val}")
 
 class SettingsWindow(UIWindow):
 
@@ -256,7 +258,7 @@ class GUI():
 
     def create_rank_win(self):
         w = 250
-        h = 600
+        h = 500
         title = 'RANKING'
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)
@@ -287,10 +289,12 @@ class GUI():
         data['dT'] = ''
         data['TIME'] = ''
         data['CREATURES'] = str(len(self.owner.enviro.creature_list))
+        data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         #data['PREDATORS'] = str(self.owner.enviro.hunter_num)
         #data['HERBIVORES'] = str(self.owner.enviro.herbs_num)
-        data['PLANTS'] = str(len(self.owner.enviro.plant_list))
-        self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (200, 250)), data=data, dT=dT)
+        data['NEURO_TIME'] = ''
+        data['PHYSIC_TIME'] = ''
+        self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (200, 175)), data=data, dT=dT)
 
     def select_map(self):
         w = 300
@@ -305,18 +309,11 @@ class GUI():
         data = {}
         #data = {}
         data['dT'] = str(round(dT, 2)) + 's'
-        data['TIME'] = str(self.owner.enviro.get_time(1))
+        data['TIME'] = str(self.owner.enviro.get_time(1)) + 's'
         data['CREATURES'] = str(len(self.owner.enviro.creature_list))
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
-        #data['RANKING'] = []
-        #for r in ranking:
-        #    data['RANKING'].append((r['name'], r['gen'], r['fitness']))
-        #data['CREATURES'] = str(len(self.owner.enviro.my_creatures))
-        #data['PREDATORS'] = str(self.owner.enviro.hunter_num)
-        #data['HERBIVORES'] = str(self.owner.enviro.herbs_num)
-        #data['PLANTS'] = str(len(self.owner.enviro.my_plants))
-        #if dT:
-        #    data['DELTA'] = str(round(dT, 3))
+        data['NEURO_TIME'] = str(round(self.owner.enviro.neuro_avg_time*1000, 1)) + 'ms'
+        data['PHYSIC_TIME'] = str(round(self.owner.enviro.physics_avg_time*1000, 1)) + 'ms'
         return data
 
     def process_event(self, event, dt: float):

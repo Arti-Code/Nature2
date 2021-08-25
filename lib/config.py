@@ -5,13 +5,13 @@ global cfg
 cfg: dict = {}
 
 
-TITLE = 'NATURE v0.4.0'
+TITLE = 'NATURE v0.4.1'
 SUBTITLE = "2019-2021 Artur Gwoździowski"
 #WORLD                       = (1500, 750)
 #SCREEN                      = (1500, 750)
 #FONT_SIZE                   = 12
-WORLD                       = (1900, 900)
-SCREEN                      = (1900, 900)
+WORLD                       = (1900, 1000)
+SCREEN                      = (1900, 1000)
 FONT_SIZE                   = 14
 #global EAT
 #EAT: int
@@ -24,8 +24,8 @@ CREATURE_MULTIPLY           = 0.001
 CREATURE_MIN_NUM            = 16
 EAT                         = 200
 CREATURE_INIT_NUM           = 75
-BASE_ENERGY                 = 0.0008
-MOVE_ENERGY                 = 0.0015
+BASE_ENERGY                 = 0.001
+MOVE_ENERGY                 = 0.001
 REP_TIME                    = 60
 REP_ENERGY                  = 0.25
 SPEED                       = 1
@@ -37,7 +37,7 @@ CREATURE_MAX_SIZE           = 12
 HIT                         = 150
 MEM_TIME                    = 0.3
 SENSOR_MAX_ANGLE            = PI/3
-ROCK_NUM                    = 14
+ROCK_NUM                    = 16
 RANK_SIZE                   = 20
 MEAT_TIME                   = 30
 VISUAL_RANGE                = 200

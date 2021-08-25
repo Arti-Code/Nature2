@@ -9,7 +9,7 @@ names: list = [
     'ne', 'na', 'ni', 'no', 'ny', 'nu',
     'vu', 'va', 'vi', 'vo', 'vy', 'vu',
     'xi', 'xa', 'xu', 'xe', 'xo', 'xy', 'xs', 'xi',
-    'pa', 'pi', 
+    'pu', 'pa', "po", "py", "pu", "pe", "po", "pv", "pe", "pd", "pf", "pf", "ph", "pi", "pj", "pk", "pl", "pr", "ps", "pz", "pw", "pp", "pu", "pt",
     'li', 'lo', 
     'ko', 'ka', 'ku', 'ki', 'ke', 'ko',
     're', 'ra', 'ry', 'ri', 'ru',
@@ -21,9 +21,9 @@ names: list = [
     'zy', 'zu', 'zo',
     'qe', 'qi', 'qu', 
     'uo', 'ui', 'ua', 'us', 'ud', 'uf', 'ug', 'uh', 'uj', 'uk', 'ul',
-    'hu', 
+    'hu', 'ha', "ho", "hy", "hu", "he", "ho", "hv", "he", "hd", "hf", "hf", "ht", "hi", "hj", "hk", "hl", "hr", "hs", "hz", "hw", "hh", "hu", "hp", 
     'sy', 'so', 'se',
-    'tu', 'ta', "to", "ty", "tu", "te", "to", "tv", "te", "td", "tf", "t-", "th", "ti", "tj", "tk", "tl", "tr", "ts", "tz", "tw", "tt", "tu", "tp",
+    'tu', 'ta', "to", "ty", "tu", "te", "to", "tv", "te", "td", "tf", "tf", "th", "ti", "tj", "tk", "tl", "tr", "ts", "tz", "tw", "tt", "tu", "tp",
     'zo', 'zu', 'zi', 'za', 'ze', 'zi'
 ]
 

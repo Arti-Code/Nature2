@@ -26,8 +26,8 @@ class Meat(Body):
         self.circles = []
         if r >= 3:
             for m in range(0, r, 2):
-                rx = randint(-10, 10)
-                ry = randint(-10, 10)
+                rx = randint(-5, 5)
+                ry = randint(-5, 5)
                 self.circles.append([rx, ry, m])
         else:
             self.circles.append(0, 0, 0)
