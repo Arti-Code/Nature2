@@ -7,36 +7,53 @@ from lib.config import *
 
 def process_creature_plant_collisions(arbiter, space, data):
     dt = data['dt']
-    arbiter.shapes[0].body.position -= arbiter.normal*0.5
-    arbiter.shapes[1].body.position += arbiter.normal*0.2
-    #if arbiter.normal.angle <= 0.5 and arbiter.normal.angle >= -0.5:
     hunter = arbiter.shapes[0].body
     target = arbiter.shapes[1].body
-    target.color0 = Color('red')
-    #if isinstance(hunter, Creature) and isinstance(target, Plant):
-    target.energy = target.energy - EAT*dt
-    if target.energy > 0:
-        hunter.eat(EAT*dt)
+    hunter.position -= arbiter.normal*0.5
+    target.position += arbiter.normal*0.2
+    if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 45:
+        target.color0 = Color('yellow')
+        target.energy = target.energy - cfg.EAT*dt
+        plant_value = cfg.EAT*dt*hunter.vege/10*3
+        hunter.eat(plant_value)
+        hunter.fitness += plant_value*0.1
     hunter.collide_plant = True
+    return True
+
+def process_creature_meat_collisions(arbiter, space, data):
+    dt = data['dt']
+    hunter = arbiter.shapes[0].body
+    target = arbiter.shapes[1].body
+    hunter.position -= arbiter.normal*0.5
+    target.position += arbiter.normal*0.2
+    if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 45:
+        target.color0 = Color('yellow')
+        target.energy = target.energy - cfg.EAT*dt
+        meat_value = cfg.EAT*dt*(target.time/cfg.MEAT_TIME)*hunter.meat/10*3
+        hunter.eat(meat_value)
+        hunter.fitness += meat_value*0.1
+    hunter.collide_meat = True
     return True
 
 def process_creatures_collisions(arbiter, space, data):
     dt = data['dt']
-    arbiter.shapes[0].body.position -= arbiter.normal*0.5
-    arbiter.shapes[1].body.position += arbiter.normal*0.5
-    #if arbiter.normal.angle <= 0.5 and arbiter.normal.angle >= -0.5:
+    agent = arbiter.shapes[0].body
+    target = arbiter.shapes[1].body
+    agent.position -= arbiter.normal*0.5
+    target.position += arbiter.normal*0.5
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
-    if (size0+randint(0, 6)) > (size1+randint(0, 6)):
-        dmg = HIT * dt
-        arbiter.shapes[1].body.energy -= dmg
-        arbiter.shapes[1].body.color0=Color('red')
-        arbiter.shapes[0].body.eat(dmg*0.85)
-    arbiter.shapes[0].body.collide_creature = True
+    if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 45:
+        if (size0+randint(0, 6)) > (size1+randint(0, 6)):
+            dmg = cfg.HIT * dt
+            target.energy -= dmg
+            target.color0=Color('red')
+            #agent.eat(dmg*0.85)
+            agent.fitness += dmg*0.05
+    agent.collide_creature = True
     return True
 
 def process_edge_collisions(arbiter, space, data):
-    #arbiter.shapes[0].body.angle += arbiter.normal.angle
     arbiter.shapes[0].body.position -= arbiter.normal * 1.5
     arbiter.shapes[0].body.collide_something = True
     return True
@@ -47,7 +64,7 @@ def detect_creature(arbiter, space, data):
     sensor_shape = arbiter.shapes[0]
     for sensor in creature.sensors:
         if sensor.shape == sensor_shape:
-            sensor.set_color(Color('red'))
+            sensor.set_color(Color('orange'))
             pos0 = creature.position
             dist = pos0.get_distance(enemy.position)
             sensor.send_data(detect=True, distance=dist)
@@ -81,6 +98,20 @@ def detect_obstacle(arbiter, space, data):
             break
     return True
 
+def detect_meat(arbiter, space, data):
+    creature = arbiter.shapes[0].body
+    meat = arbiter.shapes[1].body
+    contact = arbiter.contact_point_set.points[0].point_a
+    sensor_shape = arbiter.shapes[0]
+    for sensor in creature.sensors:
+        if sensor.shape == sensor_shape:
+            sensor.set_color(Color('red'))
+            pos0 = creature.position
+            dist = pos0.get_distance(contact)
+            sensor.send_data4(detect=True, distance=dist)
+            break
+    return True
+
 def detect_plant_end(arbiter, space, data):
     return True
 
@@ -88,4 +119,7 @@ def detect_creature_end(arbiter, space, data):
     return True
 
 def detect_obstacle_end(arbiter, space, data):
+    return True
+
+def detect_meat_end(arbiter, space, data):
     return True

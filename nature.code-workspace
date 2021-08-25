@@ -4,11 +4,5 @@
 			"path": "."
 		}
 	],
-	"settings": {
-		"python.pythonPath": "env\\Scripts\\python.exe",
-		"cSpell.words": [
-			"flipy",
-			"gfxdraw"
-		]
-	}
+	"settings": {}
 }

@@ -4,8 +4,8 @@
        "colours":
        {
          "normal_text":"#ffffff",
-         "dark_bg":"#077fc55e",
-         "normal_border": "#3fb1fd"
+         "dark_bg":"#0096b8bd",
+         "normal_border": "#1ae0ff"
        }, 
        "misc":
        {
@@ -21,7 +21,7 @@
        "colours":
        {
          "normal_text":"#ffffff",
-         "dark_bg":"#3fb7fd4d",
+         "dark_bg":"#0096b8bd",
          "normal_border": "#3fb1fd"
        }, 
        "misc":
@@ -202,8 +202,8 @@
         "colours":
         {
            "normal_text":"#ffffff",
-           "normal_bg":"#ec9304f7",
-           "hovered_bg":"#fdfda0f7",
+           "normal_bg":"#ec9304",
+           "hovered_bg":"#ff7d1a",
            "normal_border": "#fab51e"
         }
     },
@@ -212,9 +212,9 @@
         "colours":
         {
            "normal_text":"#ffffff",
-           "normal_bg":"#ec3e04d1",
-           "hovered_bg":"#ec6404d1",
-           "normal_border": "#ec1f04f2"
+           "normal_bg":"#f54500",
+           "hovered_bg":"#ff0000",
+           "normal_border": "#ff1e00"
         }
     },
     "#btn_menu":
@@ -302,10 +302,6 @@
            "hovered_bg":"#ec6404d1",
            "normal_border": "#ec1f04f2"
         }
-    },
-    "#enviro_win":
-    {
-
     },
     "#lab_info":
     {

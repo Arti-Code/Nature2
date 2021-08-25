@@ -89,6 +89,30 @@ class LoadWindow(UIWindow):
             projects = json.loads(projects_list)
             return projects["projects"]
 
+class RankWindow(UIWindow):
+
+    def __init__(self, owner, manager: UIManager, rect: Rect):
+        super().__init__(rect, manager=manager, window_display_title='Ranking', object_id="#rank_win", visible=True)
+        self.owner = owner
+        self.manager = manager
+        self.labels = []
+        for i in range(cfg.RANK_SIZE):
+            #text = str(i) + '. gen: ' + str(ranking[i]['gen']) + ' fit: ' + str(round(ranking[i]['fitness']))
+            text = ''
+            lab = UILabel(Rect((round((rect.width/2)-(btn_w)), 15*i+5), (rect.width, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position')
+            self.labels.append(lab)
+        self.btn_close = UIButton(Rect((round((rect.width/2)-(btn_w/2)), (15*i+25)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
+
+    def Update(self, ranking: list):
+        #ranking = self.owner.owner.enviro.ranking1
+        rank_count = len(ranking)
+        #self.labels = []
+        for i in range(rank_count):
+            text = str(i) + '. ' + ranking[i]['name'] + ' gen: ' + str(ranking[i]['gen']) + ' fit: ' + str(round(ranking[i]['fitness']))
+            #lab = UILabel(Rect((10, 20*i+20), (self.rect.width-10, 40)), text=text, manager=self.manager, container=self, parent_element=self, object_id='rank_position')
+            self.labels[i].set_text(text)
+        #self.btn_close = UIButton(Rect((75, (40+20*rank_count)), (50, 20)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
+
 class InfoWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, text: str, title: str=''):
@@ -105,10 +129,11 @@ class EnviroWindow(UIWindow):
         i=0
         self.labs = {}
         for key, val in data.items():
-            lab = UILabel(Rect((10, 10*i+5), (self.rect.width-10, 40)), text=f"{key}: {val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info'+str(i))
+            lab1 = UILabel(Rect((10, 15*i+5), (90, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
+            lab2 = UILabel(Rect((120, 15*i+5), (self.rect.width/2-20, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
             i+=1
-            self.labs[key] = lab
-        self.btn_close = UIButton(Rect((75, (25+10*i+5)), (50, 20)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
+            self.labs[key] = (lab1, lab2)
+        self.btn_close = UIButton(Rect((rect.width/2-btn_w/2, (15+15*i)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
         self.refresh = 0
         self.Update(data, dT)
 
@@ -117,16 +142,18 @@ class EnviroWindow(UIWindow):
         if self.refresh <= 0:
             self.refresh = 1
             #self.labs.clear()
+            data = data
             for key, val in data.items():
                 #self.labs[key] = UILabel(Rect((10, 15*i), (self.rect.width-10, 40)), text=f"{key}: {val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info'+str(i))
-                self.labs[key].set_text(f"{key}: {val}")
+                self.labs[key][0].set_text(f"{key}:")
+                self.labs[key][1].set_text(f"{val}")
 
 class SettingsWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect):
         super().__init__(rect, manager=manager, window_display_title='Settings', object_id="#set_win", visible=True)
         self.manager = manager
-        btn_list = [('Enviroment Info', '#btn_gui'), ('Set Enviroment', '#btn_enviro'), ('Back', '#btn_back')]
+        btn_list = [('Enviroment Info', '#btn_gui'), ('Ranking', '#btn_rank'), ('Set Enviroment', '#btn_enviro'), ('Back', '#btn_back')]
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
@@ -178,6 +205,7 @@ class GUI():
         self.info_win = None
         self.set_win = None
         self.enviro_win = None
+        self.rank_win = None
         self.rebuild_ui(self.view)
 
     def rebuild_ui(self, new_size: tuple):         
@@ -228,13 +256,22 @@ class GUI():
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.info_win = InfoWindow(manager=self.ui_mgr, rect=pos, text=text, title=title)
 
+    def create_rank_win(self):
+        w = 250
+        h = 380
+        pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
+        self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)
+
+    def update_ranking(self, ranking: list) -> dict:
+        return ranking
+
     def create_title(self, scr_size: tuple):
         w = 350
         h = 25
         h2 = 15
-        title_rect = Rect((round(SCREEN[0]/2-w/2), (10)), (w, h))
-        subtitle_rect = Rect((round(SCREEN[0]/2-w/2), (40)), (w, h2))
-        world_rect = Rect((round(SCREEN[0]/2-w/2), (55)), (w, h2))
+        title_rect = Rect((round(cfg.SCREEN[0]/2-w/2), (10)), (w, h))
+        subtitle_rect = Rect((round(cfg.SCREEN[0]/2-w/2), (40)), (w, h2))
+        world_rect = Rect((round(cfg.SCREEN[0]/2-w/2), (55)), (w, h2))
         self.title = UILabel(relative_rect=title_rect, text=TITLE, manager=self.ui_mgr, object_id='#lab_title')
         self.subtitle = UILabel(relative_rect=subtitle_rect, text=SUBTITLE, manager=self.ui_mgr, object_id='#lab_subtitle')
         if self.owner.enviro.project_name != None:
@@ -248,13 +285,15 @@ class GUI():
 
     def create_enviro_win(self, dT: float):
         data = {}
-        data['FPS'] = str(round(self.owner.enviro.FPS))
-        data['TIME'] = str(round(self.owner.enviro.get_time()))
-        #data['CREATURES'] = str(len(self.owner.enviro.my_creatures))
+        data['dT'] = ''
+        data['TIME'] = ''
+        data['CREATURES'] = str(len(self.owner.enviro.creature_list))
+        data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         #data['PREDATORS'] = str(self.owner.enviro.hunter_num)
         #data['HERBIVORES'] = str(self.owner.enviro.herbs_num)
-        #data['PLANTS'] = str(len(self.owner.enviro.my_plants))
-        self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((5, 5), (200, 150)), data=data, dT=dT)
+        data['NEURO_TIME'] = ''
+        data['PHYSIC_TIME'] = ''
+        self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (200, 175)), data=data, dT=dT)
 
     def select_map(self):
         w = 300
@@ -267,19 +306,19 @@ class GUI():
 
     def update_enviroment(self, dT: float) -> dict:
         data = {}
-        data['FPS'] = str(self.owner.enviro.FPS)
-        data['TIME'] = str(self.owner.enviro.get_time(1))
-        #data['CREATURES'] = str(len(self.owner.enviro.my_creatures))
-        #data['PREDATORS'] = str(self.owner.enviro.hunter_num)
-        #data['HERBIVORES'] = str(self.owner.enviro.herbs_num)
-        #data['PLANTS'] = str(len(self.owner.enviro.my_plants))
-        #if dT:
-        #    data['DELTA'] = str(round(dT, 3))
+        #data = {}
+        data['dT'] = str(round(dT, 2)) + 's'
+        data['TIME'] = str(self.owner.enviro.get_time(1)) + 's'
+        data['CREATURES'] = str(len(self.owner.enviro.creature_list))
+        data['PLANTS'] = str(len(self.owner.enviro.plant_list))
+        data['NEURO_TIME'] = str(round(self.owner.enviro.neuro_avg_time*1000, 1)) + 'ms'
+        data['PHYSIC_TIME'] = str(round(self.owner.enviro.physics_avg_time*1000, 1)) + 'ms'
         return data
 
     def process_event(self, event, dt: float):
         self.ui_mgr.process_events(event)
         if event.type == pygame.USEREVENT:
+            print(f'user_type: {event.user_type}')
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_object_id == '#btn_menu':
                     self.create_main_menu()
@@ -337,17 +376,29 @@ class GUI():
                 elif event.ui_object_id == '#set_win.#btn_gui':
                     self.set_win.kill()
                     self.create_enviro_win(dt)
+                elif event.ui_object_id == '#set_win.#btn_rank':
+                    self.set_win.kill()
+                    self.create_rank_win()
+                elif event.ui_object_id == '#rank_win.#btn_quit':
+                    self.rank_win.kill()
                 elif event.ui_object_id == '#enviro_win.#btn_quit':
                     self.enviro_win.kill()
                 elif event.ui_object_id == '#menu_win.#btn_quit':
                     pygame.quit()
                     sys.exit(0)
+            return True
+        else:
+            return False
 
-    def update(self, dt: float):
+    def update(self, dt: float, ranking: list):
+        data: dict = {}
         self.ui_mgr.update(dt)
         if self.enviro_win:
             data = self.update_enviroment(dt)
             self.enviro_win.Update(data, dt)
+        if self.rank_win:
+            data = self.update_ranking(ranking)
+            self.rank_win.Update(data)
 
     def draw_ui(self, screen):
         self.ui_mgr.draw_ui(screen)

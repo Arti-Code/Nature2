@@ -1,6 +1,7 @@
 from random import random, randint
 from math import sin, cos, pi as PI
 import pygame.gfxdraw as gfxdraw
+from pygame.draw import line, lines
 from pygame import Surface, Color, Rect
 import pymunk as pm
 from pymunk import Segment, Body, Space
@@ -24,9 +25,11 @@ class Wall(Body):
         p2 = self.shape.b
         x1 = int(p1[0]); y1 = int(p1[1])
         x2 = int(p2[0]); y2 = int(p2[1])
-        gfxdraw.line(screen, x1, flipy(y1), x2, flipy(y2), self.border_color)
+        line(screen, self.border_color, (x1, flipy(y1)), (x2, flipy(y2)), t)
 
     def update(self, dT:float) -> None:
         pass
 
-
+    def kill(self, space: Space) -> None:
+        space.remove(self.shape)
+        space.remove(self)

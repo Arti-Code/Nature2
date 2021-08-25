@@ -27,8 +27,8 @@ class Manager:
         self.screen = screen
         self.enviro = enviro
         self.gui = GUI(owner=self, view=WORLD)
-        self.font_small = Font(match_font('firacode'), FONT_SIZE)
-        pass
+        self.font_small = pygame.font.Font("res/fonts/fira.ttf", 8)
+        self.text_list: list = []
 
     def new_project(self, new_name: str):
         self.add_to_project_list(new_name)
@@ -55,8 +55,8 @@ class Manager:
     def user_event(self, event, dt: float):
         self.gui.process_event(event, dt)
 
-    def update_gui(self, dt: float):
-        self.gui.update(dt)
+    def update_gui(self, dt: float, ranking: list):
+        self.gui.update(dt, ranking)
 
     def draw_gui(self, screen: Surface):
         self.gui.draw_ui(screen)
@@ -67,6 +67,31 @@ class Manager:
     def add_text(self, text: str, x: int, y: int, small_font: bool=True, color: Color=Color('white')):
        render_text = self.small_font.render(text, True, color)
        self.screen.blit(render_text, (x, y), )
+
+    def add_text2(self, text, x, y, color, title=False, subtitle=False, creature=False, small=False):
+        if title:
+            txt_render = self.titl_font.render(text, True, Color(color))
+            txt_rect = txt_render.get_rect()
+            txt_rect.center = (x, y)
+        elif subtitle:
+            txt_render = self.subtitl_font.render(text, True, Color(color))
+            txt_rect = txt_render.get_rect()
+            txt_rect.center = (x, y)
+        elif creature:
+            txt_render = self.creature_font.render(text, True, Color(color))
+            txt_rect = txt_render.get_rect()
+            txt_rect.center = (x, y)
+        elif small:
+            txt_render = self.small_font.render(text, True, Color(color))
+            txt_rect = txt_render.get_rect()
+            txt_rect.left = x
+            txt_rect.top = y
+        else:
+            txt_render = self.norm_font.render(text, True, Color(color))
+            txt_rect = txt_render.get_rect()
+            txt_rect.left = x
+            txt_rect.top = y
+        self.text_list.append((txt_render, txt_rect))
 
     def save_project(self):
         project_name = self.enviro.project_name
@@ -79,10 +104,18 @@ class Manager:
             project['time'] = self.enviro.get_time()
             for creature in self.enviro.creature_list:
                 creature_to_save = {}
+                creature_to_save['name'] = creature.name
                 creature_to_save['gen'] = creature.generation
                 creature_to_save['size'] = creature.shape.radius
+                creature_to_save['power'] = creature.power
+                creature_to_save['meat'] = creature.meat
+                creature_to_save['vege'] = creature.vege
                 creature_to_save['x'] = round(creature.position.x)
                 creature_to_save['y'] = round(creature.position.y)
+                #creature_to_save['color0'] = creature.color0
+                #creature_to_save['color1'] = creature.color1
+                #creature_to_save['color2'] = creature.color2
+                #creature_to_save['color3'] = creature.color3
                 creature_to_save['color0'] = [creature.color0.r, creature.color0.g, creature.color0.b, creature.color0.a]
                 creature_to_save['color1'] = [creature.color1.r, creature.color1.g, creature.color1.b, creature.color1.a]
                 creature_to_save['color2'] = [creature.color2.r, creature.color2.g, creature.color2.b, creature.color2.a]
@@ -145,6 +178,8 @@ class Manager:
         obj_list = json.loads(json_list)
         #self.enviro.creature_list.clear()
         self.enviro.create_empty_world(WORLD)
+        self.enviro.create_rocks(ROCK_NUM)
+        self.enviro.create_plants(cfg.PLANT_INIT_NUM)
         self.project_name = project_name
         self.enviro.time = obj_list['time'] % 1000
         self.enviro.cycle = round((obj_list['time'] / 100))
@@ -152,17 +187,12 @@ class Manager:
         #obj_list['ranking2'].sort(key=Sort_By_Fitness, reverse=True)
         #self.enviro.ranking1 = []
         #self.enviro.ranking2 = []
-        for c in obj_list['creatures']:
-            #neuro = Network()
-            #neuro.FromJSON(c['neuro'])
-            size = c['size']
-            gen = c['gen']
-            position = (c['x'], c['y'])
-            color0 = Color(c['color0'][0], c['color0'][1], c['color0'][2], c['color0'][3])
-            color1 = Color(c['color1'][0], c['color1'][1], c['color1'][2], c['color1'][3])
-            color2 = Color(c['color2'][0], c['color2'][1], c['color2'][2], c['color2'][3])
-            color3 = Color(c['color3'][0], c['color3'][1], c['color3'][2], c['color3'][3])
-            self.enviro.add_saved_creature(size, color0, color1, color2, color3, position, gen, c['neuro'])
+        for genome in obj_list['creatures']:
+            #genome['neuro'] = json.loads(genome['neuro'])
+            neuro = Network()
+            neuro.FromJSON(genome['neuro'])
+            genome['neuro'] = neuro
+            self.enviro.add_saved_creature(genome)
         if not f.closed:
             f.close()
 
@@ -191,7 +221,12 @@ class Manager:
             l = 0
             base_line = []
 
-            inp_desc = ['col_cr', 'col_pl', 'col_ob', 'angle', 'sid_ang', 'x_pos', 'y_pos', 'eng', 'enemy0', 'dist0', 'plant0', 'dist0', 'obst0', 'dist0', 'enemy1', 'dist1', 'plant1', 'dist1', 'obst1', 'dist1', 'enemy2', 'dist2', 'plant2', 'dist2', 'obst2', 'dist2']
+            inp_desc = [
+                'col_cr', 'col_pl', 'col_ob', 'col_meat', 'angle', 'sid_ang', 'x_pos', 'y_pos', 'eng', 
+                'enemy0', 'dist0', 'plant0', 'dist0', 'obst0', 'dist0', 'meat0', 'dist0',
+                'enemy1', 'dist1', 'plant1', 'dist1', 'obst1', 'dist1', 'meat1', 'dist1', 
+                'enemy2', 'dist2', 'plant2', 'dist2', 'obst2', 'dist2', 'meat2', 'dist2'
+            ]
             out_desc = ["mov", "turn", "run", "hid", "atk", "eat"]
 
             input_keys = network.GetNodeKeyList([TYPE.INPUT])
@@ -248,9 +283,9 @@ class Manager:
                                 g = 255
                         link_color = Color(r, g, b)
                         node_num0 = len(network.layers[l0].nodes)
-                        pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)-1))
-                        pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)))
-                        pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)+1))
+                        pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)-1))
+                        pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)))
+                        pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)+1))
                     #if last_layer:  #TODO
                     #    desc = out_desc[desc_idx]
                     #    desc_idx += 1
@@ -260,13 +295,13 @@ class Manager:
                 l += 1
 
             for c, l, n, r, d, desc in nodes_to_draw:
-                gfxdraw.filled_circle(self.screen, 80 + l * h_space, SCREEN[1] - base_line[l] + d*n + round(d/2), 3, c)
-                gfxdraw.aacircle(self.screen, 80 + l * h_space, SCREEN[1] - base_line[l] + d + round(d/2), 3, c)
+                gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 3, c)
+                gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d + round(d/2), 3, c)
                 if r:
-                    gfxdraw.aacircle(self.screen, 80 + l * h_space, SCREEN[1] - base_line[l] + d*n + round(d/2), 5, c)
+                    gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 5, c)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
-                    self.add_text(f'{inp_desc[n]}: ', 6 + l * (h_space+10), SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
-                    self.add_text(f'{round(val, 1)}', 50 + l * (h_space+10), SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    self.add_text(f'{inp_desc[n]}: ', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    self.add_text(f'{round(val, 1)}', 50 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                 #if desc:
-                #    self.AddText(desc, 40 + l * (h_space+10), SCREEN[1] - base_line[l] + d*n + round(d/2), Color('#069ab8'), small=True)
+                #    self.AddText(desc, 40 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), Color('#069ab8'), small=True)

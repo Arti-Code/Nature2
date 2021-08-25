@@ -157,6 +157,14 @@ class Network():
         self.links = dict()
         self.log = []
 
+    def BuildFromGenome(self, genome):
+        self.node_num = genome.node_num
+        self.layer_num = genome.layer_num
+        self.link_num = genome.link_num
+        self.layers = genome.layers
+        self.nodes = genome.nodes
+        self.links = genome.links
+
     def BuildRandom(self, node_list=[83, 0, 0, 0, 0, 0, 5], link_rate=0.5):
         """Method for setup new neural network based on node_list and link_rate parameters. This method should be run just after object creation."""
         for lay1 in range(len(node_list)):
@@ -551,89 +559,7 @@ class Network():
         clone.log = deepcopy(self.log)
         clone.log.append("___CLONE___")
         return clone
-
-    def Recombine2(self, other_network):
-
-        nets = {}
-        nets[0] = self
-        nets[1] = other_network
-        in0 = nets[0].GetNodeKeyList([TYPE.INPUT])
-        in1 = nets[1].GetNodeKeyList([TYPE.INPUT])
-        if len(in0) != len(in1):
-            return False
-
-        new_net = Network()
-        new_net.nodes = deepcopy(nets[0].nodes)
-        new_net.links = deepcopy(nets[0].links)
-        new_net.layers = deepcopy(nets[0].layers)
-        for input_key in in1:
-            if random() <= 0.2:
-                new_net.CombineNode(input_key, nets[1].nodes[input_key], nets[1])
-        return new_net
-
-    def CombineNode(self, node_key, node, net2):
-        node = deepcopy(node)
-        if node_key in self.nodes:
-            links_to_kill = deepcopy(self.nodes[node_key].from_links + self.nodes[node_key].to_links)
-            for link_key in links_to_kill:
-                self.DeleteLink(link_key)
-        (layer_key, node_index) = net2.FindNode(node_key)
-        self.AddThisNode(layer_key, node_key, node)
-        for link_key in self.nodes[node_key].from_links:
-            link = deepcopy(net2.links[link_key])
-            self.AddThisLink(link_key, link)
-            next_node_key = link.to_node
-            next_node = net2.nodes[next_node_key] 
-            self.CombineNode(next_node_key, next_node, net2)
-
-    def Recombine(self, other_network):
-
-        networks = {}
-        networks[0] = self
-        networks[1] = other_network
-        nodes0 = networks[0].GetNodeKeyList([TYPE.OUTPUT, TYPE.HIDDEN])
-        new_network = Network()
-        new_network.nodes = deepcopy(networks[0].nodes)
-        new_network.links = deepcopy(networks[0].links)
-        new_network.layers = deepcopy(networks[0].layers)
-        new_network.log = deepcopy(networks[0].log)
-        new_network.log.append("___RECOMBINE___")
-
-        i1 = 0; i2 = 0
-        while i1 < 2:
-            new_network.log.append("***")
-            nodes1 = networks[1].GetNodeKeyList([TYPE.OUTPUT, TYPE.HIDDEN])
-            node_key = choice(nodes1) 
-            i1 += 1
-            (layer_key, node_index) = networks[1].FindNode(node_key)
-            if not node_key in new_network.nodes:
-                new_network.AddThisNode(layer_key, node_key, networks[1].nodes[node_key])
-                for link_key in networks[1].nodes[node_key].from_links:
-                    new_network.AddThisLink(link_key, networks[1].links[link_key])
-                for link_key in networks[1].nodes[node_key].to_links:
-                    new_network.AddThisLink(link_key, networks[1].links[link_key])
-            else:
-                for from_link_key in new_network.nodes[node_key].from_links:
-                    new_network.DeleteLink(from_link_key)
-                for to_link_key in new_network.nodes[node_key].to_links:
-                    new_network.DeleteLink(to_link_key)
-                new_network.DeleteNode(node_key)
-                new_network.AddThisNode(layer_key, node_key, networks[1].nodes[node_key])
-                for link_key in networks[1].nodes[node_key].from_links:
-                    new_network.AddThisLink(link_key, networks[1].links[link_key])
-                for link_key in networks[1].nodes[node_key].to_links:
-                    new_network.AddThisLink(link_key, networks[1].links[link_key])
-
-        while i2 < 2:
-            new_network.log.append("***")
-            new_nodes = new_network.GetNodeKeyList([TYPE.OUTPUT, TYPE.HIDDEN])
-            node_key = choice(new_nodes) 
-            i2 += 1
-            if not node_key in networks[1].nodes:
-                new_network.DeleteNode(node_key)
-
-        return new_network
-        
+       
     def FindNode(self, node_key):
 
         for layer_key in self.layers:

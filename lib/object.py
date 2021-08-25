@@ -13,7 +13,6 @@ from lib.config import *
 class Object(Body):
     def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, world_size: Vec2d, shape: Shape, position: Vec2d=None, color0: Color=None, color1: Color=None):
         super().__init__(self, body_type=Body.KINEMATIC)
-        self.world_size = world_size
         self.color0 = color0
         self.color1 = color1
         if position is not None:
