@@ -1,4 +1,4 @@
-from random import choice
+from random import choice, random
 
 names: list = [
     'am','af', 'ax', 'ar', 'av', 'al', 'aq', 'ak', 'ar', 'at',
@@ -34,3 +34,14 @@ def random_name(length: int=3, upper: bool=False) -> str:
     if upper:
         return name.upper()
     return name
+
+def modify_name(name: str) -> str:
+    ch = random_name(1, True)
+    rnd = random()
+    if rnd <= 0.5:
+        new_name = name[0:3]+ch
+    elif rnd <= 0.85:
+        new_name = name[0:1]+ch+name[4:5]
+    else:
+        new_name = ch + name[2:5]
+    return new_name

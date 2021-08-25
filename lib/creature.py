@@ -1,6 +1,7 @@
 from copy import copy, deepcopy
 from random import random, randint
 from math import sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt
+from statistics import mean
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
 from pygame.font import Font
@@ -10,8 +11,8 @@ from lib.life import Life
 from lib.math2 import flipy, ang2vec, ang2vec2, clamp
 from lib.sensor import Sensor, PolySensor
 from lib.net import Network
+from lib.species import random_name, modify_name
 from lib.config import *
-from lib.names import random_name
 
 
 class Creature(Life):
@@ -59,7 +60,10 @@ class Creature(Life):
             self.vege = clamp(self.vege, 1, 10)
             self.power = clamp(self.power, 1, 10)
             self.generation = genome['gen']+1
-            self.name = genome['name']
+            if self.similar(genome, 0.8):
+                self.name = modify_name(genome['name'].copy())
+            else:
+                self.name = genome['name']
         self.shape = Circle(self, self.size)
         self.shape.collision_type = collision_tag
         space.add(self.shape)
@@ -246,6 +250,35 @@ class Creature(Life):
         genome['color3'] = self._color3
         genome['neuro'] = self.neuro.Replicate()
         return genome
+
+    def similar(self, parent_genome: dict, treashold: float) -> bool:
+        phisionomy = []
+        nodes = []
+        links = []
+        size_diff = abs(self.size-parent_genome['size'])
+        power_diff = abs(self.power-parent_genome['power'])
+        meat_diff = abs(self.meat-parent_genome['meat'])
+        vege_diff = abs(self.vege-parent_genome['vege'])
+        phisionomy = mean([size_diff, power_diff,meat_diff, vege_diff])/10
+        for node_sign in self.neuro.nodes:
+            if not node_sign in parent_genome['neuro'].nodes:
+                nodes.append(node_sign)
+        for node_sign in parent_genome['neuro'].nodes:
+            if not node_sign in self.neuro.nodes:
+                nodes.append(node_sign)
+        for link_sign in self.neuro.links:
+            if not link_sign in parent_genome['neuro'].links:
+                links.append(link_sign)
+        for link_sign in parent_genome['neuro'].links:
+            if not link_sign in self.neuro.links:
+                links.append(link_sign)
+        nodes_diff = len(nodes)/(len(self.neuro.nodes) + len(parent_genome['neuro'].nodes))
+        links_diff = len(links)/(len(self.neuro.links) + len(parent_genome['neuro'].links))
+        similar = 1 - mean([phisionomy, nodes_diff, links_diff])
+        if similar > treashold:
+            return False
+        else:
+            return True
 
     def eat(self, energy: float):
         #energy *= self.meat/10

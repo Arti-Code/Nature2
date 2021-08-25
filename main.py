@@ -2,6 +2,7 @@ import os
 import sys
 from time import time
 from math import degrees, hypot, sin, cos
+from copy import deepcopy, copy
 from lib.math2 import clamp
 from statistics import mean
 from random import randint, random, choice
@@ -63,6 +64,7 @@ class Simulation():
         self.draw_debug: bool=False
         self.ranking1 = []
         self.ranking2 = []
+        self.species = {}
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -74,13 +76,6 @@ class Simulation():
             vertices.append(Vec2d(x, y)+position)
         rock = Rock(self.screen, self.space, vertices, 1, Color('navy'), Color('grey'))
         self.wall_list.append(rock)
-        # for v in range(len(vertices)):
-        #    if v < len(vertices)-1:
-        #        wall = self.add_wall(vertices[v], vertices[v+1], 5)
-        #        self.wall_list.append(wall)
-        #    else:
-        #        wall = self.add_wall(vertices[v], vertices[0], 5)
-        #        self.wall_list.append(wall)
 
     def create_enviro(self, world: tuple = None):
         self.time = 0
@@ -192,9 +187,9 @@ class Simulation():
         if event.key == pygame.K_r:
             i = 0
             print("RANKING")
-            for r in self.ranking1:
+            for r in self.species:
                 i += 1
-                print(f"{i}. gen: {r['gen']} | fit: {round(r['fitness'])}")
+                print(f"{i}. specie: {r}")
             print("_______________________________")
 
     def mouse_events(self, event):
@@ -268,6 +263,12 @@ class Simulation():
             creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, color0=Color('blue'), color1=Color('skyblue'), color2=Color('orange'), color3=Color('red'))
         else:
             creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, genome=genome)
+
+        if not creature.name in self.species:
+            self.species[creature.name] = deepcopy(creature.get_genome())
+        else:
+            if not creature.similar(self.species[creature.name], 0.8):
+                creature.modify_name()
         return creature
 
     def add_saved_creature(self, genome: dict):
@@ -494,8 +495,6 @@ def sort_by_fitness(creature):
 
 
 if __name__ == "__main__":
-    #global cfg
-    #cfg = Configuration('config.json')
     print(f'SPEED={cfg.SPEED}')
     set_world(cfg.WORLD)
     sim = Simulation(cfg.WORLD)
