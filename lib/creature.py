@@ -36,7 +36,7 @@ class Creature(Life):
             self.meat = randint(1, 10)
             self.vege = randint(1, 10)
             self.power = randint(1, 10)
-            self.size = randint(CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
+            self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
             self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 3], 0.3)
             self.name = random_name(3, True)
         else:
@@ -55,7 +55,7 @@ class Creature(Life):
             self.vege = genome['vege'] + randint(-1, 1)
             self.power = genome['power'] + randint(-1, 1)
             self.meat = clamp(self.meat, 1, 10)
-            self.size = clamp(self.size, CREATURE_MIN_SIZE, CREATURE_MAX_SIZE)
+            self.size = clamp(self.size, cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
             self.vege = clamp(self.vege, 1, 10)
             self.power = clamp(self.power, 1, 10)
             self.generation = genome['gen']+1
@@ -64,15 +64,15 @@ class Creature(Life):
         self.shape.collision_type = collision_tag
         space.add(self.shape)
         self.eye_colors = {}
-        self.visual_range = VISUAL_RANGE
+        self.visual_range = cfg.VISUAL_RANGE
         self.sensors = []
         self.side_angle = 0
         self.sensors.append(Sensor(screen, self, 4, 0, 220))
-        self.sensors.append(Sensor(screen, self, 4, SENSOR_MAX_ANGLE, 250))
-        self.sensors.append(Sensor(screen, self, 4, -SENSOR_MAX_ANGLE, 250))
+        self.sensors.append(Sensor(screen, self, 4, cfg.SENSOR_MAX_ANGLE, 250))
+        self.sensors.append(Sensor(screen, self, 4, -cfg.SENSOR_MAX_ANGLE, 250))
         self.mem_time = 0
-        self.max_energy = self.size*SIZE2ENG
-        self.reproduction_time = REP_TIME
+        self.max_energy = self.size*cfg.SIZE2ENG
+        self.reproduction_time = cfg.REP_TIME
         self.energy = self.max_energy
         for sensor in self.sensors:
             space.add(sensor.shape)
@@ -126,13 +126,13 @@ class Creature(Life):
         move = self.move(dt)
         self.calc_energy(dt, move)
         self.mem_time -= 1/dt
-        self.mem_time = clamp(self.mem_time, 0, MEM_TIME)
+        self.mem_time = clamp(self.mem_time, 0, cfg.MEM_TIME)
 
     def check_reproduction(self, dt) -> bool:
         self.reproduction_time -= 1/dt
         if self.reproduction_time <= 0:
             self.reproduction_time = 0
-            if self.energy >= (self.max_energy*(1-REP_ENERGY)):
+            if self.energy >= (self.max_energy*(1-cfg.REP_ENERGY)):
                 return True
         return False
 
@@ -151,16 +151,16 @@ class Creature(Life):
         pos = Vec2d(x2, y2)
         genome: dict=self.get_genome()
         genome['neuro'] = self.neuro.Replicate()
-        self.reproduction_time = REP_TIME
+        self.reproduction_time = cfg.REP_TIME
         self.fitness += 10
         return (genome, pos)
       
     def move(self, dt: float) -> None:
-        move = (self.output[0])*SPEED/dt
+        move = (self.output[0])*cfg.SPEED/dt
         if move < 0:
             move = 0
-        turn = self.output[1]*TURN/dt
-        sensor_turn = self.output[2]*SENSOR_SPEED/dt
+        turn = self.output[1]*cfg.TURN/dt
+        sensor_turn = self.output[2]*cfg.SENSOR_SPEED/dt
         self.angle = (self.angle+(turn))%(2*PI)
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
         self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
@@ -168,9 +168,9 @@ class Creature(Life):
         return abs(move)*dt
 
     def calc_energy(self, dt: float, move: float):
-        base_energy = BASE_ENERGY * dt
-        move_energy = move * MOVE_ENERGY * dt
-        self.energy -= (base_energy + move_energy) * self.size * SIZE_COST
+        base_energy = cfg.BASE_ENERGY * dt
+        move_energy = move * cfg.MOVE_ENERGY * dt
+        self.energy -= (base_energy + move_energy) * self.size * cfg.SIZE_COST
         self.energy = clamp(self.energy, 0, self.max_energy)
 
     def get_input(self):
@@ -180,12 +180,12 @@ class Creature(Life):
         input.append(self.collide_something)
         input.append(self.collide_meat)
         angle = self.angle/(2*PI)
-        side_angle = self.sensors[1].angle/(SENSOR_MAX_ANGLE*2)
+        side_angle = self.sensors[1].angle/(cfg.SENSOR_MAX_ANGLE*2)
         input.append(angle)
         input.append(side_angle)
-        x = self.position[0]/WORLD[0]
+        x = self.position[0]/cfg.WORLD[0]
         input.append(x)
-        y = self.position[1]/WORLD[1]
+        y = self.position[1]/cfg.WORLD[1]
         input.append(y)
         eng = self.energy/self.max_energy
         input.append(eng)
@@ -211,7 +211,7 @@ class Creature(Life):
         if self.mem_time <= 0:
             input = self.get_input()
             self.output = self.neuro.Calc(input)
-            self.mem_time = MEM_TIME
+            self.mem_time = cfg.MEM_TIME
         #for sensor in self.sensors:
         #    sensor.reset_data()
             

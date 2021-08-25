@@ -16,10 +16,10 @@ class Plant(Life):
 
     def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color=None, color3=None, position: Vec2d=None):
         super().__init__(screen=screen, space=space, owner=sim, collision_tag=collision_tag, position=position)
-        self.life_time = PLANT_LIFE
+        self.life_time = cfg.PLANT_LIFE
         self.size = size
-        self.max_size = PLANT_MAX_SIZE
-        self.max_energy = pow(PLANT_MAX_SIZE, 2)
+        self.max_size = cfg.PLANT_MAX_SIZE
+        self.max_energy = pow(cfg.PLANT_MAX_SIZE, 2)
         self.color0 = Color('yellowgreen')
         self.color1 = Color('green')
         self._color0 = Color('yellowgreen')
@@ -38,13 +38,13 @@ class Plant(Life):
 
     def update(self, dt: float):
         if self.energy < self.max_energy and self.energy > 0:
-            self.energy += PLANT_GROWTH/dt
+            self.energy += cfg.PLANT_GROWTH/dt
             new_size = floor(sqrt(self.energy))
             if new_size != self.size:
-                if new_size <= PLANT_MAX_SIZE:
+                if new_size <= cfg.PLANT_MAX_SIZE:
                     self.shape.unsafe_set_radius(new_size)
                 else:
-                    self.shape.unsafe_set_radius(PLANT_MAX_SIZE)
+                    self.shape.unsafe_set_radius(cfg.PLANT_MAX_SIZE)
         else:
             self.energy = self.max_energy
             self.size = self.max_size

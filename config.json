@@ -1,4 +1,7 @@
 {
+  "WORLD": [1900, 1000],
+  "SCREEN": [1900, 1000],
+  "FONT_SIZE": 14,
   "PLANT_MAX_SIZE": 16,
   "PLANT_GROWTH": 0.4,
   "PLANT_INIT_NUM": 50,

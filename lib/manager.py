@@ -179,7 +179,7 @@ class Manager:
         #self.enviro.creature_list.clear()
         self.enviro.create_empty_world(WORLD)
         self.enviro.create_rocks(ROCK_NUM)
-        self.enviro.create_plants(PLANT_INIT_NUM)
+        self.enviro.create_plants(cfg.PLANT_INIT_NUM)
         self.project_name = project_name
         self.enviro.time = obj_list['time'] % 1000
         self.enviro.cycle = round((obj_list['time'] / 100))
@@ -283,9 +283,9 @@ class Manager:
                                 g = 255
                         link_color = Color(r, g, b)
                         node_num0 = len(network.layers[l0].nodes)
-                        pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)-1))
-                        pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)))
-                        pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)+1))
+                        pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)-1))
+                        pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)))
+                        pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)+1))
                     #if last_layer:  #TODO
                     #    desc = out_desc[desc_idx]
                     #    desc_idx += 1
@@ -295,13 +295,13 @@ class Manager:
                 l += 1
 
             for c, l, n, r, d, desc in nodes_to_draw:
-                gfxdraw.filled_circle(self.screen, 80 + l * h_space, SCREEN[1] - base_line[l] + d*n + round(d/2), 3, c)
-                gfxdraw.aacircle(self.screen, 80 + l * h_space, SCREEN[1] - base_line[l] + d + round(d/2), 3, c)
+                gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 3, c)
+                gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d + round(d/2), 3, c)
                 if r:
-                    gfxdraw.aacircle(self.screen, 80 + l * h_space, SCREEN[1] - base_line[l] + d*n + round(d/2), 5, c)
+                    gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 5, c)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
-                    self.add_text(f'{inp_desc[n]}: ', 6 + l * (h_space+10), SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
-                    self.add_text(f'{round(val, 1)}', 50 + l * (h_space+10), SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    self.add_text(f'{inp_desc[n]}: ', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    self.add_text(f'{round(val, 1)}', 50 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                 #if desc:
-                #    self.AddText(desc, 40 + l * (h_space+10), SCREEN[1] - base_line[l] + d*n + round(d/2), Color('#069ab8'), small=True)
+                #    self.AddText(desc, 40 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), Color('#069ab8'), small=True)

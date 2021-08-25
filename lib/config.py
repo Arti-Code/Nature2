@@ -1,11 +1,8 @@
 from math import pi as PI
 from json import loads, dumps
 
-global cfg
-cfg: dict = {}
 
-
-TITLE = 'NATURE v0.4.1'
+TITLE = 'NATURE v0.4.2'
 SUBTITLE = "2019-2021 Artur Gwoździowski"
 #WORLD                       = (1500, 750)
 #SCREEN                      = (1500, 750)
@@ -13,8 +10,6 @@ SUBTITLE = "2019-2021 Artur Gwoździowski"
 WORLD                       = (1900, 1000)
 SCREEN                      = (1900, 1000)
 FONT_SIZE                   = 14
-#global EAT
-#EAT: int
 PLANT_MAX_SIZE              = 10
 PLANT_GROWTH                = 0.3
 PLANT_INIT_NUM              = 50
@@ -29,12 +24,11 @@ MOVE_ENERGY                 = 0.001
 REP_TIME                    = 60
 REP_ENERGY                  = 0.25
 SPEED                       = 1
-TURN                        = 0.13
+TURN                        = 0.18
 SENSOR_SPEED                = 0.8
-REPRODUCTION_TIME           = 60
 CREATURE_MIN_SIZE           = 3
 CREATURE_MAX_SIZE           = 12
-HIT                         = 150
+HIT                         = 220
 MEM_TIME                    = 0.3
 SENSOR_MAX_ANGLE            = PI/3
 ROCK_NUM                    = 16
@@ -123,3 +117,81 @@ def save_config(filename: str):
     f = open(filename, 'w')
     f.write(json_cfg)
     f.close()
+
+
+class Configuration():
+
+    def __init__(self, filename: str=None):
+        self.WORLD = None
+        self.SCREEN = None
+        self.FONT_SIZE = None
+        self.PLANT_MAX_SIZE = None
+        self.PLANT_GROWTH = None
+        self.PLANT_INIT_NUM = None
+        self.PLANT_LIFE = None
+        self.PLANT_MULTIPLY = None
+        self.CREATURE_MULTIPLY = None
+        self.CREATURE_MIN_NUM = None
+        self.EAT = None
+        self.CREATURE_INIT_NUM = None
+        self.BASE_ENERGY = None
+        self.MOVE_ENERGY = None
+        self.REP_TIME = None
+        self.REP_ENERGY = None
+        self.SPEED = None
+        self.TURN = None
+        self.SENSOR_SPEED = None
+        self.CREATURE_MIN_SIZE = None
+        self.CREATURE_MAX_SIZE = None
+        self.HIT = None
+        self.MEM_TIME = None
+        self.SENSOR_MAX_ANGLE = None
+        self.ROCK_NUM = None
+        self.RANK_SIZE = None
+        self.MEAT_TIME = None
+        self.VISUAL_RANGE = None
+        self.SIZE2ENG = None
+        self.SIZE_COST = None
+        self.CHILDS_NUM = None
+        self.load_from_file(filename)
+
+    def load_from_file(self, filename: str):
+        f = open(filename, 'r')
+        json_cfg = f.read()
+        f.close()
+        cfg = loads(json_cfg)
+        self.WORLD                  = cfg['WORLD']
+        self.SCREEN                 = cfg['SCREEN']
+        self.FONT_SIZE              = cfg['FONT_SIZE']
+        self.PLANT_MAX_SIZE         = cfg['PLANT_MAX_SIZE']
+        self.PLANT_GROWTH           = cfg['PLANT_GROWTH']
+        self.PLANT_INIT_NUM         = cfg['PLANT_INIT_NUM']
+        self.PLANT_LIFE             = cfg['PLANT_LIFE']
+        self.PLANT_MULTIPLY         = cfg['PLANT_MULTIPLY']
+        self.CREATURE_MULTIPLY      = cfg['CREATURE_MULTIPLY']
+        self.CREATURE_MIN_NUM       = cfg['CREATURE_MIN_NUM']
+        self.EAT                    = cfg['EAT']
+        self.CREATURE_INIT_NUM      = cfg['CREATURE_INIT_NUM']
+        self.BASE_ENERGY            = cfg['BASE_ENERGY']
+        self.MOVE_ENERGY            = cfg['MOVE_ENERGY']
+        self.REP_TIME               = cfg['REP_TIME']
+        self.REP_ENERGY             = cfg['REP_ENERGY']
+        self.SPEED                  = cfg['SPEED']
+        self.TURN                   = cfg['TURN']
+        self.SENSOR_SPEED           = cfg['SENSOR_SPEED']
+        self.CREATURE_MIN_SIZE      = cfg['CREATURE_MIN_SIZE']
+        self.CREATURE_MAX_SIZE      = cfg['CREATURE_MAX_SIZE']
+        self.HIT                    = cfg['HIT']
+        self.MEM_TIME               = cfg['MEM_TIME']
+        self.SENSOR_MAX_ANGLE       = cfg['SENSOR_MAX_ANGLE']
+        self.ROCK_NUM               = cfg['ROCK_NUM']
+        self.RANK_SIZE              = cfg['RANK_SIZE']
+        self.MEAT_TIME              = cfg['MEAT_TIME']
+        self.VISUAL_RANGE           = cfg['VISUAL_RANGE']
+        self.SIZE2ENG               = cfg['SIZE2ENG']
+        self.SIZE_COST              = cfg['SIZE_COST']
+        self.CHILDS_NUM             = cfg['CHILDS_NUM']
+
+
+
+cfg = Configuration('config.json')

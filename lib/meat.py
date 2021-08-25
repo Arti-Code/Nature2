@@ -17,7 +17,7 @@ class Meat(Body):
         self._color1 = color1
         self.color0 = color0
         self.color1 = color1
-        self.time = MEAT_TIME
+        self.time = cfg.MEAT_TIME
         self.shape = Circle(self, self.radius)
         self.shape.collision_type = collision_tag
         space.add(self, self.shape)
@@ -57,13 +57,11 @@ class Meat(Body):
             self.time = 0
         if self.energy < 0:
             self.energy = 0
-        self._color0.a = round((255*self.time)/MEAT_TIME)
+        self._color0.a = round((255*self.time)/cfg.MEAT_TIME)
         self.color0 = self._color0
         new_size = floor(sqrt(self.energy)*0.25)
         if new_size != self.shape.radius:
             self.shape.unsafe_set_radius(new_size)
-        #self.color0.r = int(clamp(self._color0.r * (self.time/MEAT_TIME), 50, 255))
-        #self.color1.r = int(clamp(self._color1.r * (self.time/MEAT_TIME), 25, 255))
 
     def kill(self, space: Space):
         space.remove(self.shape)

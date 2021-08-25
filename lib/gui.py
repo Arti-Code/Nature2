@@ -96,12 +96,12 @@ class RankWindow(UIWindow):
         self.owner = owner
         self.manager = manager
         self.labels = []
-        for i in range(RANK_SIZE):
+        for i in range(cfg.RANK_SIZE):
             #text = str(i) + '. gen: ' + str(ranking[i]['gen']) + ' fit: ' + str(round(ranking[i]['fitness']))
             text = ''
             lab = UILabel(Rect((round((rect.width/2)-(btn_w)), 15*i+5), (rect.width, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position')
             self.labels.append(lab)
-        self.btn_close = UIButton(Rect((round((rect.width/2)-(btn_w/2)), (20*i+25)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
+        self.btn_close = UIButton(Rect((round((rect.width/2)-(btn_w/2)), (15*i+25)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
 
     def Update(self, ranking: list):
         #ranking = self.owner.owner.enviro.ranking1
@@ -258,8 +258,7 @@ class GUI():
 
     def create_rank_win(self):
         w = 250
-        h = 500
-        title = 'RANKING'
+        h = 380
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)
 
@@ -270,9 +269,9 @@ class GUI():
         w = 350
         h = 25
         h2 = 15
-        title_rect = Rect((round(SCREEN[0]/2-w/2), (10)), (w, h))
-        subtitle_rect = Rect((round(SCREEN[0]/2-w/2), (40)), (w, h2))
-        world_rect = Rect((round(SCREEN[0]/2-w/2), (55)), (w, h2))
+        title_rect = Rect((round(cfg.SCREEN[0]/2-w/2), (10)), (w, h))
+        subtitle_rect = Rect((round(cfg.SCREEN[0]/2-w/2), (40)), (w, h2))
+        world_rect = Rect((round(cfg.SCREEN[0]/2-w/2), (55)), (w, h2))
         self.title = UILabel(relative_rect=title_rect, text=TITLE, manager=self.ui_mgr, object_id='#lab_title')
         self.subtitle = UILabel(relative_rect=subtitle_rect, text=SUBTITLE, manager=self.ui_mgr, object_id='#lab_subtitle')
         if self.owner.enviro.project_name != None:

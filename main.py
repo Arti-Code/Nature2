@@ -20,6 +20,7 @@ from lib.wall import Wall
 from lib.sensor import Sensor
 from lib.math2 import set_world, world, flipy
 from lib.config import *
+from lib.config import Configuration, cfg
 from lib.manager import Manager
 from lib.autoterrain import Terrain
 from lib.rock import Rock
@@ -51,7 +52,6 @@ class Simulation():
         self.manager = Manager(screen=self.screen, enviro=self)
 
         pygame.init()
-        # self.create_enviro(WORLD)
         self.space.gravity = (0.0, 0.0)
         self.set_collision_calls()
         pymunk.pygame_util.positive_y_is_up = True
@@ -88,7 +88,7 @@ class Simulation():
         self.kill_all_creatures()
         self.kill_all_plants()
         self.kill_things()
-        edges = [(0, 0), (WORLD[0]-1, 0), (WORLD[0]-1, WORLD[1]-1), (0, WORLD[1]-1), (0, 0)]
+        edges = [(0, 0), (cfg.WORLD[0]-1, 0), (cfg.WORLD[0]-1, cfg.WORLD[1]-1), (0, cfg.WORLD[1]-1), (0, 0)]
         for e in range(4):
             p1 = edges[e]
             p2 = edges[e+1]
@@ -99,19 +99,19 @@ class Simulation():
         #terrain = Terrain(self.screen, self.space, 'water3.png', 8)
         self.create_rocks(ROCK_NUM)
 
-        for c in range(CREATURE_INIT_NUM):
-            creature = self.add_creature(WORLD)
+        for c in range(cfg.CREATURE_INIT_NUM):
+            creature = self.add_creature(cfg.WORLD)
             self.creature_list.append(creature)
 
-        self.create_plants(PLANT_INIT_NUM)
+        self.create_plants(cfg.PLANT_INIT_NUM)
         
     def create_rocks(self, rock_num: int):
         for _r in range(rock_num):
-            self.create_rock(5, 110, random_position(WORLD))
+            self.create_rock(5, 110, random_position(cfg.WORLD))
 
     def create_plants(self, plant_num: int):
         for p in range(plant_num):
-            plant = self.add_plant(WORLD, True)
+            plant = self.add_plant(cfg.WORLD, True)
             self.plant_list.append(plant)
 
     def create_empty_world(self, world: tuple):
@@ -120,7 +120,7 @@ class Simulation():
         self.kill_all_creatures()
         self.kill_all_plants()
         self.kill_things()
-        edges = [(0, 0), (WORLD[0]-1, 0), (WORLD[0]-1, WORLD[1]-1), (0, WORLD[1]-1), (0, 0)]
+        edges = [(0, 0), (cfg.WORLD[0]-1, 0), (cfg.WORLD[0]-1, cfg.WORLD[1]-1), (0, cfg.WORLD[1]-1), (0, 0)]
         for e in range(4):
             p1 = edges[e]
             p2 = edges[e+1]
@@ -143,7 +143,7 @@ class Simulation():
                     return
                 else:
                     return
-        if len(ranking) <= RANK_SIZE:
+        if len(ranking) <= cfg.RANK_SIZE:
             cr = creature.get_genome()
             cr['fitness'] = round(cr['fitness'])
             ranking.append(cr)
@@ -155,7 +155,7 @@ class Simulation():
                     cr['fitness'] = round(cr['fitness'])
                     ranking.append(cr)
         ranking.sort(key=sort_by_fitness, reverse=True)
-        if len(ranking) > RANK_SIZE:
+        if len(ranking) > cfg.RANK_SIZE:
             ranking.pop(len(ranking)-1)
 
     def events(self):
@@ -260,9 +260,9 @@ class Simulation():
     def add_creature(self, world: tuple, genome: dict=None, pos: Vec2d=None) -> Creature:
         creature: Creature
         if pos is None:
-            pos = random_position(WORLD)
-        x = clamp(pos[0], 0, WORLD[0])
-        y = clamp(pos[1], 0, WORLD[1])
+            pos = random_position(cfg.WORLD)
+        x = clamp(pos[0], 0, cfg.WORLD[0])
+        y = clamp(pos[1], 0, cfg.WORLD[1])
         cpos = Vec2d(x, y)
         if genome is None:
             creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, color0=Color('blue'), color1=Color('skyblue'), color2=Color('orange'), color3=Color('red'))
@@ -271,12 +271,12 @@ class Simulation():
         return creature
 
     def add_saved_creature(self, genome: dict):
-        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=random_position(WORLD), genome=genome)
+        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=random_position(cfg.WORLD), genome=genome)
         self.creature_list.append(creature)
 
     def add_plant(self, world: tuple, mature: bool=False) -> Plant:
         if mature:
-            size = PLANT_MAX_SIZE
+            size = cfg.PLANT_MAX_SIZE
         else:
             size = 3
         plant = Plant(screen=self.screen, space=self.space, sim=self, collision_tag=6, world_size=world,
@@ -314,12 +314,12 @@ class Simulation():
     def draw_text(self):
         if self.selected != None:
             if isinstance(self.selected, Creature):
-                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation} | fit: {round(self.selected.fitness)}', WORLD[0]/2-150, WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
+                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation} | fit: {round(self.selected.fitness)}', cfg.WORLD[0]/2-150, cfg.WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
             elif isinstance(self.selected, Plant):
-                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)}', WORLD[0]/2-150, WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
+                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)}', cfg.WORLD[0]/2-150, cfg.WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
             else:                
-                self.manager.add_text2(f'no info', WORLD[0]/2-150, WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
-        self.manager.add_text2(f'creatures: {len(self.creature_list)} | plants: {len(self.plant_list)} | neuro time: {round(self.neuro_avg_time*1000)}ms | physx time: {round(self.physics_avg_time*1000)}ms', 250, WORLD[1]-25, Color('yellow'), False, False, True, False)
+                self.manager.add_text2(f'no info', cfg.WORLD[0]/2-150, cfg.WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
+        self.manager.add_text2(f'creatures: {len(self.creature_list)} | plants: {len(self.plant_list)} | neuro time: {round(self.neuro_avg_time*1000)}ms | physx time: {round(self.physics_avg_time*1000)}ms', 250, cfg.WORLD[1]-25, Color('yellow'), False, False, True, False)
     
     def write_text(self):
         for txt, rect in self.manager.text_list:
@@ -393,13 +393,11 @@ class Simulation():
         for creature in self.creature_list:
             creature.update(screen=self.screen, space=self.space, dt=dt)
             if creature.check_reproduction(dt):
-                for _ in range(CHILDS_NUM):
+                for _ in range(cfg.CHILDS_NUM):
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)
                     new_creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=position, genome=genome)
-                    #new_creature.neuro = n
-                    #new_creature.neuro.Mutate()
                     temp_list.append(new_creature)
-        if random() <= CREATURE_MULTIPLY:
+        if random() <= cfg.CREATURE_MULTIPLY:
             creature = self.add_creature(world)
             self.creature_list.append(creature)
         for new_one in temp_list:
@@ -418,8 +416,8 @@ class Simulation():
                 self.plant_list.remove(plant)
             else:
                 plant.update(dt)
-        if random() <= PLANT_MULTIPLY:
-            plant = self.add_plant(WORLD)
+        if random() <= cfg.PLANT_MULTIPLY:
+            plant = self.add_plant(cfg.WORLD)
             self.plant_list.append(plant)
 
     def physics_step(self, step_num: int, dt: float):
@@ -433,11 +431,11 @@ class Simulation():
             f"{TITLE} [fps: {round(self.clock.get_fps())} | dT: {round(self.dt)}ms]")
 
     def check_populatiom(self):
-        if len(self.creature_list) < CREATURE_MIN_NUM:
+        if len(self.creature_list) < cfg.CREATURE_MIN_NUM:
             r = randint(0, 1)
             creature = None
             if r == 0:
-                creature = self.add_creature(WORLD)
+                creature = self.add_creature(cfg.WORLD)
             else:
                 rank_size = len(self.ranking1)
                 rnd = randint(0, rank_size-1)
@@ -449,8 +447,8 @@ class Simulation():
 
     def main(self):
         set_win_pos(20, 20)
-        # self.init(WORLD)
-        self.create_enviro(WORLD)
+        # self.init(cfg.WORLD)
+        self.create_enviro(cfg.WORLD)
         set_icon('planet32.png')
         #test = Test()
         while self.running:
@@ -496,6 +494,9 @@ def sort_by_fitness(creature):
 
 
 if __name__ == "__main__":
-    set_world(WORLD)
-    sim = Simulation(WORLD)
+    #global cfg
+    #cfg = Configuration('config.json')
+    print(f'SPEED={cfg.SPEED}')
+    set_world(cfg.WORLD)
+    sim = Simulation(cfg.WORLD)
     sys.exit(sim.main())
