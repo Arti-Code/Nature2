@@ -152,6 +152,13 @@ class Simulation():
         ranking.sort(key=sort_by_fitness, reverse=True)
         if len(ranking) > cfg.RANK_SIZE:
             ranking.pop(len(ranking)-1)
+        spec_to_del = []
+        for spec_name in self.species:
+            if self.delete_extincted_specie(spec_name):
+                spec_to_del.append(spec_name)
+        for spec_key in spec_to_del:
+            self.species.pop(spec_key)
+            print(f'{spec_key} specie history has been ended')
 
     def events(self):
         for event in pygame.event.get():
@@ -259,7 +266,7 @@ class Simulation():
         for creature in self.ranking1:
             if creature['name'] == specie_name:
                 return False
-        self.species.pop(specie_name)
+        #self.species.pop(specie_name)
         return True
 
     def add_creature(self, world: tuple, genome: dict=None, pos: Vec2d=None) -> Creature:
@@ -273,19 +280,23 @@ class Simulation():
             creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, color0=Color('blue'), color1=Color('skyblue'), color2=Color('orange'), color3=Color('red'))
         else:
             creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, genome=genome)
-        self.check_specie(creature)
+        self.check_similarity(creature)
         return creature
 
-    def check_specie(self, creature: Creature):
-        if not creature.name in self.species:
-            self.species[creature.name] = deepcopy(creature.get_genome())
-        else:
+    def check_similarity(self, creature: Creature):
+        if creature.name in self.species:
             if not creature.similar(self.species[creature.name], 0.8):
-                creature.name = modify_name(creature.name)
+                new_name = modify_name(creature.name)
+                print(f'NEW SPECIE  {creature.name} >>> {new_name}')
+                creature.name = new_name
+
+    def add_specie(self, spec_name: str, genome: dict):
+        if not spec_name in self.species:
+            self.species[spec_name] = deepcopy(genome)
 
     def add_saved_creature(self, genome: dict):
         creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=random_position(cfg.WORLD), genome=genome)
-        self.check_specie(creature)
+        self.check_similarity(creature)
         self.creature_list.append(creature)
 
     def add_plant(self, world: tuple, mature: bool=False) -> Plant:
@@ -374,13 +385,14 @@ class Simulation():
         self.calc_time()
         for creature in self.creature_list:
             if creature.energy <= 0:
+                self.add_specie(creature.name, creature.get_genome())
                 specie_name = copy(creature.name)
                 self.add_to_ranking(creature)
                 meat = Meat(space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
                 self.meat_list.append(meat)
                 creature.kill(self.space)
                 self.creature_list.remove(creature)
-                self.delete_extincted_specie(specie_name)
+                #self.delete_extincted_specie(specie_name)
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
         self.update_meat(self.dt)
@@ -412,6 +424,7 @@ class Simulation():
                 for _ in range(cfg.CHILDS_NUM):
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)
                     new_creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=position, genome=genome)
+                    self.check_similarity(new_creature)
                     temp_list.append(new_creature)
         if random() <= cfg.CREATURE_MULTIPLY:
             creature = self.add_creature(world)

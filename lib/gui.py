@@ -318,7 +318,7 @@ class GUI():
     def process_event(self, event, dt: float):
         self.ui_mgr.process_events(event)
         if event.type == pygame.USEREVENT:
-            print(f'user_type: {event.user_type}')
+            #print(f'user_type: {event.user_type}')
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_object_id == '#btn_menu':
                     self.create_main_menu()
