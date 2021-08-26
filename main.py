@@ -27,6 +27,7 @@ from lib.autoterrain import Terrain
 from lib.rock import Rock
 from lib.collisions import process_creature_plant_collisions, process_creature_meat_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end, detect_meat, detect_meat_end
 from lib.meat import Meat
+from lib.species import modify_name
 
 class Simulation():
 
@@ -97,7 +98,6 @@ class Simulation():
         for c in range(cfg.CREATURE_INIT_NUM):
             creature = self.add_creature(cfg.WORLD)
             self.creature_list.append(creature)
-
         self.create_plants(cfg.PLANT_INIT_NUM)
         
     def create_rocks(self, rock_num: int):
@@ -252,6 +252,16 @@ class Simulation():
         obstacle_detection_end = self.space.add_collision_handler(4, 8)
         obstacle_detection_end.separate = detect_obstacle_end
 
+    def delete_extincted_specie(self, specie_name: str):
+        for creature in self.creature_list:
+            if creature.name == specie_name:
+                return False
+        for creature in self.ranking1:
+            if creature['name'] == specie_name:
+                return False
+        self.species.pop(specie_name)
+        return True
+
     def add_creature(self, world: tuple, genome: dict=None, pos: Vec2d=None) -> Creature:
         creature: Creature
         if pos is None:
@@ -263,16 +273,19 @@ class Simulation():
             creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, color0=Color('blue'), color1=Color('skyblue'), color2=Color('orange'), color3=Color('red'))
         else:
             creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, genome=genome)
+        self.check_specie(creature)
+        return creature
 
+    def check_specie(self, creature: Creature):
         if not creature.name in self.species:
             self.species[creature.name] = deepcopy(creature.get_genome())
         else:
             if not creature.similar(self.species[creature.name], 0.8):
-                creature.modify_name()
-        return creature
+                creature.name = modify_name(creature.name)
 
     def add_saved_creature(self, genome: dict):
         creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=random_position(cfg.WORLD), genome=genome)
+        self.check_specie(creature)
         self.creature_list.append(creature)
 
     def add_plant(self, world: tuple, mature: bool=False) -> Plant:
@@ -361,11 +374,13 @@ class Simulation():
         self.calc_time()
         for creature in self.creature_list:
             if creature.energy <= 0:
+                specie_name = copy(creature.name)
                 self.add_to_ranking(creature)
                 meat = Meat(space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
                 self.meat_list.append(meat)
                 creature.kill(self.space)
                 self.creature_list.remove(creature)
+                self.delete_extincted_specie(specie_name)
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
         self.update_meat(self.dt)
@@ -443,7 +458,7 @@ class Simulation():
                 genome = self.ranking1[rnd]
                 self.ranking1[rnd]['fitness'] *= 0.66
                 #genome['fitness'] *= 0.75
-                creature = self.add_creature(WORLD, genome)
+                creature = self.add_creature(cfg.WORLD, genome)
             self.creature_list.append(creature)
 
     def main(self):

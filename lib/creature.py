@@ -26,44 +26,9 @@ class Creature(Life):
         self.neuro = Network()
         self.normal: Vec2d=None
         if genome == None:
-            self.color0 = color0
-            self.color1 = color1
-            self.color2 = color2
-            self.color3 = color3
-            self._color0 = color0
-            self._color1 = color1
-            self._color2 = color2
-            self._color3 = color3
-            self.meat = randint(1, 10)
-            self.vege = randint(1, 10)
-            self.power = randint(1, 10)
-            self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
-            self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 3], 0.3)
-            self.name = random_name(3, True)
+            self.random_build(color0, color1, color2, color3)
         else:
-            self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
-            self.color1 = Color(genome['color1'][0], genome['color1'][1], genome['color1'][2], genome['color1'][3])
-            self.color2 = Color(genome['color2'][0], genome['color2'][1], genome['color2'][2], genome['color2'][3])
-            self.color3 = Color(genome['color3'][0], genome['color3'][1], genome['color3'][2], genome['color3'][3])
-            self._color0 = self.color0
-            self._color1 = self.color1
-            self._color2 = self.color2
-            self._color3 = self.color3
-            self.neuro = genome['neuro']
-            self.neuro.Mutate()
-            self.size = genome['size'] + randint(-1, 1)
-            self.meat = genome['meat'] + randint(-1, 1)
-            self.vege = genome['vege'] + randint(-1, 1)
-            self.power = genome['power'] + randint(-1, 1)
-            self.meat = clamp(self.meat, 1, 10)
-            self.size = clamp(self.size, cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
-            self.vege = clamp(self.vege, 1, 10)
-            self.power = clamp(self.power, 1, 10)
-            self.generation = genome['gen']+1
-            if self.similar(genome, 0.8):
-                self.name = modify_name(genome['name'].copy())
-            else:
-                self.name = genome['name']
+            self.genome_build(genome)
         self.shape = Circle(self, self.size)
         self.shape.collision_type = collision_tag
         space.add(self.shape)
@@ -81,6 +46,44 @@ class Creature(Life):
         for sensor in self.sensors:
             space.add(sensor.shape)
         #self.base_color0 = self.color0
+
+    def genome_build(self, genome: dict):
+        self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
+        self.color1 = Color(genome['color1'][0], genome['color1'][1], genome['color1'][2], genome['color1'][3])
+        self.color2 = Color(genome['color2'][0], genome['color2'][1], genome['color2'][2], genome['color2'][3])
+        self.color3 = Color(genome['color3'][0], genome['color3'][1], genome['color3'][2], genome['color3'][3])
+        self._color0 = self.color0
+        self._color1 = self.color1
+        self._color2 = self.color2
+        self._color3 = self.color3
+        self.neuro = genome['neuro']
+        self.neuro.Mutate()
+        self.size = genome['size'] + randint(-1, 1)
+        self.meat = genome['meat'] + randint(-1, 1)
+        self.vege = genome['vege'] + randint(-1, 1)
+        self.power = genome['power'] + randint(-1, 1)
+        self.meat = clamp(self.meat, 1, 10)
+        self.size = clamp(self.size, cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
+        self.vege = clamp(self.vege, 1, 10)
+        self.power = clamp(self.power, 1, 10)
+        self.generation = genome['gen']+1
+        self.name = genome['name']
+
+    def random_build(self, color0: Color, color1: Color, color2: Color, color3: Color):
+        self.color0 = color0
+        self.color1 = color1
+        self.color2 = color2
+        self.color3 = color3
+        self._color0 = color0
+        self._color1 = color1
+        self._color2 = color2
+        self._color3 = color3
+        self.meat = randint(1, 10)
+        self.vege = randint(1, 10)
+        self.power = randint(1, 10)
+        self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
+        self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 3], 0.3)
+        self.name = random_name(3, True)
 
     def draw(self, screen: Surface, selected: Body):
         super().draw(screen, selected)
