@@ -67,7 +67,11 @@ class Creature(Life):
         self.vege = clamp(self.vege, 1, 10)
         self.power = clamp(self.power, 1, 10)
         self.generation = genome['gen']+1
-        self.name = genome['name']
+        if self.similar(genome, 0.75):
+            self.name = genome['name']
+        else:
+            self.name = modify_name(genome['name'])
+            print(f"NOWY GATUNEK: {genome['name']}>>>{self.name}")
 
     def random_build(self, color0: Color, color1: Color, color2: Color, color3: Color):
         self.color0 = color0

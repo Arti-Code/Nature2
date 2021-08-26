@@ -2,7 +2,7 @@ from math import pi as PI
 from json import loads, dumps
 
 
-TITLE = 'NATURE v0.4.2'
+TITLE = 'NATURE v0.4.3'
 SUBTITLE = "2019-2021 Artur Gwoździowski"
 #WORLD                       = (1500, 750)
 #SCREEN                      = (1500, 750)
