@@ -25,16 +25,16 @@ class Creature(Life):
         self.fitness = 0
         self.neuro = Network()
         self.normal: Vec2d=None
-        self.pattern: dict={}
+        self.signature: list=[]
         if genome == None:
             self.random_build(color0, color1, color2, color3)
-            self.pattern = self.get_genome(False)
+            self.signature = self.get_signature()
         else:
             self.genome_build(genome)
-            if not 'pattern' in genome.keys():
-                self.pattern = genome
-            else:
-                self.pattern = genome['pattern']
+            if not self.compare_signature(self.get_signature(), genome['signature'], 0.8):
+                self.signature = self.get_signature()
+                self.name = modify_name(genome['name'])
+                print(f"NOWY GATUNEK: {genome['name']}>>>{self.name}")
         self.shape = Circle(self, self.size)
         self.shape.collision_type = collision_tag
         space.add(self.shape)
@@ -51,6 +51,8 @@ class Creature(Life):
         self.energy = self.max_energy
         for sensor in self.sensors:
             space.add(sensor.shape)
+        signature = self.get_signature()
+        s = self.compare_signature(signature, self.get_signature(), 0.8)
 
     def genome_build(self, genome: dict):
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
@@ -72,15 +74,8 @@ class Creature(Life):
         self.vege = clamp(self.vege, 1, 10)
         self.power = clamp(self.power, 1, 10)
         self.generation = genome['gen']+1
-        if not 'pattern' in genome.keys():
-            genome['pattern'] = deepcopy(genome)
-            #genome['pattern'].pop('pattern')
-        if self.similar(genome['pattern'], 0.75):
-            self.name = genome['name']
-        else:
-            self.name = modify_name(genome['name'])
-            #print(f"NOWY GATUNEK: {genome['name']}>>>{self.name}")
-            self.pattern = self.get_genome(False)
+        self.name = genome['name']
+        self.signature = genome['signature']
 
     def random_build(self, color0: Color, color1: Color, color2: Color, color3: Color):
         self.color0 = color0
@@ -251,7 +246,7 @@ class Creature(Life):
         space.remove(self.shape)
         space.remove(self)
 
-    def get_genome(self, get_pattern: bool=False) -> dict:
+    def get_genome(self) -> dict:
         genome: dict = {}
         genome['name'] = copy(self.name)
         genome['gen'] = self.generation
@@ -265,8 +260,7 @@ class Creature(Life):
         genome['color2'] = self._color2
         genome['color3'] = self._color3
         genome['neuro'] = self.neuro.Replicate()
-        if get_pattern:
-            genome['pattern'] = deepcopy(self.pattern)
+        genome['signature'] = deepcopy(self.signature)
         return genome
 
     def similar(self, parent_genome: dict, treashold: float) -> bool:
@@ -302,3 +296,36 @@ class Creature(Life):
         #energy *= self.meat/10
         self.energy += energy
         self.energy = clamp(self.energy, 0, self.max_energy)
+
+    def get_signature(self) -> list:
+        signature: list=[]
+        signature.append([self.size, self.power, self.vege, self.meat])
+        links_keys: list=[]
+        for link_key in self.neuro.links:
+            links_keys.append(link_key)
+        signature.append(links_keys)
+        return signature
+
+    def compare_signature(self, signature1: list, signature2: list, treashold: float) -> bool:
+        fizjo1 = signature1[0]
+        fizjo2 = signature2[0]
+        neuro1 = signature1[1]
+        neuro2 = signature2[1]
+        fizjo_diff: list = []
+        neuro_diff: int = 0
+        for f in range(len(fizjo1)):
+            diff = abs(fizjo1[f]-fizjo2[f])
+            fizjo_diff.append(diff)
+        for n1 in neuro1:
+            if not n1 in neuro2:
+                neuro_diff += 1
+        for n2 in neuro2:
+            if not n2 in neuro1:
+                neuro_diff += 1
+        mean_fizjo_diff = mean(fizjo_diff)
+        mean_neuro_diff = neuro_diff / ((len(neuro1) + len(neuro2))/2)
+        diff = mean([mean_fizjo_diff, mean_neuro_diff])
+        if diff <= treashold:
+            return True
+        else:
+            return False
