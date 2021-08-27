@@ -1,3 +1,4 @@
+from copy import deepcopy
 import os
 import json
 from random import random, randint
@@ -117,6 +118,7 @@ class Manager:
                 creature_to_save['color2'] = [creature.color2.r, creature.color2.g, creature.color2.b, creature.color2.a]
                 creature_to_save['color3'] = [creature.color3.r, creature.color3.g, creature.color3.b, creature.color3.a]
                 creature_to_save['neuro'] = creature.neuro.ToJSON()
+                creature_to_save['signature'] = deepcopy(creature.signature)
                 creatures.append(creature_to_save)
             project['creatures'] = creatures
             if self.add_to_save_list(project_name, str(self.enviro.get_time(1))):

@@ -255,18 +255,18 @@ class Network():
     def AddNewNode(self, layer_key, recurrent=False):
         # !exception
         node = Node(node_type=self.layers[layer_key].type, activation=ACTIVATION.TANH, bias=self.RandomWeight(), recurrent=recurrent)
-        node_key = self.NewSignature(3)
+        node_key = self.NewSignature(4)
         while node_key in self.nodes:
-            node_key = self.NewSignature(3)
+            node_key = self.NewSignature(4)
         self.nodes[node_key] = node
         self.layers[layer_key].AddNode(node_key)
         return node_key
 
     def AddNewLink(self, from_node, to_node):
         link = Link(from_node, to_node, self.RandomWeight())
-        link_key = self.NewSignature(3)
+        link_key = self.NewSignature(4)
         while link_key in self.links:
-            link_key = self.NewSignature(3)
+            link_key = self.NewSignature(4)
         self.links[link_key] = link
         self.nodes[to_node].to_links.append(link_key)
         self.nodes[from_node].from_links.append(link_key)

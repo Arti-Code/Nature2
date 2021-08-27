@@ -289,8 +289,6 @@ class GUI():
         data['TIME'] = ''
         data['CREATURES'] = str(len(self.owner.enviro.creature_list))
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
-        #data['PREDATORS'] = str(self.owner.enviro.hunter_num)
-        #data['HERBIVORES'] = str(self.owner.enviro.herbs_num)
         data['NEURO_TIME'] = ''
         data['PHYSIC_TIME'] = ''
         self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (200, 175)), data=data, dT=dT)

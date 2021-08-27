@@ -92,7 +92,7 @@ class Simulation():
         #self.terr_img = image.load('res/fonts/water3.png')
         # self.terr_img.convert_alpha()
         #terrain = Terrain(self.screen, self.space, 'water3.png', 8)
-        self.create_rocks(ROCK_NUM)
+        self.create_rocks(cfg.ROCK_NUM)
 
         for c in range(cfg.CREATURE_INIT_NUM):
             creature = self.add_creature(cfg.WORLD)
@@ -481,7 +481,6 @@ def sort_by_fitness(creature):
 
 
 if __name__ == "__main__":
-    print(f'SPEED={cfg.SPEED}')
     set_world(cfg.WORLD)
     sim = Simulation(cfg.WORLD)
     sys.exit(sim.main())

@@ -1,16 +1,20 @@
 {
-  "WORLD": [1900, 1000],
-  "SCREEN": [1900, 1000],
+  "WORLD": [1200, 600],
+  "SCREEN": [1200, 600],
   "FONT_SIZE": 14,
+<<<<<<< HEAD:config2.json
   "PLANT_MAX_SIZE": 10,
+=======
+  "PLANT_MAX_SIZE": 8,
+>>>>>>> origin/species:config.json
   "PLANT_GROWTH": 0.4,
-  "PLANT_INIT_NUM": 50,
+  "PLANT_INIT_NUM": 20,
   "PLANT_LIFE": 450,
   "PLANT_MULTIPLY": 0.01,
   "CREATURE_MULTIPLY": 0.001,
   "CREATURE_MIN_NUM": 10,
   "EAT": 200,
-  "CREATURE_INIT_NUM": 50,
+  "CREATURE_INIT_NUM": 20,
   "BASE_ENERGY": 0.002,
   "MOVE_ENERGY": 0.002,
   "REP_TIME": 60,
@@ -23,7 +27,7 @@
   "HIT": 300,
   "MEM_TIME": 0.3,
   "SENSOR_MAX_ANGLE": 1.0471975511965976,
-  "ROCK_NUM": 9,
+  "ROCK_NUM": 4,
   "RANK_SIZE": 20,
   "MEAT_TIME": 40,
   "VISUAL_RANGE": 200,
