@@ -25,10 +25,16 @@ class Creature(Life):
         self.fitness = 0
         self.neuro = Network()
         self.normal: Vec2d=None
+        self.pattern: dict={}
         if genome == None:
             self.random_build(color0, color1, color2, color3)
+            self.pattern = self.get_genome(False)
         else:
             self.genome_build(genome)
+            if not 'pattern' in genome.keys():
+                self.pattern = genome
+            else:
+                self.pattern = genome['pattern']
         self.shape = Circle(self, self.size)
         self.shape.collision_type = collision_tag
         space.add(self.shape)
@@ -45,7 +51,6 @@ class Creature(Life):
         self.energy = self.max_energy
         for sensor in self.sensors:
             space.add(sensor.shape)
-        #self.base_color0 = self.color0
 
     def genome_build(self, genome: dict):
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
@@ -67,11 +72,15 @@ class Creature(Life):
         self.vege = clamp(self.vege, 1, 10)
         self.power = clamp(self.power, 1, 10)
         self.generation = genome['gen']+1
-        if self.similar(genome, 0.75):
+        if not 'pattern' in genome.keys():
+            genome['pattern'] = deepcopy(genome)
+            #genome['pattern'].pop('pattern')
+        if self.similar(genome['pattern'], 0.75):
             self.name = genome['name']
         else:
             self.name = modify_name(genome['name'])
-            print(f"NOWY GATUNEK: {genome['name']}>>>{self.name}")
+            #print(f"NOWY GATUNEK: {genome['name']}>>>{self.name}")
+            self.pattern = self.get_genome(False)
 
     def random_build(self, color0: Color, color1: Color, color2: Color, color3: Color):
         self.color0 = color0
@@ -242,7 +251,7 @@ class Creature(Life):
         space.remove(self.shape)
         space.remove(self)
 
-    def get_genome(self) -> dict:
+    def get_genome(self, get_pattern: bool=False) -> dict:
         genome: dict = {}
         genome['name'] = copy(self.name)
         genome['gen'] = self.generation
@@ -256,6 +265,8 @@ class Creature(Life):
         genome['color2'] = self._color2
         genome['color3'] = self._color3
         genome['neuro'] = self.neuro.Replicate()
+        if get_pattern:
+            genome['pattern'] = deepcopy(self.pattern)
         return genome
 
     def similar(self, parent_genome: dict, treashold: float) -> bool:
