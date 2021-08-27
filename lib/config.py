@@ -191,6 +191,9 @@ class Configuration():
         self.SIZE2ENG               = cfg['SIZE2ENG']
         self.SIZE_COST              = cfg['SIZE_COST']
         self.CHILDS_NUM             = cfg['CHILDS_NUM']
+        self.MEAT2ENG               = cfg['MEAT2ENG']
+        self.VEGE2ENG               = cfg['VEGE2ENG']
+        self.DIFF                   = cfg['DIFF'] 
 
 
 

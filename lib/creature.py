@@ -31,10 +31,12 @@ class Creature(Life):
             self.signature = self.get_signature()
         else:
             self.genome_build(genome)
-            if not self.compare_signature(self.get_signature(), genome['signature'], 0.8):
+            if not self.compare_signature(self.get_signature(), genome['signature'], cfg.DIFF):
                 self.signature = self.get_signature()
                 self.name = modify_name(genome['name'])
                 print(f"NOWY GATUNEK: {genome['name']}>>>{self.name}")
+            else:
+                print(f'GATUNEK: {self.name}')
         self.shape = Circle(self, self.size)
         self.shape.collision_type = collision_tag
         space.add(self.shape)
@@ -51,8 +53,8 @@ class Creature(Life):
         self.energy = self.max_energy
         for sensor in self.sensors:
             space.add(sensor.shape)
-        signature = self.get_signature()
-        s = self.compare_signature(signature, self.get_signature(), 0.8)
+        #signature = self.get_signature()
+        #s = self.compare_signature(signature, self.get_signature(), 0.8)
 
     def genome_build(self, genome: dict):
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
@@ -322,9 +324,10 @@ class Creature(Life):
         for n2 in neuro2:
             if not n2 in neuro1:
                 neuro_diff += 1
-        mean_fizjo_diff = mean(fizjo_diff)
+        mean_fizjo_diff = (mean(fizjo_diff))/10
         mean_neuro_diff = neuro_diff / ((len(neuro1) + len(neuro2))/2)
         diff = mean([mean_fizjo_diff, mean_neuro_diff])
+        print(f'diff: [{round(mean_fizjo_diff, 2)}] [{round(mean_neuro_diff, 2)}] [{round(diff, 2)}]')
         if diff <= treashold:
             return True
         else:
