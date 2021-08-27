@@ -7,7 +7,7 @@
   },
   {
    "optionDest": "filenames",
-   "value": "D:/PYTHON/Nature2/main.py"
+   "value": "D:/PYTHON/Nature/main.py"
   },
   {
    "optionDest": "onefile",
@@ -19,7 +19,7 @@
   },
   {
    "optionDest": "icon_file",
-   "value": "D:/PYTHON/Nature2/res/icons/planet03.ico"
+   "value": "D:/PYTHON/Nature/res/icons/planet03.ico"
   },
   {
    "optionDest": "name",
@@ -71,19 +71,19 @@
   },
   {
    "optionDest": "datas",
-   "value": "D:/PYTHON/Nature2/res/icons/planet01.ico;."
+   "value": "D:/PYTHON/Nature/res/icons/planet01.ico;."
   },
   {
    "optionDest": "datas",
-   "value": "D:/PYTHON/Nature2/res;res/"
+   "value": "D:/PYTHON/Nature/res;res/"
   },
   {
    "optionDest": "datas",
-   "value": "D:/PYTHON/Nature2/saves;saves/"
+   "value": "D:/PYTHON/Nature/saves;saves/"
   },
   {
    "optionDest": "datas",
-   "value": "D:/PYTHON/Nature2/planet32.png;."
+   "value": "D:/PYTHON/Nature/planet32.png;."
   }
  ],
  "nonPyinstallerOptions": {

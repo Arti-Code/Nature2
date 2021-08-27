@@ -39,9 +39,9 @@ def modify_name(name: str) -> str:
     ch = random_name(1, True)
     rnd = random()
     if rnd <= 0.5:
-        new_name = name[0:3]+ch
+        new_name = name[0:4]+ch
     elif rnd <= 0.85:
-        new_name = name[0:1]+ch+name[4:5]
+        new_name = name[0:2]+ch+name[4:6]
     else:
-        new_name = ch + name[2:5]
+        new_name = ch + name[2:6]
     return new_name

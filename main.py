@@ -27,6 +27,7 @@ from lib.autoterrain import Terrain
 from lib.rock import Rock
 from lib.collisions import process_creature_plant_collisions, process_creature_meat_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end, detect_meat, detect_meat_end
 from lib.meat import Meat
+from lib.species import modify_name
 
 class Simulation():
 
@@ -64,7 +65,6 @@ class Simulation():
         self.draw_debug: bool=False
         self.ranking1 = []
         self.ranking2 = []
-        self.species = {}
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -97,7 +97,6 @@ class Simulation():
         for c in range(cfg.CREATURE_INIT_NUM):
             creature = self.add_creature(cfg.WORLD)
             self.creature_list.append(creature)
-
         self.create_plants(cfg.PLANT_INIT_NUM)
         
     def create_rocks(self, rock_num: int):
@@ -184,13 +183,6 @@ class Simulation():
             self.show_network = not self.show_network
         if event.key == pygame.K_d:
             self.draw_debug = not self.draw_debug
-        if event.key == pygame.K_r:
-            i = 0
-            print("RANKING")
-            for r in self.species:
-                i += 1
-                print(f"{i}. specie: {r}")
-            print("_______________________________")
 
     def mouse_events(self, event):
         self.selected = None
@@ -263,12 +255,6 @@ class Simulation():
             creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, color0=Color('blue'), color1=Color('skyblue'), color2=Color('orange'), color3=Color('red'))
         else:
             creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, genome=genome)
-
-        if not creature.name in self.species:
-            self.species[creature.name] = deepcopy(creature.get_genome())
-        else:
-            if not creature.similar(self.species[creature.name], 0.8):
-                creature.modify_name()
         return creature
 
     def add_saved_creature(self, genome: dict):
@@ -443,7 +429,7 @@ class Simulation():
                 genome = self.ranking1[rnd]
                 self.ranking1[rnd]['fitness'] *= 0.66
                 #genome['fitness'] *= 0.75
-                creature = self.add_creature(WORLD, genome)
+                creature = self.add_creature(cfg.WORLD, genome)
             self.creature_list.append(creature)
 
     def main(self):

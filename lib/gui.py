@@ -214,7 +214,7 @@ class GUI():
         self.size = new_size
         self.create_title(new_size)
         #self.create_enviro_win()
-        btn_pos = Rect((round(new_size[0]-50), 10), (40, 40))
+        btn_pos = Rect((round(cfg.WORLD[0]-50), 10), (40, 40))
         self.create_menu_btn(btn_pos)
         #self.create_title(new_size)
 
@@ -318,7 +318,7 @@ class GUI():
     def process_event(self, event, dt: float):
         self.ui_mgr.process_events(event)
         if event.type == pygame.USEREVENT:
-            print(f'user_type: {event.user_type}')
+            #print(f'user_type: {event.user_type}')
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_object_id == '#btn_menu':
                     self.create_main_menu()
