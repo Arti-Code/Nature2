@@ -2,7 +2,7 @@ from math import pi as PI
 from json import loads, dumps
 
 
-TITLE = 'NATURE v0.4.4'
+TITLE = 'NATURE v0.4.5'
 SUBTITLE = "2019-2021 Artur Gwoździowski"
 #WORLD                       = (1500, 750)
 #SCREEN                      = (1500, 750)
@@ -41,6 +41,12 @@ CHILDS_NUM                  = 1
 # colors
 BROWN = (110, 50, 9)
 LIME = (127, 255, 0)
+
+
+def log_to_file(msg: str, filename: str):
+    f = open(filename, 'a')
+    f.write(msg+"\n")
+    f.close()
 
 def load_config(filename: str):
     f = open(filename, 'r')

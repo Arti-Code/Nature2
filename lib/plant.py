@@ -31,14 +31,14 @@ class Plant(Life):
         space.add(self.shape)
 
     def life_time_calc(self, dt: int):
-        self.life_time -= dt/1000
+        self.life_time -= dt
         if self.life_time <= 0:
             return True
         return False
 
     def update(self, dt: float):
         if self.energy < self.max_energy and self.energy > 0:
-            self.energy += cfg.PLANT_GROWTH/dt
+            self.energy += cfg.PLANT_GROWTH*dt
             new_size = floor(sqrt(self.energy))
             if new_size != self.size:
                 if new_size <= cfg.PLANT_MAX_SIZE:

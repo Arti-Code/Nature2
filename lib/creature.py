@@ -1,6 +1,6 @@
 from copy import copy, deepcopy
 from random import random, randint
-from math import sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt
+from math import log, sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt
 from statistics import mean
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
@@ -13,7 +13,7 @@ from lib.sensor import Sensor, PolySensor
 from lib.net import Network
 from lib.species import random_name, modify_name
 from lib.config import *
-
+from lib.config import log_to_file
 
 class Creature(Life):
 
@@ -31,12 +31,16 @@ class Creature(Life):
             self.signature = self.get_signature()
         else:
             self.genome_build(genome)
+            msg: str=''
             if not self.compare_signature(self.get_signature(), genome['signature'], cfg.DIFF):
                 self.signature = self.get_signature()
                 self.name = modify_name(genome['name'])
-                print(f"NOWY GATUNEK: {genome['name']}>>>{self.name}")
+                #print(f"NOWY GATUNEK: {genome['name']}>>>{self.name}")
+                msg = f"NOWY GATUNEK: {genome['name']}>>>{self.name}"
             else:
-                print(f'GATUNEK: {self.name}')
+                #print(f'GATUNEK: {self.name}')
+                msg = f'GATUNEK: {self.name}'
+            log_to_file(msg, 'log.txt')
         self.shape = Circle(self, self.size)
         self.shape.collision_type = collision_tag
         space.add(self.shape)
@@ -142,11 +146,11 @@ class Creature(Life):
     def update(self, screen: Surface, space: Space, dt:float):
         move = self.move(dt)
         self.calc_energy(dt, move)
-        self.mem_time -= 1/dt
+        self.mem_time -= dt
         self.mem_time = clamp(self.mem_time, 0, cfg.MEM_TIME)
 
     def check_reproduction(self, dt) -> bool:
-        self.reproduction_time -= 1/dt
+        self.reproduction_time -= dt
         if self.reproduction_time <= 0:
             self.reproduction_time = 0
             if self.energy >= (self.max_energy*(1-cfg.REP_ENERGY)):
@@ -173,21 +177,21 @@ class Creature(Life):
         return (genome, pos)
       
     def move(self, dt: float) -> None:
-        move = (self.output[0])*cfg.SPEED/dt
+        move = (self.output[0])*cfg.SPEED
         if move < 0:
             move = 0
-        turn = self.output[1]*cfg.TURN/dt
-        sensor_turn = self.output[2]*cfg.SENSOR_SPEED/dt
+        turn = self.output[1]*cfg.TURN*dt
+        sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
         self.angle = (self.angle+(turn))%(2*PI)
-        self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
+        self.velocity = (move*dt*self.rotation_vector.x, move*dt*self.rotation_vector.y)
         self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
         self.sensors[2].rotate(-sensor_turn, -PI/1.5, 0)
-        return abs(move)*dt
+        return abs(move)
 
     def calc_energy(self, dt: float, move: float):
-        base_energy = cfg.BASE_ENERGY * dt
-        move_energy = move * cfg.MOVE_ENERGY * dt
-        self.energy -= (base_energy + move_energy) * self.size * cfg.SIZE_COST
+        base_energy = cfg.BASE_ENERGY
+        move_energy = move * cfg.MOVE_ENERGY
+        self.energy -= (base_energy + move_energy) * self.size * cfg.SIZE_COST * dt
         self.energy = clamp(self.energy, 0, self.max_energy)
 
     def get_input(self):
@@ -327,7 +331,7 @@ class Creature(Life):
         mean_fizjo_diff = (mean(fizjo_diff))/10
         mean_neuro_diff = neuro_diff / ((len(neuro1) + len(neuro2))/2)
         diff = mean([mean_fizjo_diff, mean_neuro_diff])
-        print(f'diff: [{round(mean_fizjo_diff, 2)}] [{round(mean_neuro_diff, 2)}] [{round(diff, 2)}]')
+        log_to_file(f'diff: [{round(mean_fizjo_diff, 2)}] [{round(mean_neuro_diff, 2)}] [{round(diff, 2)}]', 'log.txt')
         if diff <= treashold:
             return True
         else:

@@ -97,21 +97,16 @@ class RankWindow(UIWindow):
         self.manager = manager
         self.labels = []
         for i in range(cfg.RANK_SIZE):
-            #text = str(i) + '. gen: ' + str(ranking[i]['gen']) + ' fit: ' + str(round(ranking[i]['fitness']))
             text = ''
             lab = UILabel(Rect((round((rect.width/2)-(btn_w)), 15*i+5), (rect.width, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position')
             self.labels.append(lab)
         self.btn_close = UIButton(Rect((round((rect.width/2)-(btn_w/2)), (15*i+25)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
 
     def Update(self, ranking: list):
-        #ranking = self.owner.owner.enviro.ranking1
         rank_count = len(ranking)
-        #self.labels = []
         for i in range(rank_count):
             text = str(i) + '. ' + ranking[i]['name'] + ' gen: ' + str(ranking[i]['gen']) + ' fit: ' + str(round(ranking[i]['fitness']))
-            #lab = UILabel(Rect((10, 20*i+20), (self.rect.width-10, 40)), text=text, manager=self.manager, container=self, parent_element=self, object_id='rank_position')
             self.labels[i].set_text(text)
-        #self.btn_close = UIButton(Rect((75, (40+20*rank_count)), (50, 20)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
 
 class InfoWindow(UIWindow):
 
@@ -141,10 +136,8 @@ class EnviroWindow(UIWindow):
         self.refresh -= dT
         if self.refresh <= 0:
             self.refresh = 1
-            #self.labs.clear()
             data = data
             for key, val in data.items():
-                #self.labs[key] = UILabel(Rect((10, 15*i), (self.rect.width-10, 40)), text=f"{key}: {val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info'+str(i))
                 self.labs[key][0].set_text(f"{key}:")
                 self.labs[key][1].set_text(f"{val}")
 
@@ -153,7 +146,7 @@ class SettingsWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect):
         super().__init__(rect, manager=manager, window_display_title='Settings', object_id="#set_win", visible=True)
         self.manager = manager
-        btn_list = [('Enviroment Info', '#btn_gui'), ('Ranking', '#btn_rank'), ('Set Enviroment', '#btn_enviro'), ('Back', '#btn_back')]
+        btn_list = [('Enviroment Info', '#btn_gui'), ('Ranking', '#btn_rank'), ('Reload Settings', '#btn_rel_set'), ('Back', '#btn_back')]
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
@@ -305,7 +298,7 @@ class GUI():
     def update_enviroment(self, dT: float) -> dict:
         data = {}
         #data = {}
-        data['dT'] = str(round(dT, 2)) + 's'
+        data['dT'] = str(round(dT, 3)) + 's'
         data['TIME'] = str(self.owner.enviro.get_time(1)) + 's'
         data['CREATURES'] = str(len(self.owner.enviro.creature_list))
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
@@ -316,7 +309,6 @@ class GUI():
     def process_event(self, event, dt: float):
         self.ui_mgr.process_events(event)
         if event.type == pygame.USEREVENT:
-            #print(f'user_type: {event.user_type}')
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_object_id == '#btn_menu':
                     self.create_main_menu()
@@ -351,10 +343,8 @@ class GUI():
                     sim_to_del = event.ui_element.destroy_id
                     if sim_to_del == self.owner.project_name:
                         pass
-                        #print(f"{sim_to_del} already in use!")
                     else:
                         pass
-                        #print(f"{sim_to_del} deleted!")
                 elif event.ui_object_id[0: 15] == '#load_win.#btn_':
                     project_name = event.ui_element.text
                     self.owner.enviro.project_name = project_name
@@ -371,6 +361,9 @@ class GUI():
                 elif event.ui_object_id == '#set_win.#btn_back':
                     self.set_win.kill()
                     self.create_main_menu()
+                elif event.ui_object_id == '#set_win.#btn_rel_set':
+                    self.set_win.kill()
+                    #self.create_main_menu()
                 elif event.ui_object_id == '#set_win.#btn_gui':
                     self.set_win.kill()
                     self.create_enviro_win(dt)
@@ -404,10 +397,8 @@ class GUI():
     def new_project_name(self, name: str):
         try:
             os.mkdir('saves/' + name)
-            #print(f"new project name set: {name.upper()} with new directory")
         except FileExistsError:
             pass
-            #print(f"project name set: {name.upper()} but it was already existing")
         f = open("saves/projects.json", "r+")
         proj_list = f.read()
         f.close()

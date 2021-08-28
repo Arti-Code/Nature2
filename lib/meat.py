@@ -52,7 +52,7 @@ class Meat(Body):
         #    gfxdraw.filled_circle(screen, x, flipy(y), r, self.color1)
 
     def update(self, dT: float):
-        self.time -= dT/1000
+        self.time -= dT
         if self.time < 0:
             self.time = 0
         if self.energy < 0:

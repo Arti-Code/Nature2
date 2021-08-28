@@ -1,4 +1,4 @@
-from copy import deepcopy
+from copy import copy, deepcopy
 import os
 import json
 from random import random, randint
@@ -103,6 +103,7 @@ class Manager:
             creatures = []
             project['name'] = project_name
             project['time'] = self.enviro.get_time()
+            project['ranking'] = []
             for creature in self.enviro.creature_list:
                 creature_to_save = {}
                 creature_to_save['name'] = creature.name
@@ -121,6 +122,23 @@ class Manager:
                 creature_to_save['signature'] = deepcopy(creature.signature)
                 creatures.append(creature_to_save)
             project['creatures'] = creatures
+            for rank in self.enviro.ranking1:
+                rank_to_save = {}
+                rank_to_save['name'] = copy(rank['name'])
+                rank_to_save['gen'] = rank['gen']
+                rank_to_save['meat'] = rank['meat']
+                rank_to_save['vege'] = rank['vege']
+                rank_to_save['size'] = rank['size']
+                rank_to_save['fitness'] = rank['fitness']
+                rank_to_save['power'] = rank['power']
+                rank_to_save['color0'] = [rank['color0'].r, rank['color0'].g, rank['color0'].b, rank['color0'].a]
+                rank_to_save['color1'] = [rank['color1'].r, rank['color1'].g, rank['color1'].b, rank['color1'].a]
+                rank_to_save['color2'] = [rank['color2'].r, rank['color2'].g, rank['color2'].b, rank['color2'].a]
+                rank_to_save['color3'] = [rank['color3'].r, rank['color3'].g, rank['color3'].b, rank['color3'].a]
+                rank_to_save['neuro'] = rank['neuro'].ToJSON()
+                rank_to_save['signature'] = deepcopy(rank['signature'])
+                project['ranking'].append(rank_to_save)
+
             if self.add_to_save_list(project_name, str(self.enviro.get_time(1))):
                 with open("saves/" + project_name + "/" + str(self.enviro.get_time(1)) + ".json", 'w+') as json_file:
                     json.dump(project, json_file)
@@ -183,7 +201,7 @@ class Manager:
         self.enviro.cycle = round((obj_list['time'] / 100))
         #obj_list['ranking1'].sort(key=Sort_By_Fitness, reverse=True)
         #obj_list['ranking2'].sort(key=Sort_By_Fitness, reverse=True)
-        #self.enviro.ranking1 = []
+        self.enviro.ranking1 = []
         #self.enviro.ranking2 = []
         for genome in obj_list['creatures']:
             #genome['neuro'] = json.loads(genome['neuro'])
@@ -191,8 +209,14 @@ class Manager:
             neuro.FromJSON(genome['neuro'])
             genome['neuro'] = neuro
             self.enviro.add_saved_creature(genome)
+        for rank in obj_list['ranking']:
+            neuro = Network()
+            neuro.FromJSON(rank['neuro'])
+            rank['neuro'] = neuro
+            self.enviro.ranking1.append(rank)
         if not f.closed:
             f.close()
+        log_to_file(project_name+' loaded', 'log.txt')
 
     def load_last(self, project_name: str):
         f = open("saves/" + project_name + "/saves.json", "r")
@@ -284,9 +308,6 @@ class Manager:
                         pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)-1))
                         pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)))
                         pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)+1))
-                    #if last_layer:  #TODO
-                    #    desc = out_desc[desc_idx]
-                    #    desc_idx += 1
                     desc = ''
                     nodes_to_draw.append((node_color, l, n, node.recurrent, dist_nn, desc))
                     n += 1
@@ -301,5 +322,3 @@ class Manager:
                     val = network.nodes[network.layers[l].nodes[n]].value
                     self.add_text(f'{inp_desc[n]}: ', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                     self.add_text(f'{round(val, 1)}', 50 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
-                #if desc:
-                #    self.AddText(desc, 40 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), Color('#069ab8'), small=True)

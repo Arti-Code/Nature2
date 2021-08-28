@@ -21,7 +21,7 @@ from lib.wall import Wall
 from lib.sensor import Sensor
 from lib.math2 import set_world, world, flipy
 from lib.config import *
-from lib.config import Configuration, cfg
+from lib.config import Configuration, cfg, log_to_file
 from lib.manager import Manager
 from lib.autoterrain import Terrain
 from lib.rock import Rock
@@ -65,6 +65,7 @@ class Simulation():
         self.draw_debug: bool=False
         self.ranking1 = []
         self.ranking2 = []
+        log_to_file('simulation started', 'log.txt')
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -154,7 +155,7 @@ class Simulation():
 
     def events(self):
         for event in pygame.event.get():
-            self.manager.user_event(event, 1/self.dt)
+            self.manager.user_event(event, 1*self.dt)
             if event.type == pygame.QUIT:
                 self.running = False
             if event.type == pygame.KEYDOWN:
@@ -306,7 +307,6 @@ class Simulation():
                 self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)}', cfg.WORLD[0]/2-150, cfg.WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
             else:                
                 self.manager.add_text2(f'no info', cfg.WORLD[0]/2-150, cfg.WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
-        self.manager.add_text2(f'creatures: {len(self.creature_list)} | plants: {len(self.plant_list)} | neuro time: {round(self.neuro_avg_time*1000)}ms | physx time: {round(self.physics_avg_time*1000)}ms', 250, cfg.WORLD[1]-25, Color('yellow'), False, False, True, False)
     
     def write_text(self):
         for txt, rect in self.manager.text_list:
@@ -319,7 +319,7 @@ class Simulation():
                 self.manager.draw_net(self.selected.neuro)
 
     def calc_time(self):
-        self.time += 0.1/self.dt
+        self.time += self.dt
         if self.time > 1000:
             self.cycles += 1
             self.time = self.time % 1000
@@ -355,7 +355,7 @@ class Simulation():
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
         self.update_meat(self.dt)
-        self.manager.update_gui(self.dt/1000, self.ranking1)
+        self.manager.update_gui(self.dt, self.ranking1)
 
     def update_meat(self, dT: float):
         for meat in self.meat_list:
@@ -413,9 +413,9 @@ class Simulation():
 
     def clock_step(self):
         pygame.display.flip()
-        self.dt = self.clock.tick(self.FPS)
+        self.dt = self.clock.tick(self.FPS)/1000
         pygame.display.set_caption(
-            f"{TITLE} [fps: {round(self.clock.get_fps())} | dT: {round(self.dt)}ms]")
+            f"{TITLE} [fps: {round(self.clock.get_fps())} | dT: {round(self.dt*1000)}ms]")
 
     def check_populatiom(self):
         if len(self.creature_list) < cfg.CREATURE_MIN_NUM:
