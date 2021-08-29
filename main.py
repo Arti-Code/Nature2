@@ -8,7 +8,7 @@ from statistics import mean
 from random import randint, random, choice
 from typing import Union
 import pygame
-import pygame as pg
+#import pygame as pg
 from pygame import Color, Surface, image
 from pygame.constants import *
 from pygame.font import Font, match_font
@@ -160,7 +160,7 @@ class Simulation():
                 self.running = False
             if event.type == pygame.KEYDOWN:
                 self.key_events(event)
-            if event.type == pg.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 3:
                     self.mouse_events(event)
 
@@ -187,7 +187,7 @@ class Simulation():
 
     def mouse_events(self, event):
         self.selected = None
-        mouseX, mouseY = pg.mouse.get_pos()
+        mouseX, mouseY = pygame.mouse.get_pos()
         self.selected = self.find_creature(mouseX, flipy(mouseY))
         if self.selected == None:
             self.selected = self.find_plant(mouseX, flipy(mouseY))
@@ -475,13 +475,13 @@ def random_position(space: Vec2d) -> Vec2d:
 
 
 def set_icon(icon_name):
-    icon = pg.Surface((32, 32))
+    icon = pygame.Surface((32, 32))
     icon.set_colorkey((0, 0, 0))
-    rawicon = pg.image.load(icon_name)
+    rawicon = pygame.image.load(icon_name)
     for i in range(0, 32):
         for j in range(0, 32):
             icon.set_at((i, j), rawicon.get_at((i, j)))
-    pg.display.set_icon(icon)
+    pygame.display.set_icon(icon)
 
 
 def sort_by_fitness(creature):

@@ -96,7 +96,7 @@ class Creature(Life):
         self.vege = randint(1, 10)
         self.power = randint(1, 10)
         self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
-        self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 3], 0.3)
+        self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 3], 0.2)
         self.name = random_name(3, True)
 
     def draw(self, screen: Surface, selected: Body):

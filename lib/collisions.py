@@ -45,7 +45,7 @@ def process_creatures_collisions(arbiter, space, data):
     size1 = arbiter.shapes[1].radius
     if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 45:
         if (size0+randint(0, 6)) > (size1+randint(0, 6)):
-            dmg = cfg.HIT * dt
+            dmg = cfg.HIT * dt * (agent.size+agent.power)/2
             target.energy -= dmg
             target.color0=Color('red')
             #agent.eat(dmg*0.85)

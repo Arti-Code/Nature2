@@ -332,7 +332,7 @@ class GUI():
                     self.owner.enviro.project_name = new_name
                     self.new_project_name(new_name)
                     self.new_sim.kill()
-                    self.create_title(WORLD)
+                    self.create_title(cfg.WORLD)
                     self.owner.enviro.create_enviro()
                     self.create_info_win(text='Project created with name: ' + new_name, title=new_name)
                 elif event.ui_object_id == '#menu_win.#btn_set':
@@ -350,7 +350,7 @@ class GUI():
                     self.owner.load_last(project_name)
                     self.load_menu.kill()   
                     self.kill_title()
-                    self.create_title(WORLD) 
+                    self.create_title(cfg.WORLD) 
                     self.create_info_win(text=f"Project {project_name.upper()} has been loaded", title='Load Simulation')
                 elif event.ui_object_id == '#load_win.#load_back':
                     self.load_menu.kill()

@@ -10,8 +10,9 @@ from pygame import Surface, Color, Rect
 from pymunk import Vec2d, Shape, Circle, Poly
 from lib.math2 import flipy, clamp
 from lib.net import Network, TYPE, ACTIVATION
-from lib.config import *
+from lib.config import cfg
 from lib.gui import GUI
+from lib.utils import log_to_file
 
 class Manager:
 
@@ -193,8 +194,8 @@ class Manager:
         json_list = f.read()
         obj_list = json.loads(json_list)
         #self.enviro.creature_list.clear()
-        self.enviro.create_empty_world(WORLD)
-        self.enviro.create_rocks(ROCK_NUM)
+        self.enviro.create_empty_world(cfg.WORLD)
+        self.enviro.create_rocks(cfg.ROCK_NUM)
         self.enviro.create_plants(cfg.PLANT_INIT_NUM)
         self.project_name = project_name
         self.enviro.time = obj_list['time'] % 1000
