@@ -8,7 +8,7 @@ from copy import copy
 from pygame import Rect
 from pygame_gui import UIManager, PackageResource
 from pygame_gui.elements import UITextBox, UIWindow, UIButton, UILabel, UITextEntryLine, UIPanel
-from lib.config import *
+from lib.config import cfg, TITLE, SUBTITLE
 
 
 btn_w = 150
@@ -297,7 +297,6 @@ class GUI():
 
     def update_enviroment(self, dT: float) -> dict:
         data = {}
-        #data = {}
         data['dT'] = str(round(dT, 3)) + 's'
         data['TIME'] = str(self.owner.enviro.get_time(1)) + 's'
         data['CREATURES'] = str(len(self.owner.enviro.creature_list))
@@ -362,8 +361,7 @@ class GUI():
                     self.set_win.kill()
                     self.create_main_menu()
                 elif event.ui_object_id == '#set_win.#btn_rel_set':
-                    self.set_win.kill()
-                    #self.create_main_menu()
+                    self.reload_config()
                 elif event.ui_object_id == '#set_win.#btn_gui':
                     self.set_win.kill()
                     self.create_enviro_win(dt)
@@ -380,6 +378,10 @@ class GUI():
             return True
         else:
             return False
+
+    def reload_config(self):
+        self.set_win.kill()
+        cfg.load_from_file('config.json')
 
     def update(self, dt: float, ranking: list):
         data: dict = {}

@@ -1,7 +1,7 @@
 import os
 import sys
 from time import time
-from math import degrees, hypot, sin, cos
+from math import degrees, hypot, sin, cos, pi as PI, floor, ceil
 from copy import deepcopy, copy
 from lib.math2 import clamp
 from statistics import mean
@@ -20,14 +20,14 @@ from lib.plant import Plant
 from lib.wall import Wall
 from lib.sensor import Sensor
 from lib.math2 import set_world, world, flipy
-from lib.config import *
-from lib.config import Configuration, cfg, log_to_file
+from lib.config import cfg, TITLE, SUBTITLE
 from lib.manager import Manager
 from lib.autoterrain import Terrain
 from lib.rock import Rock
 from lib.collisions import process_creature_plant_collisions, process_creature_meat_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end, detect_meat, detect_meat_end
 from lib.meat import Meat
 from lib.species import modify_name
+from lib.utils import log_to_file
 
 class Simulation():
 
@@ -268,7 +268,7 @@ class Simulation():
         else:
             size = 3
         plant = Plant(screen=self.screen, space=self.space, sim=self, collision_tag=6, world_size=world,
-                      size=size, color0=Color(LIME), color1=Color('darkgreen'), color3=Color(BROWN))
+                      size=size, color0=Color((127, 255, 0)), color1=Color('darkgreen'), color3=Color((110, 50, 9)))
         return plant
 
     def add_wall(self, point0: tuple, point1: tuple, thickness: float) -> Wall:
@@ -345,13 +345,6 @@ class Simulation():
 
     def update(self):
         self.calc_time()
-        for creature in self.creature_list:
-            if creature.energy <= 0:
-                self.add_to_ranking(creature)
-                meat = Meat(space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
-                self.meat_list.append(meat)
-                creature.kill(self.space)
-                self.creature_list.remove(creature)
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
         self.update_meat(self.dt)
@@ -365,18 +358,31 @@ class Simulation():
                 self.meat_list.remove(meat)
 
     def update_creatures(self, dt: float):
-        temp_list = []
+        ### CHECK ENERGY ###
+        for creature in self.creature_list:
+            if creature.energy <= 0:
+                self.add_to_ranking(creature)
+                meat = Meat(space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
+                self.meat_list.append(meat)
+                creature.kill(self.space)
+                self.creature_list.remove(creature)
+
+        ### ANALIZE ###
         neuro_time = time()
         for creature in self.creature_list:
-            # creature.get_input()
             creature.analize()
         neuro_time = time()-neuro_time
         self.neuro_single_times.append(neuro_time)
         if len(self.neuro_single_times) >= 150:
             self.neuro_avg_time = mean(self.neuro_single_times)
             self.neuro_single_times = []
+
+        ### MOVEMENT ###
         for creature in self.creature_list:
             creature.move(dt)
+
+        ### REPRODUCE ###
+        temp_list = []
         for creature in self.creature_list:
             creature.update(screen=self.screen, space=self.space, dt=dt)
             if creature.check_reproduction(dt):
@@ -384,9 +390,11 @@ class Simulation():
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)
                     new_creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=position, genome=genome)
                     temp_list.append(new_creature)
+
         if random() <= cfg.CREATURE_MULTIPLY:
             creature = self.add_creature(world)
             self.creature_list.append(creature)
+
         for new_one in temp_list:
             self.creature_list.append(new_one)
         temp_list = []
@@ -421,7 +429,7 @@ class Simulation():
         if len(self.creature_list) < cfg.CREATURE_MIN_NUM:
             r = randint(0, 1)
             creature = None
-            if r == 0:
+            if r == 0 or len(self.ranking1) == 0:
                 creature = self.add_creature(cfg.WORLD)
             else:
                 rank_size = len(self.ranking1)

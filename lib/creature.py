@@ -12,8 +12,8 @@ from lib.math2 import flipy, ang2vec, ang2vec2, clamp
 from lib.sensor import Sensor, PolySensor
 from lib.net import Network
 from lib.species import random_name, modify_name
-from lib.config import *
-from lib.config import log_to_file
+from lib.config import cfg, Configuration
+from lib.utils import log_to_file
 
 class Creature(Life):
 
@@ -179,8 +179,8 @@ class Creature(Life):
     def reproduce(self, screen: Surface, space: Space):
         x2: float=self.position.x+randint(-100, 100)
         y2: float=self.position.y+randint(-100, 100)
-        x2 = clamp(x2, 50, WORLD[0]-50)
-        y2 = clamp(y2, 50, WORLD[1]-50)
+        x2 = clamp(x2, 50, cfg.WORLD[0]-50)
+        y2 = clamp(y2, 50, cfg.WORLD[1]-50)
         pos = Vec2d(x2, y2)
         genome: dict=self.get_genome()
         genome['neuro'] = self.neuro.Replicate()
