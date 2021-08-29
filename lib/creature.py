@@ -17,7 +17,7 @@ from lib.config import log_to_file
 
 class Creature(Life):
 
-    def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('blue'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
+    def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
         super().__init__(screen=screen, space=space, owner=sim, collision_tag=collision_tag, position=position)
         self.angle = random()*2*PI
         self.output = [0, 0, 0]
@@ -105,22 +105,34 @@ class Creature(Life):
         r = self.shape.radius
         rot = self.rotation_vector
         gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r), self.color0)
-        gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r-2), self.color1)
-        gfxdraw.filled_circle(screen, int(x), flipy(int(y)), 2, self.color2)
+        #gfxdraw.aacircle(screen, int(x), int(flipy(y)), int(r), self.color0)
+        gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r-1), self.color1)
         if r > 2:
-            x2 = round(x + rot.x*(r-1))
-            y2 = round(y + rot.y*(r-1))
-            r2 = ceil(r/4)
+            x2 = round(x + rot.x*(r/1.6))
+            y2 = round(y + rot.y*(r/1.6))
+            x3 = round(x - rot.x*(r/5))
+            y3 = round(y - rot.y*(r/5))
+            r2 = round(r/2)
+            r3 = round(r/3)
             r: int; g: int; b: int
             if self.meat >= self.vege:
                 r = round(225*(self.meat/(self.meat+self.vege)))
                 g = round(225*(self.vege/(self.meat+self.vege)))
                 b = 0
+                r +=50
+                g -=50
+                r = clamp(r, 0, 255)
+                g = clamp(g, 0, 255)
             else:
                 r = round(225*(self.meat/(self.meat+self.vege)))
                 g = round(225*(self.vege/(self.meat+self.vege)))
                 b = 0
+                r -=50
+                g +=50
+                r = clamp(r, 0, 255)
+                g = clamp(g, 0, 255)
             gfxdraw.filled_circle(screen, x2, flipy(y2), r2, Color(r, g, b))
+            gfxdraw.filled_circle(screen, int(x), flipy(int(y)), r2, self.color2)
         self.color0 = self._color0
         self.draw_energy_bar(screen, int(x), flipy(int(y)))
         #self.draw_name(screen)

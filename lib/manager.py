@@ -131,10 +131,10 @@ class Manager:
                 rank_to_save['size'] = rank['size']
                 rank_to_save['fitness'] = rank['fitness']
                 rank_to_save['power'] = rank['power']
-                rank_to_save['color0'] = [rank['color0'].r, rank['color0'].g, rank['color0'].b, rank['color0'].a]
-                rank_to_save['color1'] = [rank['color1'].r, rank['color1'].g, rank['color1'].b, rank['color1'].a]
-                rank_to_save['color2'] = [rank['color2'].r, rank['color2'].g, rank['color2'].b, rank['color2'].a]
-                rank_to_save['color3'] = [rank['color3'].r, rank['color3'].g, rank['color3'].b, rank['color3'].a]
+                rank_to_save['color0'] = [rank['color0'][0], rank['color0'][1], rank['color0'][2], rank['color0'][3]]
+                rank_to_save['color1'] = [rank['color1'][0], rank['color1'][1], rank['color1'][2], rank['color1'][3]]
+                rank_to_save['color2'] = [rank['color2'][0], rank['color2'][1], rank['color2'][2], rank['color2'][3]]
+                rank_to_save['color3'] = [rank['color3'][0], rank['color3'][1], rank['color3'][2], rank['color3'][3]]
                 rank_to_save['neuro'] = rank['neuro'].ToJSON()
                 rank_to_save['signature'] = deepcopy(rank['signature'])
                 project['ranking'].append(rank_to_save)

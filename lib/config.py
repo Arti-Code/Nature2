@@ -159,6 +159,10 @@ class Configuration():
         self.SIZE2ENG = None
         self.SIZE_COST = None
         self.CHILDS_NUM = None
+        self.MEAT2ENG = None
+        self.VEGE2ENG = None
+        self.HIT2FIT = None
+        self.DIFF = None
         self.load_from_file(filename)
 
     def load_from_file(self, filename: str):
@@ -199,6 +203,7 @@ class Configuration():
         self.CHILDS_NUM             = cfg['CHILDS_NUM']
         self.MEAT2ENG               = cfg['MEAT2ENG']
         self.VEGE2ENG               = cfg['VEGE2ENG']
+        self.HIT2FIT                = cfg['HIT2FIT']
         self.DIFF                   = cfg['DIFF'] 
 
 

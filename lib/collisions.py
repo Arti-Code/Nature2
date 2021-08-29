@@ -49,7 +49,7 @@ def process_creatures_collisions(arbiter, space, data):
             target.energy -= dmg
             target.color0=Color('red')
             #agent.eat(dmg*0.85)
-            agent.fitness += dmg*0.05
+            agent.fitness += dmg*cfg.HIT
     agent.collide_creature = True
     return True
 

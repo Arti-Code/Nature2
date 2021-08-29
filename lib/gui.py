@@ -177,14 +177,14 @@ class GUI():
         self.cy = round(self.view[1]/2)
         #self.ui_mgr = UIManager(window_resolution=(self.view[0], self.view[1]), theme_path='blue.json')
         self.ui_mgr = UIManager(window_resolution=view, theme_path='res/themes/blue.json')
-        self.ui_mgr.preload_fonts(font_list=[
-                    {'name': 'fira_code10b', 'point_size': 10, 'style': 'bold'},
-                    {'name': 'fira_code10r', 'point_size': 10, 'style': 'regular'},
-                    {'name': 'fira_code9r', 'point_size': 9, 'style': 'regular'},
-                    {'name': 'fira_code', 'point_size': 12, 'style': 'regular'},
-                    {'name': 'fira_code', 'point_size': 14, 'style': 'regular'},
-                    {'name': 'fira_code', 'point_size': 14, 'style': 'bold'}
-        ])
+        #self.ui_mgr.preload_fonts(font_list=[
+        #            {'name': 'fira_code10b', 'point_size': 10, 'style': 'bold'},
+        #            {'name': 'fira_code10r', 'point_size': 10, 'style': 'regular'},
+        #            {'name': 'fira_code9r', 'point_size': 9, 'style': 'regular'},
+        #            {'name': 'fira_code', 'point_size': 12, 'style': 'regular'},
+        #            {'name': 'fira_code', 'point_size': 14, 'style': 'regular'},
+        #            {'name': 'fira_code', 'point_size': 14, 'style': 'bold'}
+        #])
         #self.ui_mgr.load_theme('blue.json')
         self.buttons = []
         self.title = None
