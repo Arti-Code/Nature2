@@ -75,7 +75,7 @@ class Simulation():
             x = sin(vert_ang)*size + (random()*2-1)*size*0.4
             y = cos(vert_ang)*size + (random()*2-1)*size*0.4
             vertices.append(Vec2d(x, y)+position)
-        rock = Rock(self.screen, self.space, vertices, 1, Color('navy'), Color('grey'))
+        rock = Rock(self.screen, self.space, vertices, 1, Color('grey40'), Color('grey'))
         self.wall_list.append(rock)
 
     def create_enviro(self, world: tuple = None):
@@ -392,7 +392,7 @@ class Simulation():
                     temp_list.append(new_creature)
 
         if random() <= cfg.CREATURE_MULTIPLY:
-            creature = self.add_creature(world)
+            creature = self.add_random_creature()
             self.creature_list.append(creature)
 
         for new_one in temp_list:
@@ -427,18 +427,21 @@ class Simulation():
 
     def check_populatiom(self):
         if len(self.creature_list) < cfg.CREATURE_MIN_NUM:
-            r = randint(0, 1)
-            creature = None
-            if r == 0 or len(self.ranking1) == 0:
-                creature = self.add_creature(cfg.WORLD)
-            else:
-                rank_size = len(self.ranking1)
-                rnd = randint(0, rank_size-1)
-                genome = self.ranking1[rnd]
-                self.ranking1[rnd]['fitness'] *= 0.66
-                #genome['fitness'] *= 0.75
-                creature = self.add_creature(cfg.WORLD, genome)
+            creature = self.add_random_creature()
             self.creature_list.append(creature)
+
+    def add_random_creature(self) -> Creature:
+        r = randint(0, 1)
+        creature: Creature = None
+        if r == 0 or len(self.ranking1) == 0:
+            creature = self.add_creature(cfg.WORLD)
+        else:
+            rank_size = len(self.ranking1)
+            rnd = randint(0, rank_size-1)
+            genome = self.ranking1[rnd]
+            self.ranking1[rnd]['fitness'] *= 0.66
+            creature = self.add_creature(cfg.WORLD, genome)
+        return creature
 
     def main(self):
         set_win_pos(20, 20)

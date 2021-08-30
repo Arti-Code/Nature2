@@ -230,6 +230,7 @@ class Manager:
 
     def draw_net(self, network: Network):
         if network:
+            last_layer_idx: int=len(network.layers)-1
             h_space = 40
             v_space = 10
             nodes_to_draw = []
@@ -248,7 +249,8 @@ class Manager:
                 'col_cr', 'col_pl', 'col_ob', 'col_meat', 'angle', 'sid_ang', 'x_pos', 'y_pos', 'eng', 
                 'enemy0', 'dist0', 'plant0', 'dist0', 'obst0', 'dist0', 'meat0', 'dist0',
                 'enemy1', 'dist1', 'plant1', 'dist1', 'obst1', 'dist1', 'meat1', 'dist1', 
-                'enemy2', 'dist2', 'plant2', 'dist2', 'obst2', 'dist2', 'meat2', 'dist2'
+                'enemy2', 'dist2', 'plant2', 'dist2', 'obst2', 'dist2', 'meat2', 'dist2',
+                'out0', 'out1', 'out2' 
             ]
             out_desc = ["mov", "turn", "run", "hid", "atk", "eat"]
 
@@ -304,11 +306,11 @@ class Manager:
                             r = 255 - b
                             if link.recombined:
                                 g = 255
-                        link_color = Color(r, g, b)
+                        link_color = Color(r, g, b, 50)
                         node_num0 = len(network.layers[l0].nodes)
-                        pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)-1))
+                        #pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)-1))
                         pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)))
-                        pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)+1))
+                        #pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)+1))
                     desc = ''
                     nodes_to_draw.append((node_color, l, n, node.recurrent, dist_nn, desc))
                     n += 1
@@ -323,3 +325,7 @@ class Manager:
                     val = network.nodes[network.layers[l].nodes[n]].value
                     self.add_text(f'{inp_desc[n]}: ', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                     self.add_text(f'{round(val, 1)}', 50 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                elif l == last_layer_idx:
+                    val = network.nodes[network.layers[l].nodes[n]].value
+                    #self.add_text(f'{inp_desc[n]}: ', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    self.add_text2(f'{round(val, 1)}', 50 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)

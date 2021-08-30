@@ -1,348 +1,760 @@
-diff: [0.12] [0.28] [0.2]
-GATUNEK: ZAPTHT
-diff: [0.05] [0.48] [0.27]
-GATUNEK: SKUOTS
-diff: [0.03] [0.14] [0.08]
-GATUNEK: XUHUDI
-diff: [0.1] [0.61] [0.35]
-NOWY GATUNEK: SKUOTS>>>SKUOUH
-diff: [0.05] [0.16] [0.11]
-GATUNEK: MAJUPV
-diff: [0.05] [0.35] [0.2]
-GATUNEK: KEHSPE
-diff: [0.05] [0.62] [0.34]
-NOWY GATUNEK: PUHDUF>>>PUHDAM
-diff: [0.15] [0.23] [0.19]
-GATUNEK: TODETE
-diff: [0.07] [0.14] [0.11]
-GATUNEK: ZISYWU
-diff: [0.07] [0.24] [0.16]
-GATUNEK: UHZOOM
-diff: [0.12] [0.16] [0.14]
-GATUNEK: DEUFSE
-diff: [0.12] [0.51] [0.32]
-NOWY GATUNEK: NASRTD>>>NAFITD
-diff: [0.1] [0.12] [0.11]
-GATUNEK: ZISYWU
+diff: [0.1] [0.42] [0.26]
+GATUNEK: PKPLPE
+diff: [0.1] [0.18] [0.14]
+GATUNEK: SIQIUO
+diff: [0.05] [0.6] [0.33]
+NOWY GATUNEK: TAIPZE>>>TAVOZE
+diff: [0.03] [0.32] [0.17]
+GATUNEK: ZIKASI
+diff: [0.03] [0.33] [0.18]
+GATUNEK: FASROP
+diff: [0.1] [0.4] [0.25]
+GATUNEK: MIZEHS
+diff: [0.05] [0.78] [0.41]
+NOWY GATUNEK: TAIPZE>>>ZAIPZE
+diff: [0.03] [0.4] [0.21]
+GATUNEK: HJVULI
+diff: [0.07] [0.52] [0.3]
+GATUNEK: MIZEHS
 diff: [0.03] [0.27] [0.15]
-GATUNEK: UHQITI
-diff: [0.07] [0.21] [0.14]
-GATUNEK: TODETE
-diff: [0.03] [0.18] [0.1]
-GATUNEK: SRZUSJ
-diff: [0.17] [0.54] [0.36]
-NOWY GATUNEK: NASRTD>>>OTSRTD
-diff: [0.1] [0.56] [0.33]
-NOWY GATUNEK: NASRTD>>>NAHETD
-diff: [0.07] [0.45] [0.26]
-GATUNEK: FAHOAR
-diff: [0.1] [0.14] [0.12]
-GATUNEK: TODETE
-diff: [0.05] [0.14] [0.1]
-GATUNEK: TODETE
-diff: [0.0] [0.19] [0.1]
-GATUNEK: SRZUSJ
-diff: [0.05] [0.57] [0.31]
-NOWY GATUNEK: FAHOAR>>>HUHOAR
-diff: [0.1] [0.59] [0.35]
-NOWY GATUNEK: FAHOAR>>>JUHOAR
-diff: [0.07] [0.4] [0.24]
-GATUNEK: DENUAL
-diff: [0.07] [0.21] [0.14]
-GATUNEK: KOHFSE
-diff: [0.07] [0.24] [0.16]
-GATUNEK: XSVUPH
-diff: [0.07] [0.35] [0.21]
-GATUNEK: UHQITI
-diff: [0.12] [0.24] [0.18]
-GATUNEK: TODETE
-diff: [0.03] [0.18] [0.1]
-GATUNEK: SFHEPE
-diff: [0.15] [0.53] [0.34]
-NOWY GATUNEK: KEHSPE>>>NUHSPE
-diff: [0.05] [0.24] [0.14]
-GATUNEK: SFHEPE
-diff: [0.1] [0.48] [0.29]
-GATUNEK: UHTWPF
-diff: [0.1] [0.58] [0.34]
-NOWY GATUNEK: FUHPUG>>>RYHPUG
-diff: [0.15] [0.55] [0.35]
-NOWY GATUNEK: TODETE>>>TOPVTE
-diff: [0.07] [0.36] [0.22]
-GATUNEK: XUPAPP
-diff: [0.05] [0.22] [0.14]
-GATUNEK: JYTUAK
-diff: [0.05] [0.32] [0.18]
-GATUNEK: NIMUHE
-diff: [0.15] [0.55] [0.35]
-NOWY GATUNEK: FUHPUG>>>FUHPPY
-diff: [0.03] [0.54] [0.28]
-GATUNEK: UHQITI
-diff: [0.0] [0.24] [0.12]
-GATUNEK: TESNHV
-diff: [0.03] [0.24] [0.13]
-GATUNEK: XSVUPH
-diff: [0.07] [0.18] [0.13]
-GATUNEK: TOPVTE
-diff: [0.15] [0.3] [0.22]
-GATUNEK: TODETE
-diff: [0.03] [0.18] [0.1]
-GATUNEK: XUHUDI
-diff: [0.03] [0.4] [0.21]
-GATUNEK: DENUAL
-diff: [0.05] [0.31] [0.18]
-GATUNEK: DAHTAL
-diff: [0.05] [0.11] [0.08]
-GATUNEK: XSVUPH
-diff: [0.05] [0.61] [0.33]
-NOWY GATUNEK: KEHSPE>>>KEOIPE
-diff: [0.0] [0.42] [0.21]
-GATUNEK: NIMUHE
-diff: [0.1] [0.52] [0.31]
-NOWY GATUNEK: FUHPUG>>>FUSTUG
-diff: [0.07] [0.69] [0.38]
-NOWY GATUNEK: FUHPUG>>>FUHPDI
-diff: [0.05] [0.64] [0.35]
-NOWY GATUNEK: FAHOAR>>>ZEHOAR
-diff: [0.05] [0.4] [0.23]
-GATUNEK: SFHEPE
-diff: [0.07] [0.17] [0.12]
-GATUNEK: JYTUAK
-diff: [0.05] [0.33] [0.19]
-GATUNEK: TOPVTE
-diff: [0.1] [0.59] [0.34]
-NOWY GATUNEK: XUPAPP>>>XUPAAQ
-diff: [0.07] [0.39] [0.23]
-GATUNEK: PZZALI
-diff: [0.07] [0.9] [0.49]
-NOWY GATUNEK: FAHOAR>>>FAVAAR
-diff: [0.07] [0.08] [0.08]
-GATUNEK: UJXITR
-diff: [0.05] [0.47] [0.26]
-GATUNEK: SFHEPE
-diff: [0.1] [0.43] [0.26]
-GATUNEK: SFHEPE
-diff: [0.03] [0.23] [0.13]
-GATUNEK: UJXITR
-diff: [0.12] [0.3] [0.21]
-GATUNEK: UHZOOM
-diff: [0.07] [0.25] [0.16]
-GATUNEK: PUHEXA
-diff: [0.05] [0.13] [0.09]
-GATUNEK: PUTESI
-diff: [0.05] [0.19] [0.12]
-GATUNEK: MAJUPV
-diff: [0.07] [0.24] [0.16]
-GATUNEK: POHHHU
-diff: [0.05] [0.38] [0.22]
-GATUNEK: NIMUHE
-diff: [0.03] [0.41] [0.22]
-GATUNEK: UJXITR
-diff: [0.05] [0.12] [0.09]
-GATUNEK: PZZALI
-diff: [0.1] [0.41] [0.26]
-GATUNEK: ZAPTHT
-diff: [0.12] [0.47] [0.3]
-GATUNEK: SKUOTS
-diff: [0.1] [0.45] [0.27]
-GATUNEK: DENUAL
-diff: [0.07] [0.19] [0.13]
-GATUNEK: DAHTAL
-diff: [0.12] [0.4] [0.26]
-GATUNEK: SKUOTS
-diff: [0.07] [0.35] [0.21]
-GATUNEK: NIMUHE
-diff: [0.07] [0.13] [0.1]
-GATUNEK: DAHTAL
-diff: [0.07] [0.37] [0.22]
-GATUNEK: PZZALI
-diff: [0.23] [0.37] [0.3]
-GATUNEK: TODETE
-diff: [0.0] [0.21] [0.1]
-GATUNEK: ARUFSQ
-diff: [0.03] [0.31] [0.17]
-GATUNEK: PUTESI
+GATUNEK: UDOJTU
+diff: [0.1] [0.75] [0.42]
+NOWY GATUNEK: SIQIUO>>>SIQITU
+diff: [0.1] [0.57] [0.34]
+NOWY GATUNEK: FASROP>>>FASRVU
+diff: [0.05] [0.52] [0.28]
+GATUNEK: DYUIPS
 diff: [0.05] [0.29] [0.17]
-GATUNEK: QEQITO
-diff: [0.12] [0.44] [0.28]
-GATUNEK: SKUOTS
-diff: [0.07] [0.49] [0.28]
-GATUNEK: PZZALI
-diff: [0.12] [0.32] [0.22]
-GATUNEK: PUHEXA
-diff: [0.1] [0.34] [0.22]
-GATUNEK: TESNHV
-diff: [0.1] [0.13] [0.11]
-GATUNEK: DAHTAL
-diff: [0.1] [0.88] [0.49]
-NOWY GATUNEK: FAHOAR>>>FAHONA
-diff: [0.07] [0.18] [0.13]
-GATUNEK: JYTUAK
-diff: [0.03] [0.4] [0.21]
-GATUNEK: ARUFSQ
-diff: [0.1] [0.24] [0.17]
-GATUNEK: XYKOPD
-diff: [0.15] [0.4] [0.28]
-GATUNEK: JYTUAK
-diff: [0.03] [0.23] [0.13]
-GATUNEK: MAJUPV
-diff: [0.05] [0.26] [0.15]
-GATUNEK: QEQITO
-diff: [0.05] [0.39] [0.22]
-GATUNEK: DAHTAL
-diff: [0.07] [0.3] [0.19]
-GATUNEK: UHZOOM
-diff: [0.07] [0.54] [0.31]
-NOWY GATUNEK: TODETE>>>TOTVTE
-diff: [0.05] [0.45] [0.25]
-GATUNEK: DENUAL
-diff: [0.07] [0.53] [0.3]
-NOWY GATUNEK: DENUAL>>>DENUPR
-diff: [0.12] [0.43] [0.28]
-GATUNEK: ZAPTHT
-diff: [0.1] [0.64] [0.37]
-NOWY GATUNEK: FUHPUG>>>FULIUG
-diff: [0.0] [0.55] [0.27]
-GATUNEK: ARUFSQ
+GATUNEK: MOSAJY
+diff: [0.05] [0.44] [0.25]
+GATUNEK: HUTURY
+diff: [0.12] [0.75] [0.44]
+NOWY GATUNEK: SIQIUO>>>SIQISJ
+diff: [0.07] [0.29] [0.18]
+GATUNEK: SIQITU
+diff: [0.1] [0.89] [0.49]
+NOWY GATUNEK: SIQIUO>>>FIQIUO
+diff: [0.07] [0.29] [0.18]
+GATUNEK: SULOOL
+diff: [0.07] [0.25] [0.16]
+GATUNEK: HUTURY
+diff: [0.05] [0.25] [0.15]
+GATUNEK: HUTURY
+diff: [0.05] [0.35] [0.2]
+GATUNEK: ARSTHO
+diff: [0.07] [0.35] [0.21]
+GATUNEK: FASRVU
+diff: [0.05] [0.33] [0.19]
+GATUNEK: FIQIUO
+diff: [0.07] [0.64] [0.36]
+NOWY GATUNEK: FIQIUO>>>FIZUUO
+diff: [0.1] [0.49] [0.29]
+GATUNEK: HUTURY
+diff: [0.05] [0.44] [0.25]
+GATUNEK: HUTURY
+diff: [0.03] [0.56] [0.29]
+GATUNEK: HUTURY
+diff: [0.05] [0.36] [0.2]
+GATUNEK: FAHKNA
+diff: [0.07] [0.67] [0.37]
+NOWY GATUNEK: FIQIUO>>>FIQIUK
+diff: [0.1] [0.44] [0.27]
+GATUNEK: HUTURY
+diff: [0.05] [0.35] [0.2]
+GATUNEK: HUTURY
+diff: [0.07] [0.36] [0.22]
+GATUNEK: FAHKNA
 diff: [0.07] [0.44] [0.26]
-GATUNEK: QEQITO
-diff: [0.05] [0.41] [0.23]
-GATUNEK: PZZALI
+GATUNEK: HUTURY
+diff: [0.03] [0.62] [0.32]
+NOWY GATUNEK: FASROP>>>FASRNU
+diff: [0.05] [0.27] [0.16]
+GATUNEK: FIZUUO
+diff: [0.03] [0.6] [0.31]
+NOWY GATUNEK: HUTURY>>>HUTUHS
+diff: [0.1] [0.53] [0.31]
+NOWY GATUNEK: HUTURY>>>HUTERY
+diff: [0.07] [0.36] [0.22]
+GATUNEK: AQUDSI
+diff: [0.15] [0.4] [0.28]
+GATUNEK: HUTURY
+diff: [0.12] [0.64] [0.38]
+NOWY GATUNEK: FIQIUO>>>FIQIPV
 diff: [0.03] [0.72] [0.37]
-NOWY GATUNEK: ARUFSQ>>>ARUFPL
-diff: [0.15] [0.43] [0.29]
-GATUNEK: SFHEPE
-diff: [0.03] [0.69] [0.36]
-NOWY GATUNEK: DENUAL>>>DETLAL
-diff: [0.12] [0.61] [0.37]
-NOWY GATUNEK: FUHPUG>>>FUHPTL
-diff: [0.05] [0.19] [0.12]
-GATUNEK: XIMUAV
-diff: [0.07] [0.72] [0.4]
-NOWY GATUNEK: ARUFSQ>>>ARNOSQ
-diff: [0.05] [0.53] [0.29]
-GATUNEK: XYKOPD
-diff: [0.05] [0.92] [0.48]
-NOWY GATUNEK: FAHOAR>>>FAHOHR
-diff: [0.03] [0.44] [0.23]
-GATUNEK: XIMUAV
-diff: [0.05] [0.63] [0.34]
-NOWY GATUNEK: XUPAPP>>>XUPAPP
-diff: [0.15] [0.47] [0.31]
-NOWY GATUNEK: JYTUAK>>>JYZAAK
-diff: [0.12] [0.58] [0.35]
-NOWY GATUNEK: SFHEPE>>>SFWIPE
-diff: [0.07] [0.65] [0.36]
-NOWY GATUNEK: ZAPTHT>>>SEPTHT
-diff: [0.07] [0.6] [0.34]
-NOWY GATUNEK: TODETE>>>TOFATE
-diff: [0.17] [0.63] [0.4]
-NOWY GATUNEK: XUPAPP>>>SIPAPP
-diff: [0.03] [0.26] [0.14]
-GATUNEK: TESNHV
-diff: [0.1] [0.45] [0.28]
-GATUNEK: QEQITO
-diff: [0.07] [0.49] [0.28]
-GATUNEK: TOPVTE
-diff: [0.07] [0.71] [0.39]
-NOWY GATUNEK: DENUAL>>>ZUNUAL
-diff: [0.05] [0.82] [0.43]
-NOWY GATUNEK: DENUAL>>>DENUUH
-diff: [0.12] [0.71] [0.42]
-NOWY GATUNEK: TODETE>>>TODEAK
+NOWY GATUNEK: DYUIPS>>>NYUIPS
+diff: [0.1] [0.73] [0.42]
+NOWY GATUNEK: HUTURY>>>HUAFRY
+diff: [0.07] [0.4] [0.24]
+GATUNEK: HUTURY
+diff: [0.1] [0.38] [0.24]
+GATUNEK: ARSTHO
+diff: [0.03] [0.77] [0.4]
+NOWY GATUNEK: DYUIPS>>>DYUISJ
+diff: [0.07] [0.56] [0.32]
+NOWY GATUNEK: DYSAPS>>>ZISAPS
+diff: [0.03] [0.05] [0.04]
+GATUNEK: MAZOXE
+diff: [0.07] [0.64] [0.36]
+NOWY GATUNEK: FIQIUO>>>FIQIAM
+diff: [0.03] [0.38] [0.2]
+GATUNEK: HUTUHS
+diff: [0.05] [0.14] [0.1]
+GATUNEK: KOHEUS
+diff: [0.1] [0.42] [0.26]
+GATUNEK: HUTUHS
+diff: [0.1] [0.61] [0.36]
+NOWY GATUNEK: SIQISJ>>>SIXISJ
+diff: [0.05] [0.27] [0.16]
+GATUNEK: MAZOXE
+diff: [0.05] [0.07] [0.06]
+GATUNEK: SAUDTE
+diff: [0.07] [0.22] [0.15]
+GATUNEK: ZIKASI
+diff: [0.05] [0.1] [0.07]
+GATUNEK: XETYPE
 diff: [0.05] [0.67] [0.36]
-NOWY GATUNEK: TOPVTE>>>TOPVKE
-diff: [0.12] [0.68] [0.4]
-NOWY GATUNEK: XUPAPP>>>XUPAPH
-diff: [0.07] [0.47] [0.27]
-GATUNEK: QEQITO
-diff: [0.05] [0.32] [0.19]
-GATUNEK: PUTESI
-diff: [0.12] [0.76] [0.44]
-NOWY GATUNEK: TODETE>>>TOQETE
-diff: [0.1] [0.02] [0.06]
-GATUNEK: TOPVKE
-diff: [0.03] [0.28] [0.15]
-GATUNEK: FAHOHR
-diff: [0.1] [0.52] [0.31]
-NOWY GATUNEK: XIMUAV>>>XIMUTU
-diff: [0.05] [0.6] [0.32]
-NOWY GATUNEK: FAHOHR>>>HDHOHR
-diff: [0.05] [0.14] [0.09]
-GATUNEK: TOPVKE
-diff: [0.0] [0.62] [0.31]
-NOWY GATUNEK: FAHOHR>>>FAHOZU
+NOWY GATUNEK: FASROP>>>FASRTR
+diff: [0.03] [0.42] [0.22]
+GATUNEK: FASRNU
+diff: [0.05] [0.26] [0.15]
+GATUNEK: KAHERY
+diff: [0.05] [0.2] [0.12]
+GATUNEK: SAUDTE
 diff: [0.05] [0.31] [0.18]
-GATUNEK: PUTESI
-diff: [0.03] [0.78] [0.4]
-NOWY GATUNEK: ARUFSQ>>>ARPVSQ
-diff: [0.07] [0.21] [0.14]
-GATUNEK: TESNHV
-diff: [0.05] [0.65] [0.35]
-NOWY GATUNEK: UJXITR>>>UJXISQ
-diff: [0.1] [0.17] [0.14]
-GATUNEK: FAHOZU
-diff: [0.12] [0.85] [0.49]
-NOWY GATUNEK: TODETE>>>TONETE
-diff: [0.12] [0.67] [0.4]
-NOWY GATUNEK: FUHPUG>>>FUNUUG
-diff: [0.05] [0.55] [0.3]
-NOWY GATUNEK: XYKOPD>>>XYKOHU
-diff: [0.07] [0.76] [0.42]
-NOWY GATUNEK: FAHOHR>>>FAHOPL
-diff: [0.07] [0.82] [0.45]
-NOWY GATUNEK: DENUAL>>>DENUXE
-diff: [0.05] [0.65] [0.35]
-NOWY GATUNEK: UJXITR>>>UJPLTR
-diff: [0.1] [0.76] [0.43]
-NOWY GATUNEK: XUPAPP>>>XUPAAX
-diff: [0.07] [0.35] [0.21]
-GATUNEK: UHZOOM
-diff: [0.07] [0.26] [0.17]
-GATUNEK: HDHOHR
-simulation started
-simulation started
-simulation started
-simulation started
-simulation started
-simulation started
-simulation started
-simulation started
-simulation started
-simulation started
-simulation started
-simulation started
-diff: [0.07] [0.13] [0.1]
-GATUNEK: HENYQU
+GATUNEK: XETYPE
+diff: [0.07] [0.24] [0.16]
+GATUNEK: ZIKASI
+diff: [0.12] [0.75] [0.44]
+NOWY GATUNEK: FIQIUO>>>FIQISL
+diff: [0.1] [0.49] [0.29]
+GATUNEK: HUTURY
+diff: [0.05] [0.51] [0.28]
+GATUNEK: FASRNU
+diff: [0.07] [0.59] [0.33]
+NOWY GATUNEK: HUTURY>>>HUTUKI
+diff: [0.07] [0.57] [0.32]
+NOWY GATUNEK: ZIKASI>>>ZIKARU
+diff: [0.05] [0.42] [0.23]
+GATUNEK: HUTUKI
+diff: [0.05] [0.25] [0.15]
+GATUNEK: FIQISL
+diff: [0.0] [0.21] [0.1]
+GATUNEK: ZIKARU
 diff: [0.1] [0.3] [0.2]
-GATUNEK: HLPLTU
-diff: [0.05] [0.23] [0.14]
-GATUNEK: UDUITR
-diff: [0.07] [0.1] [0.09]
-GATUNEK: UKTTNY
-diff: [0.07] [0.35] [0.21]
-GATUNEK: UDUITR
-simulation started
-simulation started
-simulation started
-simulation started
-simulation started
-simulation started
-simulation started
-simulation started
-simulation started
-diff: [0.07] [0.14] [0.11]
-GATUNEK: SFIPXI
+GATUNEK: ZIKASI
+diff: [0.1] [0.59] [0.35]
+NOWY GATUNEK: HUTURY>>>HUTUZU
+diff: [0.07] [0.59] [0.33]
+NOWY GATUNEK: FASRNU>>>FAHTNU
+diff: [0.03] [0.35] [0.19]
+GATUNEK: HUTUKI
+diff: [0.03] [0.29] [0.16]
+GATUNEK: HUTUZU
+diff: [0.03] [0.98] [0.5]
+NOWY GATUNEK: FIQIUO>>>FIQIUJ
+diff: [0.07] [0.36] [0.22]
+GATUNEK: FAHKNA
+diff: [0.03] [0.24] [0.13]
+GATUNEK: HUTUKI
+diff: [0.05] [0.35] [0.2]
+GATUNEK: HUTUZU
+diff: [0.05] [0.04] [0.05]
+GATUNEK: HUTUZU
+diff: [0.03] [0.59] [0.31]
+NOWY GATUNEK: FAHKNA>>>FASQNA
+diff: [0.03] [0.51] [0.27]
+GATUNEK: HUTUKI
+diff: [0.03] [0.21] [0.12]
+GATUNEK: HUTUKI
+diff: [0.05] [0.3] [0.17]
+GATUNEK: HJVULI
+diff: [0.05] [0.61] [0.33]
+NOWY GATUNEK: HUTUZU>>>HUSYZU
+diff: [0.07] [0.69] [0.38]
+NOWY GATUNEK: HUTUKI>>>HUTUTV
+diff: [0.05] [0.52] [0.29]
+GATUNEK: HUTUKI
+diff: [0.05] [0.38] [0.22]
+GATUNEK: FIQISL
+diff: [0.1] [0.23] [0.17]
+GATUNEK: XETYPE
+diff: [0.05] [0.48] [0.27]
+GATUNEK: FASRVU
+diff: [0.03] [0.33] [0.18]
+GATUNEK: HUSYZU
+diff: [0.05] [0.51] [0.28]
+GATUNEK: HUTUKI
+diff: [0.03] [0.61] [0.32]
+NOWY GATUNEK: HUTUZU>>>HUKEZU
+diff: [0.05] [0.75] [0.4]
+NOWY GATUNEK: HUTUKI>>>HUPYKI
+diff: [0.1] [0.34] [0.22]
+GATUNEK: FIZUUO
+diff: [0.03] [0.24] [0.13]
+GATUNEK: HUSYZU
+diff: [0.05] [0.51] [0.28]
+GATUNEK: HUTUKI
+diff: [0.1] [0.29] [0.19]
+GATUNEK: HSAXPH
+diff: [0.07] [0.82] [0.45]
+NOWY GATUNEK: FASRNU>>>FASRHO
+diff: [0.05] [0.34] [0.19]
+GATUNEK: HUSYZU
+diff: [0.1] [0.29] [0.19]
+GATUNEK: FASKOP
+diff: [0.05] [0.34] [0.2]
+GATUNEK: HSAXPH
+diff: [0.07] [0.45] [0.26]
+GATUNEK: HUTUKI
+diff: [0.1] [0.91] [0.5]
+NOWY GATUNEK: FASRVU>>>FASRSA
+diff: [0.1] [0.25] [0.17]
+GATUNEK: HUSYZU
+diff: [0.05] [0.52] [0.29]
+GATUNEK: HUTUKI
+diff: [0.05] [0.12] [0.09]
+GATUNEK: VOHRTO
+diff: [0.07] [0.15] [0.11]
+GATUNEK: HUSYZU
+diff: [0.03] [1.06] [0.54]
+NOWY GATUNEK: FASRVU>>>FAOJVU
+diff: [0.0] [0.7] [0.35]
+NOWY GATUNEK: FASKOP>>>HFSKOP
+diff: [0.05] [0.04] [0.05]
+GATUNEK: HEPKOD
+diff: [0.07] [0.27] [0.17]
+GATUNEK: SJZUTA
+diff: [0.05] [0.45] [0.25]
+GATUNEK: ZIKARU
+diff: [0.05] [0.14] [0.1]
+GATUNEK: FASRSA
+diff: [0.07] [0.15] [0.11]
+GATUNEK: FIQIUJ
+diff: [0.05] [0.58] [0.32]
+NOWY GATUNEK: HUTUKI>>>HUMEKI
+diff: [0.07] [0.48] [0.28]
+GATUNEK: ZIKARU
+diff: [0.07] [0.19] [0.13]
+GATUNEK: SJZUTA
+diff: [0.07] [0.17] [0.12]
+GATUNEK: HEPKOD
+diff: [0.03] [0.73] [0.38]
+NOWY GATUNEK: ZIKARU>>>ZIHJRU
+diff: [0.07] [0.11] [0.09]
+GATUNEK: HUSYZU
+diff: [0.03] [0.16] [0.09]
+GATUNEK: FAHKNA
+diff: [0.03] [0.35] [0.19]
+GATUNEK: SRNAVA
+diff: [0.07] [0.26] [0.17]
+GATUNEK: SJZUTA
+diff: [0.03] [0.92] [0.47]
+NOWY GATUNEK: ZIKARU>>>PEKARU
+diff: [0.07] [0.51] [0.29]
+GATUNEK: PEKARU
+diff: [0.03] [0.79] [0.41]
+NOWY GATUNEK: ZIKARU>>>ZIKAPH
+diff: [0.05] [0.2] [0.12]
+GATUNEK: OPHVAM
+diff: [0.05] [0.29] [0.17]
+GATUNEK: ZAPEPU
+diff: [0.1] [0.07] [0.08]
+GATUNEK: SAUDTE
+diff: [0.05] [0.4] [0.23]
+GATUNEK: ZIKASI
+diff: [0.07] [0.67] [0.37]
+NOWY GATUNEK: ZIKARU>>>ZIPHRU
+diff: [0.07] [0.16] [0.12]
+GATUNEK: ZIKAPH
+diff: [0.05] [0.42] [0.24]
+GATUNEK: ZIPHRU
+diff: [0.03] [0.84] [0.43]
+NOWY GATUNEK: FASRSA>>>FAARSA
+diff: [0.05] [0.3] [0.17]
+GATUNEK: ZIKAPH
+diff: [0.15] [0.35] [0.25]
+GATUNEK: SAUDTE
+diff: [0.07] [0.38] [0.23]
+GATUNEK: ZIKAPH
+diff: [0.05] [0.7] [0.37]
+NOWY GATUNEK: ZIPHRU>>>ZIPHTE
+diff: [0.05] [0.55] [0.3]
+GATUNEK: HUTUKI
+diff: [0.03] [0.83] [0.43]
+NOWY GATUNEK: ZIKARU>>>ZIKAPI
+diff: [0.05] [0.42] [0.24]
+GATUNEK: FAARSA
+diff: [0.03] [0.17] [0.1]
+GATUNEK: ZIKAPH
+diff: [0.1] [0.16] [0.13]
+GATUNEK: SAUDTE
+diff: [0.1] [0.59] [0.35]
+NOWY GATUNEK: ZIKAPH>>>ZISFPH
+diff: [0.12] [0.33] [0.23]
+GATUNEK: ZIKAPH
+diff: [0.03] [0.24] [0.13]
+GATUNEK: ZIPHTE
+diff: [0.07] [0.38] [0.23]
+GATUNEK: ZIKAPH
+diff: [0.05] [0.55] [0.3]
+GATUNEK: HUTUKI
+diff: [0.03] [0.24] [0.13]
+GATUNEK: ZIKAPH
+diff: [0.07] [0.92] [0.5]
+NOWY GATUNEK: ZIKARU>>>ZIKAUK
+diff: [0.1] [0.44] [0.27]
+GATUNEK: ZIKAPH
+diff: [0.12] [0.51] [0.32]
+NOWY GATUNEK: ZIKAPH>>>ZINAPH
+diff: [0.03] [0.32] [0.17]
+GATUNEK: ZIPHRU
+diff: [0.1] [0.42] [0.26]
+GATUNEK: ZIKAPH
+diff: [0.07] [0.61] [0.34]
+NOWY GATUNEK: HUTUKI>>>HUTUPI
+diff: [0.03] [0.57] [0.3]
+GATUNEK: ZIPHTE
+diff: [0.07] [0.78] [0.43]
+NOWY GATUNEK: ZIKARU>>>ZIKASF
+diff: [0.0] [0.67] [0.33]
+NOWY GATUNEK: ZIKAPH>>>ZIXIPH
+diff: [0.03] [0.29] [0.16]
+GATUNEK: ZIPHTE
+diff: [0.07] [0.11] [0.09]
+GATUNEK: ZIKAUK
+diff: [0.1] [0.34] [0.22]
+GATUNEK: ZIKAPH
+diff: [0.2] [0.24] [0.22]
+GATUNEK: ZIKAPH
+diff: [0.1] [0.74] [0.42]
+NOWY GATUNEK: ZIKAPH>>>TOKAPH
+diff: [0.07] [0.42] [0.25]
+GATUNEK: ZIPHRU
+diff: [0.07] [0.49] [0.28]
+GATUNEK: ZIKAPH
+diff: [0.05] [0.53] [0.29]
+GATUNEK: ZIPHRU
+diff: [0.07] [0.17] [0.12]
+GATUNEK: ZIPHTE
+diff: [0.07] [0.64] [0.36]
+NOWY GATUNEK: ZIPHTE>>>HEPHTE
+diff: [0.05] [0.4] [0.23]
+GATUNEK: ZIKAUK
+diff: [0.05] [0.42] [0.23]
+GATUNEK: ZIKAPH
+diff: [0.2] [0.46] [0.33]
+NOWY GATUNEK: ZIKAPH>>>ZIHRPH
+diff: [0.0] [0.22] [0.11]
+GATUNEK: TOKAPH
+diff: [0.07] [0.12] [0.1]
+GATUNEK: ZIKAUK
+diff: [0.15] [0.67] [0.41]
+NOWY GATUNEK: ZIKAPH>>>ZINEPH
+diff: [0.05] [0.55] [0.3]
+GATUNEK: ZIPHRU
+diff: [0.1] [0.26] [0.18]
+GATUNEK: ZIKASF
+diff: [0.1] [0.31] [0.2]
+GATUNEK: ZIPHTE
+diff: [0.03] [0.28] [0.15]
+GATUNEK: ZIPHTE
+diff: [0.1] [0.6] [0.35]
+NOWY GATUNEK: ZIKAUK>>>ZIKAPP
+diff: [0.12] [0.54] [0.33]
+NOWY GATUNEK: ZIKAPH>>>ZIKAZI
 diff: [0.05] [0.15] [0.1]
-GATUNEK: STSKTJ
-diff: [0.03] [0.22] [0.12]
-GATUNEK: USNIXU
+GATUNEK: ZIKAUK
+diff: [0.07] [0.53] [0.3]
+NOWY GATUNEK: TOKAPH>>>TOKALI
+diff: [0.05] [0.51] [0.28]
+GATUNEK: ZIPHRU
+diff: [0.07] [0.26] [0.17]
+GATUNEK: HEPHTE
+diff: [0.03] [0.4] [0.21]
+GATUNEK: ZIKASF
+diff: [0.12] [0.28] [0.2]
+GATUNEK: ZIPHTE
+diff: [0.07] [0.2] [0.14]
+GATUNEK: ZIPHTE
+diff: [0.03] [0.12] [0.07]
+GATUNEK: ZIKAPP
+diff: [0.07] [0.4] [0.24]
+GATUNEK: ZIKAPH
+diff: [0.05] [0.25] [0.15]
+GATUNEK: ZIKAUK
+diff: [0.03] [0.51] [0.27]
+GATUNEK: ZIPHRU
+diff: [0.05] [0.43] [0.24]
+GATUNEK: HEPHTE
+diff: [0.07] [0.36] [0.22]
+GATUNEK: ZIPHTE
+diff: [0.03] [0.4] [0.21]
+GATUNEK: ZIPHTE
+diff: [0.07] [0.59] [0.33]
+NOWY GATUNEK: ZIPHRU>>>ZIPHZA
+diff: [0.05] [0.26] [0.15]
+GATUNEK: FAHKNA
+diff: [0.1] [0.56] [0.33]
+NOWY GATUNEK: ZIKAPH>>>ZIOIPH
+diff: [0.07] [0.33] [0.2]
+GATUNEK: ZIKAUK
+diff: [0.05] [0.3] [0.17]
+GATUNEK: HEPHTE
+diff: [0.03] [0.47] [0.25]
+GATUNEK: ZIPHRU
+diff: [0.15] [0.67] [0.41]
+NOWY GATUNEK: ZIPHTE>>>UDPHTE
+diff: [0.03] [0.69] [0.36]
+NOWY GATUNEK: ZIPHTE>>>PTPHTE
+diff: [0.0] [0.59] [0.29]
+GATUNEK: ZIPHRU
+diff: [0.05] [0.63] [0.34]
+NOWY GATUNEK: ZIPHZA>>>TWPHZA
+diff: [0.03] [0.42] [0.22]
+GATUNEK: ZIKAPH
 diff: [0.07] [0.35] [0.21]
-GATUNEK: TJZUAF
-diff: [0.07] [0.1] [0.09]
-GATUNEK: SQMUHV
+GATUNEK: HEPHTE
+diff: [0.07] [0.48] [0.28]
+GATUNEK: ZIPHTE
+diff: [0.07] [0.42] [0.25]
+GATUNEK: ZIPHRU
+diff: [0.1] [0.47] [0.29]
+GATUNEK: ZIPHRU
+diff: [0.07] [0.73] [0.4]
+NOWY GATUNEK: ZIPHRU>>>ZIPHZO
+diff: [0.05] [0.53] [0.29]
+GATUNEK: PTPHTE
+diff: [0.07] [0.46] [0.27]
+GATUNEK: ZIPHTE
+diff: [0.12] [0.59] [0.36]
+NOWY GATUNEK: ZIPHRU>>>ZIPHZO
+diff: [0.0] [0.59] [0.3]
+GATUNEK: ZIPHRU
+diff: [0.05] [0.63] [0.34]
+NOWY GATUNEK: ZIPHRU>>>ZIPHPE
+diff: [0.0] [0.2] [0.1]
+GATUNEK: ZIPHZO
+diff: [0.1] [0.51] [0.31]
+NOWY GATUNEK: ZIPHRU>>>ZIALRU
+diff: [0.05] [0.59] [0.32]
+NOWY GATUNEK: ZIPHRU>>>PHPHRU
+diff: [0.07] [0.51] [0.29]
+GATUNEK: ZIPHTE
+diff: [0.05] [0.51] [0.28]
+GATUNEK: ZIPHRU
+diff: [0.05] [0.38] [0.22]
+GATUNEK: ZIPHZO
+diff: [0.03] [0.78] [0.4]
+NOWY GATUNEK: ZIPHRU>>>ZIQERU
+diff: [0.05] [0.48] [0.26]
+GATUNEK: ZIALRU
+diff: [0.12] [0.5] [0.31]
+NOWY GATUNEK: ZIPHRU>>>ZITRRU
+diff: [0.07] [0.69] [0.38]
+NOWY GATUNEK: ZIPHTE>>>ZIPHXY
+diff: [0.05] [0.15] [0.1]
+GATUNEK: ZIPHZA
+diff: [0.1] [0.73] [0.42]
+NOWY GATUNEK: ZIPHRU>>>ZIPFRU
+diff: [0.03] [0.76] [0.39]
+NOWY GATUNEK: ZIPHRU>>>ZIPHPL
+diff: [0.12] [0.69] [0.41]
+NOWY GATUNEK: ZIPHTE>>>ZIPHPF
+diff: [0.03] [0.38] [0.2]
+GATUNEK: ZIALRU
+diff: [0.07] [0.51] [0.29]
+GATUNEK: ZIALRU
+diff: [0.15] [0.7] [0.42]
+NOWY GATUNEK: ZIPHRU>>>ZIHKRU
+diff: [0.05] [0.45] [0.25]
+GATUNEK: ZIALRU
+diff: [0.07] [0.63] [0.35]
+NOWY GATUNEK: ZIALRU>>>ZIHDRU
+diff: [0.03] [0.56] [0.29]
+GATUNEK: ZIPHRU
+diff: [0.1] [0.73] [0.42]
+NOWY GATUNEK: ZIPHRU>>>ZIRIRU
+diff: [0.07] [0.11] [0.09]
+GATUNEK: ZIALRU
+diff: [0.07] [0.27] [0.17]
+GATUNEK: OPHVAM
+diff: [0.05] [0.59] [0.32]
+NOWY GATUNEK: ZIPHRU>>>ZIPHUO
+diff: [0.17] [0.56] [0.37]
+NOWY GATUNEK: ZIPHRU>>>ZIPHAR
+diff: [0.07] [0.63] [0.35]
+NOWY GATUNEK: ZIPHRU>>>ZITYRU
+simulation started
+diff: [0.12] [0.42] [0.27]
+GATUNEK: ZIPHRU
+diff: [0.05] [0.45] [0.25]
+GATUNEK: ZIPHRU
+diff: [0.1] [0.33] [0.22]
+GATUNEK: ZIALRU
+diff: [0.07] [0.67] [0.37]
+NOWY GATUNEK: ZIPHRU>>>ZIPHQU
+diff: [0.1] [0.37] [0.24]
+GATUNEK: ZIRIRU
+diff: [0.1] [0.84] [0.47]
+NOWY GATUNEK: ZIALRU>>>ZIOIRU
+diff: [0.05] [0.17] [0.11]
+GATUNEK: OPHVAM
+diff: [0.05] [0.25] [0.15]
+GATUNEK: ZIPHUO
+diff: [0.07] [0.26] [0.17]
+GATUNEK: ZIPHAR
+diff: [0.05] [0.25] [0.15]
+GATUNEK: OLPZTF
+diff: [0.07] [0.09] [0.08]
+GATUNEK: ZITYRU
+NewLand2 loaded
 simulation started
 simulation started
 simulation started
 simulation started
+diff: [0.05] [0.32] [0.18]
+GATUNEK: ZESQAM
+diff: [0.07] [0.12] [0.1]
+GATUNEK: WUDAKI
+diff: [0.07] [0.48] [0.28]
+GATUNEK: VYXSPO
+diff: [0.05] [0.12] [0.09]
+GATUNEK: PTOSXE
+diff: [0.03] [0.09] [0.06]
+GATUNEK: PLSESN
+diff: [0.07] [0.32] [0.2]
+GATUNEK: SJOCPP
+diff: [0.05] [0.22] [0.14]
+GATUNEK: ZIRIJU
+diff: [0.05] [0.53] [0.29]
+GATUNEK: TASRHJ
+diff: [0.07] [0.21] [0.14]
+GATUNEK: MUJIAM
+diff: [0.07] [0.29] [0.18]
+GATUNEK: PZHRRE
+diff: [0.05] [0.32] [0.18]
+GATUNEK: VOPIPL
+diff: [0.1] [0.61] [0.35]
+NOWY GATUNEK: VYXSPO>>>VYPDPO
+diff: [0.05] [0.42] [0.23]
+GATUNEK: STARXO
+diff: [0.07] [0.29] [0.18]
+GATUNEK: PZHRRE
+diff: [0.05] [0.49] [0.27]
+GATUNEK: PZHRRE
+diff: [0.07] [0.34] [0.21]
+GATUNEK: ZIRIJU
+diff: [0.05] [0.19] [0.12]
+GATUNEK: TKIPWU
+diff: [0.05] [0.46] [0.26]
+GATUNEK: XUOSPY
+diff: [0.05] [0.38] [0.22]
+GATUNEK: SSAQSF
+diff: [0.05] [0.14] [0.1]
+GATUNEK: SYOSAF
+diff: [0.0] [0.54] [0.27]
+GATUNEK: WUDAKI
+diff: [0.03] [0.37] [0.2]
+GATUNEK: PTOSXE
+diff: [0.05] [0.35] [0.2]
+GATUNEK: PLSESN
+diff: [0.03] [0.5] [0.26]
+GATUNEK: SJOCPP
+diff: [0.05] [0.27] [0.16]
+GATUNEK: SYOSAF
+diff: [0.05] [0.35] [0.2]
+GATUNEK: XEMEDE
+diff: [0.12] [0.7] [0.41]
+NOWY GATUNEK: WUDAKI>>>WUDATK
+diff: [0.07] [0.63] [0.35]
+NOWY GATUNEK: XUOSPY>>>XUOSSK
+diff: [0.07] [0.38] [0.23]
+GATUNEK: TRAMUL
+diff: [0.1] [0.57] [0.33]
+NOWY GATUNEK: VOPIPL>>>VOPIMA
+diff: [0.07] [0.26] [0.17]
+GATUNEK: TRAMUL
+diff: [0.07] [0.35] [0.21]
+GATUNEK: XEMEDE
+diff: [0.07] [0.73] [0.4]
+NOWY GATUNEK: VOPIPL>>>VOSRPL
+diff: [0.12] [0.73] [0.43]
+NOWY GATUNEK: VOPIPL>>>VOSEPL
+diff: [0.07] [0.42] [0.25]
+GATUNEK: VOPIMA
+diff: [0.07] [0.27] [0.17]
+GATUNEK: PJMIFU
+diff: [0.1] [0.13] [0.11]
+GATUNEK: NIRUTE
+diff: [0.05] [0.34] [0.19]
+GATUNEK: OIUKHW
+diff: [0.1] [0.42] [0.26]
+GATUNEK: SYOSAF
+diff: [0.07] [0.22] [0.15]
+GATUNEK: QUFUZI
+diff: [0.05] [0.51] [0.28]
+GATUNEK: TEZAPV
 simulation started
+diff: [0.07] [0.52] [0.3]
+GATUNEK: PDPIAF
+diff: [0.07] [0.19] [0.13]
+GATUNEK: HZQIHT
+diff: [0.07] [0.21] [0.14]
+GATUNEK: SEZATU
+diff: [0.07] [0.48] [0.28]
+GATUNEK: PDPIAF
+diff: [0.1] [0.29] [0.19]
+GATUNEK: ZUZUHF
+diff: [0.05] [0.23] [0.14]
+GATUNEK: TJTRXO
+diff: [0.1] [0.53] [0.32]
+NOWY GATUNEK: SEVUNY>>>PRVUNY
+diff: [0.07] [0.38] [0.23]
+GATUNEK: PZTSAX
+simulation started
+diff: [0.03] [0.11] [0.07]
+GATUNEK: PZPWPJ
+diff: [0.1] [0.29] [0.19]
+GATUNEK: KIHDFA
+diff: [0.07] [0.54] [0.31]
+NOWY GATUNEK: UJUSHV>>>UJUSME
+diff: [0.1] [0.05] [0.08]
+GATUNEK: HSZAHF
+diff: [0.05] [0.18] [0.12]
+GATUNEK: SOFUOX
+diff: [0.05] [0.29] [0.17]
+GATUNEK: PZPWPJ
+diff: [0.05] [0.46] [0.26]
+GATUNEK: ZIALKA
+diff: [0.07] [0.27] [0.17]
+GATUNEK: MUZUMO
+diff: [0.03] [0.36] [0.19]
+GATUNEK: PZPWPJ
+diff: [0.05] [0.45] [0.25]
+GATUNEK: POZIZU
+diff: [0.03] [0.52] [0.27]
+GATUNEK: POZIZU
+diff: [0.07] [0.4] [0.24]
+GATUNEK: XOJUUG
+diff: [0.07] [0.4] [0.24]
+GATUNEK: PZPWPJ
+diff: [0.07] [0.21] [0.14]
+GATUNEK: TIARXI
+diff: [0.03] [0.0] [0.01]
+GATUNEK: SOFUOX
+diff: [0.05] [0.3] [0.17]
+GATUNEK: XIMADI
+diff: [0.03] [0.31] [0.17]
+GATUNEK: HFODTU
+diff: [0.07] [0.3] [0.19]
+GATUNEK: HUTSZE
+diff: [0.03] [0.24] [0.13]
+GATUNEK: HURIOX
+diff: [0.07] [0.24] [0.16]
+GATUNEK: HTPHHO
+diff: [0.07] [0.3] [0.19]
+GATUNEK: PZPWPJ
+diff: [0.03] [0.26] [0.14]
+GATUNEK: MUNEHO
+diff: [0.05] [0.38] [0.22]
+GATUNEK: MUNEHO
+diff: [0.07] [0.46] [0.27]
+GATUNEK: SOFUOX
+diff: [0.05] [0.65] [0.35]
+NOWY GATUNEK: POZIZU>>>POOMZU
+diff: [0.1] [0.14] [0.12]
+GATUNEK: PZWUPY
+diff: [0.12] [0.72] [0.42]
+NOWY GATUNEK: POZIZU>>>POUGZU
+diff: [0.07] [0.19] [0.13]
+GATUNEK: PIKAAX
+diff: [0.07] [0.22] [0.15]
+GATUNEK: ZUDITE
+diff: [0.07] [0.21] [0.14]
+GATUNEK: PZPWPJ
+diff: [0.07] [0.26] [0.17]
+GATUNEK: TSSFZI
+diff: [0.05] [0.31] [0.18]
+GATUNEK: TIARXI
+diff: [0.03] [0.42] [0.22]
+GATUNEK: PZPWPJ
+diff: [0.07] [0.23] [0.15]
+GATUNEK: SUPUSF
+diff: [0.05] [0.25] [0.15]
+GATUNEK: KIHDFA
+diff: [0.07] [0.52] [0.3]
+GATUNEK: HUTSZE
+diff: [0.03] [0.33] [0.18]
+GATUNEK: ZIALKA
+diff: [0.05] [0.18] [0.12]
+GATUNEK: PDPRHI
+diff: [0.05] [0.38] [0.22]
+GATUNEK: QEXONA
+diff: [0.03] [0.3] [0.16]
+GATUNEK: AMHHHO
+diff: [0.05] [0.19] [0.12]
+GATUNEK: AVQEHV
+diff: [0.05] [0.14] [0.09]
+GATUNEK: OIUJHR
+diff: [0.07] [0.11] [0.09]
+GATUNEK: XIMADI
+diff: [0.05] [0.34] [0.2]
+GATUNEK: REJYTU
+diff: [0.03] [0.62] [0.32]
+NOWY GATUNEK: SOFUOX>>>HWFUOX
+diff: [0.05] [0.09] [0.07]
+GATUNEK: PUPFRI
+diff: [0.07] [0.4] [0.24]
+GATUNEK: AVQEHV
+diff: [0.1] [0.62] [0.36]
+NOWY GATUNEK: MUNEHO>>>MUSYHO
+diff: [0.03] [0.2] [0.11]
+GATUNEK: VAZITP
+diff: [0.12] [0.49] [0.31]
+NOWY GATUNEK: HUTSZE>>>HUTSUI
+diff: [0.07] [0.54] [0.31]
+NOWY GATUNEK: REJYTU>>>REJYUH
+diff: [0.15] [0.67] [0.41]
+NOWY GATUNEK: HUTSZE>>>HUSNZE
+diff: [0.03] [0.26] [0.14]
+GATUNEK: OXSQAR
+diff: [0.07] [0.36] [0.22]
+GATUNEK: XIMADI
+diff: [0.1] [0.31] [0.2]
+GATUNEK: VYFIZY
+diff: [0.07] [0.16] [0.12]
+GATUNEK: JYSLUS
+diff: [0.1] [0.31] [0.2]
+GATUNEK: DAVYVU
+diff: [0.03] [0.34] [0.18]
+GATUNEK: DAVYVU
+diff: [0.05] [0.44] [0.25]
+GATUNEK: PVULFU
+diff: [0.05] [0.64] [0.35]
+NOWY GATUNEK: SOFUOX>>>ZAFUOX
+diff: [0.07] [0.58] [0.33]
+NOWY GATUNEK: PVULFU>>>PVULPW
+diff: [0.03] [0.21] [0.12]
+GATUNEK: RAMUZU
+diff: [0.03] [0.37] [0.2]
+GATUNEK: QEXONA
+diff: [0.07] [0.05] [0.06]
+GATUNEK: REJYUH
+diff: [0.03] [0.62] [0.32]
+NOWY GATUNEK: REJYTU>>>REUJTU
+diff: [0.03] [0.49] [0.26]
+GATUNEK: AVQEHV
+diff: [0.03] [0.71] [0.37]
+NOWY GATUNEK: MUNEHO>>>MUNEPE
+diff: [0.07] [0.26] [0.17]
+GATUNEK: HEIPDA
+diff: [0.05] [0.36] [0.2]
+GATUNEK: XIMADI
+diff: [0.0] [0.56] [0.28]
+GATUNEK: PVULFU
+diff: [0.1] [0.53] [0.31]
+NOWY GATUNEK: AVQEHV>>>AVQEWU
+diff: [0.07] [0.18] [0.13]
+GATUNEK: PVULPW
+diff: [0.03] [0.3] [0.16]
+GATUNEK: QEXONA

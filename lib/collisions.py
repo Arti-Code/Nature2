@@ -16,7 +16,7 @@ def process_creature_plant_collisions(arbiter, space, data):
         target.energy = target.energy - cfg.EAT*dt
         plant_value = cfg.EAT*dt*hunter.vege/10*cfg.VEGE2ENG
         hunter.eat(plant_value)
-        hunter.fitness += plant_value*0.1
+        hunter.fitness += plant_value
     hunter.collide_plant = True
     return True
 
@@ -31,7 +31,7 @@ def process_creature_meat_collisions(arbiter, space, data):
         target.energy = target.energy - cfg.EAT*dt
         meat_value = cfg.EAT*dt*(target.time/cfg.MEAT_TIME)*hunter.meat/10*cfg.MEAT2ENG
         hunter.eat(meat_value)
-        hunter.fitness += meat_value*0.1
+        hunter.fitness += meat_value*0.01
     hunter.collide_meat = True
     return True
 
@@ -49,7 +49,7 @@ def process_creatures_collisions(arbiter, space, data):
             target.energy -= dmg
             target.color0=Color('red')
             #agent.eat(dmg*0.85)
-            agent.fitness += dmg*cfg.HIT
+            agent.fitness += dmg*cfg.HIT2FIT
     agent.collide_creature = True
     return True
 
