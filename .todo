@@ -45,9 +45,13 @@ NATURE:
         ✔ compilation to executable
         ✔ meat
     0.4:
-        ☐ config drom .py to .json
-        ☐ species
-        ☐ similarity
+        ✔ config from .py to .json
+        ✔ species
+        ✔ similarity
         ☐ health and energy
         ☐ water needs
-        ☐ memory neurons
+        ✔ memory neurons
+        ☐ update settings during sim runs
+        ☐ creatures info window
+        ✔ save ranking also
+        ✔ fix: dt

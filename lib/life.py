@@ -18,8 +18,8 @@ class Life(Body):
         if position is not None:
             self.position = position
         else:
-            x = randint(50, WORLD[0]-50)
-            y = randint(50, WORLD[1]-50)
+            x = randint(50, cfg.WORLD[0]-50)
+            y = randint(50, cfg.WORLD[1]-50)
             self.position = Vec2d(x, y)
         space.add(self)
         

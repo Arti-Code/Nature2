@@ -8,7 +8,7 @@ from copy import copy
 from pygame import Rect
 from pygame_gui import UIManager, PackageResource
 from pygame_gui.elements import UITextBox, UIWindow, UIButton, UILabel, UITextEntryLine, UIPanel
-from lib.config import *
+from lib.config import cfg, TITLE, SUBTITLE
 
 
 btn_w = 150
@@ -96,16 +96,17 @@ class RankWindow(UIWindow):
         self.owner = owner
         self.manager = manager
         self.labels = []
+        lbl_w = 380
         for i in range(cfg.RANK_SIZE):
             text = ''
-            lab = UILabel(Rect((round((rect.width/2)-(btn_w)), 15*i+5), (rect.width, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position')
+            lab = UILabel(Rect((round((rect.width/2)-(lbl_w/2)), 15*i+5), (lbl_w, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position')
             self.labels.append(lab)
         self.btn_close = UIButton(Rect((round((rect.width/2)-(btn_w/2)), (15*i+25)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
 
     def Update(self, ranking: list):
         rank_count = len(ranking)
         for i in range(rank_count):
-            text = str(i) + '. ' + ranking[i]['name'] + ' gen: ' + str(ranking[i]['gen']) + ' fit: ' + str(round(ranking[i]['fitness']))
+            text = str(i) + '. ' + ranking[i]['name'] + ' \t GEN: ' + str(ranking[i]['gen']) + ' \t POW: ' + str(ranking[i]['power']) + ' \t MEAT|VEGE: ' + str(ranking[i]['meat']) + '|' + str(ranking[i]['vege']) + ' \t FIT: ' + str(round(ranking[i]['fitness']))
             self.labels[i].set_text(text)
 
 class InfoWindow(UIWindow):
@@ -177,14 +178,14 @@ class GUI():
         self.cy = round(self.view[1]/2)
         #self.ui_mgr = UIManager(window_resolution=(self.view[0], self.view[1]), theme_path='blue.json')
         self.ui_mgr = UIManager(window_resolution=view, theme_path='res/themes/blue.json')
-        self.ui_mgr.preload_fonts(font_list=[
-                    {'name': 'fira_code10b', 'point_size': 10, 'style': 'bold'},
-                    {'name': 'fira_code10r', 'point_size': 10, 'style': 'regular'},
-                    {'name': 'fira_code9r', 'point_size': 9, 'style': 'regular'},
-                    {'name': 'fira_code', 'point_size': 12, 'style': 'regular'},
-                    {'name': 'fira_code', 'point_size': 14, 'style': 'regular'},
-                    {'name': 'fira_code', 'point_size': 14, 'style': 'bold'}
-        ])
+        #self.ui_mgr.preload_fonts(font_list=[
+        #            {'name': 'fira_code10b', 'point_size': 10, 'style': 'bold'},
+        #            {'name': 'fira_code10r', 'point_size': 10, 'style': 'regular'},
+        #            {'name': 'fira_code9r', 'point_size': 9, 'style': 'regular'},
+        #            {'name': 'fira_code', 'point_size': 12, 'style': 'regular'},
+        #            {'name': 'fira_code', 'point_size': 14, 'style': 'regular'},
+        #            {'name': 'fira_code', 'point_size': 14, 'style': 'bold'}
+        #])
         #self.ui_mgr.load_theme('blue.json')
         self.buttons = []
         self.title = None
@@ -250,8 +251,8 @@ class GUI():
         self.info_win = InfoWindow(manager=self.ui_mgr, rect=pos, text=text, title=title)
 
     def create_rank_win(self):
-        w = 250
-        h = 380
+        w = 400
+        h = 400
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)
 
@@ -297,9 +298,8 @@ class GUI():
 
     def update_enviroment(self, dT: float) -> dict:
         data = {}
-        #data = {}
         data['dT'] = str(round(dT, 3)) + 's'
-        data['TIME'] = str(self.owner.enviro.get_time(1)) + 's'
+        data['TIME'] = str(self.owner.enviro.cycles*6000 + round(self.owner.enviro.time)) + 's'
         data['CREATURES'] = str(len(self.owner.enviro.creature_list))
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         data['NEURO_TIME'] = str(round(self.owner.enviro.neuro_avg_time*1000, 1)) + 'ms'
@@ -333,7 +333,7 @@ class GUI():
                     self.owner.enviro.project_name = new_name
                     self.new_project_name(new_name)
                     self.new_sim.kill()
-                    self.create_title(WORLD)
+                    self.create_title(cfg.WORLD)
                     self.owner.enviro.create_enviro()
                     self.create_info_win(text='Project created with name: ' + new_name, title=new_name)
                 elif event.ui_object_id == '#menu_win.#btn_set':
@@ -351,7 +351,7 @@ class GUI():
                     self.owner.load_last(project_name)
                     self.load_menu.kill()   
                     self.kill_title()
-                    self.create_title(WORLD) 
+                    self.create_title(cfg.WORLD) 
                     self.create_info_win(text=f"Project {project_name.upper()} has been loaded", title='Load Simulation')
                 elif event.ui_object_id == '#load_win.#load_back':
                     self.load_menu.kill()
@@ -362,8 +362,7 @@ class GUI():
                     self.set_win.kill()
                     self.create_main_menu()
                 elif event.ui_object_id == '#set_win.#btn_rel_set':
-                    self.set_win.kill()
-                    #self.create_main_menu()
+                    self.reload_config()
                 elif event.ui_object_id == '#set_win.#btn_gui':
                     self.set_win.kill()
                     self.create_enviro_win(dt)
@@ -380,6 +379,10 @@ class GUI():
             return True
         else:
             return False
+
+    def reload_config(self):
+        self.set_win.kill()
+        cfg.load_from_file('config.json')
 
     def update(self, dt: float, ranking: list):
         data: dict = {}

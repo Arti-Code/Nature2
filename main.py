@@ -1,14 +1,14 @@
 import os
 import sys
 from time import time
-from math import degrees, hypot, sin, cos
+from math import degrees, hypot, sin, cos, pi as PI, floor, ceil
 from copy import deepcopy, copy
 from lib.math2 import clamp
 from statistics import mean
 from random import randint, random, choice
 from typing import Union
 import pygame
-import pygame as pg
+#import pygame as pg
 from pygame import Color, Surface, image
 from pygame.constants import *
 from pygame.font import Font, match_font
@@ -20,14 +20,14 @@ from lib.plant import Plant
 from lib.wall import Wall
 from lib.sensor import Sensor
 from lib.math2 import set_world, world, flipy
-from lib.config import *
-from lib.config import Configuration, cfg, log_to_file
+from lib.config import cfg, TITLE, SUBTITLE
 from lib.manager import Manager
 from lib.autoterrain import Terrain
 from lib.rock import Rock
 from lib.collisions import process_creature_plant_collisions, process_creature_meat_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end, detect_meat, detect_meat_end
 from lib.meat import Meat
 from lib.species import modify_name
+from lib.utils import log_to_file
 
 class Simulation():
 
@@ -66,6 +66,7 @@ class Simulation():
         self.ranking1 = []
         self.ranking2 = []
         log_to_file('simulation started', 'log.txt')
+        self.last_save_time = 0
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -75,7 +76,7 @@ class Simulation():
             x = sin(vert_ang)*size + (random()*2-1)*size*0.4
             y = cos(vert_ang)*size + (random()*2-1)*size*0.4
             vertices.append(Vec2d(x, y)+position)
-        rock = Rock(self.screen, self.space, vertices, 1, Color('navy'), Color('grey'))
+        rock = Rock(self.screen, self.space, vertices, 3, Color('grey40'), Color('grey'))
         self.wall_list.append(rock)
 
     def create_enviro(self, world: tuple = None):
@@ -160,7 +161,7 @@ class Simulation():
                 self.running = False
             if event.type == pygame.KEYDOWN:
                 self.key_events(event)
-            if event.type == pg.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 3:
                     self.mouse_events(event)
 
@@ -187,7 +188,7 @@ class Simulation():
 
     def mouse_events(self, event):
         self.selected = None
-        mouseX, mouseY = pg.mouse.get_pos()
+        mouseX, mouseY = pygame.mouse.get_pos()
         self.selected = self.find_creature(mouseX, flipy(mouseY))
         if self.selected == None:
             self.selected = self.find_plant(mouseX, flipy(mouseY))
@@ -253,7 +254,7 @@ class Simulation():
         y = clamp(pos[1], 0, cfg.WORLD[1])
         cpos = Vec2d(x, y)
         if genome is None:
-            creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, color0=Color('blue'), color1=Color('skyblue'), color2=Color('orange'), color3=Color('red'))
+            creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, color0=Color('white'), color1=Color('skyblue'), color2=Color('blue'), color3=Color('red'))
         else:
             creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, genome=genome)
         return creature
@@ -268,7 +269,7 @@ class Simulation():
         else:
             size = 3
         plant = Plant(screen=self.screen, space=self.space, sim=self, collision_tag=6, world_size=world,
-                      size=size, color0=Color(LIME), color1=Color('darkgreen'), color3=Color(BROWN))
+                      size=size, color0=Color((127, 255, 0)), color1=Color('darkgreen'), color3=Color((110, 50, 9)))
         return plant
 
     def add_wall(self, point0: tuple, point1: tuple, thickness: float) -> Wall:
@@ -319,13 +320,13 @@ class Simulation():
                 self.manager.draw_net(self.selected.neuro)
 
     def calc_time(self):
-        self.time += self.dt
-        if self.time > 1000:
+        self.time += self.dt*0.1
+        if self.time > 6000:
             self.cycles += 1
-            self.time = self.time % 1000
+            self.time = self.time % 6000
 
-    def get_time(self, digits: int = 0):
-        t = self.cycles*1000 + round(self.time, digits)
+    def get_time(self, digits: int = None):
+        t = self.cycles*6000 + round(self.time, digits)
         return t
 
     def kill_all_creatures(self):
@@ -345,13 +346,6 @@ class Simulation():
 
     def update(self):
         self.calc_time()
-        for creature in self.creature_list:
-            if creature.energy <= 0:
-                self.add_to_ranking(creature)
-                meat = Meat(space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
-                self.meat_list.append(meat)
-                creature.kill(self.space)
-                self.creature_list.remove(creature)
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
         self.update_meat(self.dt)
@@ -365,18 +359,31 @@ class Simulation():
                 self.meat_list.remove(meat)
 
     def update_creatures(self, dt: float):
-        temp_list = []
+        ### CHECK ENERGY ###
+        for creature in self.creature_list:
+            if creature.energy <= 0:
+                self.add_to_ranking(creature)
+                meat = Meat(space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
+                self.meat_list.append(meat)
+                creature.kill(self.space)
+                self.creature_list.remove(creature)
+
+        ### ANALIZE ###
         neuro_time = time()
         for creature in self.creature_list:
-            # creature.get_input()
             creature.analize()
         neuro_time = time()-neuro_time
         self.neuro_single_times.append(neuro_time)
         if len(self.neuro_single_times) >= 150:
             self.neuro_avg_time = mean(self.neuro_single_times)
             self.neuro_single_times = []
+
+        ### MOVEMENT ###
         for creature in self.creature_list:
             creature.move(dt)
+
+        ### REPRODUCE ###
+        temp_list = []
         for creature in self.creature_list:
             creature.update(screen=self.screen, space=self.space, dt=dt)
             if creature.check_reproduction(dt):
@@ -384,9 +391,11 @@ class Simulation():
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)
                     new_creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=position, genome=genome)
                     temp_list.append(new_creature)
+
         if random() <= cfg.CREATURE_MULTIPLY:
-            creature = self.add_creature(world)
+            creature = self.add_random_creature()
             self.creature_list.append(creature)
+
         for new_one in temp_list:
             self.creature_list.append(new_one)
         temp_list = []
@@ -419,19 +428,27 @@ class Simulation():
 
     def check_populatiom(self):
         if len(self.creature_list) < cfg.CREATURE_MIN_NUM:
-            r = randint(0, 1)
-            creature = None
-            if r == 0:
-                creature = self.add_creature(cfg.WORLD)
-            else:
-                rank_size = len(self.ranking1)
-                rnd = randint(0, rank_size-1)
-                genome = self.ranking1[rnd]
-                self.ranking1[rnd]['fitness'] *= 0.66
-                #genome['fitness'] *= 0.75
-                creature = self.add_creature(cfg.WORLD, genome)
+            creature = self.add_random_creature()
             self.creature_list.append(creature)
 
+    def add_random_creature(self) -> Creature:
+        r = randint(0, 1)
+        creature: Creature = None
+        if r == 0 or len(self.ranking1) == 0:
+            creature = self.add_creature(cfg.WORLD)
+        else:
+            rank_size = len(self.ranking1)
+            rnd = randint(0, rank_size-1)
+            genome = self.ranking1[rnd]
+            self.ranking1[rnd]['fitness'] *= 0.66
+            creature = self.add_creature(cfg.WORLD, genome)
+        return creature
+
+    def auto_save(self):
+        if round((self.cycles*6000+self.time)-self.last_save_time) >= cfg.AUTO_SAVE_TIME:
+            self.manager.save_project()
+            self.last_save_time = round((self.cycles*6000+self.time), 1)
+    
     def main(self):
         set_win_pos(20, 20)
         # self.init(cfg.WORLD)
@@ -439,6 +456,7 @@ class Simulation():
         set_icon('planet32.png')
         #test = Test()
         while self.running:
+            self.auto_save()
             self.events()
             self.update()
             self.draw()
@@ -467,13 +485,13 @@ def random_position(space: Vec2d) -> Vec2d:
 
 
 def set_icon(icon_name):
-    icon = pg.Surface((32, 32))
+    icon = pygame.Surface((32, 32))
     icon.set_colorkey((0, 0, 0))
-    rawicon = pg.image.load(icon_name)
+    rawicon = pygame.image.load(icon_name)
     for i in range(0, 32):
         for j in range(0, 32):
             icon.set_at((i, j), rawicon.get_at((i, j)))
-    pg.display.set_icon(icon)
+    pygame.display.set_icon(icon)
 
 
 def sort_by_fitness(creature):

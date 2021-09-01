@@ -1,1257 +1,2609 @@
-GATUNEK: UIOLHE
-GATUNEK: NOSEUH
-GATUNEK: QUPVHK
-GATUNEK: UHHFPT
-GATUNEK: DYPKHZ
-GATUNEK: MUSEUJ
-GATUNEK: USSAPD
-GATUNEK: TSSAKI
-GATUNEK: ULSEXU
-GATUNEK: AFFIXI
-GATUNEK: UAKITE
-GATUNEK: XINEPU
-GATUNEK: SEMUZA
-GATUNEK: HZPFHD
-GATUNEK: PFAFFA
-GATUNEK: ARSOHW
-GATUNEK: MEHFKE
-GATUNEK: KATUSE
-GATUNEK: FAUKOT
-GATUNEK: ULSEXU
-GATUNEK: MEHFKE
-GATUNEK: UHHFPT
-GATUNEK: MEHFKE
-GATUNEK: FAUKOT
-GATUNEK: MEHFKE
-simulation started
-diff: [0.07] [0.29] [0.18]
-GATUNEK: HRPKRI
 diff: [0.07] [0.33] [0.2]
-GATUNEK: HRHLLO
-diff: [0.07] [0.21] [0.14]
-GATUNEK: HKQUSI
-diff: [0.05] [0.16] [0.1]
-GATUNEK: OMTAOZ
-diff: [0.05] [0.16] [0.11]
-GATUNEK: SRTDTW
-diff: [0.07] [0.17] [0.12]
-GATUNEK: HUTUWU
-diff: [0.05] [0.19] [0.12]
-GATUNEK: HWDEHE
-diff: [0.07] [0.19] [0.13]
-GATUNEK: HUJUTU
-diff: [0.07] [0.18] [0.13]
-GATUNEK: QUAQSR
-diff: [0.1] [0.3] [0.2]
-GATUNEK: XYZAOC
-diff: [0.07] [0.29] [0.18]
-GATUNEK: PUSYHT
-diff: [0.05] [0.0] [0.03]
-GATUNEK: ARPWHO
-diff: [0.05] [0.28] [0.16]
-GATUNEK: TWHEXS
-diff: [0.05] [0.23] [0.14]
-GATUNEK: ZITIPK
-diff: [0.05] [0.17] [0.11]
-GATUNEK: SOPPXO
-diff: [0.07] [0.16] [0.12]
-GATUNEK: SQPVPP
-diff: [0.05] [0.13] [0.09]
-GATUNEK: HRHDNY
-diff: [0.05] [0.18] [0.12]
-GATUNEK: SRTDTW
-diff: [0.03] [0.29] [0.16]
-GATUNEK: TWHEXS
-diff: [0.07] [0.2] [0.14]
-GATUNEK: HWDEHE
-simulation started
-simulation started
-simulation started
-simulation started
-simulation started
-diff: [0.07] [0.08] [0.08]
-GATUNEK: HAMUWI
-simulation started
-simulation started
-simulation started
-simulation started
-simulation started
-diff: [0.07] [0.29] [0.18]
-GATUNEK: VUALVY
-diff: [0.05] [0.28] [0.16]
-GATUNEK: SYWIHJ
-diff: [0.05] [0.3] [0.18]
-GATUNEK: FUUKOZ
-diff: [0.1] [0.24] [0.17]
-GATUNEK: UOZIZU
-diff: [0.07] [0.16] [0.12]
-GATUNEK: XOMOPL
-diff: [0.05] [0.06] [0.06]
-GATUNEK: PRJASL
-diff: [0.07] [0.06] [0.07]
-GATUNEK: TETJMI
-diff: [0.07] [0.11] [0.09]
-GATUNEK: TIHZOL
-diff: [0.07] [0.29] [0.18]
-GATUNEK: SJSTHF
-diff: [0.03] [0.22] [0.12]
-GATUNEK: HAFUXI
-diff: [0.1] [0.19] [0.14]
-GATUNEK: TKSAUH
-diff: [0.07] [0.05] [0.06]
-GATUNEK: OJTFKE
-diff: [0.07] [0.11] [0.09]
-GATUNEK: VAPZIP
-simulation started
-diff: [0.03] [0.07] [0.05]
-GATUNEK: KESJSY
-diff: [0.03] [0.13] [0.08]
-GATUNEK: SOPUAX
-diff: [0.07] [0.24] [0.16]
-GATUNEK: ONVUTV
-diff: [0.03] [0.24] [0.13]
-GATUNEK: QITKPW
-diff: [0.05] [0.23] [0.14]
-GATUNEK: PDPPHS
-diff: [0.05] [0.18] [0.12]
-GATUNEK: STZISY
-diff: [0.05] [0.1] [0.08]
-GATUNEK: ALPYDY
-diff: [0.1] [0.18] [0.14]
-GATUNEK: KOHHSY
-diff: [0.05] [0.3] [0.17]
-GATUNEK: KOHKHS
-diff: [0.07] [0.11] [0.09]
-GATUNEK: LIPYQI
-diff: [0.05] [0.13] [0.09]
-GATUNEK: TORERE
-diff: [0.03] [0.24] [0.13]
-GATUNEK: QIKASF
-diff: [0.05] [0.32] [0.19]
-GATUNEK: OLPLUF
-diff: [0.07] [0.16] [0.12]
-GATUNEK: ZUAFOL
-diff: [0.05] [0.24] [0.14]
-GATUNEK: FATZPL
-diff: [0.05] [0.24] [0.15]
-GATUNEK: TLHDWU
-diff: [0.1] [0.23] [0.16]
-GATUNEK: ZIPJPE
-diff: [0.05] [0.19] [0.12]
-GATUNEK: XOPYXU
-diff: [0.05] [0.25] [0.15]
-GATUNEK: KESJSY
-diff: [0.05] [0.13] [0.09]
-GATUNEK: SOPUAX
-diff: [0.07] [0.23] [0.15]
-GATUNEK: ONVUTV
-diff: [0.03] [0.3] [0.16]
-GATUNEK: PDPPHS
-diff: [0.05] [0.45] [0.25]
-GATUNEK: STZISY
-diff: [0.07] [0.11] [0.09]
-GATUNEK: ALPYDY
-diff: [0.05] [0.28] [0.16]
-GATUNEK: KOHHSY
-diff: [0.05] [0.13] [0.09]
-GATUNEK: LIPYQI
-diff: [0.05] [0.18] [0.12]
-GATUNEK: TORERE
-diff: [0.07] [0.28] [0.18]
-GATUNEK: QIKASF
-diff: [0.05] [0.16] [0.11]
-GATUNEK: OLPLUF
-diff: [0.05] [0.26] [0.15]
-GATUNEK: ZUAFOL
-diff: [0.05] [0.1] [0.07]
-GATUNEK: FATZPL
-diff: [0.07] [0.12] [0.1]
-GATUNEK: TLHDWU
-diff: [0.05] [0.12] [0.08]
-GATUNEK: KESJSY
-diff: [0.05] [0.56] [0.3]
-NOWY GATUNEK: SOPUAX>>>SOPUTU
+GATUNEK: HAFIFU
+diff: [0.12] [0.58] [0.35]
+NOWY GATUNEK: HAFIFU>>>XAFIFU
 diff: [0.07] [0.22] [0.15]
-GATUNEK: ONVUTV
-diff: [0.1] [0.17] [0.14]
-GATUNEK: QITKPW
-diff: [0.07] [0.35] [0.21]
-GATUNEK: STZISY
-diff: [0.07] [0.21] [0.14]
-GATUNEK: KOHHSY
-diff: [0.05] [0.3] [0.17]
-GATUNEK: KOHKHS
-diff: [0.07] [0.35] [0.21]
-GATUNEK: LIPYQI
-diff: [0.1] [0.18] [0.14]
-GATUNEK: TORERE
-diff: [0.1] [0.11] [0.1]
-GATUNEK: QIKASF
-diff: [0.1] [0.35] [0.22]
-GATUNEK: OLPLUF
-diff: [0.15] [0.19] [0.17]
-GATUNEK: ZUAFOL
-diff: [0.03] [0.29] [0.16]
-GATUNEK: FATZPL
-diff: [0.05] [0.26] [0.15]
-GATUNEK: TLHDWU
-diff: [0.05] [0.2] [0.12]
-GATUNEK: XOPYXU
-diff: [0.1] [0.33] [0.21]
-GATUNEK: ALPYDY
-diff: [0.07] [0.2] [0.14]
-GATUNEK: KESJSY
-diff: [0.07] [0.36] [0.22]
-GATUNEK: SOPUAX
-diff: [0.07] [0.21] [0.14]
-GATUNEK: ONVUTV
-diff: [0.03] [0.3] [0.16]
-GATUNEK: PDPPHS
-diff: [0.1] [0.35] [0.22]
-GATUNEK: STZISY
-diff: [0.03] [0.07] [0.05]
-GATUNEK: ALPYDY
-diff: [0.05] [0.42] [0.24]
-GATUNEK: KOHHSY
-diff: [0.1] [0.08] [0.09]
-GATUNEK: LIPYQI
-diff: [0.07] [0.08] [0.08]
-GATUNEK: TORERE
-diff: [0.07] [0.25] [0.16]
-GATUNEK: QIKASF
-diff: [0.07] [0.21] [0.14]
-GATUNEK: OLPLUF
-diff: [0.07] [0.11] [0.09]
-GATUNEK: ZUAFOL
-diff: [0.05] [0.16] [0.1]
-GATUNEK: FATZPL
-diff: [0.1] [0.32] [0.21]
-GATUNEK: TLHDWU
-diff: [0.1] [0.33] [0.22]
-GATUNEK: KESJSY
-diff: [0.1] [0.34] [0.22]
-GATUNEK: SOPUAX
-diff: [0.07] [0.27] [0.17]
-GATUNEK: ONVUTV
-diff: [0.1] [0.3] [0.2]
-GATUNEK: QITKPW
-diff: [0.12] [0.45] [0.29]
-GATUNEK: STZISY
-diff: [0.05] [0.32] [0.18]
-GATUNEK: KOHHSY
-diff: [0.07] [0.4] [0.24]
-GATUNEK: KOHKHS
-diff: [0.0] [0.19] [0.1]
-GATUNEK: LIPYQI
-diff: [0.05] [0.37] [0.21]
-GATUNEK: TORERE
-diff: [0.12] [0.35] [0.24]
-GATUNEK: QIKASF
-diff: [0.1] [0.37] [0.24]
-GATUNEK: OLPLUF
-diff: [0.07] [0.24] [0.16]
-GATUNEK: ZUAFOL
-diff: [0.07] [0.29] [0.18]
-GATUNEK: FATZPL
-diff: [0.03] [0.28] [0.15]
-GATUNEK: TLHDWU
-diff: [0.03] [0.28] [0.15]
-GATUNEK: KESJSY
-diff: [0.05] [0.43] [0.24]
-GATUNEK: SOPUAX
-diff: [0.03] [0.23] [0.13]
-GATUNEK: ONVUTV
-diff: [0.1] [0.3] [0.2]
-GATUNEK: PDPPHS
-diff: [0.1] [0.4] [0.25]
-GATUNEK: STZISY
-diff: [0.07] [0.21] [0.14]
-GATUNEK: ALPYDY
-diff: [0.05] [0.34] [0.2]
-GATUNEK: KOHHSY
-diff: [0.07] [0.14] [0.11]
-GATUNEK: LIPYQI
-diff: [0.07] [0.35] [0.21]
-GATUNEK: TORERE
-diff: [0.15] [0.22] [0.19]
-GATUNEK: QIKASF
-diff: [0.07] [0.14] [0.11]
-GATUNEK: OLPLUF
-diff: [0.1] [0.33] [0.21]
-GATUNEK: ZUAFOL
-diff: [0.07] [0.1] [0.09]
-GATUNEK: FATZPL
-diff: [0.1] [0.1] [0.1]
-GATUNEK: TLHDWU
-diff: [0.12] [0.37] [0.25]
-GATUNEK: KESJSY
-diff: [0.05] [0.15] [0.1]
-GATUNEK: SOPUTU
-diff: [0.05] [0.33] [0.19]
-GATUNEK: ONVUTV
-diff: [0.03] [0.51] [0.27]
-GATUNEK: STZISY
-diff: [0.12] [0.36] [0.24]
-GATUNEK: KOHHSY
-diff: [0.1] [0.19] [0.15]
-GATUNEK: KOHKHS
-diff: [0.07] [0.29] [0.18]
-GATUNEK: LIPYQI
-diff: [0.15] [0.24] [0.2]
-GATUNEK: TORERE
-diff: [0.07] [0.21] [0.14]
-GATUNEK: QIKASF
-diff: [0.12] [0.46] [0.29]
-GATUNEK: OLPLUF
-diff: [0.15] [0.21] [0.18]
-GATUNEK: ZUAFOL
-diff: [0.05] [0.41] [0.23]
-GATUNEK: FATZPL
-diff: [0.1] [0.47] [0.29]
-GATUNEK: TLHDWU
-diff: [0.07] [0.3] [0.19]
-GATUNEK: QITKPW
-diff: [0.1] [0.21] [0.16]
-GATUNEK: KESJSY
-diff: [0.07] [0.27] [0.17]
-GATUNEK: SOPUAX
-diff: [0.1] [0.11] [0.1]
-GATUNEK: PDPPHS
-diff: [0.07] [0.18] [0.13]
-GATUNEK: STZISY
-diff: [0.05] [0.1] [0.08]
-GATUNEK: ALPYDY
-diff: [0.1] [0.14] [0.12]
-GATUNEK: KOHHSY
-diff: [0.07] [0.08] [0.08]
-GATUNEK: LIPYQI
-diff: [0.05] [0.2] [0.12]
-GATUNEK: TORERE
-diff: [0.07] [0.32] [0.2]
-GATUNEK: QIKASF
-diff: [0.03] [0.22] [0.12]
-GATUNEK: OLPLUF
-diff: [0.07] [0.26] [0.17]
-GATUNEK: ZUAFOL
-diff: [0.07] [0.1] [0.09]
-GATUNEK: FATZPL
-diff: [0.05] [0.32] [0.19]
-GATUNEK: TLHDWU
-diff: [0.1] [0.19] [0.14]
-GATUNEK: KESJSY
-diff: [0.07] [0.37] [0.22]
-GATUNEK: SOPUAX
-diff: [0.1] [0.34] [0.22]
-GATUNEK: ONVUTV
-diff: [0.1] [0.24] [0.17]
-GATUNEK: QITKPW
-diff: [0.05] [0.37] [0.21]
-GATUNEK: STZISY
-diff: [0.12] [0.15] [0.14]
-GATUNEK: KOHHSY
-diff: [0.03] [0.4] [0.21]
-GATUNEK: KOHKHS
-diff: [0.1] [0.18] [0.14]
-GATUNEK: LIPYQI
-diff: [0.1] [0.28] [0.19]
-GATUNEK: TORERE
-diff: [0.05] [0.21] [0.13]
-GATUNEK: QIKASF
-diff: [0.07] [0.44] [0.26]
-GATUNEK: OLPLUF
-diff: [0.1] [0.29] [0.19]
-GATUNEK: ZUAFOL
-diff: [0.07] [0.24] [0.16]
-GATUNEK: FATZPL
-diff: [0.07] [0.28] [0.18]
-GATUNEK: TLHDWU
-diff: [0.07] [0.22] [0.15]
-GATUNEK: KESJSY
-diff: [0.07] [0.27] [0.17]
-GATUNEK: SOPUAX
-diff: [0.05] [0.32] [0.19]
-GATUNEK: ONVUTV
-diff: [0.1] [0.28] [0.19]
-GATUNEK: PDPPHS
-diff: [0.0] [0.45] [0.22]
-GATUNEK: STZISY
-diff: [0.1] [0.35] [0.22]
-GATUNEK: ALPYDY
-diff: [0.05] [0.11] [0.08]
-GATUNEK: KOHHSY
-diff: [0.15] [0.16] [0.16]
-GATUNEK: LIPYQI
-diff: [0.12] [0.21] [0.17]
-GATUNEK: QIKASF
-diff: [0.1] [0.14] [0.12]
-GATUNEK: OLPLUF
-diff: [0.15] [0.32] [0.24]
-GATUNEK: ZUAFOL
-diff: [0.0] [0.29] [0.15]
-GATUNEK: FATZPL
-diff: [0.15] [0.16] [0.15]
-GATUNEK: TLHDWU
-diff: [0.03] [0.28] [0.15]
-GATUNEK: KESJSY
-diff: [0.05] [0.15] [0.1]
-GATUNEK: SOPUTU
-diff: [0.15] [0.35] [0.25]
-GATUNEK: ONVUTV
-diff: [0.05] [0.35] [0.2]
-GATUNEK: STZISY
-diff: [0.1] [0.37] [0.24]
-GATUNEK: KOHHSY
-diff: [0.07] [0.31] [0.19]
-GATUNEK: KOHKHS
-diff: [0.07] [0.34] [0.21]
-GATUNEK: LIPYQI
-diff: [0.12] [0.28] [0.2]
-GATUNEK: TORERE
-diff: [0.05] [0.33] [0.19]
-GATUNEK: QIKASF
-diff: [0.12] [0.34] [0.23]
-GATUNEK: OLPLUF
-diff: [0.1] [0.06] [0.08]
-GATUNEK: ZUAFOL
-diff: [0.03] [0.42] [0.22]
-GATUNEK: FATZPL
-diff: [0.1] [0.42] [0.26]
-GATUNEK: TLHDWU
-diff: [0.03] [0.12] [0.07]
-GATUNEK: KESJSY
-diff: [0.03] [0.33] [0.18]
-GATUNEK: SOPUAX
-diff: [0.07] [0.32] [0.2]
-GATUNEK: ONVUTV
-diff: [0.1] [0.53] [0.31]
-NOWY GATUNEK: PDPPHS>>>PDPPTF
-diff: [0.1] [0.27] [0.19]
-GATUNEK: STZISY
-diff: [0.05] [0.29] [0.17]
-GATUNEK: ALPYDY
-diff: [0.03] [0.32] [0.17]
-GATUNEK: KOHHSY
-diff: [0.12] [0.29] [0.21]
-GATUNEK: LIPYQI
-diff: [0.05] [0.22] [0.14]
-GATUNEK: TORERE
-diff: [0.07] [0.28] [0.18]
-GATUNEK: QIKASF
-diff: [0.0] [0.29] [0.15]
-GATUNEK: OLPLUF
-diff: [0.05] [0.32] [0.18]
-GATUNEK: ZUAFOL
-diff: [0.05] [0.28] [0.16]
-GATUNEK: FATZPL
-diff: [0.12] [0.52] [0.32]
-NOWY GATUNEK: TLHDWU>>>TLOMWU
-diff: [0.12] [0.4] [0.26]
-GATUNEK: KESJSY
-diff: [0.1] [0.37] [0.24]
-GATUNEK: SOPUAX
-diff: [0.1] [0.25] [0.17]
-GATUNEK: ONVUTV
-diff: [0.1] [0.31] [0.2]
-GATUNEK: QITKPW
-diff: [0.07] [0.62] [0.35]
-NOWY GATUNEK: STZISY>>>STZITE
-diff: [0.07] [0.4] [0.24]
-GATUNEK: KOHHSY
-diff: [0.12] [0.59] [0.36]
-NOWY GATUNEK: KOHKHS>>>KOHKHH
-diff: [0.07] [0.2] [0.14]
-GATUNEK: LIPYQI
-diff: [0.03] [0.44] [0.23]
-GATUNEK: TORERE
-diff: [0.15] [0.51] [0.33]
-NOWY GATUNEK: QIKASF>>>QIKATL
-diff: [0.12] [0.35] [0.24]
-GATUNEK: OLPLUF
-diff: [0.1] [0.11] [0.11]
-GATUNEK: ZUAFOL
-diff: [0.05] [0.27] [0.16]
-GATUNEK: FATZPL
-diff: [0.05] [0.31] [0.18]
-GATUNEK: TLHDWU
-diff: [0.05] [0.47] [0.26]
-GATUNEK: KESJSY
-diff: [0.07] [0.52] [0.3]
-GATUNEK: SOPUAX
-diff: [0.07] [0.17] [0.12]
-GATUNEK: ONVUTV
-diff: [0.07] [0.47] [0.27]
-GATUNEK: PDPPHS
-diff: [0.1] [0.33] [0.21]
-GATUNEK: STZISY
-diff: [0.1] [0.27] [0.18]
-GATUNEK: ALPYDY
-diff: [0.12] [0.22] [0.17]
-GATUNEK: LIPYQI
-diff: [0.1] [0.29] [0.2]
-GATUNEK: TORERE
-diff: [0.15] [0.43] [0.29]
-GATUNEK: QIKASF
-diff: [0.15] [0.47] [0.31]
-NOWY GATUNEK: OLPLUF>>>OLPLNY
-diff: [0.03] [0.37] [0.2]
-GATUNEK: ZUAFOL
-diff: [0.0] [0.22] [0.11]
-GATUNEK: FATZPL
-diff: [0.1] [0.07] [0.08]
-GATUNEK: TLHDWU
-diff: [0.12] [0.23] [0.18]
-GATUNEK: SOPUTU
-diff: [0.05] [0.38] [0.22]
-GATUNEK: ONVUTV
-diff: [0.05] [0.59] [0.32]
-NOWY GATUNEK: STZISY>>>STZIOZ
-diff: [0.2] [0.5] [0.35]
-NOWY GATUNEK: KOHHSY>>>KOTYSY
-diff: [0.15] [0.24] [0.2]
-GATUNEK: KOHKHS
-diff: [0.12] [0.39] [0.26]
-GATUNEK: LIPYQI
-diff: [0.17] [0.22] [0.2]
-GATUNEK: QIKASF
-diff: [0.17] [0.54] [0.36]
-NOWY GATUNEK: OLPLUF>>>OLSEUF
-diff: [0.17] [0.3] [0.24]
-GATUNEK: ZUAFOL
-diff: [0.1] [0.41] [0.26]
-GATUNEK: FATZPL
-diff: [0.15] [0.67] [0.41]
-NOWY GATUNEK: TLHDWU>>>AXHDWU
-simulation started
-simulation started
-simulation started
-simulation started
-diff: [0.05] [0.07] [0.06]
-GATUNEK: OJPFXE
-diff: [0.07] [0.26] [0.17]
-GATUNEK: HYWIZA
-diff: [0.07] [0.1] [0.09]
-GATUNEK: ARSYSY
-diff: [0.07] [0.29] [0.18]
-GATUNEK: XSHFAL
-diff: [0.1] [0.0] [0.05]
-GATUNEK: NAARMU
-diff: [0.05] [0.2] [0.12]
-GATUNEK: OPXIWI
-diff: [0.03] [0.27] [0.15]
-GATUNEK: SOZIHU
-diff: [0.03] [0.37] [0.2]
-GATUNEK: OCSSPO
-diff: [0.05] [0.24] [0.15]
-GATUNEK: NIHRTT
-diff: [0.07] [0.14] [0.11]
-GATUNEK: HFHSSE
-diff: [0.03] [0.31] [0.17]
-GATUNEK: VAMIUF
-diff: [0.07] [0.03] [0.05]
-GATUNEK: UOHVTI
-diff: [0.07] [0.15] [0.11]
-GATUNEK: XUOLJU
-diff: [0.1] [0.27] [0.19]
-GATUNEK: PPOTPT
-diff: [0.07] [0.33] [0.2]
-GATUNEK: QUKASY
-diff: [0.07] [0.3] [0.19]
-GATUNEK: RENAFU
-diff: [0.05] [0.08] [0.07]
-GATUNEK: HJTEZI
-diff: [0.05] [0.32] [0.18]
-GATUNEK: HOTFOX
-diff: [0.07] [0.2] [0.14]
-GATUNEK: ARHFSJ
-diff: [0.07] [0.34] [0.21]
-GATUNEK: AXUKHE
-diff: [0.05] [0.25] [0.15]
-GATUNEK: RETLTR
-diff: [0.05] [0.19] [0.12]
-GATUNEK: OINUPD
-diff: [0.07] [0.27] [0.17]
-GATUNEK: SRHFXY
-diff: [0.05] [0.18] [0.12]
-GATUNEK: ONPFJA
-diff: [0.05] [0.2] [0.13]
-GATUNEK: LOTHXE
-diff: [0.05] [0.28] [0.16]
-GATUNEK: JUOCPE
-diff: [0.03] [0.19] [0.11]
-GATUNEK: XSJYQE
-diff: [0.05] [0.08] [0.07]
-GATUNEK: QEPPSN
-diff: [0.07] [0.19] [0.13]
-GATUNEK: DAZITU
-simulation started
-diff: [0.05] [0.22] [0.14]
-GATUNEK: JAKURU
-diff: [0.07] [0.27] [0.17]
-GATUNEK: HFHUDY
-diff: [0.03] [0.23] [0.13]
-GATUNEK: MOPVTI
-diff: [0.07] [0.18] [0.13]
-GATUNEK: PKPEHW
-diff: [0.05] [0.45] [0.25]
-GATUNEK: OXZOSR
-diff: [0.1] [0.39] [0.25]
-GATUNEK: SOVUPU
-diff: [0.03] [0.18] [0.1]
-GATUNEK: TUHVPA
-diff: [0.1] [0.23] [0.16]
-GATUNEK: KEDYOM
-diff: [0.07] [0.09] [0.08]
-GATUNEK: ONSNOL
-diff: [0.05] [0.2] [0.12]
-GATUNEK: QUSEUK
-diff: [0.03] [0.14] [0.08]
-GATUNEK: JIJIZO
-diff: [0.07] [0.4] [0.24]
-GATUNEK: TERIAX
-simulation started
-diff: [0.03] [0.36] [0.19]
-GATUNEK: XOPFHV
-diff: [0.03] [0.21] [0.12]
-GATUNEK: WUOZOD
-diff: [0.03] [0.32] [0.17]
-GATUNEK: JAKURU
-diff: [0.1] [0.49] [0.3]
-GATUNEK: JYZUSE
-diff: [0.05] [0.29] [0.17]
-GATUNEK: HFHUDY
-diff: [0.05] [0.11] [0.08]
-GATUNEK: KOMUHK
-diff: [0.05] [0.1] [0.08]
-GATUNEK: FUAXAV
-diff: [0.05] [0.14] [0.1]
-GATUNEK: HEPRLO
-diff: [0.05] [0.28] [0.16]
-GATUNEK: MOPVTI
-diff: [0.05] [0.16] [0.11]
-GATUNEK: PKPEHW
-diff: [0.03] [0.14] [0.08]
-GATUNEK: PDKION
-diff: [0.05] [0.3] [0.17]
-GATUNEK: OXZOSR
-diff: [0.07] [0.19] [0.13]
-GATUNEK: SOVUPU
-diff: [0.03] [0.25] [0.14]
-GATUNEK: SYMUFU
-diff: [0.03] [0.04] [0.03]
-GATUNEK: HPNAPE
-diff: [0.05] [0.18] [0.11]
-GATUNEK: TUHVPA
-diff: [0.1] [0.14] [0.12]
-GATUNEK: KEDYOM
-diff: [0.05] [0.04] [0.04]
-GATUNEK: PKZOKI
-diff: [0.07] [0.18] [0.13]
-GATUNEK: PUSOST
-diff: [0.05] [0.3] [0.18]
-GATUNEK: ZITUTE
-diff: [0.03] [0.12] [0.07]
-GATUNEK: HTRIPT
-diff: [0.1] [0.34] [0.22]
-GATUNEK: ONSNOL
-diff: [0.05] [0.26] [0.16]
-GATUNEK: QUSEUK
-diff: [0.05] [0.42] [0.23]
-GATUNEK: JIJIZO
-diff: [0.1] [0.39] [0.24]
-GATUNEK: TERIAX
-Test loaded
-diff: [0.03] [0.34] [0.18]
-GATUNEK: XOPFHV
-diff: [0.07] [0.52] [0.3]
-GATUNEK: JAKURU
-diff: [0.05] [0.37] [0.21]
-GATUNEK: HFHUDY
-diff: [0.12] [0.36] [0.24]
-GATUNEK: MOPVTI
-diff: [0.07] [0.26] [0.17]
-GATUNEK: OXZOSR
-diff: [0.05] [0.25] [0.15]
-GATUNEK: SOVUPU
-diff: [0.07] [0.28] [0.18]
-GATUNEK: SYMUFU
-diff: [0.12] [0.17] [0.15]
-GATUNEK: TUHVPA
-diff: [0.05] [0.46] [0.26]
-GATUNEK: ZITUTE
-diff: [0.07] [0.4] [0.24]
-GATUNEK: ONSNOL
-diff: [0.05] [0.33] [0.19]
-GATUNEK: QUSEUK
-diff: [0.05] [0.38] [0.21]
-GATUNEK: JIJIZO
-diff: [0.03] [0.49] [0.26]
-GATUNEK: TERIAX
-simulation started
-diff: [0.05] [0.26] [0.15]
-GATUNEK: XOPFHV
-diff: [0.05] [0.03] [0.04]
-GATUNEK: WUOZOD
-diff: [0.05] [0.17] [0.11]
-GATUNEK: JAKURU
-diff: [0.03] [0.2] [0.11]
-GATUNEK: JYZUSE
-diff: [0.07] [0.1] [0.09]
-GATUNEK: HFHUDY
-diff: [0.05] [0.25] [0.15]
-GATUNEK: KOMUHK
-diff: [0.1] [0.33] [0.21]
-GATUNEK: FUAXAV
-diff: [0.1] [0.25] [0.17]
-GATUNEK: HEPRLO
-diff: [0.03] [0.2] [0.11]
-GATUNEK: MOPVTI
-diff: [0.05] [0.12] [0.09]
-GATUNEK: PKPEHW
-diff: [0.07] [0.29] [0.18]
-GATUNEK: PDKION
-diff: [0.1] [0.27] [0.19]
-GATUNEK: OXZOSR
-diff: [0.07] [0.16] [0.12]
-GATUNEK: SOVUPU
-diff: [0.03] [0.11] [0.07]
-GATUNEK: SYMUFU
-diff: [0.05] [0.21] [0.13]
-GATUNEK: HPNAPE
-diff: [0.03] [0.2] [0.11]
-GATUNEK: TUHVPA
-diff: [0.03] [0.25] [0.14]
-GATUNEK: KEDYOM
-diff: [0.03] [0.49] [0.26]
-GATUNEK: PKZOKI
-diff: [0.05] [0.14] [0.1]
-GATUNEK: PUSOST
-diff: [0.03] [0.15] [0.09]
-GATUNEK: ZITUTE
-diff: [0.07] [0.24] [0.16]
-GATUNEK: HTRIPT
-diff: [0.07] [0.3] [0.19]
-GATUNEK: ONSNOL
-diff: [0.03] [0.21] [0.12]
-GATUNEK: QUSEUK
-diff: [0.03] [0.28] [0.15]
-GATUNEK: JIJIZO
-diff: [0.1] [0.08] [0.09]
-GATUNEK: TERIAX
-Test loaded
-diff: [0.1] [0.33] [0.21]
-GATUNEK: XOPFHV
-diff: [0.07] [0.22] [0.15]
-GATUNEK: JAKURU
-diff: [0.12] [0.3] [0.21]
-GATUNEK: HFHUDY
-diff: [0.07] [0.24] [0.16]
-GATUNEK: MOPVTI
-diff: [0.12] [0.39] [0.26]
-GATUNEK: PKPEHW
-diff: [0.1] [0.44] [0.27]
-GATUNEK: OXZOSR
-diff: [0.1] [0.28] [0.19]
-GATUNEK: SOVUPU
-diff: [0.1] [0.37] [0.23]
-GATUNEK: KEDYOM
-diff: [0.05] [0.54] [0.29]
-GATUNEK: ONSNOL
-diff: [0.05] [0.08] [0.07]
-GATUNEK: JIJIZO
-diff: [0.1] [0.17] [0.13]
-GATUNEK: SKHVTT
-diff: [0.1] [0.43] [0.26]
-GATUNEK: SYMUFU
-diff: [0.05] [0.21] [0.13]
-GATUNEK: PDKION
-simulation started
-diff: [0.03] [0.08] [0.05]
-GATUNEK: XOPFHV
-diff: [0.1] [0.1] [0.1]
-GATUNEK: WUOZOD
-diff: [0.03] [0.18] [0.1]
-GATUNEK: JAKURU
-diff: [0.03] [0.31] [0.17]
-GATUNEK: JYZUSE
-diff: [0.05] [0.31] [0.18]
-GATUNEK: HFHUDY
-diff: [0.1] [0.07] [0.09]
-GATUNEK: KOMUHK
-diff: [0.05] [0.12] [0.09]
-GATUNEK: FUAXAV
-diff: [0.1] [0.17] [0.14]
-GATUNEK: HEPRLO
-diff: [0.07] [0.11] [0.09]
-GATUNEK: MOPVTI
-diff: [0.0] [0.06] [0.03]
-GATUNEK: PKPEHW
-diff: [0.03] [0.29] [0.16]
-GATUNEK: PDKION
-diff: [0.07] [0.21] [0.14]
-GATUNEK: OXZOSR
-diff: [0.07] [0.22] [0.15]
-GATUNEK: SOVUPU
-diff: [0.05] [0.23] [0.14]
-GATUNEK: SYMUFU
-diff: [0.05] [0.11] [0.08]
-GATUNEK: HPNAPE
-diff: [0.05] [0.18] [0.12]
-GATUNEK: TUHVPA
-diff: [0.1] [0.2] [0.15]
-GATUNEK: KEDYOM
-diff: [0.07] [0.04] [0.06]
-GATUNEK: PKZOKI
-diff: [0.05] [0.2] [0.13]
-GATUNEK: PUSOST
-diff: [0.07] [0.1] [0.09]
-GATUNEK: ZITUTE
-diff: [0.05] [0.12] [0.08]
-GATUNEK: HTRIPT
-diff: [0.07] [0.29] [0.18]
-GATUNEK: ONSNOL
-diff: [0.07] [0.13] [0.1]
-GATUNEK: QUSEUK
-diff: [0.0] [0.33] [0.16]
-GATUNEK: JIJIZO
-diff: [0.05] [0.34] [0.2]
-GATUNEK: TERIAX
-Test loaded
-diff: [0.07] [0.11] [0.09]
-GATUNEK: XOPFHV
-diff: [0.1] [0.23] [0.17]
-GATUNEK: JAKURU
-diff: [0.03] [0.39] [0.21]
-GATUNEK: JYZUSE
-diff: [0.12] [0.29] [0.21]
-GATUNEK: HFHUDY
-diff: [0.07] [0.28] [0.18]
-GATUNEK: MOPVTI
-diff: [0.05] [0.11] [0.08]
-GATUNEK: OXZOSR
-diff: [0.1] [0.37] [0.23]
-GATUNEK: SOVUPU
-diff: [0.07] [0.17] [0.12]
-GATUNEK: SYMUFU
-diff: [0.1] [0.27] [0.19]
-GATUNEK: TUHVPA
-diff: [0.1] [0.43] [0.27]
-GATUNEK: ONSNOL
-diff: [0.05] [0.46] [0.26]
-GATUNEK: QUSEUK
-diff: [0.03] [0.45] [0.24]
-GATUNEK: JIJIZO
-diff: [0.05] [0.37] [0.21]
-GATUNEK: TERIAX
-diff: [0.1] [0.39] [0.24]
-GATUNEK: KOMUHK
-diff: [0.1] [0.24] [0.17]
-GATUNEK: XOPFHV
-diff: [0.07] [0.35] [0.21]
-GATUNEK: JAKURU
-diff: [0.05] [0.46] [0.26]
-GATUNEK: JYZUSE
-diff: [0.07] [0.24] [0.16]
-GATUNEK: HFHUDY
-diff: [0.1] [0.48] [0.29]
-GATUNEK: MOPVTI
-diff: [0.1] [0.44] [0.27]
-GATUNEK: OXZOSR
-diff: [0.17] [0.49] [0.33]
-NOWY GATUNEK: SOVUPU>>>SOVURI
-diff: [0.12] [0.33] [0.23]
-GATUNEK: TUHVPA
-diff: [0.12] [0.67] [0.4]
-NOWY GATUNEK: ONSNOL>>>ONSNOX
-diff: [0.1] [0.42] [0.26]
-GATUNEK: QUSEUK
-diff: [0.03] [0.57] [0.3]
-GATUNEK: JIJIZO
-diff: [0.15] [0.52] [0.33]
-NOWY GATUNEK: TERIAX>>>TERIHF
-diff: [0.17] [0.36] [0.27]
-GATUNEK: KOMUHK
-diff: [0.07] [0.23] [0.15]
-GATUNEK: JAKURU
-diff: [0.07] [0.29] [0.18]
-GATUNEK: TUHVPA
-diff: [0.05] [0.26] [0.15]
-GATUNEK: TITYZY
-diff: [0.1] [0.43] [0.27]
-GATUNEK: ONSNOL
-diff: [0.05] [0.55] [0.3]
-GATUNEK: QUSEUK
-diff: [0.15] [0.49] [0.32]
-NOWY GATUNEK: XOPFHV>>>XOHYHV
-diff: [0.1] [0.33] [0.21]
-GATUNEK: JAKURU
-diff: [0.05] [0.52] [0.28]
-GATUNEK: JYZUSE
-diff: [0.05] [0.34] [0.19]
-GATUNEK: HFHUDY
-diff: [0.07] [0.58] [0.33]
-NOWY GATUNEK: MOPVTI>>>MOPVHV
-diff: [0.12] [0.44] [0.28]
-GATUNEK: OXZOSR
-diff: [0.03] [0.22] [0.12]
-GATUNEK: SOVURI
-diff: [0.15] [0.3] [0.23]
-GATUNEK: TUHVPA
-diff: [0.03] [0.32] [0.17]
-GATUNEK: ONSNOX
-diff: [0.05] [0.71] [0.38]
-NOWY GATUNEK: JIJIZO>>>JIJIHP
-diff: [0.05] [0.05] [0.05]
-GATUNEK: TERIHF
-diff: [0.05] [0.26] [0.15]
-GATUNEK: JAKURU
-diff: [0.07] [0.21] [0.14]
-GATUNEK: TUHVPA
-diff: [0.1] [0.29] [0.19]
-GATUNEK: TITYZY
-diff: [0.05] [0.4] [0.23]
-GATUNEK: TUHVPA
-diff: [0.07] [0.72] [0.4]
-NOWY GATUNEK: ONSNOL>>>ONSNZO
-diff: [0.03] [0.59] [0.31]
-NOWY GATUNEK: QUSEUK>>>QUSEXI
-diff: [0.05] [0.44] [0.25]
-GATUNEK: JYZUSE
-diff: [0.12] [0.36] [0.24]
-GATUNEK: HFHUDY
-diff: [0.05] [0.18] [0.12]
-GATUNEK: MOPVHV
-diff: [0.1] [0.55] [0.32]
-NOWY GATUNEK: OXZOSR>>>OXZOPS
-diff: [0.0] [0.31] [0.16]
-GATUNEK: SOVURI
-diff: [0.15] [0.39] [0.27]
-GATUNEK: TUHVPA
-diff: [0.12] [0.34] [0.23]
-GATUNEK: ONSNOX
-diff: [0.03] [0.14] [0.08]
-GATUNEK: JIJIHP
-diff: [0.12] [0.13] [0.13]
-GATUNEK: TERIHF
-diff: [0.07] [0.44] [0.26]
-GATUNEK: JAKURU
-diff: [0.07] [0.19] [0.13]
-GATUNEK: USTPJA
-diff: [0.15] [0.41] [0.28]
-GATUNEK: JAKURU
-diff: [0.12] [0.47] [0.3]
-GATUNEK: TITYZY
-diff: [0.12] [0.53] [0.33]
-NOWY GATUNEK: JIJIZO>>>VUJIZO
-diff: [0.2] [0.4] [0.3]
-NOWY GATUNEK: TUHVPA>>>JAHVPA
-diff: [0.07] [0.29] [0.18]
-GATUNEK: TUHVPA
-diff: [0.03] [0.28] [0.15]
-GATUNEK: ONSNZO
-diff: [0.07] [0.39] [0.23]
-GATUNEK: JYZUSE
-diff: [0.1] [0.45] [0.27]
-GATUNEK: HFHUDY
-diff: [0.07] [0.31] [0.19]
-GATUNEK: MOPVHV
-diff: [0.1] [0.41] [0.26]
-GATUNEK: OXZOPS
+GATUNEK: RIPUHT
 diff: [0.15] [0.4] [0.28]
-GATUNEK: TUHVPA
-diff: [0.12] [0.49] [0.31]
-NOWY GATUNEK: ONSNOX>>>OXSNOX
-diff: [0.07] [0.14] [0.11]
-GATUNEK: JIJIHP
-diff: [0.15] [0.21] [0.18]
-GATUNEK: TERIHF
-diff: [0.05] [0.31] [0.18]
-GATUNEK: JAKURU
-diff: [0.03] [0.23] [0.13]
-GATUNEK: JYZUSE
-diff: [0.07] [0.42] [0.25]
-GATUNEK: HFHUDY
-diff: [0.1] [0.2] [0.15]
-GATUNEK: MOPVTI
-diff: [0.1] [0.42] [0.26]
-GATUNEK: OXZOSR
-diff: [0.05] [0.38] [0.21]
-GATUNEK: SOVUPU
-diff: [0.1] [0.17] [0.13]
-GATUNEK: SYMUFU
-diff: [0.1] [0.25] [0.17]
-GATUNEK: TUHVPA
-diff: [0.07] [0.37] [0.22]
-GATUNEK: KEDYOM
-diff: [0.05] [0.42] [0.23]
-GATUNEK: ONSNOL
-diff: [0.1] [0.25] [0.17]
-GATUNEK: QUSEUK
-diff: [0.0] [0.37] [0.19]
-GATUNEK: JIJIZO
-diff: [0.1] [0.49] [0.3]
-GATUNEK: TERIAX
-diff: [0.07] [0.11] [0.09]
-GATUNEK: XOPFHV
-diff: [0.07] [0.29] [0.18]
-GATUNEK: JAKURU
-diff: [0.07] [0.52] [0.3]
-GATUNEK: JYZUSE
-diff: [0.07] [0.35] [0.21]
-GATUNEK: HFHUDY
-diff: [0.15] [0.44] [0.29]
-GATUNEK: MOPVTI
-diff: [0.07] [0.27] [0.17]
-GATUNEK: OXZOSR
-diff: [0.07] [0.46] [0.27]
-GATUNEK: SOVUPU
-diff: [0.07] [0.34] [0.21]
-GATUNEK: SYMUFU
-diff: [0.15] [0.56] [0.36]
-NOWY GATUNEK: ONSNOL>>>ONSNUS
-diff: [0.03] [0.52] [0.27]
-GATUNEK: QUSEUK
-diff: [0.07] [0.45] [0.26]
-GATUNEK: JIJIZO
-diff: [0.1] [0.4] [0.25]
-GATUNEK: TERIAX
-diff: [0.07] [0.3] [0.19]
-GATUNEK: TITYZY
-diff: [0.12] [0.35] [0.24]
-GATUNEK: XOPFHV
-diff: [0.05] [0.39] [0.22]
-GATUNEK: JAKURU
-diff: [0.1] [0.46] [0.28]
-GATUNEK: JYZUSE
-diff: [0.05] [0.1] [0.07]
-GATUNEK: HFHUDY
-diff: [0.07] [0.43] [0.25]
-GATUNEK: MOPVTI
-diff: [0.07] [0.36] [0.22]
-GATUNEK: OXZOSR
-diff: [0.03] [0.09] [0.06]
-GATUNEK: SOVURI
-diff: [0.12] [0.27] [0.2]
-GATUNEK: TUHVPA
-diff: [0.05] [0.24] [0.14]
-GATUNEK: ONSNOX
-diff: [0.05] [0.67] [0.36]
-NOWY GATUNEK: JIJIZO>>>JIJIVU
-diff: [0.05] [0.03] [0.04]
-GATUNEK: TERIHF
-diff: [0.05] [0.21] [0.13]
-GATUNEK: JAKURU
-diff: [0.15] [0.31] [0.23]
-GATUNEK: TUHVPA
-diff: [0.07] [0.14] [0.11]
-GATUNEK: TITYZY
-diff: [0.12] [0.62] [0.37]
-NOWY GATUNEK: ONSNOL>>>TOSNOL
-diff: [0.05] [0.57] [0.31]
-NOWY GATUNEK: QUSEUK>>>QUSEKA
-diff: [0.05] [0.58] [0.32]
-NOWY GATUNEK: JYZUSE>>>ZUZUSE
-diff: [0.05] [0.39] [0.22]
-GATUNEK: HFHUDY
-diff: [0.05] [0.16] [0.1]
-GATUNEK: MOPVHV
-diff: [0.12] [0.33] [0.23]
-GATUNEK: OXZOSR
-diff: [0.1] [0.27] [0.19]
-GATUNEK: SOVURI
-diff: [0.15] [0.43] [0.29]
-GATUNEK: TUHVPA
-diff: [0.03] [0.4] [0.21]
-GATUNEK: ONSNOX
-diff: [0.07] [0.14] [0.11]
-GATUNEK: JIJIHP
-diff: [0.05] [0.42] [0.23]
-GATUNEK: TERIHF
-diff: [0.05] [0.21] [0.13]
-GATUNEK: JAKURU
-diff: [0.05] [0.29] [0.17]
-GATUNEK: USTPJA
-diff: [0.15] [0.36] [0.25]
-GATUNEK: TITYZY
-diff: [0.07] [0.44] [0.26]
-GATUNEK: TUHVPA
-diff: [0.05] [0.17] [0.11]
-GATUNEK: ONSNZO
-diff: [0.0] [0.36] [0.18]
-GATUNEK: QUSEXI
-diff: [0.07] [0.34] [0.21]
-GATUNEK: JYZUSE
-diff: [0.1] [0.39] [0.24]
-GATUNEK: HFHUDY
-diff: [0.03] [0.34] [0.18]
-GATUNEK: MOPVHV
-diff: [0.07] [0.0] [0.04]
-GATUNEK: OXZOPS
-diff: [0.03] [0.43] [0.23]
-GATUNEK: SOVURI
-diff: [0.12] [0.54] [0.33]
-NOWY GATUNEK: TUHVPA>>>TUHVTK
-diff: [0.15] [0.55] [0.35]
-NOWY GATUNEK: ONSNOX>>>ONUIOX
-diff: [0.05] [0.19] [0.12]
-GATUNEK: JIJIHP
-diff: [0.17] [0.39] [0.28]
-GATUNEK: TERIHF
-diff: [0.07] [0.4] [0.24]
-GATUNEK: JAKURU
-diff: [0.03] [0.29] [0.16]
-GATUNEK: USTPJA
-diff: [0.15] [0.56] [0.35]
-NOWY GATUNEK: JAKURU>>>XIKURU
-diff: [0.12] [0.54] [0.33]
-NOWY GATUNEK: TITYZY>>>TIZUZY
-diff: [0.1] [0.08] [0.09]
-GATUNEK: TLUSSL
-diff: [0.05] [0.21] [0.13]
-GATUNEK: VUJIZO
-Test loaded
-simulation started
-diff: [0.05] [0.28] [0.16]
-GATUNEK: JAKURU
-diff: [0.05] [0.23] [0.14]
-GATUNEK: JYZUSE
-diff: [0.05] [0.24] [0.14]
-GATUNEK: HFHUDY
-diff: [0.03] [0.18] [0.1]
-GATUNEK: MOPVTI
-diff: [0.0] [0.29] [0.14]
-GATUNEK: OXZOSR
-diff: [0.05] [0.38] [0.21]
-GATUNEK: SOVUPU
-diff: [0.03] [0.14] [0.08]
-GATUNEK: SYMUFU
-diff: [0.07] [0.16] [0.12]
-GATUNEK: TUHVPA
-diff: [0.05] [0.24] [0.14]
-GATUNEK: KEDYOM
-diff: [0.1] [0.47] [0.29]
-GATUNEK: ONSNOL
-diff: [0.07] [0.32] [0.2]
-GATUNEK: QUSEUK
-diff: [0.03] [0.43] [0.23]
-GATUNEK: JIJIZO
+GATUNEK: ZIMAHT
+diff: [0.1] [0.61] [0.36]
+NOWY GATUNEK: HAFIFU>>>HANIFU
+diff: [0.07] [0.62] [0.35]
+NOWY GATUNEK: HAFIFU>>>PDFIFU
 diff: [0.07] [0.48] [0.28]
-GATUNEK: TERIAX
-diff: [0.07] [0.32] [0.2]
-GATUNEK: XOPFHV
-diff: [0.1] [0.34] [0.22]
-GATUNEK: JAKURU
-diff: [0.05] [0.34] [0.2]
-GATUNEK: JYZUSE
-diff: [0.1] [0.51] [0.3]
-NOWY GATUNEK: HFHUDY>>>HFMEDY
-diff: [0.07] [0.33] [0.2]
-GATUNEK: MOPVTI
-diff: [0.12] [0.06] [0.09]
-GATUNEK: OXZOSR
-diff: [0.05] [0.4] [0.23]
-GATUNEK: SOVUPU
-diff: [0.07] [0.31] [0.19]
-GATUNEK: SYMUFU
-diff: [0.15] [0.81] [0.48]
-NOWY GATUNEK: ONSNOL>>>ONSNOS
-diff: [0.07] [0.49] [0.28]
-GATUNEK: QUSEUK
-diff: [0.1] [0.48] [0.29]
-GATUNEK: JIJIZO
-diff: [0.05] [0.29] [0.17]
-GATUNEK: TERIAX
-diff: [0.07] [0.22] [0.15]
-GATUNEK: TITYZY
-diff: [0.05] [0.25] [0.15]
-GATUNEK: XOPFHV
-diff: [0.12] [0.42] [0.27]
-GATUNEK: JAKURU
-diff: [0.07] [0.41] [0.24]
-GATUNEK: JYZUSE
-diff: [0.07] [0.47] [0.27]
-GATUNEK: HFHUDY
-diff: [0.1] [0.49] [0.3]
-GATUNEK: MOPVTI
-diff: [0.12] [0.33] [0.23]
-GATUNEK: OXZOSR
-diff: [0.05] [0.06] [0.06]
-GATUNEK: SOVURI
-diff: [0.12] [0.5] [0.31]
-NOWY GATUNEK: TUHVPA>>>TUOIPA
-diff: [0.05] [0.06] [0.06]
-GATUNEK: ONSNOX
-diff: [0.03] [0.57] [0.3]
-GATUNEK: JIJIZO
-diff: [0.07] [0.11] [0.09]
-GATUNEK: TERIHF
-diff: [0.15] [0.37] [0.26]
-GATUNEK: JAKURU
-diff: [0.05] [0.29] [0.17]
-GATUNEK: TUHVPA
-diff: [0.12] [0.19] [0.16]
-GATUNEK: TITYZY
-diff: [0.07] [0.64] [0.36]
-NOWY GATUNEK: ONSNOL>>>ONSNSE
+GATUNEK: HAFIFU
+diff: [0.1] [0.36] [0.23]
+GATUNEK: HAFIFU
 diff: [0.05] [0.67] [0.36]
-NOWY GATUNEK: QUSEUK>>>QUJIUK
-diff: [0.07] [0.67] [0.37]
-NOWY GATUNEK: JYZUSE>>>JYZUTY
-diff: [0.07] [0.3] [0.19]
-GATUNEK: HFHUDY
-diff: [0.1] [0.4] [0.25]
-GATUNEK: MOPVHV
-diff: [0.15] [0.48] [0.31]
-NOWY GATUNEK: OXZOSR>>>OXZOHA
-diff: [0.03] [0.33] [0.18]
-GATUNEK: SOVURI
-diff: [0.15] [0.3] [0.23]
-GATUNEK: TUHVPA
-diff: [0.0] [0.43] [0.21]
-GATUNEK: ONSNOX
-diff: [0.05] [0.18] [0.11]
-GATUNEK: JIJIHP
-diff: [0.07] [0.31] [0.19]
-GATUNEK: TERIHF
-diff: [0.07] [0.33] [0.2]
-GATUNEK: JAKURU
-diff: [0.07] [0.18] [0.13]
-GATUNEK: USTPJA
-diff: [0.1] [0.23] [0.16]
-GATUNEK: TITYZY
-diff: [0.05] [0.4] [0.23]
-GATUNEK: TUHVPA
-diff: [0.05] [0.14] [0.1]
-GATUNEK: ONSNZO
-diff: [0.07] [0.19] [0.13]
-GATUNEK: QUSEXI
-diff: [0.07] [0.3] [0.19]
-GATUNEK: JYZUSE
-diff: [0.17] [0.26] [0.22]
-GATUNEK: HFHUDY
-diff: [0.1] [0.37] [0.23]
-GATUNEK: MOPVHV
-diff: [0.1] [0.04] [0.07]
-GATUNEK: OXZOPS
+NOWY GATUNEK: HAHEKO>>>HAHEKE
 diff: [0.05] [0.35] [0.2]
-GATUNEK: SOVURI
-diff: [0.15] [0.41] [0.28]
-GATUNEK: TUHVPA
-diff: [0.15] [0.55] [0.35]
-NOWY GATUNEK: ONSNOX>>>ONSNTI
-diff: [0.1] [0.23] [0.16]
-GATUNEK: JIJIHP
-diff: [0.12] [0.22] [0.17]
-GATUNEK: TERIHF
+GATUNEK: HAHEKO
+diff: [0.17] [0.47] [0.32]
+NOWY GATUNEK: HAHEKO>>>HAHESU
+diff: [0.05] [0.64] [0.35]
+NOWY GATUNEK: ZIMAHT>>>ZIMAOM
+diff: [0.05] [0.59] [0.32]
+NOWY GATUNEK: HAKAUL>>>HAKAPF
+diff: [0.05] [0.29] [0.17]
+GATUNEK: FIKAUL
+diff: [0.07] [0.21] [0.14]
+GATUNEK: HAKAHU
+diff: [0.07] [0.41] [0.24]
+GATUNEK: HAKAHU
+diff: [0.05] [0.49] [0.27]
+GATUNEK: HAKAHU
+diff: [0.03] [0.29] [0.16]
+GATUNEK: LIFIFU
+diff: [0.03] [0.57] [0.3]
+GATUNEK: HAKAUL
+diff: [0.03] [0.24] [0.13]
+GATUNEK: HAFIZO
 diff: [0.05] [0.39] [0.22]
-GATUNEK: JAKURU
-diff: [0.03] [0.37] [0.2]
-GATUNEK: USTPJA
+GATUNEK: HAFIFU
+diff: [0.07] [0.22] [0.15]
+GATUNEK: HAFITL
+diff: [0.05] [0.37] [0.21]
+GATUNEK: HAPOKO
+diff: [0.07] [0.3] [0.19]
+GATUNEK: SFPEZY
+diff: [0.15] [0.55] [0.35]
+NOWY GATUNEK: HAHDHT>>>UGHDHT
+diff: [0.05] [0.27] [0.16]
+GATUNEK: HAHEXU
+diff: [0.15] [0.38] [0.27]
+GATUNEK: HAFIFU
+diff: [0.1] [0.39] [0.24]
+GATUNEK: HAFIFU
+diff: [0.1] [0.67] [0.38]
+NOWY GATUNEK: HAHEKO>>>HAHERE
+diff: [0.1] [0.51] [0.31]
+NOWY GATUNEK: HAHEKO>>>HAHEHA
+diff: [0.07] [0.24] [0.16]
+GATUNEK: ZIMAOM
+diff: [0.07] [0.65] [0.36]
+NOWY GATUNEK: HAKAUL>>>HAKAPF
+diff: [0.05] [0.19] [0.12]
+GATUNEK: HAKAHU
+diff: [0.12] [0.38] [0.25]
+GATUNEK: HAKAHU
+diff: [0.1] [0.4] [0.25]
+GATUNEK: HAKAHU
+diff: [0.1] [0.53] [0.32]
+NOWY GATUNEK: HAMAKA>>>HAMATT
+diff: [0.1] [0.49] [0.3]
+GATUNEK: HAFIZO
+diff: [0.05] [0.41] [0.23]
+GATUNEK: HAFIFU
+diff: [0.05] [0.47] [0.26]
+GATUNEK: HAFITL
+diff: [0.05] [0.31] [0.18]
+GATUNEK: SFPEZY
+diff: [0.07] [0.64] [0.36]
+NOWY GATUNEK: SFPEZY>>>SFHTZY
+diff: [0.07] [0.13] [0.1]
+GATUNEK: UGHDHT
+diff: [0.05] [0.55] [0.3]
+GATUNEK: HAHEXU
+diff: [0.07] [0.42] [0.25]
+GATUNEK: HAHEXU
+diff: [0.07] [0.38] [0.23]
+GATUNEK: HAFIFU
+diff: [0.17] [0.54] [0.36]
+NOWY GATUNEK: HAFIFU>>>HANEFU
+diff: [0.05] [0.47] [0.26]
+GATUNEK: HAHEKO
+diff: [0.07] [0.14] [0.11]
+GATUNEK: HAHERE
+diff: [0.07] [0.38] [0.23]
+GATUNEK: ZIMAOM
+diff: [0.1] [0.36] [0.23]
+GATUNEK: HAKAHU
+diff: [0.15] [0.51] [0.33]
+NOWY GATUNEK: HAKAHU>>>HAKAAT
+diff: [0.05] [0.59] [0.32]
+NOWY GATUNEK: HAHEKO>>>HAHENE
+diff: [0.2] [0.56] [0.38]
+NOWY GATUNEK: HAMAKA>>>HAMAAR
+diff: [0.03] [0.4] [0.21]
+GATUNEK: HAFIFU
+diff: [0.07] [0.62] [0.35]
+NOWY GATUNEK: HAFITL>>>HAWITL
+diff: [0.05] [0.62] [0.34]
+NOWY GATUNEK: HAFIFU>>>HAFIRU
+diff: [0.05] [0.62] [0.34]
+NOWY GATUNEK: HAFITL>>>HAMATL
+diff: [0.05] [0.36] [0.2]
+GATUNEK: SFHTZY
+diff: [0.07] [0.29] [0.18]
+GATUNEK: SFPEZY
+diff: [0.0] [0.08] [0.04]
+GATUNEK: HAHEXU
+diff: [0.12] [0.43] [0.28]
+GATUNEK: HAHEXU
+diff: [0.1] [0.59] [0.34]
+NOWY GATUNEK: HAHEXU>>>HAHEZY
+diff: [0.03] [0.27] [0.15]
+GATUNEK: HAFIZO
+diff: [0.07] [0.39] [0.23]
+GATUNEK: HAFIFU
+diff: [0.1] [0.62] [0.36]
+NOWY GATUNEK: HAFIFU>>>HATUFU
+diff: [0.03] [0.15] [0.09]
+GATUNEK: HANEFU
+diff: [0.07] [0.67] [0.37]
+NOWY GATUNEK: HAHEKO>>>ZUHEKO
+diff: [0.07] [0.52] [0.3]
+GATUNEK: HAHERE
+diff: [0.07] [0.6] [0.34]
+NOWY GATUNEK: ZIMAOM>>>ZIMATA
+diff: [0.1] [0.46] [0.28]
+GATUNEK: HAKAHU
+diff: [0.1] [0.48] [0.29]
+GATUNEK: HAKAHU
+diff: [0.1] [0.62] [0.36]
+NOWY GATUNEK: HAFIFU>>>HAOKFU
+diff: [0.05] [0.72] [0.39]
+NOWY GATUNEK: HAMAKA>>>NEMAKA
+diff: [0.03] [0.38] [0.2]
+GATUNEK: HAMAAR
+diff: [0.07] [0.6] [0.34]
+NOWY GATUNEK: HAFIFU>>>HAFIPW
+diff: [0.1] [0.39] [0.24]
+GATUNEK: HAFITL
+diff: [0.1] [0.6] [0.35]
+NOWY GATUNEK: HAFIFU>>>HAFIZO
+diff: [0.1] [0.64] [0.37]
+NOWY GATUNEK: HAFIFU>>>HATUFU
+diff: [0.07] [0.12] [0.1]
+GATUNEK: HAWITL
+diff: [0.1] [0.2] [0.15]
+GATUNEK: HAFIRU
+diff: [0.07] [0.39] [0.23]
+GATUNEK: HAMATL
+diff: [0.05] [0.56] [0.3]
+NOWY GATUNEK: HAHEKO>>>HAHEKE
+diff: [0.07] [0.77] [0.42]
+NOWY GATUNEK: SFHTZY>>>SFPVZY
+diff: [0.12] [0.46] [0.29]
+GATUNEK: SFPEZY
+diff: [0.05] [0.58] [0.32]
+NOWY GATUNEK: HAHEXU>>>HAUFXU
+diff: [0.12] [0.38] [0.25]
+GATUNEK: HAHEXU
+diff: [0.1] [0.43] [0.27]
+GATUNEK: HAHEXU
+diff: [0.07] [0.27] [0.17]
+GATUNEK: HAHEZY
 diff: [0.15] [0.43] [0.29]
-GATUNEK: JAKURU
-diff: [0.1] [0.49] [0.29]
-GATUNEK: TITYZY
-diff: [0.0] [0.33] [0.16]
-GATUNEK: TLUSSL
+GATUNEK: SFPEZY
+diff: [0.05] [0.37] [0.21]
+GATUNEK: HAFIFU
+diff: [0.05] [0.58] [0.31]
+NOWY GATUNEK: HAFIFU>>>HAFIKO
+diff: [0.03] [0.18] [0.1]
+GATUNEK: HANEFU
+diff: [0.07] [0.69] [0.38]
+NOWY GATUNEK: HAFIFU>>>HAFIPT
+diff: [0.07] [0.22] [0.15]
+GATUNEK: HATUFU
+diff: [0.07] [0.33] [0.2]
+GATUNEK: HANEFU
+diff: [0.1] [0.44] [0.27]
+GATUNEK: HAHEKO
+diff: [0.1] [0.07] [0.09]
+GATUNEK: HAHERE
+diff: [0.03] [0.29] [0.16]
+GATUNEK: ZUHEKO
+diff: [0.15] [0.52] [0.33]
+NOWY GATUNEK: HAHERE>>>HAHEHH
+diff: [0.07] [0.32] [0.2]
+GATUNEK: ZIMAOM
+diff: [0.12] [0.63] [0.38]
+NOWY GATUNEK: HAKAHU>>>FUKAHU
+diff: [0.12] [0.6] [0.36]
+NOWY GATUNEK: HAHEXU>>>HAHEKA
+diff: [0.07] [0.55] [0.31]
+NOWY GATUNEK: HAFIFU>>>VUFIFU
+diff: [0.07] [0.59] [0.33]
+NOWY GATUNEK: HAMAKA>>>UGMAKA
+diff: [0.03] [0.27] [0.15]
+GATUNEK: HAMAAR
+diff: [0.1] [0.52] [0.31]
+NOWY GATUNEK: HAFITL>>>HAFISK
+diff: [0.1] [0.65] [0.37]
+NOWY GATUNEK: HAFIFU>>>HAZOFU
+diff: [0.07] [0.53] [0.3]
+NOWY GATUNEK: HAFIFU>>>HAFIKU
+diff: [0.1] [0.11] [0.1]
+GATUNEK: HAWITL
+diff: [0.05] [0.19] [0.12]
+GATUNEK: HAFIRU
+diff: [0.07] [0.03] [0.05]
+GATUNEK: HAMATL
 diff: [0.07] [0.11] [0.09]
-GATUNEK: VUJIZO
-Test loaded
+GATUNEK: HAFIPW
+diff: [0.05] [0.18] [0.12]
+GATUNEK: HAFIZO
+diff: [0.03] [0.1] [0.06]
+GATUNEK: HATUFU
+diff: [0.05] [0.23] [0.14]
+GATUNEK: HAWITL
+diff: [0.03] [0.67] [0.35]
+NOWY GATUNEK: HAHEKO>>>SYHEKO
+diff: [0.05] [0.27] [0.16]
+GATUNEK: HAHEKE
+diff: [0.17] [0.57] [0.37]
+NOWY GATUNEK: HAKAHU>>>HAXOHU
+diff: [0.03] [0.1] [0.06]
+GATUNEK: NEMAKA
+diff: [0.1] [0.38] [0.24]
+GATUNEK: HAFIRU
+diff: [0.1] [0.63] [0.36]
+NOWY GATUNEK: HAFIFU>>>HAFIHA
+diff: [0.12] [0.46] [0.29]
+GATUNEK: SFPEZY
+diff: [0.0] [0.21] [0.11]
+GATUNEK: HAHEXU
+diff: [0.1] [0.55] [0.33]
+NOWY GATUNEK: HAHEXU>>>HAKUXU
+diff: [0.15] [0.42] [0.28]
+GATUNEK: HAHEXU
+diff: [0.07] [0.53] [0.3]
+NOWY GATUNEK: HAHEXU>>>HAHEZU
+diff: [0.15] [0.5] [0.33]
+NOWY GATUNEK: HAHEXU>>>HAHEMA
+diff: [0.1] [0.41] [0.26]
+GATUNEK: SFPEZY
+diff: [0.23] [0.77] [0.5]
+NOWY GATUNEK: SFPEZY>>>SFPENA
+diff: [0.1] [0.55] [0.32]
+NOWY GATUNEK: HAHEZY>>>SOHEZY
+diff: [0.1] [0.43] [0.27]
+GATUNEK: HAFIFU
+diff: [0.05] [0.34] [0.19]
+GATUNEK: HANEFU
+diff: [0.07] [0.46] [0.27]
+GATUNEK: HAFIFU
+diff: [0.05] [0.37] [0.21]
+GATUNEK: HATUFU
+diff: [0.05] [0.45] [0.25]
+GATUNEK: HANEFU
+diff: [0.12] [0.67] [0.4]
+NOWY GATUNEK: HAFIFU>>>HAFIHJ
+diff: [0.05] [0.42] [0.24]
+GATUNEK: HANEFU
+diff: [0.07] [0.0] [0.04]
+GATUNEK: HAFIPT
+diff: [0.05] [0.29] [0.17]
+GATUNEK: HATUFU
+diff: [0.05] [0.47] [0.26]
+GATUNEK: HAFIFU
+diff: [0.05] [0.35] [0.2]
+GATUNEK: HAHEKO
+diff: [0.07] [0.29] [0.18]
+GATUNEK: HAHERE
+diff: [0.12] [0.33] [0.23]
+GATUNEK: HAHERE
+diff: [0.1] [0.4] [0.25]
+GATUNEK: ZUHEKO
+diff: [0.05] [0.58] [0.32]
+NOWY GATUNEK: SFPVZY>>>SFTIZY
+diff: [0.12] [0.59] [0.36]
+NOWY GATUNEK: ZIMAOM>>>ZIMATU
+diff: [0.1] [0.62] [0.36]
+NOWY GATUNEK: ZIMAOM>>>ZIPSOM
+diff: [0.1] [0.96] [0.53]
+NOWY GATUNEK: HANEFU>>>FANEFU
+diff: [0.15] [0.64] [0.39]
+NOWY GATUNEK: HAKAHU>>>HAKAHF
+diff: [0.15] [0.43] [0.29]
+GATUNEK: HAHEXU
+diff: [0.07] [0.72] [0.4]
+NOWY GATUNEK: HAFIFU>>>HAFIPU
+diff: [0.05] [0.25] [0.15]
+GATUNEK: UGMAKA
+diff: [0.1] [0.32] [0.21]
+GATUNEK: HAFITL
+diff: [0.07] [0.54] [0.31]
+NOWY GATUNEK: HAFIFU>>>PJFIFU
+diff: [0.1] [0.21] [0.15]
+GATUNEK: HAMATL
+diff: [0.07] [0.27] [0.17]
+GATUNEK: HAFIPW
+diff: [0.03] [0.6] [0.31]
+NOWY GATUNEK: HAWITL>>>HAWIQI
+diff: [0.05] [0.52] [0.28]
+GATUNEK: HAWITL
+diff: [0.07] [0.25] [0.16]
+GATUNEK: HAMATL
+diff: [0.05] [0.16] [0.11]
+GATUNEK: HATUFU
+diff: [0.12] [0.58] [0.35]
+NOWY GATUNEK: HAWITL>>>HAHVTL
+diff: [0.05] [0.14] [0.09]
+GATUNEK: HAHEKE
+diff: [0.1] [0.63] [0.37]
+NOWY GATUNEK: HAHEKE>>>HAHESO
+diff: [0.12] [0.56] [0.34]
+NOWY GATUNEK: HAKAHU>>>HATVHU
+diff: [0.07] [0.5] [0.29]
+GATUNEK: NEMAKA
+diff: [0.05] [0.56] [0.3]
+NOWY GATUNEK: NEMAKA>>>NEMATU
+diff: [0.05] [0.08] [0.07]
+GATUNEK: HAFIZO
+diff: [0.07] [0.2] [0.14]
+GATUNEK: HAFIRU
+diff: [0.1] [0.76] [0.43]
+NOWY GATUNEK: SFPEZY>>>SFPEHU
+diff: [0.05] [0.29] [0.17]
+GATUNEK: HAHEXU
+diff: [0.1] [0.59] [0.34]
+NOWY GATUNEK: HAHEXU>>>HAHUXU
+diff: [0.12] [0.31] [0.22]
+GATUNEK: HAHEXU
+diff: [0.15] [0.74] [0.44]
+NOWY GATUNEK: HAHEXU>>>HAHETA
+diff: [0.03] [0.15] [0.09]
+GATUNEK: HAKUXU
+diff: [0.05] [0.36] [0.2]
+GATUNEK: SFPEZY
+diff: [0.15] [0.43] [0.29]
+GATUNEK: SFPEZY
+diff: [0.1] [0.6] [0.35]
+NOWY GATUNEK: HAMAAR>>>HAMATI
+diff: [0.07] [0.14] [0.11]
+GATUNEK: HAHEZY
+diff: [0.07] [0.48] [0.28]
+GATUNEK: SOHEZY
+diff: [0.05] [0.38] [0.22]
+GATUNEK: HAFIFU
+diff: [0.07] [0.07] [0.07]
+GATUNEK: HANEFU
+diff: [0.1] [0.08] [0.09]
+GATUNEK: HATUFU
+diff: [0.07] [0.4] [0.24]
+GATUNEK: HATUFU
+diff: [0.07] [0.59] [0.33]
+NOWY GATUNEK: HANEFU>>>HAHFFU
+diff: [0.05] [0.26] [0.16]
+GATUNEK: HAFIHJ
+diff: [0.07] [0.45] [0.26]
+GATUNEK: HANEFU
+diff: [0.05] [0.4] [0.23]
+GATUNEK: HAFIFU
+diff: [0.05] [0.44] [0.25]
+GATUNEK: HAFIFU
+diff: [0.07] [0.54] [0.31]
+NOWY GATUNEK: HAFIFU>>>TOFIFU
+diff: [0.07] [0.4] [0.24]
+GATUNEK: HAHEKO
+diff: [0.05] [0.15] [0.1]
+GATUNEK: HAHERE
+diff: [0.07] [0.19] [0.13]
+GATUNEK: HAHERE
+diff: [0.12] [0.69] [0.41]
+NOWY GATUNEK: HAHERE>>>HAHEJI
+diff: [0.05] [0.5] [0.28]
+GATUNEK: SFPVZY
+diff: [0.05] [0.31] [0.18]
+GATUNEK: SFTIZY
+diff: [0.05] [0.51] [0.28]
+GATUNEK: ZIMAOM
+diff: [0.07] [0.43] [0.25]
+GATUNEK: ZIMATU
+diff: [0.0] [0.44] [0.22]
+GATUNEK: HAHEKO
+diff: [0.05] [0.34] [0.2]
+GATUNEK: FANEFU
+diff: [0.07] [0.3] [0.19]
+GATUNEK: HAKAHF
+diff: [0.12] [0.5] [0.31]
+NOWY GATUNEK: HAHEXU>>>PEHEXU
+diff: [0.07] [0.26] [0.17]
+GATUNEK: HAMATL
+diff: [0.03] [0.29] [0.16]
+GATUNEK: HAWITL
+diff: [0.07] [0.23] [0.15]
+GATUNEK: HAMATL
+diff: [0.07] [0.26] [0.17]
+GATUNEK: HAWITL
+diff: [0.1] [0.2] [0.15]
+GATUNEK: PJFIFU
+diff: [0.05] [0.67] [0.36]
+NOWY GATUNEK: HAWITL>>>HAWIUS
+diff: [0.07] [0.43] [0.25]
+GATUNEK: HATUFU
+diff: [0.05] [0.51] [0.28]
+GATUNEK: HAHVTL
+diff: [0.05] [0.6] [0.33]
+NOWY GATUNEK: NEMAKA>>>NEMARI
+diff: [0.1] [0.48] [0.29]
+GATUNEK: NEMATU
+simulation started
+diff: [0.03] [0.55] [0.29]
+GATUNEK: HAFIFU
+diff: [0.07] [0.25] [0.16]
+GATUNEK: HAHEKO
+diff: [0.0] [0.33] [0.16]
+GATUNEK: HAHEXU
+diff: [0.07] [0.43] [0.25]
+GATUNEK: HAFITL
+diff: [0.12] [0.34] [0.23]
+GATUNEK: HAHEXU
+diff: [0.1] [0.64] [0.37]
+NOWY GATUNEK: HAFIFU>>>HADIFU
+diff: [0.05] [0.35] [0.2]
+GATUNEK: HAHERE
+diff: [0.17] [0.5] [0.34]
+NOWY GATUNEK: HAHEXU>>>HAHETI
+diff: [0.0] [0.21] [0.11]
+GATUNEK: HANEFU
+diff: [0.15] [0.64] [0.4]
+NOWY GATUNEK: ZIMAOM>>>ZIHVOM
+diff: [0.07] [0.22] [0.15]
+GATUNEK: HAFIRU
+diff: [0.05] [0.31] [0.18]
+GATUNEK: HAMATL
+diff: [0.1] [0.46] [0.28]
+GATUNEK: SFPEZY
+diff: [0.1] [0.73] [0.41]
+NOWY GATUNEK: HAHEXU>>>HAHEHI
+diff: [0.07] [0.24] [0.16]
+GATUNEK: HAHEZY
+diff: [0.07] [0.29] [0.18]
+GATUNEK: HATUFU
+diff: [0.1] [0.71] [0.41]
+NOWY GATUNEK: HAHERE>>>HAHENI
+diff: [0.15] [0.62] [0.38]
+NOWY GATUNEK: HAKAHU>>>HATPHU
+diff: [0.1] [0.22] [0.16]
+GATUNEK: HAOKFU
+diff: [0.03] [0.29] [0.16]
+GATUNEK: NEMAKA
+diff: [0.07] [0.39] [0.23]
+GATUNEK: HAFIPW
+diff: [0.05] [0.25] [0.15]
+GATUNEK: HAFIZO
+diff: [0.07] [0.14] [0.11]
+GATUNEK: HATUFU
+diff: [0.1] [0.52] [0.31]
+NOWY GATUNEK: HAWITL>>>JYWITL
+diff: [0.15] [0.23] [0.19]
+GATUNEK: HAFIRU
+diff: [0.05] [0.11] [0.08]
+GATUNEK: HAHEKE
+diff: [0.07] [0.27] [0.17]
+GATUNEK: SFPVZY
+diff: [0.15] [0.42] [0.28]
+GATUNEK: HAHEXU
+diff: [0.15] [0.55] [0.35]
+NOWY GATUNEK: HAHEXU>>>AQHEXU
+diff: [0.1] [0.55] [0.33]
+NOWY GATUNEK: HAFIFU>>>HAMIFU
+diff: [0.12] [0.37] [0.25]
+GATUNEK: HATUFU
+diff: [0.1] [0.61] [0.35]
+NOWY GATUNEK: HANEFU>>>HANEAK
+diff: [0.15] [0.26] [0.21]
+GATUNEK: HAHERE
+diff: [0.1] [0.29] [0.19]
+GATUNEK: ZIMAOM
+diff: [0.05] [0.41] [0.23]
+GATUNEK: UGMAKA
+diff: [0.0] [0.25] [0.12]
+GATUNEK: HAMAAR
+diff: [0.05] [0.2] [0.12]
+GATUNEK: HAFIKU
+diff: [0.07] [0.3] [0.19]
+GATUNEK: HAMATL
+diff: [0.0] [0.33] [0.16]
+GATUNEK: HATUFU
+diff: [0.07] [0.37] [0.22]
+GATUNEK: HAWITL
+diff: [0.05] [0.57] [0.31]
+NOWY GATUNEK: HAHEKE>>>HAPIKE
+diff: [0.05] [0.54] [0.29]
+GATUNEK: NEMAKA
+diff: [0.17] [0.64] [0.41]
+NOWY GATUNEK: SFPEZY>>>SFPEPJ
+diff: [0.07] [0.29] [0.18]
+GATUNEK: HAKUXU
+diff: [0.07] [0.38] [0.23]
+GATUNEK: HAHEXU
+diff: [0.1] [0.27] [0.19]
+GATUNEK: HAHEMA
+diff: [0.03] [0.36] [0.19]
+GATUNEK: SFPEZY
+diff: [0.07] [0.32] [0.2]
+GATUNEK: SOHEZY
+diff: [0.03] [0.43] [0.23]
+GATUNEK: HANEFU
+diff: [0.07] [0.7] [0.39]
+NOWY GATUNEK: HANEFU>>>NONEFU
+diff: [0.05] [0.27] [0.16]
+GATUNEK: HAFIHJ
+diff: [0.07] [0.56] [0.32]
+NOWY GATUNEK: HANEFU>>>HANEPK
+diff: [0.1] [0.6] [0.35]
+NOWY GATUNEK: HAFIFU>>>HAFIPU
+diff: [0.05] [0.53] [0.29]
+GATUNEK: HAHEKO
+diff: [0.05] [0.55] [0.3]
+GATUNEK: ZUHEKO
+diff: [0.07] [0.12] [0.1]
+GATUNEK: SFTIZY
+diff: [0.07] [0.36] [0.22]
+GATUNEK: ZIMATU
+diff: [0.03] [0.29] [0.16]
+GATUNEK: FANEFU
+diff: [0.05] [0.05] [0.05]
+GATUNEK: HAKAHF
+diff: [0.15] [0.56] [0.36]
+NOWY GATUNEK: HAHEXU>>>HAHEOJ
+diff: [0.05] [0.23] [0.14]
+GATUNEK: HAFIPU
+diff: [0.07] [0.37] [0.22]
+GATUNEK: UGMAKA
+diff: [0.07] [0.62] [0.35]
+NOWY GATUNEK: HAFITL>>>HAALTL
+diff: [0.07] [0.16] [0.12]
+GATUNEK: PJFIFU
+diff: [0.07] [0.28] [0.18]
+GATUNEK: HAMATL
+diff: [0.07] [0.46] [0.27]
+GATUNEK: HAFIPW
+diff: [0.05] [0.3] [0.18]
+GATUNEK: HAWIQI
+diff: [0.07] [0.57] [0.32]
+NOWY GATUNEK: HAWITL>>>HAWIPP
+diff: [0.07] [0.23] [0.15]
+GATUNEK: HATUFU
+diff: [0.07] [0.29] [0.18]
+GATUNEK: HAHVTL
+diff: [0.12] [0.4] [0.26]
+GATUNEK: HAHEKE
+diff: [0.03] [0.6] [0.31]
+NOWY GATUNEK: HAHESO>>>HAHEPO
+diff: [0.05] [0.13] [0.09]
+GATUNEK: HATVHU
+diff: [0.1] [0.6] [0.35]
+NOWY GATUNEK: NEMAKA>>>NEPFKA
+diff: [0.05] [0.25] [0.15]
+GATUNEK: NEMATU
+diff: [0.05] [0.28] [0.16]
+GATUNEK: HAFIRU
+diff: [0.07] [0.23] [0.15]
+GATUNEK: SFPEHU
+diff: [0.03] [0.55] [0.29]
+GATUNEK: HAHEXU
+diff: [0.07] [0.16] [0.12]
+GATUNEK: HAHUXU
+diff: [0.15] [0.76] [0.45]
+NOWY GATUNEK: HAHEXU>>>TPHEXU
+diff: [0.0] [0.48] [0.24]
+GATUNEK: HAHETA
+diff: [0.07] [0.67] [0.37]
+NOWY GATUNEK: HAKUXU>>>JYKUXU
+diff: [0.15] [0.39] [0.27]
+GATUNEK: SFPEZY
+diff: [0.12] [0.75] [0.44]
+NOWY GATUNEK: SFPEZY>>>SFONZY
+diff: [0.05] [0.38] [0.21]
+GATUNEK: HAMATI
+diff: [0.05] [0.47] [0.26]
+GATUNEK: HAHEZY
+diff: [0.05] [0.46] [0.26]
+GATUNEK: SOHEZY
+diff: [0.07] [0.55] [0.31]
+NOWY GATUNEK: HAFIFU>>>HAFIRU
+diff: [0.03] [0.33] [0.18]
+GATUNEK: HANEFU
+diff: [0.1] [0.23] [0.16]
+GATUNEK: HATUFU
+diff: [0.12] [0.58] [0.35]
+NOWY GATUNEK: HATUFU>>>HAPAFU
+diff: [0.07] [0.13] [0.1]
+GATUNEK: HAHFFU
+diff: [0.12] [0.6] [0.36]
+NOWY GATUNEK: HAFIHJ>>>HAFIXO
+diff: [0.0] [0.62] [0.31]
+NOWY GATUNEK: HANEFU>>>HANEHI
+diff: [0.05] [0.55] [0.3]
+GATUNEK: HAFIFU
+diff: [0.05] [0.57] [0.31]
+NOWY GATUNEK: HAFIFU>>>HAFION
+diff: [0.05] [0.33] [0.19]
+GATUNEK: TOFIFU
+diff: [0.05] [0.56] [0.31]
+NOWY GATUNEK: HAHEKO>>>HAHESY
+diff: [0.1] [0.46] [0.28]
+GATUNEK: HAHERE
+diff: [0.07] [0.31] [0.19]
+GATUNEK: HAHERE
+diff: [0.1] [0.24] [0.17]
+GATUNEK: HAHEJI
+diff: [0.05] [0.82] [0.43]
+NOWY GATUNEK: SFPVZY>>>SFSNZY
+diff: [0.03] [0.57] [0.3]
+GATUNEK: SFTIZY
+diff: [0.07] [0.54] [0.31]
+NOWY GATUNEK: ZIMAOM>>>ZIMAMA
+diff: [0.07] [0.75] [0.41]
+NOWY GATUNEK: ZIMATU>>>ZIRETU
+diff: [0.03] [0.56] [0.29]
+GATUNEK: HAHEKO
+diff: [0.03] [0.55] [0.29]
+GATUNEK: FANEFU
+diff: [0.1] [0.63] [0.37]
+NOWY GATUNEK: HAKAHF>>>HAKAOL
+diff: [0.1] [0.67] [0.38]
+NOWY GATUNEK: PEHEXU>>>HIHEXU
+diff: [0.07] [0.27] [0.17]
+GATUNEK: VIUDON
+diff: [0.1] [0.5] [0.3]
+GATUNEK: HAMATL
+diff: [0.05] [0.36] [0.2]
+GATUNEK: HAWITL
+diff: [0.05] [0.51] [0.28]
+GATUNEK: HAMATL
+diff: [0.1] [0.56] [0.33]
+NOWY GATUNEK: HAWITL>>>HAPVTL
+diff: [0.07] [0.27] [0.17]
+GATUNEK: PJFIFU
+diff: [0.07] [0.19] [0.13]
+GATUNEK: HAWIUS
+diff: [0.05] [0.51] [0.28]
+GATUNEK: HATUFU
+diff: [0.15] [0.63] [0.39]
+NOWY GATUNEK: HAHVTL>>>HAHVKE
+diff: [0.1] [0.3] [0.2]
+GATUNEK: NEMARI
+diff: [0.2] [0.92] [0.56]
+NOWY GATUNEK: NEMATU>>>NEMAZY
+MemoryLand loaded
+diff: [0.05] [0.79] [0.42]
+NOWY GATUNEK: HANEFU>>>HAHRFU
+diff: [0.07] [0.54] [0.31]
+NOWY GATUNEK: HATUFU>>>HATUAV
+diff: [0.17] [0.52] [0.35]
+NOWY GATUNEK: HAFIRU>>>HIFIRU
+diff: [0.1] [0.7] [0.4]
+NOWY GATUNEK: HATUFU>>>HATUOJ
+diff: [0.1] [0.35] [0.23]
+GATUNEK: HANEAK
+diff: [0.05] [0.31] [0.18]
+GATUNEK: HAFIKU
+diff: [0.07] [0.72] [0.4]
+NOWY GATUNEK: NEMAKA>>>NETHKA
+diff: [0.05] [0.95] [0.5]
+NOWY GATUNEK: NEMATU>>>NEHJTU
+diff: [0.1] [0.43] [0.27]
+GATUNEK: HAFIRU
+diff: [0.07] [0.44] [0.26]
+GATUNEK: HANEFU
+diff: [0.07] [0.59] [0.33]
+NOWY GATUNEK: HAFIFU>>>HAFIHT
+diff: [0.05] [0.5] [0.28]
+GATUNEK: HIHEXU
+diff: [0.05] [0.13] [0.09]
+GATUNEK: HAMIFU
+diff: [0.1] [0.29] [0.19]
+GATUNEK: SFTIZY
+diff: [0.05] [0.47] [0.26]
+GATUNEK: HAMAAR
+diff: [0.07] [0.53] [0.3]
+NOWY GATUNEK: SFPVZY>>>SFPVSR
+diff: [0.05] [0.54] [0.29]
+GATUNEK: HAHEXU
+diff: [0.1] [0.63] [0.36]
+NOWY GATUNEK: ZIMATU>>>ZIMAHH
+diff: [0.07] [0.41] [0.24]
+GATUNEK: HATVHU
+simulation started
+diff: [0.1] [0.49] [0.3]
+GATUNEK: HAFIFU
+diff: [0.07] [0.6] [0.34]
+NOWY GATUNEK: HAHEKO>>>AKHEKO
+diff: [0.07] [0.67] [0.37]
+NOWY GATUNEK: HAHEXU>>>HAHEUJ
+diff: [0.12] [0.35] [0.24]
+GATUNEK: HAFITL
+diff: [0.07] [0.31] [0.19]
+GATUNEK: HAHEXU
+diff: [0.12] [0.41] [0.27]
+GATUNEK: HAFIFU
+diff: [0.07] [0.25] [0.16]
+GATUNEK: HAHERE
+diff: [0.12] [0.7] [0.41]
+NOWY GATUNEK: HAHEXU>>>HAHEVU
+diff: [0.05] [0.15] [0.1]
+GATUNEK: HANEFU
+diff: [0.1] [0.67] [0.38]
+NOWY GATUNEK: ZIMAOM>>>ZIMASJ
+diff: [0.03] [0.24] [0.13]
+GATUNEK: HAFIRU
+diff: [0.07] [0.1] [0.09]
+GATUNEK: HAMATL
+diff: [0.12] [0.53] [0.33]
+NOWY GATUNEK: SFPEZY>>>SFPETF
+diff: [0.07] [0.67] [0.37]
+NOWY GATUNEK: HAHEXU>>>HAHETF
+diff: [0.1] [0.48] [0.29]
+GATUNEK: HAHEZY
+diff: [0.03] [0.4] [0.21]
+GATUNEK: HATUFU
+diff: [0.1] [0.69] [0.39]
+NOWY GATUNEK: HAHERE>>>ZIHERE
+diff: [0.1] [0.57] [0.33]
+NOWY GATUNEK: HAKAHU>>>USKAHU
+diff: [0.05] [0.13] [0.09]
+GATUNEK: HAOKFU
+diff: [0.05] [0.29] [0.17]
+GATUNEK: NEMAKA
+diff: [0.07] [0.2] [0.14]
+GATUNEK: HAFIPW
+diff: [0.03] [0.16] [0.09]
+GATUNEK: HAFIZO
+diff: [0.05] [0.52] [0.28]
+GATUNEK: HATUFU
+diff: [0.12] [0.2] [0.16]
+GATUNEK: HAWITL
+diff: [0.07] [0.43] [0.25]
+GATUNEK: HAFIRU
+diff: [0.03] [0.49] [0.26]
+GATUNEK: HAHEKE
+diff: [0.05] [0.35] [0.2]
+GATUNEK: SFPVZY
+diff: [0.07] [0.49] [0.28]
+GATUNEK: HAHEXU
+diff: [0.07] [0.89] [0.48]
+NOWY GATUNEK: HAHEXU>>>HAHETR
+diff: [0.07] [0.42] [0.25]
+GATUNEK: HAFIFU
+diff: [0.12] [0.39] [0.26]
+GATUNEK: HATUFU
+diff: [0.07] [0.55] [0.31]
+NOWY GATUNEK: HANEFU>>>HANEZI
+diff: [0.07] [0.26] [0.17]
+GATUNEK: HAHERE
+diff: [0.1] [0.5] [0.3]
+GATUNEK: ZIMAOM
+diff: [0.05] [0.33] [0.19]
+GATUNEK: UGMAKA
+diff: [0.1] [0.49] [0.3]
+GATUNEK: HAMAAR
+diff: [0.07] [0.31] [0.19]
+GATUNEK: HAFIKU
+diff: [0.1] [0.23] [0.16]
+GATUNEK: HAMATL
+diff: [0.0] [0.28] [0.14]
+GATUNEK: HATUFU
+diff: [0.07] [0.37] [0.22]
+GATUNEK: HAWITL
+diff: [0.07] [0.6] [0.34]
+NOWY GATUNEK: HAHEKE>>>HAPEKE
+diff: [0.07] [0.4] [0.24]
+GATUNEK: NEMAKA
+diff: [0.07] [0.67] [0.37]
+NOWY GATUNEK: SFPEZY>>>SFPEZA
+diff: [0.03] [0.19] [0.11]
+GATUNEK: HAKUXU
+diff: [0.17] [0.5] [0.34]
+NOWY GATUNEK: HAHEXU>>>HAHETD
+diff: [0.07] [0.27] [0.17]
+GATUNEK: HAHEMA
+diff: [0.07] [0.62] [0.35]
+NOWY GATUNEK: SFPEZY>>>SFTOZY
+diff: [0.07] [0.44] [0.26]
+GATUNEK: SOHEZY
+diff: [0.12] [0.69] [0.41]
+NOWY GATUNEK: HANEFU>>>HANEOD
+diff: [0.07] [0.62] [0.35]
+NOWY GATUNEK: HANEFU>>>HATRFU
+diff: [0.0] [0.2] [0.1]
+GATUNEK: HAFIHJ
+diff: [0.1] [0.48] [0.29]
+GATUNEK: HANEFU
+diff: [0.05] [0.56] [0.3]
+NOWY GATUNEK: HAFIFU>>>HAAKFU
+diff: [0.07] [0.35] [0.21]
+GATUNEK: HAHEKO
+diff: [0.07] [0.57] [0.32]
+NOWY GATUNEK: ZUHEKO>>>ZUHETJ
+diff: [0.07] [0.31] [0.19]
+GATUNEK: SFTIZY
+diff: [0.05] [0.52] [0.29]
+GATUNEK: ZIMATU
+diff: [0.05] [0.4] [0.23]
+GATUNEK: FANEFU
+diff: [0.05] [0.21] [0.13]
+GATUNEK: HAKAHF
+diff: [0.15] [0.64] [0.39]
+NOWY GATUNEK: HAHEXU>>>HAHEMA
+diff: [0.05] [0.32] [0.18]
+GATUNEK: HAFIPU
+diff: [0.05] [0.76] [0.4]
+NOWY GATUNEK: UGMAKA>>>UGMAPF
+diff: [0.1] [0.52] [0.31]
+NOWY GATUNEK: HAFITL>>>HAFITR
+diff: [0.03] [0.23] [0.13]
+GATUNEK: PJFIFU
+diff: [0.1] [0.33] [0.21]
+GATUNEK: HAMATL
+diff: [0.05] [0.25] [0.15]
+GATUNEK: HAFIPW
+diff: [0.1] [0.38] [0.24]
+GATUNEK: HAWIQI
+diff: [0.07] [0.81] [0.44]
+NOWY GATUNEK: HAWITL>>>HAOMTL
+diff: [0.07] [0.35] [0.21]
+GATUNEK: HATUFU
+diff: [0.05] [0.42] [0.23]
+GATUNEK: HAHVTL
+diff: [0.07] [0.35] [0.21]
+GATUNEK: HAHEKE
+diff: [0.07] [0.32] [0.2]
+GATUNEK: HAHESO
+diff: [0.05] [0.11] [0.08]
+GATUNEK: HATVHU
+diff: [0.07] [0.69] [0.38]
+NOWY GATUNEK: NEMAKA>>>NEUSKA
+diff: [0.05] [0.58] [0.32]
+NOWY GATUNEK: NEMATU>>>NEMOTU
+diff: [0.1] [0.31] [0.2]
+GATUNEK: HAFIRU
+diff: [0.03] [0.18] [0.1]
+GATUNEK: SFPEHU
+diff: [0.1] [0.58] [0.34]
+NOWY GATUNEK: HAHEXU>>>HAHEPK
+diff: [0.05] [0.4] [0.23]
+GATUNEK: HAHUXU
+diff: [0.12] [0.7] [0.41]
+NOWY GATUNEK: HAHEXU>>>TWHEXU
+diff: [0.03] [0.18] [0.1]
+GATUNEK: HAHETA
+diff: [0.12] [0.53] [0.33]
+NOWY GATUNEK: HAKUXU>>>HAKUWI
+diff: [0.07] [0.36] [0.22]
+GATUNEK: SFPEZY
+diff: [0.1] [0.48] [0.29]
+GATUNEK: SFPEZY
+diff: [0.07] [0.28] [0.18]
+GATUNEK: HAMATI
+diff: [0.12] [0.43] [0.28]
+GATUNEK: HAHEZY
+diff: [0.07] [0.22] [0.15]
+GATUNEK: SOHEZY
+diff: [0.07] [0.67] [0.37]
+NOWY GATUNEK: HAFIFU>>>HAPJFU
+diff: [0.05] [0.34] [0.19]
+GATUNEK: HANEFU
+diff: [0.1] [0.32] [0.21]
+GATUNEK: HATUFU
+diff: [0.12] [0.48] [0.3]
+NOWY GATUNEK: HATUFU>>>HATUSL
+diff: [0.03] [0.15] [0.09]
+GATUNEK: HAHFFU
+diff: [0.05] [0.43] [0.24]
+GATUNEK: HAFIHJ
+diff: [0.0] [0.8] [0.4]
+NOWY GATUNEK: HANEFU>>>HANETO
+diff: [0.05] [0.54] [0.29]
+GATUNEK: HAFIFU
+diff: [0.07] [0.58] [0.33]
+NOWY GATUNEK: HAFIFU>>>HAPFFU
+diff: [0.07] [0.15] [0.11]
+GATUNEK: TOFIFU
+diff: [0.07] [0.3] [0.19]
+GATUNEK: HAHEKO
+diff: [0.03] [0.33] [0.18]
+GATUNEK: HAHERE
+diff: [0.1] [0.48] [0.29]
+GATUNEK: HAHERE
+diff: [0.05] [0.23] [0.14]
+GATUNEK: HAHEJI
+diff: [0.05] [0.56] [0.31]
+NOWY GATUNEK: SFPVZY>>>SFPVKO
+diff: [0.12] [0.43] [0.28]
+GATUNEK: SFTIZY
+diff: [0.0] [0.96] [0.48]
+NOWY GATUNEK: ZIMAOM>>>ZIMAAM
+diff: [0.07] [0.43] [0.25]
+GATUNEK: ZIMATU
+diff: [0.07] [0.4] [0.24]
+GATUNEK: HAHEKO
+diff: [0.07] [0.6] [0.34]
+NOWY GATUNEK: FANEFU>>>FANETU
+diff: [0.1] [0.49] [0.29]
+GATUNEK: HAKAHF
+diff: [0.1] [0.33] [0.21]
+GATUNEK: PEHEXU
+diff: [0.03] [0.36] [0.19]
+GATUNEK: VIUDON
+diff: [0.07] [0.55] [0.31]
+NOWY GATUNEK: HAMATL>>>HAXETL
+diff: [0.07] [0.53] [0.3]
+NOWY GATUNEK: HAWITL>>>HAWIUF
+diff: [0.07] [0.33] [0.2]
+GATUNEK: HAMATL
+diff: [0.15] [0.6] [0.37]
+NOWY GATUNEK: HAWITL>>>HAWIAX
+diff: [0.12] [0.3] [0.21]
+GATUNEK: PJFIFU
+diff: [0.07] [0.23] [0.15]
+GATUNEK: HAWIUS
+diff: [0.0] [0.47] [0.23]
+GATUNEK: HATUFU
+diff: [0.15] [0.67] [0.41]
+NOWY GATUNEK: HAHVTL>>>HATETL
+diff: [0.07] [0.51] [0.29]
+GATUNEK: NEMARI
+diff: [0.1] [1.0] [0.55]
+NOWY GATUNEK: NEMATU>>>NEMARU
+MemoryLand loaded
+simulation started
+diff: [0.07] [0.44] [0.26]
+GATUNEK: HAFIFU
+diff: [0.1] [0.6] [0.35]
+NOWY GATUNEK: HAHEKO>>>HATUKO
+diff: [0.05] [0.45] [0.25]
+GATUNEK: HAHEXU
+diff: [0.05] [0.53] [0.29]
+GATUNEK: HAFITL
+diff: [0.07] [0.49] [0.28]
+GATUNEK: HAHEXU
+diff: [0.12] [0.53] [0.33]
+NOWY GATUNEK: HAFIFU>>>HAFIUD
+diff: [0.05] [0.38] [0.22]
+GATUNEK: HAHERE
+diff: [0.1] [0.63] [0.37]
+NOWY GATUNEK: HAHEXU>>>HAHEZY
+diff: [0.0] [0.18] [0.09]
+GATUNEK: HANEFU
+diff: [0.1] [0.61] [0.35]
+NOWY GATUNEK: ZIMAOM>>>ZITUOM
+diff: [0.07] [0.16] [0.12]
+GATUNEK: HAFIRU
+diff: [0.07] [0.39] [0.23]
+GATUNEK: HAMATL
+diff: [0.12] [0.53] [0.33]
+NOWY GATUNEK: SFPEZY>>>SFPEUI
+diff: [0.17] [0.87] [0.52]
+NOWY GATUNEK: HAHEXU>>>HAHEON
+diff: [0.05] [0.51] [0.28]
+GATUNEK: HAHEZY
+diff: [0.03] [0.17] [0.1]
+GATUNEK: HATUFU
+diff: [0.07] [0.69] [0.38]
+NOWY GATUNEK: HAHERE>>>HAHESJ
+diff: [0.1] [0.64] [0.37]
+NOWY GATUNEK: HAKAHU>>>HAKAPJ
+diff: [0.07] [0.18] [0.13]
+GATUNEK: HAOKFU
+diff: [0.1] [0.43] [0.27]
+GATUNEK: NEMAKA
+diff: [0.05] [0.15] [0.1]
+GATUNEK: HAFIPW
+diff: [0.05] [0.22] [0.13]
+GATUNEK: HAFIZO
+diff: [0.03] [0.18] [0.1]
+GATUNEK: HATUFU
+diff: [0.03] [0.12] [0.07]
+GATUNEK: HAWITL
+diff: [0.05] [0.41] [0.23]
+GATUNEK: HAFIRU
+diff: [0.05] [0.44] [0.24]
+GATUNEK: HAHEKE
+diff: [0.07] [0.4] [0.24]
+GATUNEK: SFPVZY
+diff: [0.17] [0.61] [0.39]
+NOWY GATUNEK: HAHEXU>>>HAPRXU
+diff: [0.12] [0.88] [0.5]
+NOWY GATUNEK: HAHEXU>>>OCHEXU
+diff: [0.07] [0.58] [0.33]
+NOWY GATUNEK: HAFIFU>>>HAZOFU
+diff: [0.03] [0.28] [0.15]
+GATUNEK: HATUFU
+diff: [0.05] [0.51] [0.28]
+GATUNEK: HANEFU
+diff: [0.07] [0.23] [0.15]
+GATUNEK: HAHERE
+diff: [0.07] [0.64] [0.36]
+NOWY GATUNEK: ZIMAOM>>>HYMAOM
+diff: [0.1] [0.19] [0.14]
+GATUNEK: UGMAKA
+diff: [0.05] [0.38] [0.22]
+GATUNEK: HAMAAR
+diff: [0.07] [0.11] [0.09]
+GATUNEK: HAFIKU
+diff: [0.07] [0.47] [0.27]
+GATUNEK: HAMATL
+diff: [0.05] [0.26] [0.15]
+GATUNEK: HATUFU
+diff: [0.12] [0.2] [0.16]
+GATUNEK: HAWITL
+diff: [0.07] [0.56] [0.32]
+NOWY GATUNEK: HAHEKE>>>HAHEHF
+diff: [0.05] [0.19] [0.12]
+GATUNEK: NEMAKA
+diff: [0.15] [0.62] [0.39]
+NOWY GATUNEK: SFPEZY>>>SFAXZY
+diff: [0.1] [0.27] [0.18]
+GATUNEK: HAKUXU
+diff: [0.1] [0.7] [0.4]
+NOWY GATUNEK: HAHEXU>>>HAPYXU
+diff: [0.07] [0.34] [0.21]
+GATUNEK: HAHEMA
+diff: [0.1] [0.47] [0.29]
+GATUNEK: SFPEZY
+diff: [0.05] [0.38] [0.21]
+GATUNEK: SOHEZY
+diff: [0.0] [0.75] [0.38]
+NOWY GATUNEK: HANEFU>>>HAODFU
+diff: [0.03] [0.62] [0.32]
+NOWY GATUNEK: HANEFU>>>HANEJU
+diff: [0.07] [0.55] [0.31]
+NOWY GATUNEK: HAFIHJ>>>HOFIHJ
+diff: [0.03] [0.51] [0.27]
+GATUNEK: HANEFU
+diff: [0.07] [0.62] [0.35]
+NOWY GATUNEK: HAFIFU>>>HAFIOS
+diff: [0.07] [0.35] [0.21]
+GATUNEK: HAHEKO
+diff: [0.07] [0.55] [0.31]
+NOWY GATUNEK: ZUHEKO>>>ZUHEOP
+diff: [0.07] [0.51] [0.29]
+GATUNEK: SFTIZY
+diff: [0.1] [0.15] [0.12]
+GATUNEK: ZIMATU
+diff: [0.05] [0.29] [0.17]
+GATUNEK: FANEFU
+diff: [0.07] [0.0] [0.04]
+GATUNEK: HAKAHF
+diff: [0.12] [0.78] [0.45]
+NOWY GATUNEK: HAHEXU>>>HAHFXU
+diff: [0.05] [0.48] [0.27]
+GATUNEK: HAFIPU
+diff: [0.05] [0.85] [0.45]
+NOWY GATUNEK: UGMAKA>>>OLMAKA
+diff: [0.07] [0.29] [0.18]
+GATUNEK: HAFITL
+diff: [0.1] [0.21] [0.16]
+GATUNEK: PJFIFU
+diff: [0.07] [0.35] [0.21]
+GATUNEK: HAMATL
+diff: [0.1] [0.62] [0.36]
+NOWY GATUNEK: HAFIPW>>>HAFIUO
+diff: [0.05] [0.12] [0.08]
+GATUNEK: HAWIQI
+diff: [0.03] [0.67] [0.35]
+NOWY GATUNEK: HAWITL>>>HAHUTL
+diff: [0.07] [0.33] [0.2]
+GATUNEK: HATUFU
+diff: [0.07] [0.18] [0.13]
+GATUNEK: HAHVTL
+diff: [0.1] [0.24] [0.17]
+GATUNEK: HAHEKE
+diff: [0.05] [0.16] [0.11]
+GATUNEK: HAHESO
+diff: [0.05] [0.16] [0.1]
+GATUNEK: HATVHU
+diff: [0.07] [0.7] [0.39]
+NOWY GATUNEK: NEMAKA>>>NEMASQ
+diff: [0.05] [0.79] [0.42]
+NOWY GATUNEK: NEMATU>>>RIMATU
+diff: [0.12] [0.4] [0.26]
+GATUNEK: HAFIRU
+diff: [0.1] [0.32] [0.21]
+GATUNEK: SFPEHU
+diff: [0.05] [0.53] [0.29]
+GATUNEK: HAHEXU
+diff: [0.03] [0.45] [0.24]
+GATUNEK: HAHUXU
+diff: [0.15] [0.82] [0.49]
+NOWY GATUNEK: HAHEXU>>>HAHEHK
+diff: [0.05] [0.29] [0.17]
+GATUNEK: HAHETA
+diff: [0.07] [0.38] [0.23]
+GATUNEK: HAKUXU
+diff: [0.07] [0.51] [0.29]
+GATUNEK: SFPEZY
+diff: [0.15] [0.48] [0.32]
+NOWY GATUNEK: SFPEZY>>>SFPEOS
+diff: [0.03] [0.2] [0.11]
+GATUNEK: HAMATI
+diff: [0.15] [0.27] [0.21]
+GATUNEK: HAHEZY
+diff: [0.07] [0.53] [0.3]
+NOWY GATUNEK: SOHEZY>>>SOHEUS
+diff: [0.07] [0.55] [0.31]
+NOWY GATUNEK: HAFIFU>>>HAFIHO
+diff: [0.1] [0.18] [0.14]
+GATUNEK: HANEFU
+diff: [0.05] [0.21] [0.13]
+GATUNEK: HATUFU
+diff: [0.12] [0.58] [0.35]
+NOWY GATUNEK: HATUFU>>>HATUTJ
+diff: [0.07] [0.3] [0.19]
+GATUNEK: HAHFFU
+diff: [0.05] [0.42] [0.23]
+GATUNEK: HAFIHJ
+diff: [0.07] [0.53] [0.3]
+NOWY GATUNEK: HANEFU>>>HVNEFU
+diff: [0.07] [0.76] [0.42]
+NOWY GATUNEK: HAFIFU>>>HAFIZI
+diff: [0.07] [0.56] [0.32]
+NOWY GATUNEK: HAFIFU>>>HAFIUS
+diff: [0.03] [0.13] [0.08]
+GATUNEK: TOFIFU
+diff: [0.07] [0.51] [0.29]
+GATUNEK: HAHEKO
+diff: [0.05] [0.31] [0.18]
+GATUNEK: HAHERE
+diff: [0.1] [0.54] [0.32]
+NOWY GATUNEK: HAHERE>>>OIHERE
+diff: [0.07] [0.17] [0.12]
+GATUNEK: HAHEJI
+diff: [0.1] [0.76] [0.43]
+NOWY GATUNEK: SFPVZY>>>NYPVZY
+diff: [0.07] [0.52] [0.3]
+GATUNEK: SFTIZY
+diff: [0.07] [0.79] [0.43]
+NOWY GATUNEK: ZIMAOM>>>ZITROM
+diff: [0.07] [0.8] [0.44]
+NOWY GATUNEK: ZIMATU>>>ZIZOTU
+diff: [0.05] [0.3] [0.18]
+GATUNEK: HAHEKO
+diff: [0.07] [0.59] [0.33]
+NOWY GATUNEK: FANEFU>>>FANESY
+diff: [0.07] [0.33] [0.2]
+GATUNEK: HAKAHF
+diff: [0.07] [0.48] [0.28]
+GATUNEK: PEHEXU
+diff: [0.03] [0.45] [0.24]
+GATUNEK: VIUDON
+diff: [0.07] [0.49] [0.28]
+GATUNEK: HAMATL
+diff: [0.07] [0.6] [0.34]
+NOWY GATUNEK: HAWITL>>>PUWITL
+diff: [0.15] [0.2] [0.17]
+GATUNEK: HAMATL
+diff: [0.07] [0.44] [0.26]
+GATUNEK: HAWITL
+diff: [0.12] [0.43] [0.28]
+GATUNEK: PJFIFU
+diff: [0.05] [0.18] [0.12]
+GATUNEK: HAWIUS
+diff: [0.07] [0.6] [0.34]
+NOWY GATUNEK: HATUFU>>>HATUSE
+diff: [0.05] [0.51] [0.28]
+GATUNEK: HAHVTL
+diff: [0.1] [0.38] [0.24]
+GATUNEK: NEMARI
+diff: [0.05] [0.24] [0.14]
+GATUNEK: NEMATU
+MemoryLand loaded
+diff: [0.0] [0.23] [0.11]
+GATUNEK: HAHESJ
+diff: [0.07] [0.38] [0.23]
+GATUNEK: HAOKFU
+diff: [0.1] [0.34] [0.22]
+GATUNEK: HAFIZO
+diff: [0.12] [0.37] [0.25]
+GATUNEK: HAWITL
+diff: [0.12] [0.55] [0.34]
+NOWY GATUNEK: HAHERE>>>HAHESO
+diff: [0.12] [0.56] [0.34]
+NOWY GATUNEK: HAKUXU>>>HAHHXU
+diff: [0.15] [0.74] [0.45]
+NOWY GATUNEK: SFPEZY>>>SFTAZY
+diff: [0.15] [0.51] [0.33]
+NOWY GATUNEK: HATVHU>>>HATVKA
+diff: [0.05] [0.59] [0.32]
+NOWY GATUNEK: SFPEZY>>>SFPESY
+diff: [0.12] [0.62] [0.37]
+NOWY GATUNEK: HAHEJI>>>HAHETW
+diff: [0.05] [0.69] [0.37]
+NOWY GATUNEK: PEHEXU>>>PEHEUH
+diff: [0.07] [0.63] [0.35]
+NOWY GATUNEK: HAFIRU>>>HAFIHE
+diff: [0.07] [0.31] [0.19]
+GATUNEK: ZIZOTU
+diff: [0.05] [0.69] [0.37]
+NOWY GATUNEK: HAHUXU>>>VYHUXU
+diff: [0.05] [0.5] [0.28]
+GATUNEK: SFPVZY
+diff: [0.03] [0.27] [0.15]
+GATUNEK: HYMAOM
+diff: [0.05] [0.12] [0.08]
+GATUNEK: HAFIUD
+diff: [0.05] [0.22] [0.14]
+GATUNEK: HATUFU
+diff: [0.07] [0.06] [0.07]
+GATUNEK: SFPEUI
+diff: [0.07] [0.2] [0.14]
+GATUNEK: OLMAKA
+diff: [0.07] [0.39] [0.23]
+GATUNEK: HAHEON
+diff: [0.07] [0.24] [0.16]
+GATUNEK: HAOKFU
+diff: [0.05] [0.41] [0.23]
+GATUNEK: HAKUXU
+diff: [0.07] [0.67] [0.37]
+NOWY GATUNEK: HAFIZO>>>HAFIPT
+diff: [0.15] [0.52] [0.33]
+NOWY GATUNEK: HAWITL>>>HAOTTL
+diff: [0.07] [0.12] [0.1]
+GATUNEK: SFTAZY
+diff: [0.1] [0.55] [0.32]
+NOWY GATUNEK: PEHEXU>>>PEHPXU
+diff: [0.07] [0.36] [0.22]
+GATUNEK: HAFIHE
+diff: [0.12] [0.67] [0.4]
+NOWY GATUNEK: SFPEZY>>>KEPEZY
+diff: [0.07] [0.15] [0.11]
+GATUNEK: HAFIUD
+diff: [0.05] [0.33] [0.19]
+GATUNEK: HATUFU
+diff: [0.05] [0.48] [0.27]
+GATUNEK: SFPEUI
+diff: [0.07] [0.2] [0.14]
+GATUNEK: PEHEUH
+diff: [0.1] [0.43] [0.27]
+GATUNEK: HAOKFU
+diff: [0.03] [0.61] [0.32]
+NOWY GATUNEK: HAKUXU>>>HAMEXU
+diff: [0.07] [0.0] [0.04]
+GATUNEK: HAOTTL
+diff: [0.1] [0.76] [0.43]
+NOWY GATUNEK: PEHEXU>>>PESFXU
+diff: [0.1] [0.21] [0.16]
+GATUNEK: HAHESJ
+diff: [0.05] [0.39] [0.22]
+GATUNEK: HAOKFU
+diff: [0.05] [0.57] [0.31]
+NOWY GATUNEK: SFPEZY>>>SFPEOM
+diff: [0.1] [0.35] [0.23]
+GATUNEK: HAFIUD
+diff: [0.03] [0.32] [0.17]
+GATUNEK: HATUFU
+diff: [0.17] [0.29] [0.23]
+GATUNEK: PEHEUH
+diff: [0.12] [0.36] [0.24]
+GATUNEK: HAOKFU
+diff: [0.07] [0.58] [0.33]
+NOWY GATUNEK: HAKUXU>>>XEKUXU
+diff: [0.05] [0.07] [0.06]
+GATUNEK: HAOTTL
+diff: [0.05] [0.61] [0.33]
+NOWY GATUNEK: PEHEXU>>>PEHERA
+diff: [0.1] [0.57] [0.34]
+NOWY GATUNEK: HAOKFU>>>HAOKUS
+diff: [0.1] [0.37] [0.24]
+GATUNEK: HAHESJ
+diff: [0.1] [0.67] [0.38]
+NOWY GATUNEK: HAOKFU>>>HAOKTO
+diff: [0.05] [0.48] [0.26]
+GATUNEK: HAOKFU
+diff: [0.17] [0.59] [0.38]
+NOWY GATUNEK: HAFIUD>>>HAFIAX
+diff: [0.03] [0.2] [0.11]
+GATUNEK: HAFIUD
+diff: [0.07] [0.24] [0.16]
+GATUNEK: HATUFU
+diff: [0.1] [0.55] [0.32]
+NOWY GATUNEK: HATUFU>>>HATUNO
+diff: [0.05] [0.48] [0.27]
+GATUNEK: HAKUXU
+diff: [0.07] [0.54] [0.31]
+NOWY GATUNEK: HAKUXU>>>OKKUXU
+diff: [0.07] [0.59] [0.33]
+NOWY GATUNEK: HAOKFU>>>HAOKAR
+diff: [0.15] [0.56] [0.36]
+NOWY GATUNEK: PEHEXU>>>PEPAXU
+diff: [0.1] [0.49] [0.3]
+GATUNEK: HAOKFU
+diff: [0.07] [0.2] [0.14]
+GATUNEK: HAHESJ
+diff: [0.1] [0.44] [0.27]
+GATUNEK: HAOTTL
+diff: [0.05] [0.76] [0.41]
+NOWY GATUNEK: HAOKFU>>>HAOKXE
+diff: [0.05] [0.53] [0.29]
+GATUNEK: HAHESJ
+diff: [0.1] [0.71] [0.4]
+NOWY GATUNEK: HAFIUD>>>UHFIUD
+diff: [0.05] [0.12] [0.08]
+GATUNEK: HAFIAX
+diff: [0.03] [0.15] [0.09]
+GATUNEK: HAOKUS
+diff: [0.03] [0.3] [0.16]
+GATUNEK: HAFIUD
+diff: [0.03] [0.36] [0.19]
+GATUNEK: HAFIUD
+diff: [0.1] [0.51] [0.3]
+NOWY GATUNEK: HATUFU>>>HATUVU
+diff: [0.07] [0.48] [0.28]
+GATUNEK: HATUFU
+diff: [0.0] [0.42] [0.21]
+GATUNEK: HAOKFU
+diff: [0.12] [0.48] [0.3]
+NOWY GATUNEK: HAOKFU>>>HAOKUI
+diff: [0.05] [0.46] [0.25]
+GATUNEK: HAKUXU
+diff: [0.1] [0.51] [0.3]
+NOWY GATUNEK: HAKUXU>>>HAKUSO
+diff: [0.0] [0.56] [0.28]
+GATUNEK: PEHEXU
+diff: [0.07] [0.46] [0.27]
+GATUNEK: HAOKFU
+diff: [0.1] [0.76] [0.43]
+NOWY GATUNEK: HAOKFU>>>HATIFU
+diff: [0.07] [0.21] [0.14]
+GATUNEK: HAHESJ
+diff: [0.05] [0.42] [0.24]
+GATUNEK: HAHESJ
+diff: [0.1] [0.79] [0.44]
+NOWY GATUNEK: HAOKFU>>>HAOKUF
+diff: [0.07] [0.19] [0.13]
+GATUNEK: HAOKXE
+diff: [0.0] [0.53] [0.27]
+GATUNEK: HAHESJ
+diff: [0.03] [0.86] [0.44]
+NOWY GATUNEK: HAHESJ>>>OPHESJ
+diff: [0.07] [0.38] [0.23]
+GATUNEK: PEHERA
+diff: [0.05] [0.56] [0.31]
+NOWY GATUNEK: HAKUXU>>>HAKUKI
+diff: [0.15] [0.42] [0.29]
+GATUNEK: HAFIUD
+diff: [0.1] [0.22] [0.16]
+GATUNEK: HAFIAX
+diff: [0.0] [0.14] [0.07]
+GATUNEK: HAOTTL
+diff: [0.05] [0.08] [0.07]
+GATUNEK: HAOKUS
+diff: [0.07] [0.49] [0.28]
+GATUNEK: HAOKUS
+diff: [0.05] [0.2] [0.13]
+GATUNEK: HAFIUD
+diff: [0.07] [0.34] [0.21]
+GATUNEK: HAFIUD
+diff: [0.1] [0.45] [0.28]
+GATUNEK: HATUFU
+diff: [0.0] [0.58] [0.29]
+GATUNEK: HATUFU
+diff: [0.05] [0.33] [0.19]
+GATUNEK: OKKUXU
+diff: [0.1] [0.47] [0.29]
+GATUNEK: HAOKFU
+diff: [0.05] [0.24] [0.14]
+GATUNEK: UHFIUD
+diff: [0.12] [0.59] [0.36]
+NOWY GATUNEK: HAOKFU>>>HAOKSU
+diff: [0.05] [0.19] [0.12]
+GATUNEK: HATUVU
+diff: [0.1] [0.39] [0.24]
+GATUNEK: HAOKFU
+diff: [0.12] [0.76] [0.44]
+NOWY GATUNEK: HAOTTL>>>HAOTAL
+diff: [0.03] [0.22] [0.12]
+GATUNEK: HAOKTO
+diff: [0.07] [0.43] [0.25]
+GATUNEK: HAFIUD
+diff: [0.1] [0.12] [0.11]
+GATUNEK: HAOKUI
+diff: [0.07] [0.43] [0.25]
+GATUNEK: HAKUXU
+diff: [0.07] [0.67] [0.37]
+NOWY GATUNEK: HAKUXU>>>HADYXU
+diff: [0.07] [0.5] [0.29]
+GATUNEK: PEHEXU
+diff: [0.15] [0.55] [0.35]
+NOWY GATUNEK: HAOKFU>>>HAOKDY
+diff: [0.07] [0.24] [0.16]
+GATUNEK: HAHESJ
+diff: [0.1] [0.32] [0.21]
+GATUNEK: HAHESJ
+diff: [0.05] [0.29] [0.17]
+GATUNEK: HAHESJ
+diff: [0.05] [0.56] [0.3]
+NOWY GATUNEK: HAHESJ>>>HAQISJ
+diff: [0.07] [0.51] [0.29]
+GATUNEK: HAOKXE
+diff: [0.07] [0.14] [0.11]
+GATUNEK: PEHERA
+diff: [0.15] [0.56] [0.36]
+NOWY GATUNEK: PEHERA>>>PESERA
+diff: [0.05] [0.18] [0.11]
+GATUNEK: HAKUKI
+diff: [0.1] [0.49] [0.3]
+GATUNEK: HAHESJ
+diff: [0.15] [0.58] [0.36]
+NOWY GATUNEK: HAFIUD>>>HAFIZA
+diff: [0.1] [0.43] [0.27]
+GATUNEK: HAFIUD
+diff: [0.07] [0.07] [0.07]
+GATUNEK: HAOTTL
+diff: [0.05] [0.15] [0.1]
+GATUNEK: HAOKUS
+diff: [0.05] [0.35] [0.2]
+GATUNEK: HAOKUS
+diff: [0.1] [0.59] [0.35]
+NOWY GATUNEK: HAOKUS>>>HADEUS
+diff: [0.07] [0.21] [0.14]
+GATUNEK: HAFIUD
+diff: [0.1] [0.52] [0.31]
+NOWY GATUNEK: HAKUXU>>>HAKUAM
+diff: [0.12] [0.45] [0.29]
+GATUNEK: HATUFU
+diff: [0.15] [0.62] [0.39]
+NOWY GATUNEK: HATUFU>>>HATUPF
+diff: [0.15] [0.52] [0.34]
+NOWY GATUNEK: HAFIUD>>>HATZUD
+diff: [0.12] [0.59] [0.36]
+NOWY GATUNEK: HATUFU>>>HAATFU
+diff: [0.03] [0.22] [0.12]
+GATUNEK: OKKUXU
+diff: [0.1] [0.41] [0.26]
+GATUNEK: HAFIUD
+diff: [0.1] [0.38] [0.24]
+GATUNEK: UHFIUD
+diff: [0.05] [0.44] [0.25]
+GATUNEK: UHFIUD
+diff: [0.05] [0.06] [0.05]
+GATUNEK: HAFIAX
+diff: [0.07] [0.49] [0.28]
+GATUNEK: HAOKFU
+diff: [0.17] [0.25] [0.21]
+GATUNEK: HAFIAX
+diff: [0.07] [0.18] [0.13]
+GATUNEK: HAOKUF
+diff: [0.1] [0.39] [0.24]
+GATUNEK: HAOKFU
+diff: [0.05] [0.43] [0.24]
+GATUNEK: HAOKFU
+diff: [0.07] [0.36] [0.22]
+GATUNEK: HAOTAL
+diff: [0.07] [0.17] [0.12]
+GATUNEK: HAOKSU
+diff: [0.05] [0.58] [0.31]
+NOWY GATUNEK: HAFIUD>>>SSFIUD
+diff: [0.05] [0.48] [0.26]
+GATUNEK: HAOKFU
+diff: [0.07] [0.29] [0.18]
+GATUNEK: HAOKUI
+diff: [0.12] [0.2] [0.16]
+GATUNEK: HAOKUI
+diff: [0.12] [0.39] [0.26]
+GATUNEK: HAKUXU
+diff: [0.07] [0.69] [0.38]
+NOWY GATUNEK: HAKUXU>>>HAKUTY
+diff: [0.12] [0.59] [0.36]
+NOWY GATUNEK: HAKUXU>>>HAKUZU
+diff: [0.03] [0.57] [0.3]
+GATUNEK: HAFIUD
+diff: [0.12] [0.76] [0.44]
+NOWY GATUNEK: HAOKFU>>>HAOJFU
+diff: [0.07] [0.33] [0.2]
+GATUNEK: HAHESJ
+diff: [0.07] [0.31] [0.19]
+GATUNEK: HAHESJ
+diff: [0.05] [0.41] [0.23]
+GATUNEK: HAHESJ
+diff: [0.05] [0.4] [0.23]
+GATUNEK: HAHESJ
+diff: [0.05] [0.15] [0.1]
+GATUNEK: HAQISJ
+diff: [0.07] [0.33] [0.2]
+GATUNEK: HAOKXE
+diff: [0.1] [0.53] [0.31]
+NOWY GATUNEK: HAOKXE>>>HAOKZA
+diff: [0.07] [0.5] [0.29]
+GATUNEK: PEHERA
+diff: [0.07] [0.22] [0.15]
+GATUNEK: PEHERA
+diff: [0.1] [0.67] [0.38]
+NOWY GATUNEK: HAHESJ>>>HATISJ
+diff: [0.07] [0.41] [0.24]
+GATUNEK: HAKUKI
+diff: [0.12] [0.57] [0.35]
+NOWY GATUNEK: HAFIUD>>>HAFIKE
+diff: [0.07] [0.18] [0.13]
+GATUNEK: HAOTTL
+diff: [0.05] [0.43] [0.24]
+GATUNEK: HAFIUD
+diff: [0.07] [0.44] [0.26]
+GATUNEK: HAFIUD
+diff: [0.07] [0.41] [0.24]
+GATUNEK: HAKUXU
+diff: [0.03] [0.26] [0.14]
+GATUNEK: HAKUAM
+diff: [0.1] [0.43] [0.26]
+GATUNEK: HAHESJ
+diff: [0.07] [0.54] [0.31]
+NOWY GATUNEK: HATUFU>>>HAOXFU
+diff: [0.0] [0.15] [0.07]
+GATUNEK: OKKUXU
+diff: [0.05] [0.18] [0.11]
+GATUNEK: HAATFU
+diff: [0.1] [0.54] [0.32]
+NOWY GATUNEK: UHFIUD>>>UHFAUD
+diff: [0.07] [0.54] [0.31]
+NOWY GATUNEK: UHFIUD>>>UHFIAL
+diff: [0.05] [0.24] [0.14]
+GATUNEK: HAFIAX
+diff: [0.07] [0.31] [0.19]
+GATUNEK: HAOKFU
+diff: [0.1] [0.45] [0.28]
+GATUNEK: HAOKFU
+diff: [0.1] [0.35] [0.23]
+GATUNEK: HATUFU
+diff: [0.1] [0.56] [0.33]
+NOWY GATUNEK: HAOKFU>>>HZOKFU
+diff: [0.07] [0.45] [0.26]
+GATUNEK: OKKUXU
+diff: [0.03] [0.23] [0.13]
+GATUNEK: HAOTAL
+diff: [0.17] [0.68] [0.43]
+NOWY GATUNEK: HATUFU>>>HAOMFU
+diff: [0.05] [0.17] [0.11]
+GATUNEK: HAOKSU
+diff: [0.1] [0.47] [0.29]
+GATUNEK: HAOKFU
+diff: [0.1] [0.55] [0.33]
+NOWY GATUNEK: HAOKFU>>>HAOKDY
+diff: [0.05] [0.32] [0.18]
+GATUNEK: HAOKUI
+diff: [0.17] [0.24] [0.21]
+GATUNEK: HAOKUI
+diff: [0.07] [0.15] [0.11]
+GATUNEK: HAFIAX
+diff: [0.15] [0.44] [0.3]
+GATUNEK: HAKUXU
+diff: [0.07] [0.46] [0.27]
+GATUNEK: HAFIUD
+diff: [0.1] [0.55] [0.32]
+NOWY GATUNEK: HAFIUD>>>ALFIUD
+diff: [0.12] [0.54] [0.33]
+NOWY GATUNEK: HAOKFU>>>NYOKFU
+diff: [0.07] [0.57] [0.32]
+NOWY GATUNEK: HAHESJ>>>HAHEZI
+diff: [0.12] [0.48] [0.3]
+NOWY GATUNEK: HAHESJ>>>ZAHESJ
+simulation started
+diff: [0.05] [0.38] [0.22]
+GATUNEK: HAFIFU
+diff: [0.12] [0.56] [0.34]
+NOWY GATUNEK: HAHEKO>>>TOHEKO
+diff: [0.0] [0.22] [0.11]
+GATUNEK: HAHEXU
+diff: [0.1] [0.53] [0.31]
+NOWY GATUNEK: HAFITL>>>HAFISO
+diff: [0.05] [0.59] [0.32]
+NOWY GATUNEK: HAHEXU>>>HAHERY
+diff: [0.1] [0.44] [0.27]
+GATUNEK: HAFIFU
+diff: [0.05] [0.19] [0.12]
+GATUNEK: HAHERE
+diff: [0.1] [0.75] [0.42]
+NOWY GATUNEK: HAHEXU>>>HAHENA
+diff: [0.1] [0.44] [0.27]
+GATUNEK: HANEFU
+diff: [0.07] [0.72] [0.4]
+NOWY GATUNEK: ZIMAOM>>>PJMAOM
+diff: [0.05] [0.12] [0.09]
+GATUNEK: HAFIRU
+diff: [0.07] [0.17] [0.12]
+GATUNEK: HAMATL
+diff: [0.1] [0.62] [0.36]
+NOWY GATUNEK: SFPEZY>>>SFHRZY
+diff: [0.15] [0.54] [0.34]
+NOWY GATUNEK: HAHEXU>>>HAPJXU
+diff: [0.05] [0.4] [0.23]
+GATUNEK: HAHEZY
+diff: [0.07] [0.24] [0.16]
+GATUNEK: HATUFU
+diff: [0.1] [0.84] [0.47]
+NOWY GATUNEK: HAHERE>>>JUHERE
+diff: [0.15] [0.79] [0.47]
+NOWY GATUNEK: HAKAHU>>>HAKAAF
+diff: [0.07] [0.18] [0.13]
+GATUNEK: HAOKFU
+diff: [0.05] [0.26] [0.16]
+GATUNEK: NEMAKA
+diff: [0.05] [0.06] [0.06]
+GATUNEK: HAFIPW
+diff: [0.05] [0.05] [0.05]
+GATUNEK: HAFIZO
+diff: [0.03] [0.17] [0.1]
+GATUNEK: HATUFU
+diff: [0.1] [0.27] [0.19]
+GATUNEK: HAWITL
+diff: [0.1] [0.5] [0.3]
+GATUNEK: HAFIRU
+diff: [0.07] [0.48] [0.28]
+GATUNEK: HAHEKE
+diff: [0.07] [0.5] [0.29]
+GATUNEK: SFPVZY
+diff: [0.12] [0.69] [0.41]
+NOWY GATUNEK: HAHEXU>>>HAHENE
+diff: [0.1] [0.58] [0.34]
+NOWY GATUNEK: HAHEXU>>>HAHEJU
+diff: [0.05] [0.52] [0.28]
+GATUNEK: HAFIFU
+diff: [0.07] [0.38] [0.23]
+GATUNEK: HATUFU
+diff: [0.1] [0.67] [0.38]
+NOWY GATUNEK: HANEFU>>>HATFFU
+diff: [0.1] [0.22] [0.16]
+GATUNEK: HAHERE
+diff: [0.07] [0.72] [0.4]
+NOWY GATUNEK: ZIMAOM>>>ZIMAUA
+diff: [0.07] [0.35] [0.21]
+GATUNEK: UGMAKA
+diff: [0.03] [0.25] [0.14]
+GATUNEK: HAMAAR
+diff: [0.05] [0.09] [0.07]
+GATUNEK: HAFIKU
+diff: [0.05] [0.31] [0.18]
+GATUNEK: HAMATL
+diff: [0.03] [0.36] [0.19]
+GATUNEK: HATUFU
+diff: [0.07] [0.57] [0.32]
+NOWY GATUNEK: HAWITL>>>HAWINE
+diff: [0.05] [0.63] [0.34]
+NOWY GATUNEK: HAHEKE>>>ZAHEKE
+diff: [0.05] [0.34] [0.2]
+GATUNEK: NEMAKA
+diff: [0.12] [0.57] [0.35]
+NOWY GATUNEK: SFPEZY>>>SYPEZY
+diff: [0.07] [0.14] [0.11]
+GATUNEK: HAKUXU
+diff: [0.12] [0.27] [0.2]
+GATUNEK: HAHEXU
+diff: [0.07] [0.47] [0.27]
+GATUNEK: HAHEMA
+diff: [0.05] [0.67] [0.36]
+NOWY GATUNEK: SFPEZY>>>SFPZZY
+diff: [0.05] [0.27] [0.16]
+GATUNEK: SOHEZY
+diff: [0.12] [0.82] [0.47]
+NOWY GATUNEK: HANEFU>>>MENEFU
+diff: [0.1] [0.7] [0.4]
+NOWY GATUNEK: HANEFU>>>HANEKO
+diff: [0.05] [0.35] [0.2]
+GATUNEK: HAFIHJ
+diff: [0.07] [0.48] [0.28]
+GATUNEK: HANEFU
+diff: [0.1] [0.69] [0.39]
+NOWY GATUNEK: HAFIFU>>>RAFIFU
+diff: [0.07] [0.51] [0.29]
+GATUNEK: HAHEKO
+diff: [0.15] [0.69] [0.42]
+NOWY GATUNEK: ZUHEKO>>>ZUHEPW
+diff: [0.07] [0.62] [0.35]
+NOWY GATUNEK: SFTIZY>>>SFTIOJ
+diff: [0.07] [0.08] [0.08]
+GATUNEK: ZIMATU
+diff: [0.03] [0.4] [0.21]
+GATUNEK: FANEFU
+diff: [0.05] [0.44] [0.24]
+GATUNEK: HAKAHF
+diff: [0.1] [0.5] [0.3]
+GATUNEK: HAHEXU
+diff: [0.07] [0.27] [0.17]
+GATUNEK: HAFIPU
+diff: [0.05] [0.39] [0.22]
+GATUNEK: UGMAKA
+diff: [0.15] [0.59] [0.37]
+NOWY GATUNEK: HAFITL>>>OCFITL
+diff: [0.07] [0.14] [0.11]
+GATUNEK: PJFIFU
+diff: [0.12] [0.21] [0.17]
+GATUNEK: HAMATL
+diff: [0.07] [0.34] [0.21]
+GATUNEK: HAFIPW
+diff: [0.07] [0.58] [0.33]
+NOWY GATUNEK: HAWIQI>>>HAWIZY
+diff: [0.07] [0.81] [0.44]
+NOWY GATUNEK: HAWITL>>>HAWIZU
+diff: [0.12] [0.55] [0.34]
+NOWY GATUNEK: HATUFU>>>RATUFU
+diff: [0.03] [0.24] [0.13]
+GATUNEK: HAHVTL
+diff: [0.05] [0.34] [0.2]
+GATUNEK: HAHEKE
+diff: [0.07] [0.6] [0.34]
+NOWY GATUNEK: HAHESO>>>HARYSO
+diff: [0.07] [0.31] [0.19]
+GATUNEK: HATVHU
+diff: [0.05] [0.4] [0.23]
+GATUNEK: NEMAKA
+diff: [0.05] [0.6] [0.33]
+NOWY GATUNEK: NEMATU>>>NEMAAR
+diff: [0.05] [0.42] [0.24]
+GATUNEK: HAFIRU
+diff: [0.1] [0.3] [0.2]
+GATUNEK: SFPEHU
+diff: [0.1] [0.59] [0.34]
+NOWY GATUNEK: HAHEXU>>>HASYXU
+diff: [0.05] [0.21] [0.13]
+GATUNEK: HAHUXU
+diff: [0.1] [0.67] [0.38]
+NOWY GATUNEK: HAHEXU>>>HAJIXU
+diff: [0.1] [0.27] [0.18]
+GATUNEK: HAHETA
+diff: [0.12] [0.54] [0.33]
+NOWY GATUNEK: HAKUXU>>>HAKUPJ
+diff: [0.05] [0.5] [0.28]
+GATUNEK: SFPEZY
+diff: [0.15] [0.53] [0.34]
+NOWY GATUNEK: SFPEZY>>>SFPERE
+diff: [0.05] [0.12] [0.08]
+GATUNEK: HAMATI
+diff: [0.07] [0.49] [0.28]
+GATUNEK: HAHEZY
+diff: [0.07] [0.58] [0.33]
+NOWY GATUNEK: SOHEZY>>>SOHEAL
+diff: [0.05] [0.6] [0.32]
+NOWY GATUNEK: HAFIFU>>>HAFIHE
+diff: [0.1] [0.46] [0.28]
+GATUNEK: HANEFU
+diff: [0.05] [0.35] [0.2]
+GATUNEK: HATUFU
+diff: [0.07] [0.67] [0.37]
+NOWY GATUNEK: HATUFU>>>HATUOI
+diff: [0.05] [0.55] [0.3]
+GATUNEK: HAHFFU
+diff: [0.1] [0.27] [0.19]
+GATUNEK: HAFIHJ
+diff: [0.07] [0.74] [0.41]
+NOWY GATUNEK: HANEFU>>>HAHTFU
+diff: [0.07] [0.48] [0.28]
+GATUNEK: HAFIFU
+diff: [0.07] [0.58] [0.33]
+NOWY GATUNEK: HAFIFU>>>HAFIUH
+diff: [0.1] [0.35] [0.22]
+GATUNEK: TOFIFU
+diff: [0.12] [0.49] [0.31]
+NOWY GATUNEK: HAHEKO>>>HAHEFI
+diff: [0.07] [0.5] [0.29]
+GATUNEK: HAHERE
+diff: [0.12] [0.53] [0.33]
+NOWY GATUNEK: HAHERE>>>ARHERE
+diff: [0.07] [0.09] [0.08]
+GATUNEK: HAHEJI
+diff: [0.05] [0.67] [0.36]
+NOWY GATUNEK: SFPVZY>>>RUPVZY
+diff: [0.05] [0.58] [0.32]
+NOWY GATUNEK: SFTIZY>>>SFTILO
+diff: [0.05] [0.67] [0.36]
+NOWY GATUNEK: ZIMAOM>>>SRMAOM
+diff: [0.05] [0.73] [0.39]
+NOWY GATUNEK: ZIMATU>>>ZITZTU
+diff: [0.03] [0.49] [0.26]
+GATUNEK: HAHEKO
+diff: [0.0] [0.42] [0.21]
+GATUNEK: FANEFU
+diff: [0.12] [0.47] [0.3]
+GATUNEK: HAKAHF
+diff: [0.05] [0.3] [0.17]
+GATUNEK: PEHEXU
+diff: [0.05] [0.51] [0.28]
+GATUNEK: VIUDON
+diff: [0.05] [0.35] [0.2]
+GATUNEK: HAMATL
+diff: [0.07] [0.47] [0.27]
+GATUNEK: HAWITL
+diff: [0.12] [0.71] [0.42]
+NOWY GATUNEK: HAMATL>>>HAHOTL
+diff: [0.05] [0.62] [0.33]
+NOWY GATUNEK: HAWITL>>>OIWITL
+diff: [0.07] [0.27] [0.17]
+GATUNEK: PJFIFU
+diff: [0.07] [0.32] [0.2]
+GATUNEK: HAWIUS
+diff: [0.15] [0.56] [0.36]
+NOWY GATUNEK: HATUFU>>>HATUTJ
+diff: [0.1] [0.42] [0.26]
+GATUNEK: HAHVTL
+diff: [0.1] [0.26] [0.18]
+GATUNEK: NEMARI
+diff: [0.07] [0.75] [0.41]
+NOWY GATUNEK: NEMATU>>>NEHLTU
+MemoryLand loaded
+simulation started
+diff: [0.1] [0.54] [0.32]
+NOWY GATUNEK: HAFIFU>>>HAMEFU
+diff: [0.07] [0.51] [0.29]
+GATUNEK: HAHEKO
+diff: [0.07] [0.24] [0.16]
+GATUNEK: HAHEXU
+diff: [0.07] [0.37] [0.22]
+GATUNEK: HAFITL
+diff: [0.07] [0.24] [0.16]
+GATUNEK: HAHEXU
+diff: [0.07] [0.57] [0.32]
+NOWY GATUNEK: HAFIFU>>>KAFIFU
+diff: [0.1] [0.25] [0.18]
+GATUNEK: HAHERE
+diff: [0.12] [0.47] [0.3]
+GATUNEK: HAHEXU
+diff: [0.1] [0.3] [0.2]
+GATUNEK: HANEFU
+diff: [0.1] [0.42] [0.26]
+GATUNEK: ZIMAOM
+diff: [0.1] [0.11] [0.11]
+GATUNEK: HAFIRU
+diff: [0.07] [0.32] [0.2]
+GATUNEK: HAMATL
+diff: [0.12] [0.41] [0.27]
+GATUNEK: SFPEZY
+diff: [0.07] [0.67] [0.37]
+NOWY GATUNEK: HAHEXU>>>HASEXU
+diff: [0.07] [0.38] [0.23]
+GATUNEK: HAHEZY
+diff: [0.05] [0.19] [0.12]
+GATUNEK: HATUFU
+diff: [0.1] [0.52] [0.31]
+NOWY GATUNEK: HAHERE>>>TPHERE
+diff: [0.15] [0.63] [0.39]
+NOWY GATUNEK: HAKAHU>>>HAKAHP
+diff: [0.03] [0.28] [0.15]
+GATUNEK: HAOKFU
+diff: [0.05] [0.4] [0.23]
+GATUNEK: NEMAKA
+diff: [0.05] [0.0] [0.03]
+GATUNEK: HAFIPW
+diff: [0.1] [0.22] [0.16]
+GATUNEK: HAFIZO
+diff: [0.07] [0.15] [0.11]
+GATUNEK: HATUFU
+diff: [0.1] [0.43] [0.26]
+GATUNEK: HAWITL
+diff: [0.05] [0.46] [0.26]
+GATUNEK: HAFIRU
+diff: [0.07] [0.23] [0.15]
+GATUNEK: HAHEKE
+diff: [0.07] [0.5] [0.29]
+GATUNEK: SFPVZY
+diff: [0.12] [0.75] [0.44]
+NOWY GATUNEK: HAHEXU>>>HAPWXU
+diff: [0.07] [0.83] [0.45]
+NOWY GATUNEK: HAHEXU>>>HAHEKO
+diff: [0.07] [0.64] [0.36]
+NOWY GATUNEK: HAFIFU>>>HAATFU
+diff: [0.07] [0.47] [0.27]
+GATUNEK: HATUFU
+diff: [0.1] [0.62] [0.36]
+NOWY GATUNEK: HANEFU>>>HANETD
+diff: [0.15] [0.07] [0.11]
+GATUNEK: HAHERE
+diff: [0.12] [0.44] [0.28]
+GATUNEK: ZIMAOM
+diff: [0.05] [0.36] [0.21]
+GATUNEK: UGMAKA
+diff: [0.1] [0.64] [0.37]
+NOWY GATUNEK: HAMAAR>>>HAMAUL
+diff: [0.07] [0.29] [0.18]
+GATUNEK: HAFIKU
+diff: [0.07] [0.28] [0.18]
+GATUNEK: HAMATL
+diff: [0.03] [0.35] [0.19]
+GATUNEK: HATUFU
+diff: [0.1] [0.37] [0.23]
+GATUNEK: HAWITL
+diff: [0.05] [0.56] [0.3]
+NOWY GATUNEK: HAHEKE>>>PTHEKE
+diff: [0.07] [0.29] [0.18]
+GATUNEK: NEMAKA
+diff: [0.17] [0.75] [0.46]
+NOWY GATUNEK: SFPEZY>>>PWPEZY
+diff: [0.07] [0.36] [0.22]
+GATUNEK: HAKUXU
+diff: [0.15] [0.56] [0.36]
+NOWY GATUNEK: HAHEXU>>>HASTXU
+diff: [0.05] [0.22] [0.14]
+GATUNEK: HAHEMA
+diff: [0.17] [0.62] [0.4]
+NOWY GATUNEK: SFPEZY>>>SFPEJU
+diff: [0.07] [0.4] [0.24]
+GATUNEK: SOHEZY
+diff: [0.07] [0.37] [0.22]
+GATUNEK: HANEFU
+diff: [0.07] [0.67] [0.37]
+NOWY GATUNEK: HANEFU>>>HANEST
+diff: [0.03] [0.33] [0.18]
+GATUNEK: HAFIHJ
+diff: [0.05] [0.52] [0.29]
+GATUNEK: HANEFU
+diff: [0.1] [0.71] [0.41]
+NOWY GATUNEK: HAFIFU>>>HAFIKI
+diff: [0.0] [0.53] [0.26]
+GATUNEK: HAHEKO
+diff: [0.15] [0.59] [0.37]
+NOWY GATUNEK: ZUHEKO>>>ZUPFKO
+diff: [0.0] [0.27] [0.13]
+GATUNEK: SFTIZY
+diff: [0.1] [0.42] [0.26]
+GATUNEK: ZIMATU
+diff: [0.03] [0.3] [0.16]
+GATUNEK: FANEFU
+diff: [0.05] [0.16] [0.11]
+GATUNEK: HAKAHF
+diff: [0.2] [0.6] [0.4]
+NOWY GATUNEK: HAHEXU>>>HAHEHR
+diff: [0.1] [0.11] [0.1]
+GATUNEK: HAFIPU
+diff: [0.03] [0.43] [0.23]
+GATUNEK: UGMAKA
+diff: [0.07] [0.57] [0.32]
+NOWY GATUNEK: HAFITL>>>HAFIPY
+diff: [0.05] [0.11] [0.08]
+GATUNEK: PJFIFU
+diff: [0.05] [0.43] [0.24]
+GATUNEK: HAMATL
+diff: [0.1] [0.46] [0.28]
+GATUNEK: HAFIPW
+diff: [0.07] [0.25] [0.16]
+GATUNEK: HAWIQI
+diff: [0.03] [0.6] [0.31]
+NOWY GATUNEK: HAWITL>>>HAWISO
+diff: [0.07] [0.54] [0.31]
+NOWY GATUNEK: HATUFU>>>HANAFU
+diff: [0.1] [0.2] [0.15]
+GATUNEK: HAHVTL
+diff: [0.05] [0.5] [0.28]
+GATUNEK: HAHEKE
+diff: [0.05] [0.32] [0.18]
+GATUNEK: HAHESO
+diff: [0.07] [0.03] [0.05]
+GATUNEK: HATVHU
+diff: [0.15] [0.48] [0.31]
+NOWY GATUNEK: NEMAKA>>>NETAKA
+diff: [0.1] [0.74] [0.42]
+NOWY GATUNEK: NEMATU>>>NEMAQU
+diff: [0.07] [0.39] [0.23]
+GATUNEK: HAFIRU
+diff: [0.05] [0.15] [0.1]
+GATUNEK: SFPEHU
+diff: [0.1] [0.78] [0.44]
+NOWY GATUNEK: HAHEXU>>>HAHEPA
+diff: [0.05] [0.46] [0.26]
+GATUNEK: HAHUXU
+diff: [0.15] [0.64] [0.39]
+NOWY GATUNEK: HAHEXU>>>HAHEJU
+diff: [0.05] [0.28] [0.16]
+GATUNEK: HAHETA
+diff: [0.1] [0.4] [0.25]
+GATUNEK: HAKUXU
+diff: [0.07] [0.62] [0.35]
+NOWY GATUNEK: SFPEZY>>>SFXOZY
+diff: [0.17] [0.47] [0.32]
+NOWY GATUNEK: SFPEZY>>>SFPEAL
+diff: [0.05] [0.21] [0.13]
+GATUNEK: HAMATI
+diff: [0.12] [0.35] [0.24]
+GATUNEK: HAHEZY
+diff: [0.1] [0.6] [0.35]
+NOWY GATUNEK: SOHEZY>>>SOHEPR
+diff: [0.1] [0.48] [0.29]
+GATUNEK: HAFIFU
+diff: [0.07] [0.21] [0.14]
+GATUNEK: HANEFU
+diff: [0.1] [0.29] [0.2]
+GATUNEK: HATUFU
+diff: [0.12] [0.48] [0.3]
+NOWY GATUNEK: HATUFU>>>HATUHR
+diff: [0.07] [0.27] [0.17]
+GATUNEK: HAHFFU
+diff: [0.03] [0.44] [0.23]
+GATUNEK: HAFIHJ
+diff: [0.07] [0.53] [0.3]
+NOWY GATUNEK: HANEFU>>>HAHVFU
+diff: [0.07] [0.67] [0.37]
+NOWY GATUNEK: HAFIFU>>>HAFIXO
+diff: [0.12] [0.52] [0.32]
+NOWY GATUNEK: HAFIFU>>>HAFILI
+diff: [0.07] [0.24] [0.16]
+GATUNEK: TOFIFU
+diff: [0.1] [0.63] [0.37]
+NOWY GATUNEK: HAHEKO>>>HASEKO
+diff: [0.05] [0.27] [0.16]
+GATUNEK: HAHERE
+diff: [0.1] [0.43] [0.27]
+GATUNEK: HAHERE
+diff: [0.07] [0.0] [0.04]
+GATUNEK: HAHEJI
+diff: [0.05] [0.84] [0.45]
+NOWY GATUNEK: SFPVZY>>>SFPVSE
+diff: [0.07] [0.78] [0.43]
+NOWY GATUNEK: SFTIZY>>>SFTIOT
+diff: [0.05] [0.84] [0.45]
+NOWY GATUNEK: ZIMAOM>>>ZIMAJU
+diff: [0.03] [0.56] [0.29]
+GATUNEK: ZIMATU
+diff: [0.03] [0.59] [0.31]
+NOWY GATUNEK: HAHEKO>>>HAMAKO
+diff: [0.03] [0.57] [0.3]
+GATUNEK: FANEFU
+diff: [0.05] [0.48] [0.26]
+GATUNEK: HAKAHF
+diff: [0.05] [0.14] [0.09]
+GATUNEK: PEHEXU
+diff: [0.07] [0.27] [0.17]
+GATUNEK: VIUDON
+diff: [0.12] [0.3] [0.21]
+GATUNEK: HAMATL
+diff: [0.1] [0.64] [0.37]
+NOWY GATUNEK: HAWITL>>>HAWIRY
+diff: [0.1] [0.31] [0.2]
+GATUNEK: HAMATL
+diff: [0.15] [0.4] [0.28]
+GATUNEK: HAWITL
+diff: [0.12] [0.34] [0.23]
+GATUNEK: PJFIFU
+diff: [0.07] [0.29] [0.18]
+GATUNEK: HAWIUS
+diff: [0.1] [0.76] [0.43]
+NOWY GATUNEK: HATUFU>>>HAPTFU
+diff: [0.1] [0.76] [0.43]
+NOWY GATUNEK: HAHVTL>>>HAHVPW
+diff: [0.0] [0.6] [0.3]
+NOWY GATUNEK: NEMARI>>>NETTRI
+diff: [0.12] [0.24] [0.18]
+GATUNEK: NEMATU
+MemoryLand loaded
+simulation started
+diff: [0.07] [0.59] [0.33]
+NOWY GATUNEK: HAFIFU>>>HATFFU
+diff: [0.0] [0.42] [0.21]
+GATUNEK: HAHEKO
+diff: [0.07] [0.12] [0.1]
+GATUNEK: HAHEXU
+diff: [0.12] [0.33] [0.23]
+GATUNEK: HAFITL
+diff: [0.05] [0.46] [0.25]
+GATUNEK: HAHEXU
+diff: [0.05] [0.44] [0.25]
+GATUNEK: HAFIFU
+diff: [0.05] [0.27] [0.16]
+GATUNEK: HAHERE
+diff: [0.1] [0.9] [0.5]
+NOWY GATUNEK: HAHEXU>>>HAHEOM
+diff: [0.07] [0.47] [0.27]
+GATUNEK: HANEFU
+diff: [0.07] [0.48] [0.28]
+GATUNEK: ZIMAOM
+diff: [0.1] [0.06] [0.08]
+GATUNEK: HAFIRU
+diff: [0.03] [0.51] [0.27]
+GATUNEK: HAMATL
+diff: [0.1] [0.4] [0.25]
+GATUNEK: SFPEZY
+diff: [0.07] [0.59] [0.33]
+NOWY GATUNEK: HAHEXU>>>HAHEHP
+diff: [0.03] [0.29] [0.16]
+GATUNEK: HAHEZY
+diff: [0.03] [0.25] [0.14]
+GATUNEK: HATUFU
+diff: [0.03] [0.75] [0.39]
+NOWY GATUNEK: HAHERE>>>HAHESS
+diff: [0.05] [0.78] [0.42]
+NOWY GATUNEK: HAKAHU>>>HATIHU
+diff: [0.1] [0.3] [0.2]
+GATUNEK: HAOKFU
+diff: [0.05] [0.27] [0.16]
+GATUNEK: NEMAKA
+diff: [0.07] [0.3] [0.19]
+GATUNEK: HAFIPW
+diff: [0.03] [0.08] [0.05]
+GATUNEK: HAFIZO
+diff: [0.03] [0.11] [0.07]
+GATUNEK: HATUFU
+diff: [0.05] [0.37] [0.21]
+GATUNEK: HAWITL
+diff: [0.15] [0.38] [0.26]
+GATUNEK: HAFIRU
+diff: [0.03] [0.27] [0.15]
+GATUNEK: HAHEKE
+diff: [0.1] [0.5] [0.3]
+GATUNEK: SFPVZY
+diff: [0.12] [0.56] [0.34]
+NOWY GATUNEK: HAHEXU>>>PFHEXU
+diff: [0.15] [0.56] [0.36]
+NOWY GATUNEK: HAHEXU>>>XIHEXU
+diff: [0.07] [0.67] [0.37]
+NOWY GATUNEK: HAFIFU>>>HAFISF
+diff: [0.05] [0.27] [0.16]
+GATUNEK: HATUFU
+diff: [0.07] [0.62] [0.35]
+NOWY GATUNEK: HANEFU>>>HAXIFU
+diff: [0.12] [0.39] [0.26]
+GATUNEK: HAHERE
+diff: [0.07] [0.52] [0.3]
+GATUNEK: ZIMAOM
+diff: [0.07] [0.38] [0.23]
+GATUNEK: UGMAKA
+diff: [0.1] [0.64] [0.37]
+NOWY GATUNEK: HAMAAR>>>HAMAOT
+diff: [0.05] [0.25] [0.15]
+GATUNEK: HAFIKU
+diff: [0.07] [0.2] [0.14]
+GATUNEK: HAMATL
+diff: [0.1] [0.34] [0.22]
+GATUNEK: HATUFU
+diff: [0.1] [0.54] [0.32]
+NOWY GATUNEK: HAWITL>>>HAWIVU
+diff: [0.05] [0.76] [0.4]
+NOWY GATUNEK: HAHEKE>>>HAHEOM
+diff: [0.05] [0.1] [0.07]
+GATUNEK: NEMAKA
+diff: [0.07] [0.62] [0.35]
+NOWY GATUNEK: SFPEZY>>>SFZAZY
+diff: [0.05] [0.14] [0.1]
+GATUNEK: HAKUXU
+diff: [0.2] [0.64] [0.42]
+NOWY GATUNEK: HAHEXU>>>SSHEXU
+diff: [0.05] [0.57] [0.31]
+NOWY GATUNEK: HAHEMA>>>HAHETY
+diff: [0.15] [0.47] [0.31]
+NOWY GATUNEK: SFPEZY>>>SFPETO
+diff: [0.07] [0.06] [0.07]
+GATUNEK: SOHEZY
+diff: [0.12] [0.4] [0.26]
+GATUNEK: HANEFU
+diff: [0.05] [0.58] [0.32]
+NOWY GATUNEK: HANEFU>>>OPNEFU
+diff: [0.03] [0.31] [0.17]
+GATUNEK: HAFIHJ
+diff: [0.05] [0.48] [0.26]
+GATUNEK: HANEFU
+diff: [0.1] [0.72] [0.41]
+NOWY GATUNEK: HAFIFU>>>HAFIKO
+diff: [0.05] [0.51] [0.28]
+GATUNEK: HAHEKO
+diff: [0.07] [0.58] [0.33]
+NOWY GATUNEK: ZUHEKO>>>ZUSKKO
+diff: [0.07] [0.78] [0.43]
+NOWY GATUNEK: SFTIZY>>>SFPWZY
+diff: [0.03] [0.39] [0.21]
+GATUNEK: ZIMATU
+diff: [0.03] [0.1] [0.06]
+GATUNEK: FANEFU
+diff: [0.07] [0.23] [0.15]
+GATUNEK: HAKAHF
+diff: [0.15] [0.59] [0.37]
+NOWY GATUNEK: HAHEXU>>>HATWXU
+diff: [0.07] [0.45] [0.26]
+GATUNEK: HAFIPU
+diff: [0.07] [0.6] [0.34]
+NOWY GATUNEK: UGMAKA>>>UGMADE
+diff: [0.15] [0.52] [0.34]
+NOWY GATUNEK: HAFITL>>>HASNTL
+diff: [0.07] [0.37] [0.22]
+GATUNEK: PJFIFU
+diff: [0.1] [0.27] [0.18]
+GATUNEK: HAMATL
+diff: [0.12] [0.3] [0.21]
+GATUNEK: HAFIPW
+diff: [0.07] [0.42] [0.25]
+GATUNEK: HAWIQI
+diff: [0.07] [0.59] [0.33]
+NOWY GATUNEK: HAWITL>>>HAWIAF
+diff: [0.05] [0.33] [0.19]
+GATUNEK: HATUFU
+diff: [0.07] [0.38] [0.23]
+GATUNEK: HAHVTL
+diff: [0.07] [0.69] [0.38]
+NOWY GATUNEK: HAHEKE>>>HAAVKE
+diff: [0.03] [0.06] [0.04]
+GATUNEK: HAHESO
+diff: [0.05] [0.35] [0.2]
+GATUNEK: HATVHU
+diff: [0.05] [0.74] [0.4]
+NOWY GATUNEK: NEMAKA>>>NEMAXY
+diff: [0.07] [0.9] [0.49]
+NOWY GATUNEK: NEMATU>>>NEDATU
+diff: [0.07] [0.2] [0.14]
+GATUNEK: HAFIRU
+diff: [0.05] [0.07] [0.06]
+GATUNEK: SFPEHU
+diff: [0.05] [0.78] [0.42]
+NOWY GATUNEK: HAHEXU>>>HAHEWU
+diff: [0.07] [0.21] [0.14]
+GATUNEK: HAHUXU
+diff: [0.2] [0.64] [0.42]
+NOWY GATUNEK: HAHEXU>>>HAHEPA
+diff: [0.05] [0.27] [0.16]
+GATUNEK: HAHETA
+diff: [0.05] [0.19] [0.12]
+GATUNEK: HAKUXU
+diff: [0.07] [0.5] [0.29]
+GATUNEK: SFPEZY
+diff: [0.17] [0.69] [0.43]
+NOWY GATUNEK: SFPEZY>>>SFPEVO
+diff: [0.03] [0.22] [0.12]
+GATUNEK: HAMATI
+diff: [0.12] [0.33] [0.23]
+GATUNEK: HAHEZY
+diff: [0.17] [0.73] [0.45]
+NOWY GATUNEK: SOHEZY>>>SOHEHZ
+diff: [0.07] [0.76] [0.42]
+NOWY GATUNEK: HAFIFU>>>HAFIVO
+diff: [0.12] [0.35] [0.24]
+GATUNEK: HANEFU
+diff: [0.17] [0.27] [0.22]
+GATUNEK: HATUFU
+diff: [0.07] [0.39] [0.23]
+GATUNEK: HATUFU
+diff: [0.05] [0.4] [0.23]
+GATUNEK: HAHFFU
+diff: [0.05] [0.39] [0.22]
+GATUNEK: HAFIHJ
+diff: [0.1] [0.69] [0.4]
+NOWY GATUNEK: HANEFU>>>HAUGFU
+diff: [0.05] [0.74] [0.39]
+NOWY GATUNEK: HAFIFU>>>VOFIFU
+diff: [0.1] [0.65] [0.37]
+NOWY GATUNEK: HAFIFU>>>HAFIHV
+diff: [0.07] [0.21] [0.14]
+GATUNEK: TOFIFU
+diff: [0.05] [0.38] [0.21]
+GATUNEK: HAHEKO
+diff: [0.03] [0.52] [0.27]
+GATUNEK: HAHERE
+diff: [0.1] [0.49] [0.3]
+GATUNEK: HAHERE
+diff: [0.1] [0.29] [0.19]
+GATUNEK: HAHEJI
+diff: [0.05] [0.56] [0.31]
+NOWY GATUNEK: SFPVZY>>>SFZUZY
+diff: [0.12] [0.62] [0.38]
+NOWY GATUNEK: SFTIZY>>>SFTIWU
+diff: [0.05] [0.58] [0.32]
+NOWY GATUNEK: ZIMAOM>>>ZIMAHZ
+diff: [0.07] [1.04] [0.56]
+NOWY GATUNEK: ZIMATU>>>PPMATU
+diff: [0.03] [0.53] [0.28]
+GATUNEK: HAHEKO
+diff: [0.07] [0.6] [0.34]
+NOWY GATUNEK: FANEFU>>>FANEXY
+diff: [0.07] [0.46] [0.27]
+GATUNEK: HAKAHF
+diff: [0.1] [0.45] [0.28]
+GATUNEK: PEHEXU
+diff: [0.1] [0.31] [0.21]
+GATUNEK: VIUDON
+diff: [0.15] [0.41] [0.28]
+GATUNEK: HAMATL
+diff: [0.1] [0.43] [0.26]
+GATUNEK: HAWITL
+diff: [0.1] [0.41] [0.26]
+GATUNEK: HAMATL
+diff: [0.07] [0.55] [0.31]
+NOWY GATUNEK: HAWITL>>>HAWIMI
+diff: [0.12] [0.53] [0.33]
+NOWY GATUNEK: PJFIFU>>>PJFINO
+diff: [0.05] [0.37] [0.21]
+GATUNEK: HAWIUS
+diff: [0.05] [0.6] [0.33]
+NOWY GATUNEK: HATUFU>>>DATUFU
+diff: [0.07] [0.81] [0.44]
+NOWY GATUNEK: HAHVTL>>>HAHVPR
+diff: [0.1] [0.4] [0.25]
+GATUNEK: NEMARI
+diff: [0.17] [0.62] [0.4]
+NOWY GATUNEK: NEMATU>>>NEVOTU
+MemoryLand loaded
+simulation started
+simulation started
+diff: [0.07] [0.59] [0.33]
+NOWY GATUNEK: TOTZSY>>>TOTZXY
+diff: [0.05] [0.21] [0.13]
+GATUNEK: HWSARE
+diff: [0.07] [0.31] [0.19]
+GATUNEK: ATATHT
+diff: [0.05] [0.4] [0.23]
+GATUNEK: THHFSU
+diff: [0.07] [0.21] [0.14]
+GATUNEK: TDZAPI
+diff: [0.05] [0.29] [0.17]
+GATUNEK: UIHLUH
+diff: [0.03] [0.14] [0.08]
+GATUNEK: SNHRWI
+diff: [0.1] [0.27] [0.19]
+GATUNEK: HWXAPK
+diff: [0.05] [0.1] [0.07]
+GATUNEK: KIHHPH
+diff: [0.07] [0.37] [0.22]
+GATUNEK: KIHHPH
+diff: [0.05] [0.42] [0.23]
+GATUNEK: JIHSNY
+diff: [0.1] [0.23] [0.16]
+GATUNEK: SNHRWI
+diff: [0.05] [0.1] [0.07]
+GATUNEK: PRMUOM
+diff: [0.07] [0.33] [0.2]
+GATUNEK: HOAMZO
+diff: [0.1] [0.18] [0.14]
+GATUNEK: SNHRWI
+diff: [0.05] [0.31] [0.18]
+GATUNEK: PRMUOM
+diff: [0.07] [0.23] [0.15]
+GATUNEK: RETRPR
+diff: [0.07] [0.24] [0.16]
+GATUNEK: HOAMZO
+diff: [0.07] [0.27] [0.17]
+GATUNEK: VAXIXY
+diff: [0.05] [0.43] [0.24]
+GATUNEK: RETRPR
+diff: [0.05] [0.37] [0.21]
+GATUNEK: HHPWXU
+diff: [0.05] [0.08] [0.07]
+GATUNEK: VAXIXY
+diff: [0.03] [0.2] [0.11]
+GATUNEK: VAXIXY
+diff: [0.12] [0.4] [0.26]
+GATUNEK: HOAMZO
+diff: [0.1] [0.67] [0.38]
+NOWY GATUNEK: RETRPR>>>RETRPL
+diff: [0.05] [0.4] [0.23]
+GATUNEK: RETRPR
+diff: [0.1] [0.16] [0.13]
+GATUNEK: HOAMZO
+diff: [0.1] [0.47] [0.29]
+GATUNEK: HHPWXU
+diff: [0.05] [0.46] [0.26]
+GATUNEK: HHPWXU
+diff: [0.07] [0.16] [0.12]
+GATUNEK: ZEPDZE
+diff: [0.07] [0.4] [0.24]
+GATUNEK: VAXIXY
+diff: [0.03] [0.25] [0.14]
+GATUNEK: VAXIXY
+diff: [0.12] [0.5] [0.31]
+NOWY GATUNEK: HOAMZO>>>FAAMZO
+diff: [0.05] [0.27] [0.16]
+GATUNEK: RETRPR
+diff: [0.05] [0.53] [0.29]
+GATUNEK: RETRPR
+diff: [0.05] [0.21] [0.13]
+GATUNEK: RETRPL
+diff: [0.05] [0.08] [0.07]
+GATUNEK: VAXIXY
+diff: [0.05] [0.34] [0.2]
+GATUNEK: ZEPDZE
+diff: [0.07] [0.3] [0.19]
+GATUNEK: VAXIXY
+diff: [0.12] [0.62] [0.37]
+NOWY GATUNEK: VAXIXY>>>VAXIZI
+diff: [0.07] [0.21] [0.14]
+GATUNEK: VAXIXY
+diff: [0.07] [0.33] [0.2]
+GATUNEK: RETRPR
+diff: [0.05] [0.2] [0.12]
+GATUNEK: FAAMZO
+simulation started
+diff: [0.05] [0.26] [0.16]
+GATUNEK: PDAXNU
+diff: [0.07] [0.18] [0.13]
+GATUNEK: PRPDAF
+diff: [0.05] [0.26] [0.16]
+GATUNEK: VYALTV
+diff: [0.07] [0.33] [0.2]
+GATUNEK: PRPDAF
+diff: [0.07] [0.24] [0.16]
+GATUNEK: LIPWNI
+diff: [0.05] [0.21] [0.13]
+GATUNEK: HYSISJ
+diff: [0.07] [0.3] [0.19]
+GATUNEK: PDAXNU
+simulation started
+diff: [0.03] [0.59] [0.31]
+NOWY GATUNEK: HURYZA>>>HURYXA
+diff: [0.05] [0.15] [0.1]
+GATUNEK: JYOSOJ
+diff: [0.05] [0.47] [0.26]
+GATUNEK: QEHRHE
+diff: [0.07] [0.38] [0.23]
+GATUNEK: HIZINO
+diff: [0.1] [0.04] [0.07]
+GATUNEK: HOPKHK
+diff: [0.05] [0.43] [0.24]
+GATUNEK: XIPZPE
+diff: [0.03] [0.15] [0.09]
+GATUNEK: TOHJSI
+diff: [0.07] [0.25] [0.16]
+GATUNEK: TOPVAV
+diff: [0.07] [0.37] [0.22]
+GATUNEK: ALZYTW
+diff: [0.03] [0.17] [0.1]
+GATUNEK: HESISU
+diff: [0.0] [0.23] [0.12]
+GATUNEK: NUPIXO
+diff: [0.05] [0.34] [0.19]
+GATUNEK: POSEZY
+diff: [0.0] [0.32] [0.16]
+GATUNEK: PUFIZU
+diff: [0.07] [0.36] [0.22]
+GATUNEK: PFNEHD
+diff: [0.07] [0.16] [0.12]
+GATUNEK: PIDEOL
+diff: [0.07] [0.63] [0.35]
+NOWY GATUNEK: UIPZPZ>>>UIPZTS
+diff: [0.07] [0.51] [0.29]
+GATUNEK: SJHTPE
+diff: [0.07] [0.32] [0.2]
+GATUNEK: IPOZOZ
+diff: [0.07] [0.25] [0.16]
+GATUNEK: TOSRUK
+diff: [0.1] [0.36] [0.23]
+GATUNEK: HAVUJU
+diff: [0.03] [0.2] [0.11]
+GATUNEK: ZIDYUL
+diff: [0.1] [0.22] [0.16]
+GATUNEK: XYARUO
+diff: [0.05] [0.22] [0.14]
+GATUNEK: PUOZTW
+diff: [0.03] [0.29] [0.16]
+GATUNEK: TZMAMO
+diff: [0.07] [0.29] [0.18]
+GATUNEK: JYVYTK
+diff: [0.05] [0.17] [0.11]
+GATUNEK: HUHPQE
+Time3 loaded
+diff: [0.15] [0.25] [0.2]
+GATUNEK: IPOZOZ
+diff: [0.07] [0.42] [0.25]
+GATUNEK: JIWIRE
+diff: [0.07] [0.14] [0.11]
+GATUNEK: SEDIKO
+diff: [0.1] [0.18] [0.14]
+GATUNEK: SEDIKO
+diff: [0.03] [0.11] [0.07]
+GATUNEK: SEDIKO
+diff: [0.07] [0.19] [0.13]
+GATUNEK: STPUSJ
+diff: [0.07] [0.24] [0.16]
+GATUNEK: POSEZY
+diff: [0.2] [0.5] [0.35]
+NOWY GATUNEK: IPOZOZ>>>IPSNOZ
+diff: [0.07] [0.22] [0.15]
+GATUNEK: SEDIKO
+diff: [0.07] [0.3] [0.19]
+GATUNEK: SEDIKO
+diff: [0.2] [0.13] [0.16]
+GATUNEK: IPOZOZ
+diff: [0.05] [0.13] [0.09]
+GATUNEK: AXPEAR
+diff: [0.0] [0.32] [0.16]
+GATUNEK: SEDIKO
+diff: [0.05] [0.29] [0.17]
+GATUNEK: HHSEHU
+diff: [0.07] [0.25] [0.16]
+GATUNEK: SEDIKO
+diff: [0.28] [0.48] [0.38]
+NOWY GATUNEK: IPOZOZ>>>IPOZHT
+diff: [0.15] [0.46] [0.3]
+NOWY GATUNEK: IPOZOZ>>>IPTWOZ
+diff: [0.1] [0.44] [0.27]
+GATUNEK: SEDIKO
+diff: [0.05] [0.41] [0.23]
+GATUNEK: SEDIKO
+diff: [0.25] [0.38] [0.32]
+NOWY GATUNEK: IPOZOZ>>>IPOZPL
+diff: [0.05] [0.38] [0.21]
+GATUNEK: IPOZHT
+diff: [0.1] [0.5] [0.3]
+GATUNEK: IPOZOZ
+diff: [0.15] [0.23] [0.19]
+GATUNEK: IPOZOZ
+diff: [0.05] [0.23] [0.14]
+GATUNEK: IPTWOZ
+diff: [0.07] [0.29] [0.18]
+GATUNEK: SEDIKO
+diff: [0.07] [0.37] [0.22]
+GATUNEK: SEDIKO
+diff: [0.07] [0.39] [0.23]
+GATUNEK: SEDIKO
+diff: [0.1] [0.22] [0.16]
+GATUNEK: IPOZHT
+diff: [0.05] [0.36] [0.21]
+GATUNEK: IPOZPL
+diff: [0.1] [0.34] [0.22]
+GATUNEK: IPTWOZ
+diff: [0.1] [0.3] [0.2]
+GATUNEK: IPTWOZ
+diff: [0.17] [0.45] [0.31]
+NOWY GATUNEK: IPOZOZ>>>IPOZZO
+diff: [0.1] [0.37] [0.24]
+GATUNEK: SEDIKO
+diff: [0.07] [0.43] [0.25]
+GATUNEK: SEDIKO
+diff: [0.15] [0.43] [0.29]
+GATUNEK: SEDIKO
+diff: [0.12] [0.45] [0.29]
+GATUNEK: SEDIKO
+diff: [0.1] [0.21] [0.16]
+GATUNEK: SEDIKO
+diff: [0.12] [0.25] [0.19]
+GATUNEK: IPOZHT
+diff: [0.05] [0.16] [0.11]
+GATUNEK: IPOZPL
+diff: [0.12] [0.43] [0.28]
+GATUNEK: IPOZPL
+diff: [0.05] [0.49] [0.27]
+GATUNEK: IPTWOZ
+diff: [0.1] [0.43] [0.27]
+GATUNEK: IPTWOZ
+diff: [0.1] [0.43] [0.26]
+GATUNEK: SEDIKO
+diff: [0.1] [0.32] [0.21]
+GATUNEK: SEDIKO
+diff: [0.2] [0.39] [0.29]
+GATUNEK: SEDIKO
+diff: [0.1] [0.44] [0.27]
+GATUNEK: SEDIKO
+diff: [0.1] [0.4] [0.25]
+GATUNEK: SEDIKO
+diff: [0.07] [0.23] [0.15]
+GATUNEK: IPOZZO
+diff: [0.15] [0.54] [0.34]
+NOWY GATUNEK: SEDIKO>>>SEDIDE
+diff: [0.17] [0.39] [0.28]
+GATUNEK: IPOZHT
+diff: [0.05] [0.52] [0.28]
+GATUNEK: IPOZPL
+diff: [0.1] [0.49] [0.3]
+GATUNEK: IPOZPL
+diff: [0.1] [0.51] [0.31]
+NOWY GATUNEK: IPTWOZ>>>IPPVOZ
+diff: [0.03] [0.21] [0.12]
+GATUNEK: SEDIKO
+diff: [0.05] [0.34] [0.2]
+GATUNEK: IPOZHT
+diff: [0.12] [0.31] [0.22]
+GATUNEK: SEDIKO
+diff: [0.15] [0.43] [0.29]
+GATUNEK: SEDIKO
+diff: [0.15] [0.49] [0.32]
+NOWY GATUNEK: SEDIKO>>>SEDISY
+diff: [0.05] [0.55] [0.3]
+GATUNEK: SEDIKO
+diff: [0.07] [0.4] [0.24]
+GATUNEK: SEDIKO
+diff: [0.03] [0.16] [0.09]
+GATUNEK: IPOZZO
+diff: [0.12] [0.51] [0.32]
+NOWY GATUNEK: SEDIKO>>>HWDIKO
+diff: [0.17] [0.44] [0.31]
+NOWY GATUNEK: IPOZHT>>>IPOZKO
+diff: [0.15] [0.48] [0.31]
+NOWY GATUNEK: IPOZHT>>>IPKEHT
+diff: [0.03] [0.28] [0.15]
+GATUNEK: SEDIDE
+diff: [0.1] [0.39] [0.24]
+GATUNEK: IPOZPL
+diff: [0.07] [0.64] [0.36]
+NOWY GATUNEK: IPOZPL>>>IPOZDI
+diff: [0.12] [0.52] [0.32]
+NOWY GATUNEK: IPOZPL>>>IPOZTD
+diff: [0.12] [0.43] [0.28]
+GATUNEK: SEDIKO
+simulation started
+simulation started
+simulation started
+simulation started
+diff: [0.07] [0.27] [0.17]
+GATUNEK: ZYHFVU
+diff: [0.05] [0.26] [0.15]
+GATUNEK: TVALZU
+diff: [0.1] [0.2] [0.15]
+GATUNEK: MAOXSQ
+diff: [0.0] [0.16] [0.08]
+GATUNEK: HLSEHO
+diff: [0.05] [0.25] [0.15]
+GATUNEK: HFPATH
