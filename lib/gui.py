@@ -96,16 +96,17 @@ class RankWindow(UIWindow):
         self.owner = owner
         self.manager = manager
         self.labels = []
+        lbl_w = 380
         for i in range(cfg.RANK_SIZE):
             text = ''
-            lab = UILabel(Rect((round((rect.width/2)-(btn_w)), 15*i+5), (rect.width, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position')
+            lab = UILabel(Rect((round((rect.width/2)-(lbl_w/2)), 15*i+5), (lbl_w, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position')
             self.labels.append(lab)
         self.btn_close = UIButton(Rect((round((rect.width/2)-(btn_w/2)), (15*i+25)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
 
     def Update(self, ranking: list):
         rank_count = len(ranking)
         for i in range(rank_count):
-            text = str(i) + '. ' + ranking[i]['name'] + ' gen: ' + str(ranking[i]['gen']) + ' fit: ' + str(round(ranking[i]['fitness']))
+            text = str(i) + '. ' + ranking[i]['name'] + ' \t GEN: ' + str(ranking[i]['gen']) + ' \t POW: ' + str(ranking[i]['power']) + ' \t MEAT|VEGE: ' + str(ranking[i]['meat']) + '|' + str(ranking[i]['vege']) + ' \t FIT: ' + str(round(ranking[i]['fitness']))
             self.labels[i].set_text(text)
 
 class InfoWindow(UIWindow):
@@ -250,8 +251,8 @@ class GUI():
         self.info_win = InfoWindow(manager=self.ui_mgr, rect=pos, text=text, title=title)
 
     def create_rank_win(self):
-        w = 250
-        h = 380
+        w = 400
+        h = 400
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)
 
@@ -298,7 +299,7 @@ class GUI():
     def update_enviroment(self, dT: float) -> dict:
         data = {}
         data['dT'] = str(round(dT, 3)) + 's'
-        data['TIME'] = str(self.owner.enviro.get_time(1)) + 's'
+        data['TIME'] = str(self.owner.enviro.cycles*6000 + round(self.owner.enviro.time)) + 's'
         data['CREATURES'] = str(len(self.owner.enviro.creature_list))
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         data['NEURO_TIME'] = str(round(self.owner.enviro.neuro_avg_time*1000, 1)) + 'ms'

@@ -41,7 +41,12 @@ class Configuration():
         self.MEAT2ENG = None
         self.VEGE2ENG = None
         self.HIT2FIT = None
+        self.VEGE2FIT = None
+        self.MEAT2FIT = None
         self.DIFF = None
+        self.AUTO_SAVE_TIME = None
+        self.ATK_ENG = None
+        self.EAT_ENG = None
         self.load_from_file(filename)
 
     def load_from_file(self, filename: str):
@@ -83,8 +88,12 @@ class Configuration():
         self.MEAT2ENG               = cfg['MEAT2ENG']
         self.VEGE2ENG               = cfg['VEGE2ENG']
         self.HIT2FIT                = cfg['HIT2FIT']
-        self.DIFF                   = cfg['DIFF'] 
-
+        self.DIFF                   = cfg['DIFF']
+        self.VEGE2FIT               = cfg['VEGE2FIT']
+        self.MEAT2FIT               = cfg['MEAT2FIT'] 
+        self.AUTO_SAVE_TIME         = cfg['AUTO_SAVE_TIME']
+        self.ATK_ENG                = cfg['ATK_ENG']
+        self.EAT_ENG                = cfg['EAT_ENG']
 
 
 cfg = Configuration('config.json')

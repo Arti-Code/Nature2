@@ -2,7 +2,7 @@ from copy import copy, deepcopy
 import os
 import json
 from random import random, randint
-from math import sin, cos, radians, degrees, pi as PI
+from math import floor, sin, cos, radians, degrees, pi as PI
 import pygame
 import pygame.gfxdraw as gfxdraw
 from pygame.font import Font, match_font 
@@ -103,7 +103,8 @@ class Manager:
             project = {}
             creatures = []
             project['name'] = project_name
-            project['time'] = self.enviro.get_time()
+            project['time'] = self.enviro.get_time(1)
+            project['last_save_time'] = self.enviro.last_save_time
             project['ranking'] = []
             for creature in self.enviro.creature_list:
                 creature_to_save = {}
@@ -198,8 +199,9 @@ class Manager:
         self.enviro.create_rocks(cfg.ROCK_NUM)
         self.enviro.create_plants(cfg.PLANT_INIT_NUM)
         self.project_name = project_name
-        self.enviro.time = obj_list['time'] % 1000
-        self.enviro.cycle = round((obj_list['time'] / 100))
+        self.enviro.time = round(obj_list['time'] % 6000, 1)
+        self.enviro.cycle = floor((obj_list['time'] / 6000))
+        self.enviro.last_save_time = obj_list['last_save_time']
         #obj_list['ranking1'].sort(key=Sort_By_Fitness, reverse=True)
         #obj_list['ranking2'].sort(key=Sort_By_Fitness, reverse=True)
         self.enviro.ranking1 = []
@@ -315,7 +317,7 @@ class Manager:
                     nodes_to_draw.append((node_color, l, n, node.recurrent, dist_nn, desc))
                     n += 1
                 l += 1
-
+            out = 0
             for c, l, n, r, d, desc in nodes_to_draw:
                 gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 3, c)
                 gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d + round(d/2), 3, c)
@@ -326,6 +328,8 @@ class Manager:
                     self.add_text(f'{inp_desc[n]}: ', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                     self.add_text(f'{round(val, 1)}', 50 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                 elif l == last_layer_idx:
-                    val = network.nodes[network.layers[l].nodes[n]].value
+                    #val = network.nodes[network.layers[l].nodes[n]].value
+                    val = self.enviro.selected.output[out]
+                    out += 1
                     #self.add_text(f'{inp_desc[n]}: ', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                     self.add_text2(f'{round(val, 1)}', 50 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)

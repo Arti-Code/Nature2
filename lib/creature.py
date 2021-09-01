@@ -20,7 +20,7 @@ class Creature(Life):
     def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
         super().__init__(screen=screen, space=space, owner=sim, collision_tag=collision_tag, position=position)
         self.angle = random()*2*PI
-        self.output = [0, 0, 0]
+        self.output = [0, 0, 0, 0, 0]
         self.generation = 0
         self.fitness = 0
         self.neuro = Network()
@@ -96,7 +96,7 @@ class Creature(Life):
         self.vege = randint(1, 10)
         self.power = randint(1, 10)
         self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
-        self.neuro.BuildRandom([36, 0, 0, 0, 0, 0, 0, 0, 3], 0.2)
+        self.neuro.BuildRandom([36, 0, 0, 0, 0, 0, 0, 0, 5], 0.2)
         self.name = random_name(3, True)
 
     def draw(self, screen: Surface, selected: Body):
@@ -203,7 +203,13 @@ class Creature(Life):
     def calc_energy(self, dt: float, move: float):
         base_energy = cfg.BASE_ENERGY
         move_energy = move * cfg.MOVE_ENERGY
-        self.energy -= (base_energy + move_energy) * self.size * cfg.SIZE_COST * dt
+        rest_energy = 0
+        size_cost = self.size * cfg.SIZE_COST * dt
+        if self.output[3] >= 0.5:
+            rest_energy += cfg.EAT_ENG
+        if self.output[4] >= 0.5:
+            rest_energy += cfg.ATK_ENG
+        self.energy -= (base_energy + move_energy + rest_energy) * size_cost
         self.energy = clamp(self.energy, 0, self.max_energy)
 
     def get_input(self):
@@ -248,6 +254,9 @@ class Creature(Life):
             input = self.get_input()
             self.output = self.neuro.Calc(input)
             self.mem_time = cfg.MEM_TIME
+            for o in range(len(self.output)):
+                if self.output[o] < -1 or self.output[o] > 1:
+                    self.output[o] = clamp(self.output[o], -1, 1)
         #for sensor in self.sensors:
         #    sensor.reset_data()
             

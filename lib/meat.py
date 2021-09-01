@@ -61,7 +61,8 @@ class Meat(Body):
         self.color0 = self._color0
         new_size = floor(sqrt(self.energy)*0.25)
         if new_size != self.shape.radius:
-            self.shape.unsafe_set_radius(new_size*1.5)
+            self.shape.unsafe_set_radius(new_size)
+            self.radius = self.shape.radius
 
     def kill(self, space: Space):
         space.remove(self.shape)

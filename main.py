@@ -66,6 +66,7 @@ class Simulation():
         self.ranking1 = []
         self.ranking2 = []
         log_to_file('simulation started', 'log.txt')
+        self.last_save_time = 0
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -75,7 +76,7 @@ class Simulation():
             x = sin(vert_ang)*size + (random()*2-1)*size*0.4
             y = cos(vert_ang)*size + (random()*2-1)*size*0.4
             vertices.append(Vec2d(x, y)+position)
-        rock = Rock(self.screen, self.space, vertices, 1, Color('grey40'), Color('grey'))
+        rock = Rock(self.screen, self.space, vertices, 3, Color('grey40'), Color('grey'))
         self.wall_list.append(rock)
 
     def create_enviro(self, world: tuple = None):
@@ -319,13 +320,13 @@ class Simulation():
                 self.manager.draw_net(self.selected.neuro)
 
     def calc_time(self):
-        self.time += self.dt
-        if self.time > 1000:
+        self.time += self.dt*0.1
+        if self.time > 6000:
             self.cycles += 1
-            self.time = self.time % 1000
+            self.time = self.time % 6000
 
-    def get_time(self, digits: int = 0):
-        t = self.cycles*1000 + round(self.time, digits)
+    def get_time(self, digits: int = None):
+        t = self.cycles*6000 + round(self.time, digits)
         return t
 
     def kill_all_creatures(self):
@@ -443,6 +444,11 @@ class Simulation():
             creature = self.add_creature(cfg.WORLD, genome)
         return creature
 
+    def auto_save(self):
+        if round((self.cycles*6000+self.time)-self.last_save_time) >= cfg.AUTO_SAVE_TIME:
+            self.manager.save_project()
+            self.last_save_time = round((self.cycles*6000+self.time), 1)
+    
     def main(self):
         set_win_pos(20, 20)
         # self.init(cfg.WORLD)
@@ -450,6 +456,7 @@ class Simulation():
         set_icon('planet32.png')
         #test = Test()
         while self.running:
+            self.auto_save()
             self.events()
             self.update()
             self.draw()
