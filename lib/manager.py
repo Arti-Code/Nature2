@@ -31,6 +31,7 @@ class Manager:
         self.gui = GUI(owner=self, view=cfg.WORLD)
         self.font_small = pygame.font.Font("res/fonts/fira.ttf", 8)
         self.text_list: list = []
+        
 
     def new_project(self, new_name: str):
         self.add_to_project_list(new_name)
@@ -103,8 +104,9 @@ class Manager:
             project = {}
             creatures = []
             project['name'] = project_name
-            project['time'] = self.enviro.get_time(1)
-            project['last_save_time'] = self.enviro.last_save_time
+            project['time'] = round(self.enviro.time, 1)
+            project['cycles'] = self.enviro.cycles
+            project['last_save_time'] = self.enviro.cycles*6000+round(self.enviro.time)
             project['ranking'] = []
             for creature in self.enviro.creature_list:
                 creature_to_save = {}
@@ -199,8 +201,8 @@ class Manager:
         self.enviro.create_rocks(cfg.ROCK_NUM)
         self.enviro.create_plants(cfg.PLANT_INIT_NUM)
         self.project_name = project_name
-        self.enviro.time = round(obj_list['time'] % 6000, 1)
-        self.enviro.cycle = floor((obj_list['time'] / 6000))
+        self.enviro.time = round(obj_list['time'], 1)
+        self.enviro.cycles = obj_list['cycle']
         self.enviro.last_save_time = obj_list['last_save_time']
         #obj_list['ranking1'].sort(key=Sort_By_Fitness, reverse=True)
         #obj_list['ranking2'].sort(key=Sort_By_Fitness, reverse=True)
