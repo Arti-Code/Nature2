@@ -67,7 +67,7 @@ class Simulation():
         self.ranking2 = []
         log_to_file('simulation started', 'log.txt')
         self.last_save_time = 0
-        self.map = pygame.image.load('res/map2.png').convert()
+        #self.map = pygame.image.load('res/map2.png').convert()
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -282,7 +282,7 @@ class Simulation():
 
     def draw(self):
         self.screen.fill(Color('black'))
-        self.screen.blit(self.map, self.screen.get_rect())
+        #self.screen.blit(self.map, self.screen.get_rect())
         #self.screen.blit(self.map)
         for creature in self.creature_list:
             creature.draw(screen=self.screen, selected=self.selected)

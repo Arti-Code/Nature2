@@ -1,6 +1,6 @@
 {
-  "WORLD": [1900, 1000],
-  "SCREEN": [1900, 1000],
+  "WORLD": [1400, 750],
+  "SCREEN": [1400, 750],
   "FONT_SIZE": 14,
   "PLANT_MAX_SIZE": 10,
   "PLANT_GROWTH": 0.3,
@@ -23,7 +23,7 @@
   "HIT": 40,
   "MEM_TIME": 0.3,
   "SENSOR_MAX_ANGLE": 1.0471975511965976,
-  "ROCK_NUM": 0,
+  "ROCK_NUM": 8,
   "RANK_SIZE": 20,
   "MEAT_TIME": 40,
   "VISUAL_RANGE": 220,
@@ -36,7 +36,7 @@
   "MEAT2FIT": 0.05,
   "VEGE2FIT": 0.05,
   "DIFF": 0.3,
-  "AUTO_SAVE_TIME": 10,
+  "AUTO_SAVE_TIME": 100,
   "ATK_ENG": 0.01,
   "EAT_ENG": 0.01
 }

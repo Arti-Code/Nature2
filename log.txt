@@ -1911,3 +1911,938 @@ diff: [0.07] [0.27] [0.17]
 GATUNEK: ZUSEHP
 diff: [0.07] [0.2] [0.14]
 GATUNEK: VURYUO
+simulation started
+simulation started
+simulation started
+diff: [0.07] [0.32] [0.2]
+GATUNEK: AKHVIP
+diff: [0.07] [0.23] [0.15]
+GATUNEK: DAVAUI
+diff: [0.03] [0.19] [0.11]
+GATUNEK: AQXIHR
+diff: [0.1] [0.24] [0.17]
+GATUNEK: PRUGQE
+diff: [0.07] [0.24] [0.16]
+GATUNEK: SNHTOZ
+diff: [0.07] [0.12] [0.1]
+GATUNEK: KOOJAM
+diff: [0.1] [0.07] [0.09]
+GATUNEK: TULIPO
+diff: [0.05] [0.22] [0.14]
+GATUNEK: LIXOAV
+diff: [0.07] [0.34] [0.21]
+GATUNEK: ZUXORA
+diff: [0.05] [0.18] [0.11]
+GATUNEK: WIKIHD
+diff: [0.07] [0.26] [0.17]
+GATUNEK: HOONLO
+diff: [0.05] [0.21] [0.13]
+GATUNEK: ZONYHU
+diff: [0.05] [0.02] [0.04]
+GATUNEK: MOPUOK
+diff: [0.0] [0.15] [0.08]
+GATUNEK: PWODAL
+diff: [0.1] [0.22] [0.16]
+GATUNEK: ZOVYXI
+diff: [0.07] [0.21] [0.14]
+GATUNEK: HOONLO
+diff: [0.1] [0.22] [0.16]
+GATUNEK: KOOJAM
+diff: [0.07] [0.24] [0.16]
+GATUNEK: PWODAL
+diff: [0.07] [0.27] [0.17]
+GATUNEK: MOPUOK
+diff: [0.03] [0.29] [0.16]
+GATUNEK: HOONLO
+diff: [0.12] [0.26] [0.19]
+GATUNEK: WIKIHD
+diff: [0.07] [0.16] [0.12]
+GATUNEK: HOONLO
+diff: [0.03] [0.36] [0.19]
+GATUNEK: TUTOFU
+diff: [0.05] [0.05] [0.05]
+GATUNEK: TULIPO
+diff: [0.12] [0.27] [0.2]
+GATUNEK: HOONLO
+diff: [0.1] [0.24] [0.17]
+GATUNEK: TUTOFU
+diff: [0.1] [0.14] [0.12]
+GATUNEK: HOONLO
+diff: [0.1] [0.2] [0.15]
+GATUNEK: HOONLO
+diff: [0.07] [0.22] [0.15]
+GATUNEK: DAVAUI
+diff: [0.1] [0.36] [0.23]
+GATUNEK: MOPUOK
+diff: [0.05] [0.23] [0.14]
+GATUNEK: HLTUPS
+diff: [0.05] [0.33] [0.19]
+GATUNEK: TUTOFU
+diff: [0.1] [0.32] [0.21]
+GATUNEK: ZOVYXI
+diff: [0.05] [0.19] [0.12]
+GATUNEK: TOHHZU
+diff: [0.07] [0.31] [0.19]
+GATUNEK: HOONLO
+diff: [0.07] [0.33] [0.2]
+GATUNEK: PRUGQE
+diff: [0.1] [0.22] [0.16]
+GATUNEK: HOONLO
+diff: [0.03] [0.16] [0.09]
+GATUNEK: ZONYHU
+diff: [0.15] [0.37] [0.26]
+GATUNEK: HOONLO
+diff: [0.07] [0.45] [0.26]
+GATUNEK: HOONLO
+diff: [0.12] [0.46] [0.29]
+GATUNEK: ZOVYXI
+diff: [0.1] [0.33] [0.21]
+GATUNEK: HOONLO
+diff: [0.12] [0.26] [0.19]
+GATUNEK: HOONLO
+diff: [0.1] [0.51] [0.31]
+NOWY GATUNEK: HOONLO>>>HOPFLO
+diff: [0.17] [0.43] [0.3]
+NOWY GATUNEK: HOONLO>>>HOONZU
+diff: [0.03] [0.45] [0.24]
+GATUNEK: HOONLO
+diff: [0.12] [0.26] [0.19]
+GATUNEK: HOONLO
+diff: [0.1] [0.37] [0.24]
+GATUNEK: HOONLO
+diff: [0.1] [0.48] [0.29]
+GATUNEK: HOONLO
+diff: [0.12] [0.4] [0.26]
+GATUNEK: HOONLO
+diff: [0.07] [0.45] [0.26]
+GATUNEK: HOONLO
+diff: [0.12] [0.44] [0.28]
+GATUNEK: HOONLO
+diff: [0.03] [0.44] [0.23]
+GATUNEK: HOONLO
+diff: [0.12] [0.51] [0.32]
+NOWY GATUNEK: HOONLO>>>HOTELO
+diff: [0.03] [0.53] [0.28]
+GATUNEK: HOONLO
+diff: [0.12] [0.51] [0.32]
+NOWY GATUNEK: HOONLO>>>HOONPY
+diff: [0.17] [0.43] [0.3]
+NOWY GATUNEK: HOONLO>>>HOPULO
+diff: [0.07] [0.26] [0.17]
+GATUNEK: ALUDTU
+diff: [0.1] [0.51] [0.3]
+NOWY GATUNEK: HOONLO>>>HOSILO
+diff: [0.12] [0.67] [0.4]
+NOWY GATUNEK: HOONLO>>>HOTKLO
+diff: [0.1] [0.53] [0.31]
+NOWY GATUNEK: HOONLO>>>HOTLLO
+diff: [0.07] [0.26] [0.17]
+GATUNEK: WIKIHD
+diff: [0.15] [0.4] [0.28]
+GATUNEK: HOONLO
+diff: [0.07] [0.26] [0.17]
+GATUNEK: HOPULO
+diff: [0.1] [0.51] [0.3]
+NOWY GATUNEK: HOONLO>>>HOAMLO
+diff: [0.05] [0.08] [0.06]
+GATUNEK: HOSILO
+diff: [0.12] [0.41] [0.27]
+GATUNEK: HOONLO
+diff: [0.1] [0.25] [0.17]
+GATUNEK: HOPULO
+diff: [0.07] [0.21] [0.14]
+GATUNEK: HOSILO
+diff: [0.12] [0.14] [0.13]
+GATUNEK: HOONLO
+diff: [0.03] [0.24] [0.13]
+GATUNEK: ZONYHU
+diff: [0.17] [0.47] [0.32]
+NOWY GATUNEK: HOONLO>>>HOONKA
+diff: [0.1] [0.35] [0.22]
+GATUNEK: HOPULO
+diff: [0.12] [0.47] [0.3]
+GATUNEK: HOONLO
+diff: [0.1] [0.53] [0.31]
+NOWY GATUNEK: HOONLO>>>HOTELO
+diff: [0.12] [0.3] [0.21]
+GATUNEK: HOSILO
+diff: [0.12] [0.52] [0.32]
+NOWY GATUNEK: HOONLO>>>HOONPY
+diff: [0.05] [0.33] [0.19]
+GATUNEK: ZONYHU
+diff: [0.12] [0.53] [0.33]
+NOWY GATUNEK: HOONLO>>>HOZALO
+diff: [0.05] [0.14] [0.1]
+GATUNEK: HOTELO
+diff: [0.07] [0.35] [0.21]
+GATUNEK: HOSILO
+diff: [0.15] [0.45] [0.3]
+GATUNEK: HOSILO
+diff: [0.07] [0.35] [0.21]
+GATUNEK: HOPULO
+diff: [0.17] [0.54] [0.36]
+NOWY GATUNEK: HOONLO>>>HOONSI
+diff: [0.1] [0.43] [0.27]
+GATUNEK: ZONYHU
+diff: [0.15] [0.46] [0.3]
+NOWY GATUNEK: HOONLO>>>HOONNE
+diff: [0.05] [0.21] [0.13]
+GATUNEK: HOTELO
+diff: [0.05] [0.07] [0.06]
+GATUNEK: HOZALO
+diff: [0.1] [0.4] [0.25]
+GATUNEK: HOTELO
+diff: [0.1] [0.28] [0.19]
+GATUNEK: HOTKLO
+diff: [0.07] [0.4] [0.24]
+GATUNEK: HOSILO
+diff: [0.1] [0.42] [0.26]
+GATUNEK: HOPULO
+diff: [0.07] [0.06] [0.07]
+GATUNEK: HOONSI
+diff: [0.07] [0.24] [0.16]
+GATUNEK: ZONYHU
+diff: [0.07] [0.15] [0.11]
+GATUNEK: HOTELO
+diff: [0.1] [0.19] [0.14]
+GATUNEK: HOZALO
+diff: [0.12] [0.51] [0.32]
+NOWY GATUNEK: HOSILO>>>HOKOLO
+diff: [0.1] [0.47] [0.29]
+GATUNEK: HOSILO
+diff: [0.1] [0.42] [0.26]
+GATUNEK: HOSILO
+diff: [0.17] [0.53] [0.35]
+NOWY GATUNEK: HOONLO>>>SNONLO
+diff: [0.12] [0.42] [0.27]
+GATUNEK: HOPULO
+diff: [0.1] [0.43] [0.27]
+GATUNEK: ZONYHU
+diff: [0.17] [0.17] [0.17]
+GATUNEK: HOZALO
+diff: [0.1] [0.18] [0.14]
+GATUNEK: HOONSI
+diff: [0.03] [0.2] [0.11]
+GATUNEK: HOTELO
+diff: [0.05] [0.41] [0.23]
+GATUNEK: HOSILO
+diff: [0.12] [0.47] [0.3]
+GATUNEK: HOSILO
+diff: [0.07] [0.34] [0.21]
+GATUNEK: ZONYHU
+diff: [0.1] [0.2] [0.15]
+GATUNEK: HOZALO
+diff: [0.15] [0.48] [0.32]
+NOWY GATUNEK: HOSILO>>>HOTOLO
+diff: [0.05] [0.32] [0.18]
+GATUNEK: HOZALO
+diff: [0.15] [0.45] [0.3]
+NOWY GATUNEK: HOPULO>>>HOPUHE
+diff: [0.07] [0.49] [0.28]
+GATUNEK: HOSILO
+diff: [0.1] [0.53] [0.31]
+NOWY GATUNEK: HOSILO>>>DASILO
+diff: [0.2] [0.47] [0.33]
+NOWY GATUNEK: HOSILO>>>QESILO
+diff: [0.12] [0.44] [0.28]
+GATUNEK: HOONLO
+diff: [0.05] [0.12] [0.08]
+GATUNEK: HOTELO
+diff: [0.07] [0.31] [0.19]
+GATUNEK: ZONYHU
+diff: [0.07] [0.45] [0.26]
+GATUNEK: HOSILO
+diff: [0.07] [0.07] [0.07]
+GATUNEK: HOTOLO
+diff: [0.1] [0.42] [0.26]
+GATUNEK: HOZALO
+diff: [0.15] [0.58] [0.36]
+NOWY GATUNEK: HOPULO>>>HOQELO
+diff: [0.05] [0.08] [0.07]
+GATUNEK: HOPUHE
+diff: [0.1] [0.5] [0.3]
+GATUNEK: HOSILO
+diff: [0.05] [0.11] [0.08]
+GATUNEK: DASILO
+diff: [0.07] [0.22] [0.15]
+GATUNEK: QESILO
+diff: [0.1] [0.55] [0.32]
+NOWY GATUNEK: HOSILO>>>HOSIHP
+diff: [0.05] [0.58] [0.32]
+NOWY GATUNEK: HOSILO>>>HOOTLO
+diff: [0.07] [0.27] [0.17]
+GATUNEK: HOTOLO
+diff: [0.1] [0.41] [0.25]
+GATUNEK: HOZALO
+diff: [0.07] [0.73] [0.4]
+NOWY GATUNEK: HOPULO>>>TAPULO
+diff: [0.03] [0.21] [0.12]
+GATUNEK: HOPUHE
+diff: [0.1] [0.31] [0.2]
+GATUNEK: HOQELO
+diff: [0.12] [0.42] [0.27]
+GATUNEK: HOSILO
+diff: [0.15] [0.54] [0.35]
+NOWY GATUNEK: HOSILO>>>SESILO
+diff: [0.1] [0.25] [0.18]
+GATUNEK: DASILO
+diff: [0.15] [0.45] [0.3]
+GATUNEK: QESILO
+diff: [0.12] [0.6] [0.36]
+NOWY GATUNEK: HOSILO>>>HOSIHF
+diff: [0.03] [0.16] [0.09]
+GATUNEK: HOOTLO
+diff: [0.12] [0.53] [0.33]
+NOWY GATUNEK: HOZALO>>>HOZATE
+diff: [0.07] [0.5] [0.29]
+GATUNEK: HOZALO
+diff: [0.05] [0.13] [0.09]
+GATUNEK: HOQELO
+diff: [0.1] [0.16] [0.13]
+GATUNEK: TAPULO
+diff: [0.07] [0.38] [0.23]
+GATUNEK: HOPULO
+diff: [0.1] [0.55] [0.33]
+NOWY GATUNEK: HOSILO>>>PJSILO
+diff: [0.12] [0.51] [0.32]
+NOWY GATUNEK: HOSILO>>>ULSILO
+diff: [0.1] [0.4] [0.25]
+GATUNEK: QESILO
+diff: [0.07] [0.49] [0.28]
+GATUNEK: QESILO
+diff: [0.12] [0.48] [0.3]
+NOWY GATUNEK: HOSILO>>>HOSILI
+diff: [0.07] [0.33] [0.2]
+GATUNEK: DASILO
+diff: [0.07] [0.59] [0.33]
+NOWY GATUNEK: SESILO>>>SETHLO
+diff: [0.05] [0.16] [0.1]
+GATUNEK: HOOTLO
+diff: [0.03] [0.19] [0.11]
+GATUNEK: HOOTLO
+diff: [0.03] [0.1] [0.06]
+GATUNEK: HOONKA
+diff: [0.12] [0.7] [0.41]
+NOWY GATUNEK: HOZALO>>>HODALO
+diff: [0.03] [0.21] [0.12]
+GATUNEK: HOSIHF
+diff: [0.17] [0.55] [0.36]
+NOWY GATUNEK: HOPULO>>>HOPUWI
+diff: [0.15] [0.24] [0.19]
+GATUNEK: TAPULO
+diff: [0.1] [0.28] [0.19]
+GATUNEK: HOPULO
+diff: [0.07] [0.57] [0.32]
+NOWY GATUNEK: HOZALO>>>HOZAHR
+diff: [0.12] [0.49] [0.31]
+NOWY GATUNEK: QESILO>>>QESIKU
+diff: [0.07] [0.34] [0.21]
+GATUNEK: QESILO
+diff: [0.1] [0.54] [0.32]
+NOWY GATUNEK: QESILO>>>QESIZI
+diff: [0.07] [0.21] [0.14]
+GATUNEK: ULSILO
+diff: [0.1] [0.54] [0.32]
+NOWY GATUNEK: HOSILO>>>HONOLO
+diff: [0.05] [0.14] [0.1]
+GATUNEK: SESILO
+diff: [0.07] [0.26] [0.17]
+GATUNEK: HOOTLO
+diff: [0.05] [0.49] [0.27]
+GATUNEK: HOOTLO
+diff: [0.0] [0.24] [0.12]
+GATUNEK: HOSILI
+diff: [0.03] [0.16] [0.09]
+GATUNEK: HOOTLO
+diff: [0.05] [0.18] [0.11]
+GATUNEK: HOSIHF
+diff: [0.05] [0.27] [0.16]
+GATUNEK: TAPULO
+diff: [0.2] [0.33] [0.27]
+GATUNEK: TAPULO
+diff: [0.05] [0.51] [0.28]
+GATUNEK: HOPULO
+diff: [0.05] [0.56] [0.3]
+NOWY GATUNEK: HOPUWI>>>HOMAWI
+diff: [0.12] [0.55] [0.34]
+NOWY GATUNEK: QESILO>>>QESIKO
+diff: [0.07] [0.17] [0.12]
+GATUNEK: HOJYLI
+diff: [0.05] [0.39] [0.22]
+GATUNEK: HOPULO
+diff: [0.1] [0.51] [0.3]
+NOWY GATUNEK: QESILO>>>LISILO
+diff: [0.05] [0.24] [0.14]
+GATUNEK: QESIKU
+diff: [0.05] [0.37] [0.21]
+GATUNEK: ULSILO
+diff: [0.05] [0.51] [0.28]
+GATUNEK: HOSILO
+diff: [0.15] [0.4] [0.28]
+GATUNEK: QESILO
+diff: [0.07] [0.34] [0.21]
+GATUNEK: SESILO
+diff: [0.03] [0.4] [0.21]
+GATUNEK: ULSILO
+diff: [0.05] [0.45] [0.25]
+GATUNEK: HOOTLO
+diff: [0.05] [0.47] [0.26]
+GATUNEK: HOOTLO
+diff: [0.07] [0.53] [0.3]
+NOWY GATUNEK: HOOTLO>>>HOSRLO
+diff: [0.05] [0.3] [0.18]
+GATUNEK: HOSILI
+diff: [0.03] [0.21] [0.12]
+GATUNEK: HOOTLO
+diff: [0.03] [0.43] [0.23]
+GATUNEK: HOOTLO
+diff: [0.15] [0.21] [0.18]
+GATUNEK: HOOTLO
+diff: [0.03] [0.29] [0.16]
+GATUNEK: HOSIHF
+diff: [0.03] [0.36] [0.19]
+GATUNEK: HOSIHF
+diff: [0.12] [0.44] [0.28]
+GATUNEK: TAPULO
+diff: [0.17] [0.42] [0.3]
+GATUNEK: TAPULO
+diff: [0.05] [0.7] [0.37]
+NOWY GATUNEK: HOPULO>>>HOPUPL
+diff: [0.2] [0.18] [0.19]
+GATUNEK: TAPULO
+diff: [0.1] [0.38] [0.24]
+GATUNEK: QESILO
+diff: [0.12] [0.34] [0.23]
+GATUNEK: HOPULO
+diff: [0.05] [0.18] [0.11]
+GATUNEK: ULSILO
+diff: [0.12] [0.4] [0.26]
+GATUNEK: HOSILO
+diff: [0.05] [0.22] [0.14]
+GATUNEK: SESILO
+diff: [0.12] [0.35] [0.24]
+GATUNEK: SESILO
+diff: [0.05] [0.31] [0.18]
+GATUNEK: LISILO
+diff: [0.05] [0.5] [0.28]
+GATUNEK: ULSILO
+diff: [0.07] [0.48] [0.28]
+GATUNEK: ULSILO
+diff: [0.07] [0.26] [0.17]
+GATUNEK: HOOTLO
+diff: [0.1] [0.48] [0.29]
+GATUNEK: HOOTLO
+diff: [0.05] [0.67] [0.36]
+NOWY GATUNEK: HOOTLO>>>HOOTPS
+diff: [0.1] [0.27] [0.18]
+GATUNEK: HOSILI
+diff: [0.05] [0.32] [0.18]
+GATUNEK: SESILO
+diff: [0.07] [0.5] [0.29]
+GATUNEK: HOOTLO
+diff: [0.07] [0.23] [0.15]
+GATUNEK: HOPUWI
+diff: [0.1] [0.35] [0.22]
+GATUNEK: HOOTLO
+diff: [0.05] [0.35] [0.2]
+GATUNEK: HOSIHF
+diff: [0.05] [0.36] [0.2]
+GATUNEK: HOSIHF
+diff: [0.15] [0.5] [0.33]
+NOWY GATUNEK: HOPULO>>>HOPUHW
+diff: [0.1] [0.35] [0.22]
+GATUNEK: TAPULO
+diff: [0.2] [0.4] [0.3]
+NOWY GATUNEK: TAPULO>>>TAOTLO
+diff: [0.0] [0.56] [0.28]
+GATUNEK: HOPULO
+diff: [0.07] [0.21] [0.14]
+GATUNEK: HOPUPL
+diff: [0.15] [0.39] [0.27]
+GATUNEK: TAPULO
+diff: [0.07] [0.33] [0.2]
+GATUNEK: QESIKU
+diff: [0.2] [0.48] [0.34]
+NOWY GATUNEK: HOOTLO>>>HOHRLO
+diff: [0.2] [0.45] [0.33]
+NOWY GATUNEK: HOPULO>>>HOHSLO
+diff: [0.07] [0.16] [0.12]
+GATUNEK: ULSILO
+diff: [0.1] [0.31] [0.21]
+GATUNEK: ULSILO
+diff: [0.03] [0.24] [0.13]
+GATUNEK: SESILO
+diff: [0.17] [0.47] [0.32]
+NOWY GATUNEK: HOPULO>>>HOTOLO
+diff: [0.07] [0.58] [0.33]
+NOWY GATUNEK: ULSILO>>>ULARLO
+diff: [0.1] [0.44] [0.27]
+GATUNEK: HOOTLO
+diff: [0.15] [0.56] [0.36]
+NOWY GATUNEK: HOSILO>>>HOSISJ
+diff: [0.07] [0.45] [0.26]
+GATUNEK: SESILO
+diff: [0.17] [0.49] [0.33]
+NOWY GATUNEK: HOSILO>>>HOHELO
+diff: [0.03] [0.32] [0.17]
+GATUNEK: HOSILI
+diff: [0.05] [0.28] [0.16]
+GATUNEK: HOOTLO
+diff: [0.03] [0.46] [0.24]
+GATUNEK: HOOTLO
+diff: [0.07] [0.42] [0.25]
+GATUNEK: HOSIHF
+diff: [0.12] [0.33] [0.23]
+GATUNEK: TAPULO
+diff: [0.17] [0.33] [0.25]
+GATUNEK: TAPULO
+diff: [0.03] [0.67] [0.35]
+NOWY GATUNEK: HOPULO>>>HOPUNI
+diff: [0.05] [0.39] [0.22]
+GATUNEK: HOPUPL
+diff: [0.07] [0.18] [0.13]
+GATUNEK: HOPUWI
+diff: [0.05] [0.29] [0.17]
+GATUNEK: HOOTLO
+diff: [0.07] [0.23] [0.15]
+GATUNEK: HOPUPL
+diff: [0.07] [0.05] [0.06]
+GATUNEK: ULSILO
+diff: [0.03] [0.18] [0.1]
+GATUNEK: SESILO
+diff: [0.03] [0.32] [0.17]
+GATUNEK: ULARLO
+diff: [0.05] [0.55] [0.3]
+GATUNEK: SESILO
+diff: [0.05] [0.58] [0.31]
+NOWY GATUNEK: HOSILO>>>HOSIMI
+diff: [0.12] [0.56] [0.34]
+NOWY GATUNEK: HOSILO>>>UHSILO
+diff: [0.12] [0.34] [0.23]
+GATUNEK: HOSILI
+diff: [0.17] [0.43] [0.3]
+NOWY GATUNEK: TAPULO>>>TAUOLO
+diff: [0.05] [0.6] [0.33]
+NOWY GATUNEK: HOPULO>>>HOPUHZ
+diff: [0.07] [0.48] [0.28]
+GATUNEK: HOSIHF
+diff: [0.07] [0.26] [0.17]
+GATUNEK: HOPUPL
+diff: [0.07] [0.29] [0.18]
+GATUNEK: ULARLO
+diff: [0.1] [0.5] [0.3]
+GATUNEK: SESILO
+diff: [0.15] [0.47] [0.31]
+NOWY GATUNEK: HOSILO>>>HOFULO
+diff: [0.05] [0.33] [0.19]
+GATUNEK: HOSIMI
+diff: [0.07] [0.4] [0.24]
+GATUNEK: HOSILI
+diff: [0.17] [0.58] [0.38]
+NOWY GATUNEK: HOSILI>>>HOSIPF
+diff: [0.15] [0.44] [0.3]
+GATUNEK: TAPULO
+diff: [0.05] [0.63] [0.34]
+NOWY GATUNEK: HOPULO>>>PFPULO
+diff: [0.07] [0.29] [0.18]
+GATUNEK: HOPUHZ
+diff: [0.07] [0.5] [0.29]
+GATUNEK: TAPULO
+diff: [0.07] [0.6] [0.34]
+NOWY GATUNEK: SESILO>>>SEQELO
+diff: [0.05] [0.32] [0.18]
+GATUNEK: ULARLO
+diff: [0.1] [0.48] [0.29]
+GATUNEK: HOSILI
+diff: [0.15] [0.6] [0.37]
+NOWY GATUNEK: TAPULO>>>TAPUPD
+diff: [0.03] [0.58] [0.3]
+NOWY GATUNEK: HOSILI>>>HOSITD
+diff: [0.1] [0.59] [0.35]
+NOWY GATUNEK: HOSILO>>>HOSIHO
+diff: [0.1] [0.21] [0.15]
+GATUNEK: SESILO
+diff: [0.15] [0.52] [0.33]
+NOWY GATUNEK: TAPULO>>>TAPUVI
+diff: [0.07] [0.8] [0.44]
+NOWY GATUNEK: SESILO>>>SEPKLO
+diff: [0.05] [0.43] [0.24]
+GATUNEK: HOSILI
+diff: [0.1] [0.05] [0.08]
+GATUNEK: ULARLO
+diff: [0.17] [0.64] [0.41]
+NOWY GATUNEK: TAPULO>>>TAPUHU
+diff: [0.07] [0.2] [0.14]
+GATUNEK: HOSITD
+diff: [0.05] [0.6] [0.32]
+NOWY GATUNEK: HOSILO>>>HOSISY
+diff: [0.05] [0.24] [0.14]
+GATUNEK: HOSIHO
+diff: [0.05] [0.03] [0.04]
+GATUNEK: SEPKLO
+diff: [0.1] [0.31] [0.2]
+GATUNEK: SESILO
+diff: [0.12] [0.57] [0.35]
+NOWY GATUNEK: TAPULO>>>UFPULO
+diff: [0.07] [0.58] [0.33]
+NOWY GATUNEK: HOSILI>>>HOSIHL
+diff: [0.05] [0.51] [0.28]
+GATUNEK: HOSILI
+diff: [0.1] [0.21] [0.16]
+GATUNEK: ULARLO
+diff: [0.17] [0.59] [0.38]
+NOWY GATUNEK: TAPULO>>>TAPUTY
+diff: [0.07] [0.06] [0.07]
+GATUNEK: TAPUHU
+diff: [0.07] [0.17] [0.12]
+GATUNEK: TAPUVI
+diff: [0.17] [0.44] [0.31]
+NOWY GATUNEK: HOSILO>>>HOSISA
+diff: [0.05] [0.23] [0.14]
+GATUNEK: HOSISY
+diff: [0.07] [0.16] [0.12]
+GATUNEK: ULARLO
+diff: [0.0] [0.46] [0.23]
+GATUNEK: QESILO
+diff: [0.12] [0.25] [0.19]
+GATUNEK: HOSIHO
+diff: [0.07] [0.28] [0.18]
+GATUNEK: SESILO
+diff: [0.12] [0.71] [0.42]
+NOWY GATUNEK: HOSILI>>>HOAMLI
+diff: [0.03] [0.19] [0.11]
+GATUNEK: HOSIHL
+diff: [0.05] [0.53] [0.29]
+GATUNEK: HOSILI
+diff: [0.07] [0.13] [0.1]
+GATUNEK: ULARLO
+diff: [0.12] [0.29] [0.21]
+GATUNEK: ULARLO
+diff: [0.07] [0.71] [0.39]
+NOWY GATUNEK: HOSILI>>>HOSIHF
+diff: [0.2] [0.61] [0.41]
+NOWY GATUNEK: TAPULO>>>PPPULO
+diff: [0.07] [0.29] [0.18]
+GATUNEK: TAPUVI
+diff: [0.1] [0.18] [0.14]
+GATUNEK: HOSIHO
+diff: [0.07] [0.34] [0.21]
+GATUNEK: SEPKLO
+diff: [0.07] [0.35] [0.21]
+GATUNEK: HOSISY
+diff: [0.05] [0.53] [0.29]
+GATUNEK: SEPKLO
+diff: [0.05] [0.15] [0.1]
+GATUNEK: ULARLO
+diff: [0.12] [0.32] [0.22]
+GATUNEK: ULARLO
+diff: [0.1] [0.32] [0.21]
+GATUNEK: HOSIHO
+diff: [0.1] [0.35] [0.23]
+GATUNEK: HOSIHO
+diff: [0.07] [0.26] [0.17]
+GATUNEK: HOSIHL
+diff: [0.07] [0.69] [0.38]
+NOWY GATUNEK: HOSILI>>>XOSILI
+diff: [0.12] [0.31] [0.22]
+GATUNEK: ULARLO
+diff: [0.05] [0.22] [0.14]
+GATUNEK: HOSIHL
+diff: [0.1] [0.11] [0.1]
+GATUNEK: HOSIHF
+diff: [0.1] [0.16] [0.13]
+GATUNEK: HOOTLO
+diff: [0.17] [0.49] [0.33]
+NOWY GATUNEK: TAPUVI>>>TAPUTZ
+diff: [0.07] [0.4] [0.24]
+GATUNEK: HOSIHO
+diff: [0.17] [0.44] [0.31]
+NOWY GATUNEK: HOSIHO>>>HOSIHO
+diff: [0.05] [0.58] [0.32]
+NOWY GATUNEK: HOSILI>>>HOSIAX
+diff: [0.07] [0.21] [0.14]
+GATUNEK: HOSISY
+diff: [0.05] [0.56] [0.3]
+NOWY GATUNEK: HOSILI>>>HOZOLI
+diff: [0.23] [0.53] [0.38]
+NOWY GATUNEK: TAPULO>>>TAPUPZ
+diff: [0.03] [0.67] [0.35]
+NOWY GATUNEK: SEPKLO>>>SETULO
+diff: [0.07] [0.17] [0.12]
+GATUNEK: HOAMLI
+diff: [0.05] [0.14] [0.09]
+GATUNEK: ULARLO
+diff: [0.12] [0.29] [0.21]
+GATUNEK: ULARLO
+diff: [0.1] [0.46] [0.28]
+GATUNEK: ULARLO
+diff: [0.12] [0.36] [0.24]
+GATUNEK: ULARLO
+diff: [0.07] [0.47] [0.27]
+GATUNEK: HOSIHO
+diff: [0.05] [0.38] [0.21]
+GATUNEK: HOSIHO
+simulation started
+diff: [0.07] [0.1] [0.09]
+GATUNEK: MOHRHO
+simulation started
+diff: [0.1] [0.25] [0.18]
+GATUNEK: JYNAMU
+diff: [0.07] [0.13] [0.1]
+GATUNEK: SSPFDI
+diff: [0.05] [0.24] [0.14]
+GATUNEK: TAPHDI
+diff: [0.07] [0.37] [0.22]
+GATUNEK: JYNAMU
+diff: [0.07] [0.21] [0.14]
+GATUNEK: KUKOPO
+diff: [0.03] [0.14] [0.08]
+GATUNEK: XYSOSY
+diff: [0.03] [0.13] [0.08]
+GATUNEK: SSTFTU
+diff: [0.1] [0.45] [0.28]
+GATUNEK: JYNAMU
+diff: [0.0] [0.18] [0.09]
+GATUNEK: HEPYMA
+diff: [0.07] [0.2] [0.14]
+GATUNEK: MAVIPS
+diff: [0.03] [0.25] [0.14]
+GATUNEK: HUNEAV
+diff: [0.03] [0.16] [0.09]
+GATUNEK: PDAVHY
+diff: [0.07] [0.1] [0.09]
+GATUNEK: PRPYAL
+diff: [0.05] [0.27] [0.16]
+GATUNEK: XYSOSY
+diff: [0.03] [0.18] [0.1]
+GATUNEK: SSTFTU
+diff: [0.03] [0.43] [0.23]
+GATUNEK: TOVAVU
+diff: [0.05] [0.12] [0.08]
+GATUNEK: PDAVHY
+diff: [0.05] [0.27] [0.16]
+GATUNEK: SSPFDI
+diff: [0.1] [0.1] [0.1]
+GATUNEK: UFMIJY
+diff: [0.05] [0.67] [0.36]
+NOWY GATUNEK: JYNAMU>>>HYNAMU
+diff: [0.05] [0.15] [0.1]
+GATUNEK: UFMIJY
+diff: [0.07] [0.2] [0.14]
+GATUNEK: PZHOSQ
+diff: [0.05] [0.15] [0.1]
+GATUNEK: RUPESI
+diff: [0.07] [0.23] [0.15]
+GATUNEK: HEPYMA
+diff: [0.03] [0.36] [0.19]
+GATUNEK: HEPYMA
+diff: [0.05] [0.05] [0.05]
+GATUNEK: TORUSF
+simulation started
+diff: [0.1] [0.2] [0.15]
+GATUNEK: RUPUXU
+diff: [0.03] [0.31] [0.17]
+GATUNEK: PRZOTE
+diff: [0.05] [0.27] [0.16]
+GATUNEK: OPVYNI
+diff: [0.1] [0.15] [0.13]
+GATUNEK: PWSJZU
+diff: [0.03] [0.26] [0.14]
+GATUNEK: HZXINA
+diff: [0.07] [0.18] [0.13]
+GATUNEK: UFMIJY
+diff: [0.05] [0.32] [0.19]
+GATUNEK: PZHOSQ
+diff: [0.12] [0.25] [0.19]
+GATUNEK: RUPESI
+diff: [0.07] [0.21] [0.14]
+GATUNEK: UKOTHY
+diff: [0.12] [0.32] [0.22]
+GATUNEK: HEPYMA
+diff: [0.1] [0.49] [0.29]
+GATUNEK: HEPYMA
+diff: [0.05] [0.13] [0.09]
+GATUNEK: TRTYRA
+New loaded
+diff: [0.07] [0.29] [0.18]
+GATUNEK: PDAVHY
+diff: [0.07] [0.16] [0.12]
+GATUNEK: ULZUME
+diff: [0.07] [0.37] [0.22]
+GATUNEK: ZAHYMU
+diff: [0.07] [0.24] [0.16]
+GATUNEK: ZYDITH
+diff: [0.07] [0.18] [0.13]
+GATUNEK: PZHOSQ
+diff: [0.05] [0.38] [0.22]
+GATUNEK: PRPYAL
+diff: [0.05] [0.19] [0.12]
+GATUNEK: HUNEAV
+diff: [0.07] [0.4] [0.24]
+GATUNEK: ULZUME
+diff: [0.07] [0.25] [0.16]
+GATUNEK: SUNIHU
+diff: [0.05] [0.13] [0.09]
+GATUNEK: ZYDITH
+simulation started
+diff: [0.05] [0.34] [0.19]
+GATUNEK: VUZEVY
+diff: [0.1] [0.14] [0.12]
+GATUNEK: ATPEHL
+diff: [0.03] [0.37] [0.2]
+GATUNEK: ZYDITH
+diff: [0.17] [0.14] [0.16]
+GATUNEK: PZHOSQ
+diff: [0.1] [0.26] [0.18]
+GATUNEK: ATARTD
+diff: [0.05] [0.44] [0.25]
+GATUNEK: PRPYAL
+diff: [0.17] [0.39] [0.28]
+GATUNEK: ULZUME
+diff: [0.05] [0.24] [0.14]
+GATUNEK: SUNIHU
+diff: [0.05] [0.15] [0.1]
+GATUNEK: PVODSY
+diff: [0.05] [0.32] [0.19]
+GATUNEK: KEONPT
+diff: [0.05] [0.3] [0.18]
+GATUNEK: TEVUKE
+diff: [0.03] [0.19] [0.11]
+GATUNEK: ZYDITH
+New loaded
+diff: [0.07] [0.42] [0.25]
+GATUNEK: PRPYAL
+diff: [0.07] [0.21] [0.14]
+GATUNEK: UFMIJY
+diff: [0.15] [0.6] [0.38]
+NOWY GATUNEK: JYNAMU>>>JYNAAL
+diff: [0.05] [0.13] [0.09]
+GATUNEK: SAJIUG
+diff: [0.07] [0.39] [0.23]
+GATUNEK: PDAVHY
+diff: [0.07] [0.64] [0.36]
+NOWY GATUNEK: JYNAMU>>>JYNAUO
+diff: [0.05] [0.4] [0.23]
+GATUNEK: ZAHYMU
+diff: [0.03] [0.29] [0.16]
+GATUNEK: UFMIJY
+diff: [0.07] [0.23] [0.15]
+GATUNEK: HUNEAV
+diff: [0.05] [0.41] [0.23]
+GATUNEK: VUZEVY
+diff: [0.07] [0.41] [0.24]
+GATUNEK: PRPYAL
+diff: [0.07] [0.29] [0.18]
+GATUNEK: TORUSF
+diff: [0.03] [0.45] [0.24]
+GATUNEK: SAJIUG
+diff: [0.05] [0.22] [0.14]
+GATUNEK: ONHIMU
+diff: [0.1] [0.25] [0.18]
+GATUNEK: SNSAOI
+diff: [0.03] [0.39] [0.21]
+GATUNEK: TORUSF
+diff: [0.12] [0.36] [0.24]
+GATUNEK: ZAHYMU
+diff: [0.1] [0.51] [0.3]
+NOWY GATUNEK: VUZEVY>>>VUZEMU
+diff: [0.07] [0.15] [0.11]
+GATUNEK: RUPESI
+diff: [0.05] [0.18] [0.12]
+GATUNEK: RUPESI
+diff: [0.07] [0.34] [0.21]
+GATUNEK: ONHIMU
+diff: [0.05] [0.18] [0.11]
+GATUNEK: UJUDZE
+diff: [0.07] [0.43] [0.25]
+GATUNEK: PDAVHY
+diff: [0.05] [0.29] [0.17]
+GATUNEK: SUNIHU
+diff: [0.07] [0.42] [0.25]
+GATUNEK: ZYDITH
+diff: [0.15] [0.43] [0.29]
+GATUNEK: TORUSF
+diff: [0.05] [0.18] [0.11]
+GATUNEK: TRVUDY
+diff: [0.07] [0.29] [0.18]
+GATUNEK: RUPESI
+diff: [0.05] [0.41] [0.23]
+GATUNEK: ZYDITH
+diff: [0.05] [0.22] [0.14]
+GATUNEK: PUZIAL
+diff: [0.12] [0.34] [0.23]
+GATUNEK: XYSOSY
+diff: [0.07] [0.24] [0.16]
+GATUNEK: SUNIHU
+diff: [0.05] [0.55] [0.3]
+GATUNEK: SAJIUG
+diff: [0.07] [0.36] [0.22]
+GATUNEK: ZYDITH
+diff: [0.12] [0.46] [0.29]
+GATUNEK: PDAVHY
+diff: [0.07] [0.29] [0.18]
+GATUNEK: TRVUDY
+diff: [0.1] [0.25] [0.17]
+GATUNEK: SUNIHU
+diff: [0.1] [0.26] [0.18]
+GATUNEK: UJUDZE
+diff: [0.12] [0.49] [0.31]
+NOWY GATUNEK: XYSOSY>>>XYUKSY
+diff: [0.07] [0.11] [0.09]
+GATUNEK: ONHIMU
+diff: [0.05] [0.36] [0.2]
+GATUNEK: TRVUDY
+diff: [0.07] [0.5] [0.29]
+GATUNEK: UJUDZE
+diff: [0.05] [0.36] [0.2]
+GATUNEK: ULZUME
+diff: [0.05] [0.52] [0.29]
+GATUNEK: TRVUDY
+diff: [0.03] [0.39] [0.21]
+GATUNEK: TOVAVU
+diff: [0.05] [0.2] [0.13]
+GATUNEK: PZHOSQ
+diff: [0.07] [0.26] [0.17]
+GATUNEK: VUZEMU
+diff: [0.05] [0.05] [0.05]
+GATUNEK: HVOXAK
+diff: [0.05] [0.11] [0.08]
+GATUNEK: XATUPJ
+diff: [0.07] [0.37] [0.22]
+GATUNEK: VUZEVY
+diff: [0.0] [0.18] [0.09]
+GATUNEK: HTODHJ
+diff: [0.12] [0.45] [0.29]
+GATUNEK: ZAHYMU
+diff: [0.1] [0.49] [0.3]
+GATUNEK: VUZEVY
+diff: [0.1] [0.54] [0.32]
+NOWY GATUNEK: UJUDZE>>>SAUDZE
+diff: [0.1] [0.47] [0.29]
+GATUNEK: VUZEVY
+diff: [0.05] [0.25] [0.15]
+GATUNEK: HTODHJ
+diff: [0.05] [0.18] [0.11]
+GATUNEK: HTODHJ
+diff: [0.07] [0.49] [0.28]
+GATUNEK: UFMIJY
+diff: [0.12] [0.34] [0.23]
+GATUNEK: XYSOSY
+diff: [0.07] [0.21] [0.14]
+GATUNEK: ONHIMU
+diff: [0.07] [0.34] [0.21]
+GATUNEK: SNSAOI
+diff: [0.1] [0.56] [0.33]
+NOWY GATUNEK: VUZEVY>>>VUZUVY
+diff: [0.1] [0.45] [0.28]
+GATUNEK: VUZEVY
+diff: [0.1] [0.53] [0.32]
+NOWY GATUNEK: VUZEVY>>>UIZEVY
+diff: [0.05] [0.23] [0.14]
+GATUNEK: HTODHJ
+diff: [0.12] [0.31] [0.22]
+GATUNEK: SNSAOI
+diff: [0.07] [0.53] [0.3]
+NOWY GATUNEK: ZAHYMU>>>ZANEMU
+diff: [0.07] [0.61] [0.34]
+NOWY GATUNEK: ZAHYMU>>>ZAHYTU
