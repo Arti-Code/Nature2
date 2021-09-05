@@ -96,18 +96,30 @@ class RankWindow(UIWindow):
         self.owner = owner
         self.manager = manager
         self.labels = []
-        lbl_w = 380
+        lbl_w = 305
         for i in range(cfg.RANK_SIZE):
-            text = ''
-            lab = UILabel(Rect((round((rect.width/2)-(lbl_w/2)), 15*i+5), (lbl_w, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position')
-            self.labels.append(lab)
+            text = '.'
+            num = UILabel(Rect((5, 15*i+5), (10, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position_'+str(i))
+            spec = UILabel(Rect((5+10, 15*i+5), (60, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_specie_'+str(i))
+            gen = UILabel(Rect((5+70, 15*i+5), (40, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_generation_'+str(i))
+            pwr = UILabel(Rect((5+115, 15*i+5), (40, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_power_'+str(i))
+            eat = UILabel(Rect((5+160, 15*i+5), (65, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eat_'+str(i))
+            fit = UILabel(Rect((5+210, 15*i+5), (100, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_fitness_'+str(i))
+            self.labels.append([num, spec, gen, pwr, eat, fit])
         self.btn_close = UIButton(Rect((round((rect.width/2)-(btn_w/2)), (15*i+25)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
 
     def Update(self, ranking: list):
         rank_count = len(ranking)
         for i in range(rank_count):
-            text = str(i) + '. ' + ranking[i]['name'] + ' \t GEN: ' + str(ranking[i]['gen']) + ' \t POW: ' + str(ranking[i]['power']) + ' \t MEAT|VEGE: ' + str(ranking[i]['meat']) + '|' + str(ranking[i]['vege']) + ' \t FIT: ' + str(round(ranking[i]['fitness']))
-            self.labels[i].set_text(text)
+            self.labels[i][0].set_text(str(i)+'.')
+            self.labels[i][1].set_text(ranking[i]['name'])
+            self.labels[i][2].set_text('GEN: ' + str(ranking[i]['gen']))
+            self.labels[i][3].set_text('PWR: ' + str(ranking[i]['power']))
+            self.labels[i][4].set_text('EAT: ' + str(ranking[i]['meat']) + '|' + str(ranking[i]['vege']))
+            self.labels[i][5].set_text('FIT: ' + str(round(ranking[i]['fitness'])))
+
+            #text = str(i) + '. ' + ranking[i]['name'] + ' \t GEN: ' + str(ranking[i]['gen']) + ' \t POW: ' + str(ranking[i]['power']) + ' \t MEAT|VEGE: ' + str(ranking[i]['meat']) + '|' + str(ranking[i]['vege']) + ' \t FIT: ' + str(round(ranking[i]['fitness']))
+            #lab.set_text(text)
 
 class InfoWindow(UIWindow):
 
@@ -251,7 +263,7 @@ class GUI():
         self.info_win = InfoWindow(manager=self.ui_mgr, rect=pos, text=text, title=title)
 
     def create_rank_win(self):
-        w = 400
+        w = 320
         h = 400
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)

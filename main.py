@@ -67,6 +67,7 @@ class Simulation():
         self.ranking2 = []
         log_to_file('simulation started', 'log.txt')
         self.last_save_time = 0
+        #self.map = pygame.image.load('res/map2.png').convert()
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -78,6 +79,7 @@ class Simulation():
             vertices.append(Vec2d(x, y)+position)
         rock = Rock(self.screen, self.space, vertices, 3, Color('grey40'), Color('grey'))
         self.wall_list.append(rock)
+        
 
     def create_enviro(self, world: tuple = None):
         self.time = 0
@@ -280,6 +282,8 @@ class Simulation():
 
     def draw(self):
         self.screen.fill(Color('black'))
+        #self.screen.blit(self.map, self.screen.get_rect())
+        #self.screen.blit(self.map)
         for creature in self.creature_list:
             creature.draw(screen=self.screen, selected=self.selected)
             creature.draw_detectors(screen=self.screen)
@@ -445,7 +449,7 @@ class Simulation():
         return creature
 
     def auto_save(self):
-        if round((self.cycles*6000+self.time)-self.last_save_time) >= cfg.AUTO_SAVE_TIME:
+        if floor((self.cycles*6000+self.time)-self.last_save_time) >= cfg.AUTO_SAVE_TIME:
             self.manager.save_project()
             self.last_save_time = round((self.cycles*6000+self.time), 1)
     
