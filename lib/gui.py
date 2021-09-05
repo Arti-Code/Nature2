@@ -115,7 +115,7 @@ class RankWindow(UIWindow):
             self.labels[i][1].set_text(ranking[i]['name'])
             self.labels[i][2].set_text('GEN: ' + str(ranking[i]['gen']))
             self.labels[i][3].set_text('PWR: ' + str(ranking[i]['power']))
-            self.labels[i][4].set_text('EAT: ' + str(ranking[i]['meat']) + '|' + str(ranking[i]['vege']))
+            self.labels[i][4].set_text('EAT: ' + str(ranking[i]['food']))
             self.labels[i][5].set_text('FIT: ' + str(round(ranking[i]['fitness'])))
 
             #text = str(i) + '. ' + ranking[i]['name'] + ' \t GEN: ' + str(ranking[i]['gen']) + ' \t POW: ' + str(ranking[i]['power']) + ' \t MEAT|VEGE: ' + str(ranking[i]['meat']) + '|' + str(ranking[i]['vege']) + ' \t FIT: ' + str(round(ranking[i]['fitness']))

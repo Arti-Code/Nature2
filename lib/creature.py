@@ -72,13 +72,15 @@ class Creature(Life):
         self.neuro = genome['neuro']
         self.neuro.Mutate()
         self.size = genome['size'] + randint(-1, 1)
-        self.meat = genome['meat'] + randint(-1, 1)
-        self.vege = genome['vege'] + randint(-1, 1)
+        #self.meat = genome['meat'] + randint(-1, 1)
+        #self.vege = genome['vege'] + randint(-1, 1)
         self.power = genome['power'] + randint(-1, 1)
-        self.meat = clamp(self.meat, 1, 10)
+        self.food = genome['power'] + randint(-1, 1)
+        #self.meat = clamp(self.meat, 1, 10)
         self.size = clamp(self.size, cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
-        self.vege = clamp(self.vege, 1, 10)
+        #self.vege = clamp(self.vege, 1, 10)
         self.power = clamp(self.power, 1, 10)
+        self.food = clamp(self.food, 1, 10)
         self.generation = genome['gen']+1
         self.name = genome['name']
         self.signature = genome['signature']
@@ -92,8 +94,9 @@ class Creature(Life):
         self._color1 = color1
         self._color2 = color2
         self._color3 = color3
-        self.meat = randint(1, 10)
-        self.vege = randint(1, 10)
+        self.food = randint(1, 10)
+        #self.meat = randint(1, 10)
+        #self.vege = randint(1, 10)
         self.power = randint(1, 10)
         self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
         self.neuro.BuildRandom([36, 0, 0, 0, 0, 0, 0, 0, 5], 0.2)
@@ -114,23 +117,28 @@ class Creature(Life):
             y3 = round(y - rot.y*(r/5))
             r2 = round(r/2)
             r3 = round(r/3)
+            #h: int=self.food*10; s: int=100; l: int=50
             r: int; g: int; b: int
-            if self.meat >= self.vege:
-                r = round(225*(self.meat/(self.meat+self.vege)))
-                g = round(225*(self.vege/(self.meat+self.vege)))
+            if self.food >= 6:
+                r = round(25.5*self.food)
+                g = round(255-25.5*self.food)
                 b = 0
                 r +=50
                 g -=50
                 r = clamp(r, 0, 255)
                 g = clamp(g, 0, 255)
             else:
-                r = round(225*(self.meat/(self.meat+self.vege)))
-                g = round(225*(self.vege/(self.meat+self.vege)))
+                r = round(25.5*(self.food-1))
+                g = round(255-25.5*(self.food+1))
                 b = 0
                 r -=50
                 g +=50
                 r = clamp(r, 0, 255)
                 g = clamp(g, 0, 255)
+            #c = Color.hsla(self.food*10, 100, 50)
+            #c.hsla[0]=self.food*10
+            #c.hsla[1]=100
+            #c.hsla[2]=50
             gfxdraw.filled_circle(screen, x2, flipy(y2), r2, Color(r, g, b))
             gfxdraw.filled_circle(screen, int(x), flipy(int(y)), r2, self.color2)
         self.color0 = self._color0
@@ -280,8 +288,9 @@ class Creature(Life):
         genome: dict = {}
         genome['name'] = copy(self.name)
         genome['gen'] = self.generation
-        genome['meat'] = self.meat
-        genome['vege'] = self.vege
+        genome['food'] = self.food
+        #genome['meat'] = self.meat
+        #genome['vege'] = self.vege
         genome['size'] = self.size
         genome['fitness'] = self.fitness
         genome['power'] = self.power
@@ -299,9 +308,10 @@ class Creature(Life):
         links = []
         size_diff = abs(self.size-parent_genome['size'])
         power_diff = abs(self.power-parent_genome['power'])
-        meat_diff = abs(self.meat-parent_genome['meat'])
-        vege_diff = abs(self.vege-parent_genome['vege'])
-        phisionomy = mean([size_diff, power_diff,meat_diff, vege_diff])/10
+        food_diff = abs(self.food-parent_genome['food'])
+        #meat_diff = abs(self.meat-parent_genome['meat'])
+        #vege_diff = abs(self.vege-parent_genome['vege'])
+        phisionomy = mean([size_diff, power_diff,food_diff])/10
         for node_sign in self.neuro.nodes:
             if not node_sign in parent_genome['neuro'].nodes:
                 nodes.append(node_sign)
@@ -329,7 +339,8 @@ class Creature(Life):
 
     def get_signature(self) -> list:
         signature: list=[]
-        signature.append([self.size, self.power, self.vege, self.meat])
+        #signature.append([self.size, self.power, self.vege, self.meat])
+        signature.append([self.size, self.power, self.food])
         links_keys: list=[]
         for link_key in self.neuro.links:
             links_keys.append(link_key)
