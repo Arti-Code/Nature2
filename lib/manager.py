@@ -107,7 +107,7 @@ class Manager:
             project['time'] = round(self.enviro.time, 1)
             project['cycles'] = self.enviro.cycles
             project['last_save_time'] = self.enviro.cycles*6000+round(self.enviro.time)
-            project['ranking'] = []
+            project['creatures'] = []
             for creature in self.enviro.creature_list:
                 creature_to_save = {}
                 creature_to_save['name'] = creature.name
@@ -126,7 +126,7 @@ class Manager:
                 creature_to_save['neuro'] = creature.neuro.ToJSON()
                 creature_to_save['signature'] = deepcopy(creature.signature)
                 creatures.append(creature_to_save)
-            project['creatures'] = creatures
+            project['ranking1'] = []
             for rank in self.enviro.ranking1:
                 rank_to_save = {}
                 rank_to_save['name'] = copy(rank['name'])
@@ -143,7 +143,25 @@ class Manager:
                 rank_to_save['color3'] = [rank['color3'][0], rank['color3'][1], rank['color3'][2], rank['color3'][3]]
                 rank_to_save['neuro'] = rank['neuro'].ToJSON()
                 rank_to_save['signature'] = deepcopy(rank['signature'])
-                project['ranking'].append(rank_to_save)
+                project['ranking1'].append(rank_to_save)
+            project['ranking2'] = []
+            for rank in self.enviro.ranking2:
+                rank_to_save = {}
+                rank_to_save['name'] = copy(rank['name'])
+                rank_to_save['gen'] = rank['gen']
+                rank_to_save['food'] = rank['food']
+                #rank_to_save['meat'] = rank['meat']
+                #rank_to_save['vege'] = rank['vege']
+                rank_to_save['size'] = rank['size']
+                rank_to_save['fitness'] = rank['fitness']
+                rank_to_save['power'] = rank['power']
+                rank_to_save['color0'] = [rank['color0'][0], rank['color0'][1], rank['color0'][2], rank['color0'][3]]
+                rank_to_save['color1'] = [rank['color1'][0], rank['color1'][1], rank['color1'][2], rank['color1'][3]]
+                rank_to_save['color2'] = [rank['color2'][0], rank['color2'][1], rank['color2'][2], rank['color2'][3]]
+                rank_to_save['color3'] = [rank['color3'][0], rank['color3'][1], rank['color3'][2], rank['color3'][3]]
+                rank_to_save['neuro'] = rank['neuro'].ToJSON()
+                rank_to_save['signature'] = deepcopy(rank['signature'])
+                project['ranking2'].append(rank_to_save)
 
             if self.add_to_save_list(project_name, str(self.enviro.get_time(1))):
                 with open("saves/" + project_name + "/" + str(self.enviro.get_time(1)) + ".json", 'w+') as json_file:

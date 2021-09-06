@@ -99,7 +99,7 @@ class RankWindow(UIWindow):
         lbl_w = 305
         for i in range(cfg.RANK_SIZE*2):
             text = '.'
-            num = UILabel(Rect((5, 15*i+5), (10, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position_'+str(i))
+            num = UILabel(Rect((2, 15*i+5), (13, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position_'+str(i))
             spec = UILabel(Rect((5+10, 15*i+5), (60, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_specie_'+str(i))
             gen = UILabel(Rect((5+70, 15*i+5), (40, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_generation_'+str(i))
             pwr = UILabel(Rect((5+115, 15*i+5), (40, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_power_'+str(i))
@@ -113,19 +113,19 @@ class RankWindow(UIWindow):
         for i in range(rank_count1):
             self.labels[i][0].set_text(str(i)+'.')
             self.labels[i][1].set_text(ranking1[i]['name'])
-            self.labels[i][2].set_text('GEN: ' + str(ranking1[i]['gen']))
-            self.labels[i][3].set_text('PWR: ' + str(ranking1[i]['power']))
-            self.labels[i][4].set_text('EAT: ' + str(ranking1[i]['food']))
-            self.labels[i][5].set_text('FIT: ' + str(round(ranking1[i]['fitness'])))
+            self.labels[i][2].set_text('GEN ' + str(ranking1[i]['gen']))
+            self.labels[i][3].set_text('PWR ' + str(ranking1[i]['power']))
+            self.labels[i][4].set_text('EAT ' + str(ranking1[i]['food']))
+            self.labels[i][5].set_text('FIT ' + str(round(ranking1[i]['fitness'])))
         rank_count2 = len(ranking2)
         for i in range(rank_count2):
             j = i + rank_count1
             self.labels[j][0].set_text(str(i)+'.')
             self.labels[j][1].set_text(ranking2[i]['name'])
-            self.labels[j][2].set_text('GEN: ' + str(ranking2[i]['gen']))
-            self.labels[j][3].set_text('PWR: ' + str(ranking2[i]['power']))
-            self.labels[j][4].set_text('EAT: ' + str(ranking2[i]['food']))
-            self.labels[j][5].set_text('FIT: ' + str(round(ranking2[i]['fitness'])))
+            self.labels[j][2].set_text('GEN ' + str(ranking2[i]['gen']))
+            self.labels[j][3].set_text('PWR ' + str(ranking2[i]['power']))
+            self.labels[j][4].set_text('EAT ' + str(ranking2[i]['food']))
+            self.labels[j][5].set_text('FIT ' + str(round(ranking2[i]['fitness'])))
 
             #text = str(i) + '. ' + ranking[i]['name'] + ' \t GEN: ' + str(ranking[i]['gen']) + ' \t POW: ' + str(ranking[i]['power']) + ' \t MEAT|VEGE: ' + str(ranking[i]['meat']) + '|' + str(ranking[i]['vege']) + ' \t FIT: ' + str(round(ranking[i]['fitness']))
             #lab.set_text(text)
