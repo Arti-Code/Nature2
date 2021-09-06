@@ -126,7 +126,7 @@ class Simulation():
             self.wall_list.append(wall)
 
     def add_to_ranking(self, creature: Creature):
-        if creature.food > 6:
+        if creature.food >= 6:
             ranking = self.ranking2
         else:
             ranking = self.ranking1
