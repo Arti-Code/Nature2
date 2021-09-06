@@ -97,7 +97,7 @@ class RankWindow(UIWindow):
         self.manager = manager
         self.labels = []
         lbl_w = 305
-        for i in range(cfg.RANK_SIZE):
+        for i in range(cfg.RANK_SIZE*2):
             text = '.'
             num = UILabel(Rect((5, 15*i+5), (10, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position_'+str(i))
             spec = UILabel(Rect((5+10, 15*i+5), (60, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_specie_'+str(i))
@@ -108,15 +108,24 @@ class RankWindow(UIWindow):
             self.labels.append([num, spec, gen, pwr, eat, fit])
         self.btn_close = UIButton(Rect((round((rect.width/2)-(btn_w/2)), (15*i+25)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
 
-    def Update(self, ranking: list):
-        rank_count = len(ranking)
-        for i in range(rank_count):
+    def Update(self, ranking1: list, ranking2: list):
+        rank_count1 = len(ranking1)
+        for i in range(rank_count1):
             self.labels[i][0].set_text(str(i)+'.')
-            self.labels[i][1].set_text(ranking[i]['name'])
-            self.labels[i][2].set_text('GEN: ' + str(ranking[i]['gen']))
-            self.labels[i][3].set_text('PWR: ' + str(ranking[i]['power']))
-            self.labels[i][4].set_text('EAT: ' + str(ranking[i]['food']))
-            self.labels[i][5].set_text('FIT: ' + str(round(ranking[i]['fitness'])))
+            self.labels[i][1].set_text(ranking1[i]['name'])
+            self.labels[i][2].set_text('GEN: ' + str(ranking1[i]['gen']))
+            self.labels[i][3].set_text('PWR: ' + str(ranking1[i]['power']))
+            self.labels[i][4].set_text('EAT: ' + str(ranking1[i]['food']))
+            self.labels[i][5].set_text('FIT: ' + str(round(ranking1[i]['fitness'])))
+        rank_count2 = len(ranking2)
+        for i in range(rank_count2):
+            j = i + rank_count1
+            self.labels[j][0].set_text(str(i)+'.')
+            self.labels[j][1].set_text(ranking2[i]['name'])
+            self.labels[j][2].set_text('GEN: ' + str(ranking2[i]['gen']))
+            self.labels[j][3].set_text('PWR: ' + str(ranking2[i]['power']))
+            self.labels[j][4].set_text('EAT: ' + str(ranking2[i]['food']))
+            self.labels[j][5].set_text('FIT: ' + str(round(ranking2[i]['fitness'])))
 
             #text = str(i) + '. ' + ranking[i]['name'] + ' \t GEN: ' + str(ranking[i]['gen']) + ' \t POW: ' + str(ranking[i]['power']) + ' \t MEAT|VEGE: ' + str(ranking[i]['meat']) + '|' + str(ranking[i]['vege']) + ' \t FIT: ' + str(round(ranking[i]['fitness']))
             #lab.set_text(text)
@@ -268,8 +277,8 @@ class GUI():
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)
 
-    def update_ranking(self, ranking: list) -> dict:
-        return ranking
+    def update_ranking(self, ranking1: list, ranking2: list) -> dict:
+        return [ranking1, ranking2]
 
     def create_title(self, scr_size: tuple):
         w = 350
@@ -396,15 +405,15 @@ class GUI():
         self.set_win.kill()
         cfg.load_from_file('config.json')
 
-    def update(self, dt: float, ranking: list):
+    def update(self, dt: float, ranking1: list, ranking2: list):
         data: dict = {}
         self.ui_mgr.update(dt)
         if self.enviro_win:
             data = self.update_enviroment(dt)
             self.enviro_win.Update(data, dt)
         if self.rank_win:
-            data = self.update_ranking(ranking)
-            self.rank_win.Update(data)
+            data = self.update_ranking(ranking1, ranking2)
+            self.rank_win.Update(ranking1, ranking2)
 
     def draw_ui(self, screen):
         self.ui_mgr.draw_ui(screen)

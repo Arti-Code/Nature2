@@ -58,8 +58,8 @@ class Manager:
     def user_event(self, event, dt: float):
         self.gui.process_event(event, dt)
 
-    def update_gui(self, dt: float, ranking: list):
-        self.gui.update(dt, ranking)
+    def update_gui(self, dt: float, ranking1: list, ranking2: list):
+        self.gui.update(dt, ranking1, ranking2)
 
     def draw_gui(self, screen: Surface):
         self.gui.draw_ui(screen)

@@ -29,6 +29,7 @@ class Plant(Life):
         self.shape = Circle(self, self.size)
         self.shape.collision_type = collision_tag
         space.add(self.shape)
+        self.new_plant = 2
 
     def life_time_calc(self, dt: int):
         self.life_time -= dt
@@ -37,6 +38,10 @@ class Plant(Life):
         return False
 
     def update(self, dt: float):
+        #if self.new_plant > 0:
+        #    self.new_plant -= 1
+        #    if self.new_plant==0:
+        #        self.shape.collision_type=6
         if self.energy < self.max_energy and self.energy > 0:
             self.energy += cfg.PLANT_GROWTH*dt
             new_size = floor(sqrt(self.energy))

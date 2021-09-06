@@ -108,7 +108,7 @@ class Simulation():
             self.create_rock(5, 110, random_position(cfg.WORLD))
 
     def create_plants(self, plant_num: int):
-        for p in range(plant_num):
+        for _p in range(plant_num):
             plant = self.add_plant(cfg.WORLD, True)
             self.plant_list.append(plant)
 
@@ -126,11 +126,11 @@ class Simulation():
             self.wall_list.append(wall)
 
     def add_to_ranking(self, creature: Creature):
-        #if creature.food > 6:
-        #    ranking = self.ranking2
-        #else:
-        #    ranking = self.ranking1
-        ranking = self.ranking1
+        if creature.food > 6:
+            ranking = self.ranking2
+        else:
+            ranking = self.ranking1
+        #ranking = self.ranking1
         ranking.sort(key=sort_by_fitness, reverse=True)
         for rank in reversed(ranking):
             if rank['name'] == creature.name:
@@ -208,7 +208,7 @@ class Simulation():
         return None
 
     def set_collision_calls(self):
-        # 2: body | 8: wall | 4: sensor | 6: plant | 10: meat
+        # 2: body | 8: wall | 4: sensor | 6: plant | 12: new_plant
         creature_collisions = self.space.add_collision_handler(2, 2)
         creature_collisions.pre_solve = process_creatures_collisions
         creature_collisions.data['dt'] = self.dt
@@ -223,6 +223,9 @@ class Simulation():
 
         edge_collisions = self.space.add_collision_handler(2, 8)
         edge_collisions.pre_solve = process_edge_collisions
+
+        #new_plant_rock = self.space.add_collision_handler(12, 8)
+        #new_plant_rock.pre_solve = process_new_plant_rock
 
         detection = self.space.add_collision_handler(4, 2)
         detection.pre_solve = detect_creature
@@ -270,8 +273,19 @@ class Simulation():
             size = cfg.PLANT_MAX_SIZE
         else:
             size = 3
+        free_field = False
+        while not free_field:
+            x = randint(50, cfg.WORLD[0]-50)
+            y = randint(50, cfg.WORLD[1]-50)
+            pos = Vec2d(x, y)
+            free_field = True
+            for rock in self.wall_list:
+                d =  rock.shape.point_query(pos).distance
+                if d <= 0:
+                    free_field = False
+                    break
         plant = Plant(screen=self.screen, space=self.space, sim=self, collision_tag=6, world_size=world,
-                      size=size, color0=Color((127, 255, 0)), color1=Color('darkgreen'), color3=Color((110, 50, 9)))
+                      size=size, color0=Color((127, 255, 0)), color1=Color('darkgreen'), color3=Color((110, 50, 9)), position=pos)
         return plant
 
     def add_wall(self, point0: tuple, point1: tuple, thickness: float) -> Wall:
@@ -353,7 +367,7 @@ class Simulation():
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
         self.update_meat(self.dt)
-        self.manager.update_gui(self.dt, self.ranking1)
+        self.manager.update_gui(self.dt, self.ranking1, self.ranking2)
 
     def update_meat(self, dT: float):
         for meat in self.meat_list:
@@ -438,13 +452,14 @@ class Simulation():
     def add_random_creature(self) -> Creature:
         r = randint(0, 1)
         creature: Creature = None
-        if r == 0 or len(self.ranking1) == 0:
+        if r == 0 or (len(self.ranking1) == 0 and len(self.ranking2) == 0):
             creature = self.add_creature(cfg.WORLD)
         else:
-            rank_size = len(self.ranking1)
+            ranking = choice([self.ranking1, self.ranking2])
+            rank_size = len(ranking)
             rnd = randint(0, rank_size-1)
-            genome = self.ranking1[rnd]
-            self.ranking1[rnd]['fitness'] *= 0.66
+            genome = ranking[rnd]
+            ranking[rnd]['fitness'] *= 0.66
             creature = self.add_creature(cfg.WORLD, genome)
         return creature
 

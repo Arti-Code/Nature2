@@ -20,7 +20,7 @@ class Rock(Body):
         self.shape.collision_type = 8
         space.add(self, self.shape)
         self.points = []
-        for vert in self.vertices:
+        for vert in self.shape.get_vertices():
             self.points.append((int(vert[0]), flipy(int(vert[1]))))
 
     def draw(self, screen: Surface):

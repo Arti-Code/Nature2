@@ -2846,3 +2846,154 @@ diff: [0.07] [0.53] [0.3]
 NOWY GATUNEK: ZAHYMU>>>ZANEMU
 diff: [0.07] [0.61] [0.34]
 NOWY GATUNEK: ZAHYMU>>>ZAHYTU
+simulation started
+simulation started
+diff: [0.1] [0.14] [0.12]
+GATUNEK: HESSXO
+diff: [0.17] [0.23] [0.2]
+GATUNEK: SOTIOT
+diff: [0.0] [0.1] [0.05]
+GATUNEK: XEULAV
+diff: [0.03] [0.11] [0.07]
+GATUNEK: TERUPS
+simulation started
+simulation started
+simulation started
+simulation started
+simulation started
+simulation started
+simulation started
+diff: [0.07] [0.16] [0.11]
+GATUNEK: HEMAHR
+diff: [0.0] [0.08] [0.04]
+GATUNEK: HRTLOC
+diff: [0.03] [0.14] [0.09]
+GATUNEK: TAPSUI
+diff: [0.1] [0.14] [0.12]
+GATUNEK: SYSKUD
+diff: [0.03] [0.18] [0.11]
+GATUNEK: TRPJSI
+diff: [0.03] [0.05] [0.04]
+GATUNEK: OXPJON
+diff: [0.27] [0.32] [0.29]
+GATUNEK: NEAFTL
+diff: [0.1] [0.25] [0.18]
+GATUNEK: VOHHSI
+diff: [0.1] [0.27] [0.18]
+GATUNEK: UOFASN
+diff: [0.17] [0.22] [0.19]
+GATUNEK: KOZIXS
+diff: [0.2] [0.22] [0.21]
+GATUNEK: ARIPVO
+diff: [0.2] [0.26] [0.23]
+GATUNEK: TTTUAL
+diff: [0.13] [0.37] [0.25]
+GATUNEK: TIDEOS
+diff: [0.07] [0.23] [0.15]
+GATUNEK: AFHEAM
+diff: [0.1] [0.23] [0.17]
+GATUNEK: ZOHISS
+diff: [0.03] [0.23] [0.13]
+GATUNEK: MIOXOT
+diff: [0.03] [0.21] [0.12]
+GATUNEK: KOHETS
+diff: [0.03] [0.11] [0.07]
+GATUNEK: FIAKPU
+diff: [0.17] [0.16] [0.16]
+GATUNEK: VUPVSS
+diff: [0.13] [0.18] [0.16]
+GATUNEK: XITUHE
+diff: [0.2] [0.26] [0.23]
+GATUNEK: QUOXPJ
+diff: [0.27] [0.36] [0.32]
+NOWY GATUNEK: AXHKHA>>>AXPDHA
+diff: [0.23] [0.24] [0.24]
+GATUNEK: JAPHDI
+diff: [0.17] [0.16] [0.16]
+GATUNEK: ZEHHNU
+diff: [0.23] [0.19] [0.21]
+GATUNEK: HRVATT
+diff: [0.03] [0.22] [0.13]
+GATUNEK: ZUNUHW
+diff: [0.1] [0.04] [0.07]
+GATUNEK: PVPFPY
+diff: [0.23] [0.18] [0.21]
+GATUNEK: QESIHE
+diff: [0.13] [0.11] [0.12]
+GATUNEK: AQUJAF
+diff: [0.13] [0.24] [0.19]
+GATUNEK: VINOTD
+diff: [0.13] [0.27] [0.2]
+GATUNEK: JAVISK
+diff: [0.1] [0.17] [0.13]
+GATUNEK: SOPKHU
+diff: [0.13] [0.22] [0.18]
+GATUNEK: TFIPZE
+diff: [0.17] [0.17] [0.17]
+GATUNEK: UJDISA
+diff: [0.27] [0.17] [0.22]
+GATUNEK: SYONTH
+diff: [0.1] [0.17] [0.14]
+GATUNEK: HUPZPO
+diff: [0.03] [0.3] [0.17]
+GATUNEK: UITUHJ
+diff: [0.2] [0.26] [0.23]
+GATUNEK: THHYVI
+diff: [0.13] [0.16] [0.15]
+GATUNEK: NETFWI
+diff: [0.07] [0.27] [0.17]
+GATUNEK: TEDIDE
+diff: [0.03] [0.25] [0.14]
+GATUNEK: TUDESO
+diff: [0.1] [0.08] [0.09]
+GATUNEK: TRZARY
+C loaded
+diff: [0.07] [0.1] [0.08]
+GATUNEK: KOHETS
+diff: [0.27] [0.22] [0.24]
+GATUNEK: HRVATT
+diff: [0.1] [0.33] [0.22]
+GATUNEK: QESIHE
+diff: [0.13] [0.14] [0.14]
+GATUNEK: HUPZPO
+simulation started
+simulation started
+simulation started
+simulation started
+diff: [0.17] [0.25] [0.21]
+GATUNEK: PTMOSU
+simulation started
+diff: [0.13] [0.19] [0.16]
+GATUNEK: ZOHZQI
+diff: [0.1] [0.09] [0.09]
+GATUNEK: OPHASY
+diff: [0.17] [0.22] [0.19]
+GATUNEK: JAPFOT
+diff: [0.23] [0.1] [0.17]
+GATUNEK: LOSNSN
+diff: [0.27] [0.17] [0.22]
+GATUNEK: ONVOHW
+diff: [0.07] [0.27] [0.17]
+GATUNEK: TYAKOM
+diff: [0.0] [0.18] [0.09]
+GATUNEK: NEJYPU
+diff: [0.13] [0.29] [0.21]
+GATUNEK: OPZYNO
+diff: [0.1] [0.21] [0.15]
+GATUNEK: UIVIPJ
+diff: [0.03] [0.2] [0.11]
+GATUNEK: ZOHZQI
+diff: [0.3] [0.05] [0.18]
+GATUNEK: TFHEXA
+diff: [0.07] [0.16] [0.11]
+GATUNEK: SSMESA
+diff: [0.07] [0.19] [0.13]
+GATUNEK: XIKEHE
+diff: [0.1] [0.29] [0.19]
+GATUNEK: HSHFHF
+diff: [0.0] [0.21] [0.1]
+GATUNEK: SRALHH
+diff: [0.2] [0.14] [0.17]
+GATUNEK: ZAHKRE
+diff: [0.37] [0.24] [0.31]
+NOWY GATUNEK: ONVOHW>>>DAVOHW
