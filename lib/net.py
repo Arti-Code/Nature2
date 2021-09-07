@@ -136,12 +136,12 @@ class Layer():
 class Network():
     """Neural Network created for Genetics Algorithms"""
 
-    MUT_BIAS        =   0.04 * cfg.MUTATIONS
-    MUT_WEIGHT      =   0.04 * cfg.MUTATIONS
-    MUT_DEL_LINK    =   0.025 * cfg.MUTATIONS
-    MUT_ADD_LINK    =   0.025 * cfg.MUTATIONS
-    MUT_DEL_NODE    =   0.025 * cfg.MUTATIONS
-    MUT_ADD_NODE    =   0.025 * cfg.MUTATIONS
+    MUT_BIAS        =   0.06 * cfg.MUTATIONS
+    MUT_WEIGHT      =   0.06 * cfg.MUTATIONS
+    MUT_DEL_LINK    =   0.02 * cfg.MUTATIONS
+    MUT_ADD_LINK    =   0.02 * cfg.MUTATIONS
+    MUT_DEL_NODE    =   0.02 * cfg.MUTATIONS
+    MUT_ADD_NODE    =   0.02 * cfg.MUTATIONS
     MUT_NODE_TYPE   =   0.04 * cfg.MUTATIONS
     MUT_MEM         =   0.04 * cfg.MUTATIONS
 

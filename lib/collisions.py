@@ -12,14 +12,14 @@ def process_creature_plant_collisions(arbiter, space, data):
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
     if size0 != 0:
-        hunter.position -= arbiter.normal*size1/size0
+        hunter.position -= arbiter.normal*size1/size0*0.5
     else:
-        hunter.position -= arbiter.normal
+        hunter.position -= arbiter.normal*0.5
     size1 = arbiter.shapes[1].radius
     if size1 != 0:
-        target.position += arbiter.normal*size0/size1
+        target.position += arbiter.normal*size0/size1*0.5
     else:
-        target.position += arbiter.normal
+        target.position += arbiter.normal*0.5
     if hunter.output[3] >= 0.5:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 45:
             target.color0 = Color('yellow')
@@ -38,8 +38,16 @@ def process_creature_meat_collisions(arbiter, space, data):
     target = arbiter.shapes[1].body
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
-    hunter.position -= arbiter.normal*size1/size0
-    target.position += arbiter.normal*size0/size1
+    #~ new changes
+    if size0 != 0:
+        hunter.position -= arbiter.normal*size1/size0*0.5
+    else:
+        hunter.position -= arbiter.normal*0.5
+    size1 = arbiter.shapes[1].radius
+    if size1 != 0:
+        target.position += arbiter.normal*size0/size1*0.5
+    else:
+        target.position += arbiter.normal*0.5
     if hunter.output[3] >= 0.5:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 45:
             target.color0 = Color('yellow')
@@ -57,8 +65,8 @@ def process_creatures_collisions(arbiter, space, data):
     target = arbiter.shapes[1].body
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
-    agent.position -= arbiter.normal*size1/size0
-    target.position += arbiter.normal*size0/size1
+    agent.position -= arbiter.normal*size1/size0*0.5
+    target.position += arbiter.normal*size0/size1*0.5
     if agent.output[4] >= 0.5:
         if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 45:
             if (size0+randint(0, 6)) > (size1+randint(0, 6)):

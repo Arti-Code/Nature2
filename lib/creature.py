@@ -113,10 +113,10 @@ class Creature(Life):
         if r > 2:
             x2 = round(x + rot.x*(r/1.6))
             y2 = round(y + rot.y*(r/1.6))
-            x3 = round(x - rot.x*(r/5))
-            y3 = round(y - rot.y*(r/5))
+            #x3 = round(x - rot.x*(r/5))
+            #y3 = round(y - rot.y*(r/5))
             r2 = round(r/2)
-            r3 = round(r/3)
+            #r3 = round(r/3)
             #h: int=self.food*10; s: int=100; l: int=50
             r: int; g: int; b: int
             if self.food >= 6:
@@ -289,8 +289,6 @@ class Creature(Life):
         genome['name'] = copy(self.name)
         genome['gen'] = self.generation
         genome['food'] = self.food
-        #genome['meat'] = self.meat
-        #genome['vege'] = self.vege
         genome['size'] = self.size
         genome['fitness'] = self.fitness
         genome['power'] = self.power
@@ -309,8 +307,6 @@ class Creature(Life):
         size_diff = abs(self.size-parent_genome['size'])
         power_diff = abs(self.power-parent_genome['power'])
         food_diff = abs(self.food-parent_genome['food'])
-        #meat_diff = abs(self.meat-parent_genome['meat'])
-        #vege_diff = abs(self.vege-parent_genome['vege'])
         phisionomy = mean([size_diff, power_diff,food_diff])/10
         for node_sign in self.neuro.nodes:
             if not node_sign in parent_genome['neuro'].nodes:
