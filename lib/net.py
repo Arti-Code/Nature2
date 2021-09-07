@@ -4,7 +4,7 @@ from lib.math2 import sigmoid, tanh, relu, leaky_relu, binary, rev_binary, wide_
 from copy import deepcopy, copy
 import json
 import numpy as np
-#from lib.config import cfg
+from lib.config import cfg
 
 class TYPE(IntEnum):
 
@@ -136,14 +136,14 @@ class Layer():
 class Network():
     """Neural Network created for Genetics Algorithms"""
 
-    MUT_BIAS        =   0.04
-    MUT_WEIGHT      =   0.04
-    MUT_DEL_LINK    =   0.025
-    MUT_ADD_LINK    =   0.025
-    MUT_DEL_NODE    =   0.025
-    MUT_ADD_NODE    =   0.025
-    MUT_NODE_TYPE   =   0.04
-    MUT_MEM         =   0.04
+    MUT_BIAS        =   0.04 * cfg.MUTATIONS
+    MUT_WEIGHT      =   0.04 * cfg.MUTATIONS
+    MUT_DEL_LINK    =   0.025 * cfg.MUTATIONS
+    MUT_ADD_LINK    =   0.025 * cfg.MUTATIONS
+    MUT_DEL_NODE    =   0.025 * cfg.MUTATIONS
+    MUT_ADD_NODE    =   0.025 * cfg.MUTATIONS
+    MUT_NODE_TYPE   =   0.04 * cfg.MUTATIONS
+    MUT_MEM         =   0.04 * cfg.MUTATIONS
 
     ADD_NODE_NUM = 0
     DEL_NODE_NUM = 0

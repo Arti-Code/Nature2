@@ -47,6 +47,8 @@ class Configuration():
         self.AUTO_SAVE_TIME = None
         self.ATK_ENG = None
         self.EAT_ENG = None
+        self.LINKS_RATE = None
+        self.MUTATIONS = None
         self.load_from_file(filename)
 
     def load_from_file(self, filename: str):
@@ -94,6 +96,8 @@ class Configuration():
         self.AUTO_SAVE_TIME         = cfg['AUTO_SAVE_TIME']
         self.ATK_ENG                = cfg['ATK_ENG']
         self.EAT_ENG                = cfg['EAT_ENG']
+        self.LINKS_RATE             = cfg['LINKS_RATE']
+        self.MUTATIONS              = cfg['MUTATIONS']
 
 
 cfg = Configuration('config.json')
