@@ -18,7 +18,7 @@ class Meat(Body):
         self.color0 = color0
         self.color1 = color1
         self.time = cfg.MEAT_TIME
-        self.shape = Circle(self, self.radius*1.5)
+        self.shape = Circle(self, self.radius)
         self.shape.collision_type = collision_tag
         space.add(self, self.shape)
         #x = int(self.position.x); y = int(self.position.y)
@@ -35,12 +35,15 @@ class Meat(Body):
     def draw(self, screen: Surface):
         x = int(self.position.x); y = int(self.position.y)
         r = int(self.radius)
-        for rx, ry, m in self.circles:
-            if r-m > 0:
-                gfxdraw.filled_circle(screen, x+rx, flipy(y+ry), r-m+1, self.color1)
-                gfxdraw.filled_circle(screen, x+rx, flipy(y+ry), r-m, self.color0)
-            else:
-                break
+        gfxdraw.filled_circle(screen, x, flipy(y), r, self.color1)
+        if r > 2:
+            gfxdraw.filled_circle(screen, x, flipy(y), r-2, self.color0)
+        #for rx, ry, m in self.circles:
+        #    if r-m > 0:
+        #        gfxdraw.filled_circle(screen, x+rx, flipy(y+ry), r-m+1, self.color1)
+        #        gfxdraw.filled_circle(screen, x+rx, flipy(y+ry), r-m, self.color0)
+        #    else:
+        #        break
         #gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r), self.color1)
         #if r >= 3:
         #    for m in range(0, r, 2):
