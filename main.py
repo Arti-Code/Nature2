@@ -440,7 +440,7 @@ class Simulation():
 
     def clock_step(self):
         pygame.display.flip()
-        self.dt = self.clock.tick(self.FPS)/1000
+        self.dt = self.clock.tick(self.FPS)/1000*cfg.TIME
         pygame.display.set_caption(
             f"{TITLE} [fps: {round(self.clock.get_fps())} | dT: {round(self.dt*1000)}ms]")
 
