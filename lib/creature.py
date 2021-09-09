@@ -57,6 +57,10 @@ class Creature(Life):
         self.energy = self.max_energy
         for sensor in self.sensors:
             space.add(sensor.shape)
+        self._move: float=0.0
+        self._eat: bool=False
+        self._attack: bool=False
+        self._turn: float=0.0
         #signature = self.get_signature()
         #s = self.compare_signature(signature, self.get_signature(), 0.8)
 
@@ -197,13 +201,13 @@ class Creature(Life):
         return (genome, pos)
       
     def move(self, dt: float) -> None:
-        move = (self.output[0])*cfg.SPEED
+        move = (self._move)*cfg.SPEED*dt
         if move < 0:
             move = 0
-        turn = self.output[1]*cfg.TURN*dt
+        turn = self._turn*cfg.TURN*dt
         sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
         self.angle = (self.angle+(turn))%(2*PI)
-        self.velocity = (move*dt*self.rotation_vector.x, move*dt*self.rotation_vector.y)
+        self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
         self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
         self.sensors[2].rotate(-sensor_turn, -PI/1.5, 0)
         return abs(move)
@@ -265,6 +269,16 @@ class Creature(Life):
             for o in range(len(self.output)):
                 if self.output[o] < -1 or self.output[o] > 1:
                     self.output[o] = clamp(self.output[o], -1, 1)
+        self._move = clamp(self.output[0], 0, 1)
+        self._turn = self.output[1]
+        if self.output[2] > 0:
+            self._eat = True
+        else:
+            self._eat = False
+        if self.output[3] > 0:
+            self._attack = True
+        else:
+            self._attack = False
         #for sensor in self.sensors:
         #    sensor.reset_data()
             

@@ -20,13 +20,13 @@ def process_creature_plant_collisions(arbiter, space, data):
         target.position += arbiter.normal*size0/size1*0.2
     else:
         target.position += arbiter.normal*0.2
-    if hunter.output[3] >= 0.2:
+    if hunter._eat:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 45:
             target.color0 = Color('yellow')
             target.energy = target.energy - cfg.EAT*dt
-            vege = 11-hunter.food/10
+            vege = (11-hunter.food)/10
             #vege = hunter.vege/((hunter.vege+hunter.meat)/2)
-            plant_value = cfg.EAT*dt*vege/10*cfg.VEGE2ENG
+            plant_value = cfg.EAT*dt*vege*cfg.VEGE2ENG
             hunter.eat(plant_value)
             hunter.fitness += plant_value*cfg.VEGE2FIT
     hunter.collide_plant = True
@@ -48,12 +48,12 @@ def process_creature_meat_collisions(arbiter, space, data):
         target.position += arbiter.normal*size0/size1*0.2
     else:
         target.position += arbiter.normal*0.2
-    if hunter.output[3] >= 0.2:
+    if hunter._eat:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 45:
             target.color0 = Color('yellow')
             target.energy = target.energy - cfg.EAT*dt
             meat = hunter.food/10
-            meat_value = cfg.EAT*dt*(target.time/cfg.MEAT_TIME)*meat/10*cfg.MEAT2ENG
+            meat_value = cfg.EAT*dt*meat*cfg.MEAT2ENG
             hunter.eat(meat_value)
             hunter.fitness += meat_value*cfg.MEAT2FIT
     hunter.collide_meat = True
@@ -67,7 +67,7 @@ def process_creatures_collisions(arbiter, space, data):
     size1 = arbiter.shapes[1].radius
     agent.position -= arbiter.normal*size1/size0*0.5
     target.position += arbiter.normal*size0/size1*0.5
-    if agent.output[4] >= 0.5:
+    if agent._attack:
         if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 45:
             if (size0+randint(0, 6)) > (size1+randint(0, 6)):
                 dmg = cfg.HIT * dt * (agent.size+agent.power)/2
