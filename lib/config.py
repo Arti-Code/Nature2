@@ -1,7 +1,7 @@
 from math import pi as PI
 from json import loads, dumps
 
-TITLE = 'NATURE v0.4.5'
+TITLE = 'NATURE v0.4.6'
 SUBTITLE = "2019-2021 Artur Gwoździowski"
 
 class Configuration():
