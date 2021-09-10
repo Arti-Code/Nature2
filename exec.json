@@ -11,7 +11,7 @@
   },
   {
    "optionDest": "onefile",
-   "value": false
+   "value": true
   },
   {
    "optionDest": "console",
@@ -67,10 +67,6 @@
   },
   {
    "optionDest": "datas",
-   "value": "C:/Users/Arturo/AppData/Local/Programs/Python/Python39/Lib/site-packages/pygame_gui/data;pygame_gui/data/"
-  },
-  {
-   "optionDest": "datas",
    "value": "D:/PYTHON/Nature/res/icons/planet01.ico;."
   },
   {
@@ -84,6 +80,10 @@
   {
    "optionDest": "datas",
    "value": "D:/PYTHON/Nature/planet32.png;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "D:/PYTHON/Nature/env/Lib/site-packages/pygame_gui/data;pygame_gui/data/"
   }
  ],
  "nonPyinstallerOptions": {

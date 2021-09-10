@@ -22,6 +22,7 @@ class Life(Body):
             y = randint(50, cfg.WORLD[1]-50)
             self.position = Vec2d(x, y)
         space.add(self)
+        self.selection_time = 0
         
         self.collide_creature = False
         self.collide_plant = False
@@ -34,12 +35,17 @@ class Life(Body):
         if self == selected:
             self.draw_selection(screen, x, y, r)
 
-    def update(self, dt: float):
-        pass
+    def update(self, dt: float, selected: Body):
+        if self == selected:
+            self.selection_time += dt*2
+            self.selection_time = self.selection_time%(PI)
+        else:
+            self.selection_time = 0
     
     def draw_selection(self, screen: Surface, x, y, r):
-        gfxdraw.aacircle(screen, int(x), int(flipy(y)), int(r*2), Color('turquoise'))
-        gfxdraw.aacircle(screen, int(x), int(flipy(y)), int(r*2+1), Color('turquoise'))
+        c = abs(sin(self.selection_time))
+        gfxdraw.aacircle(screen, int(x), int(flipy(y)), int(r+3+(r+2)*c), Color('orange'))
+        gfxdraw.aacircle(screen, int(x), int(flipy(y)), int(r+3+(r+3)*c), Color('orange'))
 
     
 

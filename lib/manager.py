@@ -58,8 +58,8 @@ class Manager:
     def user_event(self, event, dt: float):
         self.gui.process_event(event, dt)
 
-    def update_gui(self, dt: float, ranking: list):
-        self.gui.update(dt, ranking)
+    def update_gui(self, dt: float, ranking1: list, ranking2: list):
+        self.gui.update(dt, ranking1, ranking2)
 
     def draw_gui(self, screen: Surface):
         self.gui.draw_ui(screen)
@@ -107,15 +107,16 @@ class Manager:
             project['time'] = round(self.enviro.time, 1)
             project['cycles'] = self.enviro.cycles
             project['last_save_time'] = self.enviro.cycles*6000+round(self.enviro.time)
-            project['ranking'] = []
+            project['creatures'] = []
             for creature in self.enviro.creature_list:
                 creature_to_save = {}
                 creature_to_save['name'] = creature.name
                 creature_to_save['gen'] = creature.generation
                 creature_to_save['size'] = creature.shape.radius
                 creature_to_save['power'] = creature.power
-                creature_to_save['meat'] = creature.meat
-                creature_to_save['vege'] = creature.vege
+                creature_to_save['food'] = creature.food
+                #creature_to_save['meat'] = creature.meat
+                #creature_to_save['vege'] = creature.vege
                 creature_to_save['x'] = round(creature.position.x)
                 creature_to_save['y'] = round(creature.position.y)
                 creature_to_save['color0'] = [creature.color0.r, creature.color0.g, creature.color0.b, creature.color0.a]
@@ -124,14 +125,15 @@ class Manager:
                 creature_to_save['color3'] = [creature.color3.r, creature.color3.g, creature.color3.b, creature.color3.a]
                 creature_to_save['neuro'] = creature.neuro.ToJSON()
                 creature_to_save['signature'] = deepcopy(creature.signature)
-                creatures.append(creature_to_save)
-            project['creatures'] = creatures
+                project['creatures'].append(creature_to_save)
+            project['ranking1'] = []
             for rank in self.enviro.ranking1:
                 rank_to_save = {}
                 rank_to_save['name'] = copy(rank['name'])
                 rank_to_save['gen'] = rank['gen']
-                rank_to_save['meat'] = rank['meat']
-                rank_to_save['vege'] = rank['vege']
+                rank_to_save['food'] = rank['food']
+                #rank_to_save['meat'] = rank['meat']
+                #rank_to_save['vege'] = rank['vege']
                 rank_to_save['size'] = rank['size']
                 rank_to_save['fitness'] = rank['fitness']
                 rank_to_save['power'] = rank['power']
@@ -141,7 +143,25 @@ class Manager:
                 rank_to_save['color3'] = [rank['color3'][0], rank['color3'][1], rank['color3'][2], rank['color3'][3]]
                 rank_to_save['neuro'] = rank['neuro'].ToJSON()
                 rank_to_save['signature'] = deepcopy(rank['signature'])
-                project['ranking'].append(rank_to_save)
+                project['ranking1'].append(rank_to_save)
+            project['ranking2'] = []
+            for rank in self.enviro.ranking2:
+                rank_to_save = {}
+                rank_to_save['name'] = copy(rank['name'])
+                rank_to_save['gen'] = rank['gen']
+                rank_to_save['food'] = rank['food']
+                #rank_to_save['meat'] = rank['meat']
+                #rank_to_save['vege'] = rank['vege']
+                rank_to_save['size'] = rank['size']
+                rank_to_save['fitness'] = rank['fitness']
+                rank_to_save['power'] = rank['power']
+                rank_to_save['color0'] = [rank['color0'][0], rank['color0'][1], rank['color0'][2], rank['color0'][3]]
+                rank_to_save['color1'] = [rank['color1'][0], rank['color1'][1], rank['color1'][2], rank['color1'][3]]
+                rank_to_save['color2'] = [rank['color2'][0], rank['color2'][1], rank['color2'][2], rank['color2'][3]]
+                rank_to_save['color3'] = [rank['color3'][0], rank['color3'][1], rank['color3'][2], rank['color3'][3]]
+                rank_to_save['neuro'] = rank['neuro'].ToJSON()
+                rank_to_save['signature'] = deepcopy(rank['signature'])
+                project['ranking2'].append(rank_to_save)
 
             if self.add_to_save_list(project_name, str(self.enviro.get_time(1))):
                 with open("saves/" + project_name + "/" + str(self.enviro.get_time(1)) + ".json", 'w+') as json_file:
@@ -207,18 +227,23 @@ class Manager:
         #obj_list['ranking1'].sort(key=Sort_By_Fitness, reverse=True)
         #obj_list['ranking2'].sort(key=Sort_By_Fitness, reverse=True)
         self.enviro.ranking1 = []
-        #self.enviro.ranking2 = []
+        self.enviro.ranking2 = []
         for genome in obj_list['creatures']:
             #genome['neuro'] = json.loads(genome['neuro'])
             neuro = Network()
             neuro.FromJSON(genome['neuro'])
             genome['neuro'] = neuro
             self.enviro.add_saved_creature(genome)
-        for rank in obj_list['ranking']:
+        for rank in obj_list['ranking1']:
             neuro = Network()
             neuro.FromJSON(rank['neuro'])
             rank['neuro'] = neuro
             self.enviro.ranking1.append(rank)
+        for rank in obj_list['ranking2']:
+            neuro = Network()
+            neuro.FromJSON(rank['neuro'])
+            rank['neuro'] = neuro
+            self.enviro.ranking2.append(rank)
         if not f.closed:
             f.close()
         log_to_file(project_name+' loaded', 'log.txt')
@@ -310,7 +335,7 @@ class Manager:
                             r = 255 - b
                             if link.recombined:
                                 g = 255
-                        link_color = Color(r, g, b, 50)
+                        link_color = Color((r, g, b, 50))
                         node_num0 = len(network.layers[l0].nodes)
                         #pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)-1))
                         pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)))
@@ -335,3 +360,6 @@ class Manager:
                     out += 1
                     #self.add_text(f'{inp_desc[n]}: ', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                     self.add_text2(f'{round(val, 1)}', 50 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)
+                else:
+                    val = network.nodes[network.layers[l].nodes[n]].value
+                    self.add_text(f'{round(val, 1)}', 85 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))

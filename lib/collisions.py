@@ -9,14 +9,24 @@ def process_creature_plant_collisions(arbiter, space, data):
     dt = data['dt']
     hunter = arbiter.shapes[0].body
     target = arbiter.shapes[1].body
-    hunter.position -= arbiter.normal*0.5
-    target.position += arbiter.normal*0.2
-    if hunter.output[3] >= 0.5:
+    size0 = arbiter.shapes[0].radius
+    size1 = arbiter.shapes[1].radius
+    if size0 != 0:
+        hunter.position -= arbiter.normal*size1/size0*0.2
+    else:
+        hunter.position -= arbiter.normal*0.2
+    size1 = arbiter.shapes[1].radius
+    if size1 != 0:
+        target.position += arbiter.normal*size0/size1*0.2
+    else:
+        target.position += arbiter.normal*0.2
+    if hunter._eat:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 45:
             target.color0 = Color('yellow')
-            target.energy = target.energy - cfg.EAT*dt
-            vege = hunter.vege/((hunter.vege+hunter.meat)/2)
-            plant_value = cfg.EAT*dt*vege/10*cfg.VEGE2ENG
+            target.energy = target.energy - cfg.EAT*dt*size0
+            vege = ((11-hunter.food)/10)*size0
+            #vege = hunter.vege/((hunter.vege+hunter.meat)/2)
+            plant_value = cfg.EAT*dt*vege*cfg.VEGE2ENG
             hunter.eat(plant_value)
             hunter.fitness += plant_value*cfg.VEGE2FIT
     hunter.collide_plant = True
@@ -26,14 +36,24 @@ def process_creature_meat_collisions(arbiter, space, data):
     dt = data['dt']
     hunter = arbiter.shapes[0].body
     target = arbiter.shapes[1].body
-    hunter.position -= arbiter.normal*0.5
-    target.position += arbiter.normal*0.2
-    if hunter.output[3] >= 0.5:
+    size0 = arbiter.shapes[0].radius
+    size1 = arbiter.shapes[1].radius
+    #~ new changes
+    if size0 != 0:
+        hunter.position -= arbiter.normal*size1/size0*0.2
+    else:
+        hunter.position -= arbiter.normal*0.2
+    size1 = arbiter.shapes[1].radius
+    if size1 != 0:
+        target.position += arbiter.normal*size0/size1*0.2
+    else:
+        target.position += arbiter.normal*0.2
+    if hunter._eat:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 45:
             target.color0 = Color('yellow')
-            target.energy = target.energy - cfg.EAT*dt
-            meat = hunter.meat/((hunter.vege+hunter.meat)/2)
-            meat_value = cfg.EAT*dt*(target.time/cfg.MEAT_TIME)*meat/10*cfg.MEAT2ENG
+            target.energy = target.energy - cfg.EAT*dt*size0
+            meat = (hunter.food/10)*size0
+            meat_value = cfg.EAT*dt*meat*cfg.MEAT2ENG
             hunter.eat(meat_value)
             hunter.fitness += meat_value*cfg.MEAT2FIT
     hunter.collide_meat = True
@@ -43,11 +63,11 @@ def process_creatures_collisions(arbiter, space, data):
     dt = data['dt']
     agent = arbiter.shapes[0].body
     target = arbiter.shapes[1].body
-    agent.position -= arbiter.normal*0.5
-    target.position += arbiter.normal*0.5
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
-    if agent.output[4] >= 0.5:
+    agent.position -= arbiter.normal*size1/size0*0.5
+    target.position += arbiter.normal*size0/size1*0.5
+    if agent._attack:
         if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 45:
             if (size0+randint(0, 6)) > (size1+randint(0, 6)):
                 dmg = cfg.HIT * dt * (agent.size+agent.power)/2
