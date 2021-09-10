@@ -194,11 +194,19 @@ class Simulation():
         self.selected = self.find_creature(mouseX, flipy(mouseY))
         if self.selected == None:
             self.selected = self.find_plant(mouseX, flipy(mouseY))
+        if self.selected == None:
+            self.selected = self.find_meat(mouseX, flipy(mouseY))
 
     def find_plant(self, x: float, y: float) -> Union[Plant, None]:
         for plant in self.plant_list:
             if hypot(plant.position.x-x, plant.position.y-y) <= plant.shape.radius:
                 return plant
+        return None
+
+    def find_meat(self, x: float, y: float) -> Union[Meat, None]:
+        for meat in self.meat_list:
+            if hypot(meat.position.x-x, meat.position.y-y) <= meat.shape.radius:
+                return meat
         return None
 
     def find_creature(self, x: float, y: float) -> Union[Creature, None]:
@@ -311,7 +319,7 @@ class Simulation():
             wall.draw(screen=self.screen)
 
         for meat in self.meat_list:
-            meat.draw(screen=self.screen)
+            meat.draw(screen=self.screen, selected=self.selected)
 
         self.draw_network()
         self.draw_text()
@@ -323,7 +331,9 @@ class Simulation():
             if isinstance(self.selected, Creature):
                 self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation} | food: {self.selected.food} | fit: {round(self.selected.fitness)}', cfg.WORLD[0]/2-150, cfg.WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
             elif isinstance(self.selected, Plant):
-                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)}', cfg.WORLD[0]/2-150, cfg.WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
+                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)} | time: {round(self.selected.life_time)}', cfg.WORLD[0]/2-150, cfg.WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
+            elif isinstance(self.selected, Meat):
+                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.radius)} | time: {round(self.selected.time)}', cfg.WORLD[0]/2-150, cfg.WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
             else:                
                 self.manager.add_text2(f'no info', cfg.WORLD[0]/2-150, cfg.WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
     
@@ -371,7 +381,7 @@ class Simulation():
 
     def update_meat(self, dT: float):
         for meat in self.meat_list:
-            meat.update(dT)
+            meat.update(dT, self.selected)
             if meat.time <= 0 or meat.energy <= 0:
                 meat.kill(self.space)
                 self.meat_list.remove(meat)
@@ -381,7 +391,7 @@ class Simulation():
         for creature in self.creature_list:
             if creature.energy <= 0:
                 self.add_to_ranking(creature)
-                meat = Meat(space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
+                meat = Meat(screen=self.screen, space=self.space, sim=self, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
                 self.meat_list.append(meat)
                 creature.kill(self.space)
                 self.creature_list.remove(creature)
@@ -403,7 +413,7 @@ class Simulation():
         ### REPRODUCE ###
         temp_list = []
         for creature in self.creature_list:
-            creature.update(screen=self.screen, space=self.space, dt=dt)
+            creature.update(screen=self.screen, space=self.space, dt=dt, selected=self.selected)
             if creature.check_reproduction(dt):
                 for _ in range(cfg.CHILDS_NUM):
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)
@@ -429,7 +439,7 @@ class Simulation():
                 plant.kill(self.space)
                 self.plant_list.remove(plant)
             else:
-                plant.update(dt)
+                plant.update(dt, self.selected)
         if random() <= cfg.PLANT_MULTIPLY:
             plant = self.add_plant(cfg.WORLD)
             self.plant_list.append(plant)

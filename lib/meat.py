@@ -4,13 +4,15 @@ import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
 from pymunk import Segment, Poly, Body, Circle, Space, Vec2d
 from lib.math2 import flipy, clamp
-from lib.config import *
+from lib.life import Life
+from lib.config import cfg
 
-class Meat(Body):
+class Meat(Life):
 
-    def __init__(self, space: Space, position: Vec2d, collision_tag: int, radius: int, energy: int, color0: Color=Color('red'), color1: Color=Color('red4')):
-        super().__init__(self, body_type=Body.KINEMATIC)
-        self.position = position
+    def __init__(self, screen: Surface, space: Space, sim: object, position: Vec2d, collision_tag: int, radius: int, energy: int, color0: Color=Color('red'), color1: Color=Color('red4')):
+        #super().__init__(self, body_type=Body.KINEMATIC)
+        super().__init__(screen=screen, space=space, owner=sim, collision_tag=collision_tag, position=position)
+        #self.position = position
         self.energy = energy
         self.radius = floor(sqrt(self.energy)*0.25)
         self._color0 = color0
@@ -20,41 +22,20 @@ class Meat(Body):
         self.time = cfg.MEAT_TIME
         self.shape = Circle(self, self.radius)
         self.shape.collision_type = collision_tag
-        space.add(self, self.shape)
+        space.add(self.shape)
         #x = int(self.position.x); y = int(self.position.y)
         r = int(self.radius)
-        self.circles = []
-        if r >= 3:
-            for m in range(0, r, 2):
-                rx = randint(-5, 5)
-                ry = randint(-5, 5)
-                self.circles.append([rx, ry, m])
-        else:
-            self.circles.append(0, 0, 0)
 
-    def draw(self, screen: Surface):
+    def draw(self, screen: Surface, selected: Body):
+        super().draw(screen, selected)
         x = int(self.position.x); y = int(self.position.y)
         r = int(self.radius)
         gfxdraw.filled_circle(screen, x, flipy(y), r, self.color1)
         if r > 2:
             gfxdraw.filled_circle(screen, x, flipy(y), r-2, self.color0)
-        #for rx, ry, m in self.circles:
-        #    if r-m > 0:
-        #        gfxdraw.filled_circle(screen, x+rx, flipy(y+ry), r-m+1, self.color1)
-        #        gfxdraw.filled_circle(screen, x+rx, flipy(y+ry), r-m, self.color0)
-        #    else:
-        #        break
-        #gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r), self.color1)
-        #if r >= 3:
-        #    for m in range(0, r, 2):
-        #        rx = randint(-10, 10)
-        #        ry = randint(-10, 10)
-        #        gfxdraw.filled_circle(screen, x+rx, flipy(y+ry), r-m+1, self.color1)
-        #        gfxdraw.filled_circle(screen, x+rx, flipy(y+ry), r-m, self.color0)
-        #else:
-        #    gfxdraw.filled_circle(screen, x, flipy(y), r, self.color1)
 
-    def update(self, dT: float):
+    def update(self, dT: float, selected: Body):
+        super().update(dT, selected)
         self.time -= dT
         if self.time < 0:
             self.time = 0

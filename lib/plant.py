@@ -37,11 +37,8 @@ class Plant(Life):
             return True
         return False
 
-    def update(self, dt: float):
-        #if self.new_plant > 0:
-        #    self.new_plant -= 1
-        #    if self.new_plant==0:
-        #        self.shape.collision_type=6
+    def update(self, dt: float, selected: Body):
+        super().update(dt, selected)
         if self.energy < self.max_energy and self.energy > 0:
             self.energy += cfg.PLANT_GROWTH*dt
             new_size = floor(sqrt(self.energy))

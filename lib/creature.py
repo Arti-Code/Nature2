@@ -167,7 +167,8 @@ class Creature(Life):
     def draw_name(self):
         return self.name, self.position.x-20, flipy(self.position.y-14)
 
-    def update(self, screen: Surface, space: Space, dt:float):
+    def update(self, screen: Surface, space: Space, dt:float, selected: Body):
+        super().update(dt, selected)
         move = self.move(dt)
         self.calc_energy(dt, move)
         self.mem_time -= dt
