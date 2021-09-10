@@ -30,9 +30,10 @@ class Meat(Life):
         super().draw(screen, selected)
         x = int(self.position.x); y = int(self.position.y)
         r = int(self.radius)
-        gfxdraw.filled_circle(screen, x, flipy(y), r, self.color1)
-        if r > 2:
-            gfxdraw.filled_circle(screen, x, flipy(y), r-2, self.color0)
+        if r > 0:
+            gfxdraw.filled_circle(screen, x, flipy(y), r, self.color1)
+            if r > 2:
+                gfxdraw.filled_circle(screen, x, flipy(y), r-2, self.color0)
 
     def update(self, dT: float, selected: Body):
         super().update(dT, selected)

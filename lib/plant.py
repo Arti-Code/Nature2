@@ -4,11 +4,9 @@ from math import sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt, log2
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
 import pymunk as pm
-from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
+from pymunk import Vec2d, Body, Circle, Segment, Space, Poly
 from lib.life import Life
-from lib.math2 import flipy, ang2vec, ang2vec2, clamp
-from lib.sensor import Sensor, PolySensor
-from lib.net import Network
+from lib.math2 import flipy, clamp
 from lib.config import *
 
 

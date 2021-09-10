@@ -8,17 +8,14 @@ from statistics import mean
 from random import randint, random, choice
 from typing import Union
 import pygame
-#import pygame as pg
 from pygame import Color, Surface, image
 from pygame.constants import *
-from pygame.font import Font, match_font
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 import pymunk.pygame_util
 from lib.life import Life
 from lib.creature import Creature
 from lib.plant import Plant
 from lib.wall import Wall
-from lib.sensor import Sensor
 from lib.math2 import set_world, world, flipy
 from lib.config import cfg, TITLE, SUBTITLE
 from lib.manager import Manager
@@ -26,7 +23,6 @@ from lib.autoterrain import Terrain
 from lib.rock import Rock
 from lib.collisions import process_creature_plant_collisions, process_creature_meat_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end, detect_meat, detect_meat_end
 from lib.meat import Meat
-from lib.species import modify_name
 from lib.utils import log_to_file
 
 class Simulation():
@@ -462,7 +458,7 @@ class Simulation():
     def add_random_creature(self) -> Creature:
         r = randint(0, 1)
         creature: Creature = None
-        if r == 0 or (len(self.ranking1) == 0 and len(self.ranking2) == 0):
+        if r == 0 or len(self.ranking1) == 0 or len(self.ranking2) == 0:
             creature = self.add_creature(cfg.WORLD)
         else:
             ranking = choice([self.ranking1, self.ranking2])

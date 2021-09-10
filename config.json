@@ -41,5 +41,6 @@
   "EAT_ENG": 0.01,
   "LINKS_RATE": 0.1,
   "MUTATIONS": 1,
-  "TIME": 1
+  "TIME": 1,
+  "BORN2FIT": 100
 }

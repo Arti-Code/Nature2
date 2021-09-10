@@ -8,11 +8,11 @@ from pygame.font import Font
 import pymunk as pm
 from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
 from lib.life import Life
-from lib.math2 import flipy, ang2vec, ang2vec2, clamp
-from lib.sensor import Sensor, PolySensor
+from lib.math2 import flipy, clamp
+from lib.sensor import Sensor
 from lib.net import Network
 from lib.species import random_name, modify_name
-from lib.config import cfg, Configuration
+from lib.config import cfg
 from lib.utils import log_to_file
 
 class Creature(Life):
@@ -198,7 +198,7 @@ class Creature(Life):
         genome: dict=self.get_genome()
         genome['neuro'] = self.neuro.Replicate()
         self.reproduction_time = cfg.REP_TIME
-        self.fitness += 10
+        self.fitness += cfg.BORN2FIT
         return (genome, pos)
       
     def move(self, dt: float) -> None:

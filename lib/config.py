@@ -50,6 +50,7 @@ class Configuration():
         self.LINKS_RATE = None
         self.MUTATIONS = None
         self.TIME = None
+        self.BORN2FIT = None
         self.load_from_file(filename)
 
     def load_from_file(self, filename: str):
@@ -100,6 +101,7 @@ class Configuration():
         self.LINKS_RATE             = cfg['LINKS_RATE']
         self.MUTATIONS              = cfg['MUTATIONS']
         self.TIME                   = cfg['TIME']
+        self.BORN2FIT               = cfg['BORN2FIT']
 
 
 cfg = Configuration('config.json')
