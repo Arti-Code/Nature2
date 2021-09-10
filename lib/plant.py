@@ -1,6 +1,6 @@
 from copy import copy, deepcopy
 from random import random, randint
-from math import sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt
+from math import sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt, log2
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
 import pymunk as pm
@@ -19,12 +19,12 @@ class Plant(Life):
         self.life_time = cfg.PLANT_LIFE
         self.size = size
         self.max_size = cfg.PLANT_MAX_SIZE
-        self.max_energy = pow(cfg.PLANT_MAX_SIZE, 2)
+        self.max_energy = pow(2, cfg.PLANT_MAX_SIZE)
         self.color0 = Color('yellowgreen')
         self.color1 = Color('green')
         self._color0 = Color('yellowgreen')
         self._color1 = Color('green')
-        self.energy = pow(self.size, 2)
+        self.energy = pow(2, self.size)
         self.generation = 0
         self.shape = Circle(self, self.size)
         self.shape.collision_type = collision_tag
@@ -41,7 +41,7 @@ class Plant(Life):
         super().update(dt, selected)
         if self.energy < self.max_energy and self.energy > 0:
             self.energy += cfg.PLANT_GROWTH*dt
-            new_size = floor(sqrt(self.energy))
+            new_size = floor(log2(self.energy))
             if new_size != self.size:
                 if new_size <= cfg.PLANT_MAX_SIZE:
                     self.shape.unsafe_set_radius(new_size)
@@ -62,8 +62,9 @@ class Plant(Life):
         super().draw(screen, selected)
         x = self.position.x; y = self.position.y
         r = self.shape.radius
-        gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r), self.color0)
-        if r >= 3 and self.color1 != None:
-            gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r-2), self.color1)
+        if r > 0:
+            gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r), self.color0)
+            if r >= 3 and self.color1 != None:
+                gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r-2), self.color1)
         #if r >= 6 and self.color3 != None:
         #    gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(2), self.color3)
