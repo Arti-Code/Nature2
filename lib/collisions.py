@@ -23,8 +23,8 @@ def process_creature_plant_collisions(arbiter, space, data):
     if hunter._eat:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 45:
             target.color0 = Color('yellow')
-            target.energy = target.energy - cfg.EAT*dt
-            vege = (11-hunter.food)/10
+            target.energy = target.energy - cfg.EAT*dt*size0
+            vege = ((11-hunter.food)/10)*size0
             #vege = hunter.vege/((hunter.vege+hunter.meat)/2)
             plant_value = cfg.EAT*dt*vege*cfg.VEGE2ENG
             hunter.eat(plant_value)
@@ -51,8 +51,8 @@ def process_creature_meat_collisions(arbiter, space, data):
     if hunter._eat:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 45:
             target.color0 = Color('yellow')
-            target.energy = target.energy - cfg.EAT*dt
-            meat = hunter.food/10
+            target.energy = target.energy - cfg.EAT*dt*size0
+            meat = (hunter.food/10)*size0
             meat_value = cfg.EAT*dt*meat*cfg.MEAT2ENG
             hunter.eat(meat_value)
             hunter.fitness += meat_value*cfg.MEAT2FIT
