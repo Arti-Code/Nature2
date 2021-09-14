@@ -19,6 +19,11 @@ class Camera():
         ry = position.y - self.rect.top
         return Vector2(rx, ry)
 
+    def rev_pos(self, position: Vector2) -> Vector2:
+        rx = position.x + self.rect.left
+        ry = position.y + self.rect.top
+        return Vector2(rx, ry)
+
     def point_on_screen(self, position: Vector2) -> bool:
         if self.rect.collidepoint(position.x, position.y):
             return True

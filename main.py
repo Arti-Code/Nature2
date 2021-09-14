@@ -169,6 +169,14 @@ class Simulation():
     def key_events(self, event):
         if event.key == pygame.K_ESCAPE:
             self.running = False
+        if event.key == pygame.K_KP_8:
+            self.camera.update(Vector2(0, -50))
+        if event.key == pygame.K_KP_2:
+            self.camera.update(Vector2(0, 50))
+        if event.key == pygame.K_KP_4:
+            self.camera.update(Vector2(-50, 0))
+        if event.key == pygame.K_KP_6:
+            self.camera.update(Vector2(50, 0))
         if event.key == pygame.K_LEFT:
             if self.creature_list != []:
                 if self.sel_idx > 0 and self.sel_idx <= len(self.creature_list):
@@ -190,11 +198,13 @@ class Simulation():
     def mouse_events(self, event):
         self.selected = None
         mouseX, mouseY = pygame.mouse.get_pos()
-        self.selected = self.find_creature(mouseX, flipy(mouseY))
+        rel_mouse = self.camera.rev_pos(Vector2(mouseX, mouseY))
+        print(f'mouse: {mouseX}|{mouseY} -> {rel_mouse.x}|{rel_mouse.y}')
+        self.selected = self.find_creature(rel_mouse.x, flipy(rel_mouse.y))
         if self.selected == None:
-            self.selected = self.find_plant(mouseX, flipy(mouseY))
+            self.selected = self.find_plant(rel_mouse.x, flipy(rel_mouse.y))
         if self.selected == None:
-            self.selected = self.find_meat(mouseX, flipy(mouseY))
+            self.selected = self.find_meat(rel_mouse.x, flipy(rel_mouse.y))
 
     def find_plant(self, x: float, y: float) -> Union[Plant, None]:
         for plant in self.plant_list:
@@ -312,7 +322,7 @@ class Simulation():
             self.manager.add_text2(name, x, y, Color('skyblue'))
 
         for plant in self.plant_list:
-            plant.draw(screen=self.screen, selected=self.selected)
+            plant.draw(screen=self.screen, camera=self.camera, selected=self.selected)
 
         for wall in self.wall_list:
             wall.draw(screen=self.screen)

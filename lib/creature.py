@@ -136,9 +136,9 @@ class Creature(Life):
             color1.a = 40
             color2.a = 40
             a = 40
-        gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r), color0)
-        #gfxdraw.aacircle(screen, int(x), int(flipy(y)), int(r), self.color0)
-        gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r-1), color1)
+        gfxdraw.filled_circle(screen, int(rx), flipy(int(ry)), int(r), color0)
+        #gfxdraw.aacircle(screen, int(rx), int(flipy(ry)), int(r), self.color0)
+        gfxdraw.filled_circle(screen, int(rx), flipy(int(ry)), int(r-1), color1)
         if r > 2:
             x2 = round(rx + rot.x*(r/1.6))
             y2 = round(ry + rot.y*(r/1.6))
@@ -168,8 +168,8 @@ class Creature(Life):
             #c.hsla[0]=self.food*10
             #c.hsla[1]=100
             #c.hsla[2]=50
-            gfxdraw.filled_circle(screen, x2, flipy(y2), r2, Color(r, g, b, a))
-            gfxdraw.filled_circle(screen, int(x), flipy(int(y)), r2, color2)
+            gfxdraw.filled_circle(screen, int(x2), int(y2), int(r2), Color(r, g, b, a))
+            gfxdraw.filled_circle(screen, int(rx), int(ry), int(r2), color2)
         self.color0 = self._color0
         self.draw_energy_bar(screen, rx, ry)
         #self.draw_name(screen)
