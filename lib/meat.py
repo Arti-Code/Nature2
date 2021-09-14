@@ -1,4 +1,4 @@
-from math import sqrt, floor
+from math import sqrt, floor, log2
 from random import random, randint
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
@@ -14,7 +14,7 @@ class Meat(Life):
         super().__init__(screen=screen, space=space, owner=sim, collision_tag=collision_tag, position=position)
         #self.position = position
         self.energy = energy
-        self.radius = floor(sqrt(self.energy)*0.25)
+        self.radius = floor(log2(self.energy))
         self._color0 = color0
         self._color1 = color1
         self.color0 = color0
@@ -30,9 +30,10 @@ class Meat(Life):
         super().draw(screen, selected)
         x = int(self.position.x); y = int(self.position.y)
         r = int(self.radius)
-        gfxdraw.filled_circle(screen, x, flipy(y), r, self.color1)
-        if r > 2:
-            gfxdraw.filled_circle(screen, x, flipy(y), r-2, self.color0)
+        if r > 0:
+            gfxdraw.filled_circle(screen, x, flipy(y), r, self.color1)
+            if r > 2:
+                gfxdraw.filled_circle(screen, x, flipy(y), r-2, self.color0)
 
     def update(self, dT: float, selected: Body):
         super().update(dT, selected)
@@ -43,10 +44,11 @@ class Meat(Life):
             self.energy = 0
         self._color0.a = round((255*self.time)/cfg.MEAT_TIME)
         self.color0 = self._color0
-        new_size = floor(sqrt(self.energy)*0.25)
-        if new_size != self.shape.radius:
-            self.shape.unsafe_set_radius(new_size)
-            self.radius = self.shape.radius
+        if self.energy > 0:
+            new_size = floor(log2(self.energy))
+            if new_size != self.shape.radius:
+                self.shape.unsafe_set_radius(new_size)
+                self.radius = self.shape.radius
 
     def kill(self, space: Space):
         space.remove(self.shape)

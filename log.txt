@@ -3375,3 +3375,241 @@ diff: [0.3] [0.51] [0.4]
 NOWY GATUNEK: HRDIAM>>>HRARAM
 diff: [0.27] [0.49] [0.38]
 NOWY GATUNEK: HRDIAM>>>HRSSAM
+simulation started
+simulation started
+diff: [0.13] [0.37] [0.25]
+GATUNEK: PWSYJA
+diff: [0.33] [0.51] [0.42]
+NOWY GATUNEK: SSHHNY>>>SSTTNY
+diff: [0.23] [0.35] [0.29]
+GATUNEK: WUZUUD
+diff: [0.2] [0.19] [0.2]
+GATUNEK: JYTWME
+diff: [0.33] [0.26] [0.29]
+GATUNEK: PEHFUA
+diff: [0.07] [0.32] [0.19]
+GATUNEK: PTARZI
+diff: [0.1] [0.19] [0.15]
+GATUNEK: PYQEPF
+diff: [0.13] [0.21] [0.17]
+GATUNEK: PWSYJA
+diff: [0.17] [0.45] [0.31]
+NOWY GATUNEK: WUZUUD>>>WUTZUD
+diff: [0.3] [0.35] [0.32]
+NOWY GATUNEK: PEHFUA>>>PEHFPS
+diff: [0.03] [0.42] [0.23]
+GATUNEK: PTARZI
+diff: [0.3] [0.45] [0.38]
+NOWY GATUNEK: PEHFUA>>>PEZIUA
+diff: [0.1] [0.27] [0.18]
+GATUNEK: TRRYPY
+diff: [0.27] [0.55] [0.41]
+NOWY GATUNEK: REHUNA>>>RESONA
+diff: [0.17] [0.24] [0.21]
+GATUNEK: WUZUUD
+diff: [0.03] [0.46] [0.25]
+GATUNEK: PTARZI
+diff: [0.07] [0.06] [0.07]
+GATUNEK: WUTZUD
+diff: [0.03] [0.17] [0.1]
+GATUNEK: PEHFPS
+diff: [0.07] [0.4] [0.23]
+GATUNEK: PTARZI
+diff: [0.1] [0.18] [0.14]
+GATUNEK: PWSYJA
+diff: [0.03] [0.17] [0.1]
+GATUNEK: PEZIUA
+diff: [0.07] [0.26] [0.16]
+GATUNEK: SSTTNY
+diff: [0.13] [0.19] [0.16]
+GATUNEK: VASESF
+diff: [0.17] [0.6] [0.38]
+NOWY GATUNEK: PWSYJA>>>PWSYTF
+diff: [0.2] [0.15] [0.17]
+GATUNEK: WUZUUD
+diff: [0.07] [0.1] [0.08]
+GATUNEK: WUTZUD
+diff: [0.07] [0.33] [0.2]
+GATUNEK: PEHFPS
+diff: [0.23] [0.33] [0.28]
+GATUNEK: WUZUUD
+diff: [0.03] [0.54] [0.28]
+GATUNEK: PTARZI
+diff: [0.13] [0.16] [0.15]
+GATUNEK: WUTZUD
+diff: [0.03] [0.25] [0.14]
+GATUNEK: PEZIUA
+diff: [0.03] [0.64] [0.34]
+NOWY GATUNEK: PEZIUA>>>PEPJUA
+diff: [0.07] [0.33] [0.2]
+GATUNEK: PTARZI
+diff: [0.27] [0.27] [0.27]
+GATUNEK: PWSYJA
+diff: [0.17] [0.17] [0.17]
+GATUNEK: PWSYJA
+diff: [0.37] [0.45] [0.41]
+NOWY GATUNEK: PEHFUA>>>PKHFUA
+diff: [0.1] [0.22] [0.16]
+GATUNEK: WUTZUD
+diff: [0.17] [0.43] [0.3]
+NOWY GATUNEK: WUZUUD>>>WUZUTK
+diff: [0.2] [0.15] [0.17]
+GATUNEK: WUZUUD
+diff: [0.1] [0.16] [0.13]
+GATUNEK: WUTZUD
+diff: [0.13] [0.33] [0.23]
+GATUNEK: WUZUUD
+diff: [0.13] [0.4] [0.27]
+GATUNEK: PWSYJA
+diff: [0.2] [0.53] [0.36]
+NOWY GATUNEK: JYTWME>>>LITWME
+diff: [0.23] [0.11] [0.17]
+GATUNEK: WUZUUD
+diff: [0.1] [0.48] [0.29]
+GATUNEK: PEZIUA
+diff: [0.03] [0.2] [0.11]
+GATUNEK: PEPJUA
+diff: [0.13] [0.5] [0.32]
+NOWY GATUNEK: PTARZI>>>PTHUZI
+diff: [0.13] [0.55] [0.34]
+NOWY GATUNEK: PWSYJA>>>PWSYQI
+diff: [0.37] [0.47] [0.42]
+NOWY GATUNEK: PWSYJA>>>TUSYJA
+diff: [0.1] [0.44] [0.27]
+GATUNEK: PEZIUA
+diff: [0.1] [0.38] [0.24]
+GATUNEK: PWSYJA
+diff: [0.37] [0.49] [0.43]
+NOWY GATUNEK: PEHFUA>>>PEHFKE
+diff: [0.27] [0.69] [0.48]
+NOWY GATUNEK: WUZUUD>>>WUXSUD
+diff: [0.07] [0.35] [0.21]
+GATUNEK: WUTZUD
+diff: [0.1] [0.43] [0.26]
+GATUNEK: WUZUTK
+diff: [0.13] [0.27] [0.2]
+GATUNEK: WUZUUD
+diff: [0.2] [0.19] [0.2]
+GATUNEK: WUZUUD
+diff: [0.2] [0.31] [0.26]
+GATUNEK: WUZUUD
+diff: [0.07] [0.54] [0.3]
+NOWY GATUNEK: PEZIUA>>>TZZIUA
+diff: [0.1] [0.24] [0.17]
+GATUNEK: WUTZUD
+diff: [0.17] [0.24] [0.21]
+GATUNEK: WUZUUD
+diff: [0.27] [0.33] [0.3]
+GATUNEK: PWSYJA
+diff: [0.3] [0.33] [0.31]
+NOWY GATUNEK: PWSYJA>>>PWSYOC
+diff: [0.0] [0.24] [0.12]
+GATUNEK: TUSYJA
+diff: [0.07] [0.38] [0.22]
+GATUNEK: PWSYJA
+diff: [0.13] [0.57] [0.35]
+NOWY GATUNEK: PEZIUA>>>PEJYUA
+diff: [0.07] [0.16] [0.11]
+GATUNEK: PEHFKE
+diff: [0.07] [0.17] [0.12]
+GATUNEK: WUTZUD
+diff: [0.1] [0.32] [0.21]
+GATUNEK: WUTZUD
+diff: [0.03] [0.23] [0.13]
+GATUNEK: WUZUTK
+diff: [0.07] [0.25] [0.16]
+GATUNEK: WUXSUD
+diff: [0.1] [0.52] [0.31]
+NOWY GATUNEK: WUTZUD>>>WUTZSF
+diff: [0.17] [0.62] [0.39]
+NOWY GATUNEK: WUZUTK>>>WUZUZA
+diff: [0.07] [0.48] [0.27]
+GATUNEK: PEZIUA
+diff: [0.2] [0.23] [0.22]
+GATUNEK: WUZUUD
+diff: [0.1] [0.2] [0.15]
+GATUNEK: PEZIUA
+diff: [0.2] [0.31] [0.26]
+GATUNEK: WUZUUD
+diff: [0.17] [0.38] [0.27]
+GATUNEK: WUZUUD
+diff: [0.13] [0.42] [0.28]
+GATUNEK: PEZIUA
+diff: [0.1] [0.23] [0.17]
+GATUNEK: TZZIUA
+diff: [0.03] [0.6] [0.32]
+NOWY GATUNEK: PTARZI>>>PTVYZI
+diff: [0.17] [0.45] [0.31]
+NOWY GATUNEK: WUTZUD>>>WUTZSE
+diff: [0.23] [0.2] [0.22]
+GATUNEK: WUZUUD
+diff: [0.3] [0.53] [0.42]
+NOWY GATUNEK: PWSYJA>>>ZASYJA
+diff: [0.23] [0.47] [0.35]
+NOWY GATUNEK: PWSYJA>>>PWSYPH
+diff: [0.0] [0.15] [0.07]
+GATUNEK: PWSYOC
+diff: [0.07] [0.13] [0.1]
+GATUNEK: PWSYJA
+diff: [0.0] [0.12] [0.06]
+GATUNEK: PEHFKE
+diff: [0.2] [0.35] [0.27]
+GATUNEK: WUZUUD
+diff: [0.07] [0.07] [0.07]
+GATUNEK: PEJYUA
+diff: [0.13] [0.37] [0.25]
+GATUNEK: WUTZUD
+diff: [0.07] [0.41] [0.24]
+GATUNEK: WUTZUD
+diff: [0.1] [0.19] [0.14]
+GATUNEK: WUZUTK
+diff: [0.1] [0.39] [0.24]
+GATUNEK: WUTZUD
+diff: [0.07] [0.45] [0.26]
+GATUNEK: WUTZUD
+diff: [0.03] [0.64] [0.34]
+NOWY GATUNEK: WUZUTK>>>RIZUTK
+diff: [0.13] [0.06] [0.1]
+GATUNEK: WUTZSF
+diff: [0.03] [0.47] [0.25]
+GATUNEK: PEZIUA
+diff: [0.03] [0.47] [0.25]
+GATUNEK: PEZIUA
+diff: [0.03] [0.32] [0.18]
+GATUNEK: PEZIUA
+diff: [0.1] [0.17] [0.14]
+GATUNEK: PEZIUA
+diff: [0.17] [0.31] [0.24]
+GATUNEK: WUZUUD
+diff: [0.07] [0.35] [0.21]
+GATUNEK: PEZIUA
+diff: [0.07] [0.2] [0.14]
+GATUNEK: TZZIUA
+diff: [0.1] [0.53] [0.32]
+NOWY GATUNEK: PEZIUA>>>PEZIUD
+diff: [0.07] [0.47] [0.27]
+GATUNEK: TZZIUA
+diff: [0.07] [0.12] [0.09]
+GATUNEK: PTVYZI
+diff: [0.27] [0.33] [0.3]
+GATUNEK: WUZUUD
+diff: [0.27] [0.4] [0.33]
+NOWY GATUNEK: WUZUUD>>>WUQIUD
+diff: [0.07] [0.2] [0.13]
+GATUNEK: PWSYOC
+diff: [0.13] [0.3] [0.21]
+GATUNEK: PWSYPH
+diff: [0.3] [0.32] [0.31]
+NOWY GATUNEK: PEHFUA>>>PETEUA
+diff: [0.07] [0.42] [0.24]
+GATUNEK: PEHFKE
+diff: [0.13] [0.33] [0.23]
+GATUNEK: PWSYJA
+diff: [0.1] [0.37] [0.23]
+GATUNEK: PWSYJA
+diff: [0.23] [0.11] [0.17]
+GATUNEK: WUZUUD
+diff: [0.03] [0.15] [0.09]
+GATUNEK: PEHFKE
+diff: [0.07] [0.27] [0.17]
+GATUNEK: PEHFKE

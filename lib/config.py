@@ -1,8 +1,9 @@
 from math import pi as PI
 from json import loads, dumps
 
-TITLE = 'NATURE v0.4.5'
-SUBTITLE = "2019-2021 Artur Gwoździowski"
+TITLE = "NATURE"
+SUBTITLE = "v0.4.7"
+AUTHOR = "2019-2021 Artur Gwoździowski"
 
 class Configuration():
 
@@ -50,6 +51,9 @@ class Configuration():
         self.LINKS_RATE = None
         self.MUTATIONS = None
         self.TIME = None
+        self.BORN2FIT = None
+        self.RUN_TIME = None
+        self.RUN_COST = None
         self.load_from_file(filename)
 
     def load_from_file(self, filename: str):
@@ -100,6 +104,9 @@ class Configuration():
         self.LINKS_RATE             = cfg['LINKS_RATE']
         self.MUTATIONS              = cfg['MUTATIONS']
         self.TIME                   = cfg['TIME']
+        self.BORN2FIT               = cfg['BORN2FIT']
+        self.RUN_TIME               = cfg['RUN_TIME']
+        self.RUN_COST               = cfg['RUN_COST']
 
 
 cfg = Configuration('config.json')

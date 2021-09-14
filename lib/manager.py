@@ -279,7 +279,7 @@ class Manager:
                 'enemy0', 'dist0', 'plant0', 'dist0', 'obst0', 'dist0', 'meat0', 'dist0',
                 'enemy1', 'dist1', 'plant1', 'dist1', 'obst1', 'dist1', 'meat1', 'dist1', 
                 'enemy2', 'dist2', 'plant2', 'dist2', 'obst2', 'dist2', 'meat2', 'dist2',
-                'out0', 'out1', 'out2' 
+                'out0', 'out1', 'out2', 'hurt' 
             ]
             out_desc = ["mov", "turn", "run", "hid", "atk", "eat"]
 
