@@ -5,6 +5,7 @@ from statistics import mean
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
 from pygame.font import Font
+from pygame.math import Vector2
 import pymunk as pm
 from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
 from lib.life import Life
@@ -14,6 +15,7 @@ from lib.net import Network
 from lib.species import random_name, modify_name
 from lib.config import cfg
 from lib.utils import log_to_file
+from lib.camera import Camera
 
 class Creature(Life):
 
@@ -110,17 +112,23 @@ class Creature(Life):
         self.neuro.BuildRandom([37, 0, 0, 0, 0, 0, 0, 0, 6], cfg.LINKS_RATE)
         self.name = random_name(3, True)
 
-    def draw(self, screen: Surface, selected: Body):
-        super().draw(screen, selected)
-        x = self.position.x; y = self.position.y
+    def draw(self, screen: Surface, camera: Camera, selected: Body):
+        x = self.position.x; y = flipy(self.position.y)
         r = self.shape.radius
+        rect = Rect(x-r, y-r, 2*r, 2*r)
+        if not camera.rect_on_screen(rect):
+            return
+        rel_pos = camera.rel_pos(Vector2(x, y))
+        rx = rel_pos.x
+        ry = rel_pos.y
+        super().draw(screen, camera, selected)
         rot = self.rotation_vector
-        gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r), self.color0)
-        #gfxdraw.aacircle(screen, int(x), int(flipy(y)), int(r), self.color0)
-        gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r-1), self.color1)
+        gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), self.color0)
+        #gfxdraw.aacircle(screen, int(rx), int(y), int(r), self.color0)
+        gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-1), self.color1)
         if r > 2:
-            x2 = round(x + rot.x*(r/1.6))
-            y2 = round(y + rot.y*(r/1.6))
+            x2 = round(rx + rot.x*(r/1.6))
+            y2 = round(ry + rot.y*(r/1.6))
             #x3 = round(x - rot.x*(r/5))
             #y3 = round(y - rot.y*(r/5))
             r2 = round(r/2)
@@ -147,10 +155,10 @@ class Creature(Life):
             #c.hsla[0]=self.food*10
             #c.hsla[1]=100
             #c.hsla[2]=50
-            gfxdraw.filled_circle(screen, x2, flipy(y2), r2, Color(r, g, b))
-            gfxdraw.filled_circle(screen, int(x), flipy(int(y)), r2, self.color2)
+            gfxdraw.filled_circle(screen, x2, y2, r2, Color(r, g, b))
+            gfxdraw.filled_circle(screen, int(x), int(y), r2, self.color2)
         self.color0 = self._color0
-        self.draw_energy_bar(screen, int(x), flipy(int(y)))
+        self.draw_energy_bar(screen, rx, ry)
         #self.draw_name(screen)
         #self.draw_normal(screen)
 

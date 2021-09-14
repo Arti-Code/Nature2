@@ -10,6 +10,7 @@ from typing import Union
 import pygame
 from pygame import Color, Surface, image
 from pygame.constants import *
+from pygame.math import Vector2
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 import pymunk.pygame_util
 from lib.life import Life
@@ -24,6 +25,7 @@ from lib.rock import Rock
 from lib.collisions import process_creature_plant_collisions, process_creature_meat_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end, detect_meat, detect_meat_end
 from lib.meat import Meat
 from lib.utils import log_to_file
+from lib.camera import Camera
 
 class Simulation():
 
@@ -64,6 +66,7 @@ class Simulation():
         log_to_file('simulation started', 'log.txt')
         self.last_save_time = 0
         #self.map = pygame.image.load('res/map2.png').convert()
+        self.camera = Camera(Vector2(int(view_size[0]/2), int(view_size[1]/2)), Vector2(view_size[0], view_size[1]))
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -303,7 +306,7 @@ class Simulation():
         #self.screen.blit(self.map, self.screen.get_rect())
         #self.screen.blit(self.map)
         for creature in self.creature_list:
-            creature.draw(screen=self.screen, selected=self.selected)
+            creature.draw(screen=self.screen, camera=self.camera, selected=self.selected)
             creature.draw_detectors(screen=self.screen)
             name, x, y = creature.draw_name()
             self.manager.add_text2(name, x, y, Color('skyblue'))
@@ -525,5 +528,5 @@ def sort_by_fitness(creature):
 
 if __name__ == "__main__":
     set_world(cfg.WORLD)
-    sim = Simulation(cfg.WORLD)
+    sim = Simulation(cfg.SCREEN)
     sys.exit(sim.main())

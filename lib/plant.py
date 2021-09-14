@@ -57,7 +57,7 @@ class Plant(Life):
         space.remove(self)
 
     def draw(self, screen: Surface, selected: Body):
-        super().draw(screen, selected)
+        #super().draw(screen, selected)
         x = self.position.x; y = self.position.y
         r = self.shape.radius
         if r > 0:
