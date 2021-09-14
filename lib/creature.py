@@ -20,7 +20,7 @@ class Creature(Life):
     def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
         super().__init__(screen=screen, space=space, owner=sim, collision_tag=collision_tag, position=position)
         self.angle = random()*2*PI
-        self.output = [0, 0, 0, 0, 0]
+        self.output = [0, 0, 0, 0, 0, 0]
         self.generation = 0
         self.fitness = 0
         self.neuro = Network()
@@ -48,7 +48,7 @@ class Creature(Life):
         self.visual_range = cfg.VISUAL_RANGE
         self.sensors = []
         self.side_angle = 0
-        self.sensors.append(Sensor(screen, self, 4, 0, 220))
+        self.sensors.append(Sensor(screen, self, 4, 0, 250))
         self.sensors.append(Sensor(screen, self, 4, cfg.SENSOR_MAX_ANGLE, 250))
         self.sensors.append(Sensor(screen, self, 4, -cfg.SENSOR_MAX_ANGLE, 250))
         self.mem_time = 0
@@ -61,6 +61,10 @@ class Creature(Life):
         self._eat: bool=False
         self._attack: bool=False
         self._turn: float=0.0
+        self.pain: bool=False
+        self.run: bool=False
+        self.life_time: float=0.0
+        self.run_time = cfg.RUN_TIME
         #signature = self.get_signature()
         #s = self.compare_signature(signature, self.get_signature(), 0.8)
 
@@ -103,7 +107,7 @@ class Creature(Life):
         #self.vege = randint(1, 10)
         self.power = randint(1, 10)
         self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
-        self.neuro.BuildRandom([36, 0, 0, 0, 0, 0, 0, 0, 5], cfg.LINKS_RATE)
+        self.neuro.BuildRandom([37, 0, 0, 0, 0, 0, 0, 0, 6], cfg.LINKS_RATE)
         self.name = random_name(3, True)
 
     def draw(self, screen: Surface, selected: Body):
@@ -169,6 +173,15 @@ class Creature(Life):
 
     def update(self, screen: Surface, space: Space, dt:float, selected: Body):
         super().update(dt, selected)
+        self.life_time += dt*0.1
+        if self.run:
+            self.run_time -= dt
+            if self.run_time < 0:
+                self.run_time = 0
+        else:
+            self.run_time += dt
+            if self.run_time > cfg.RUN_TIME:
+                self.run_time = cfg.RUN_TIME
         move = self.move(dt)
         self.calc_energy(dt, move)
         self.mem_time -= dt
@@ -202,7 +215,10 @@ class Creature(Life):
         return (genome, pos)
       
     def move(self, dt: float) -> None:
-        move = (self._move)*cfg.SPEED*dt
+        if self.run:
+            move = 2*cfg.SPEED*dt
+        else:
+            move = (self._move)*cfg.SPEED*dt
         if move < 0:
             move = 0
         turn = self._turn*cfg.TURN*dt
@@ -216,6 +232,8 @@ class Creature(Life):
     def calc_energy(self, dt: float, move: float):
         base_energy = cfg.BASE_ENERGY
         move_energy = move * cfg.MOVE_ENERGY
+        if self.run:
+            move_energy *= cfg.RUN_COST
         rest_energy = 0
         size_cost = self.size * cfg.SIZE_COST * dt
         if self.output[3] >= 0.5:
@@ -260,6 +278,8 @@ class Creature(Life):
         input.append(self.output[0])
         input.append(self.output[1])
         input.append(self.output[2])
+        input.append(int(self.pain))
+        self.pain = False
         return input
 
     def analize(self):
@@ -280,6 +300,10 @@ class Creature(Life):
             self._attack = True
         else:
             self._attack = False
+        if self.output[5] > 0 and self.run_time > 0:
+            self.run = True
+        else:
+            self.run = False
         #for sensor in self.sensors:
         #    sensor.reset_data()
             

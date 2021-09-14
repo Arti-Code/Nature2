@@ -73,6 +73,7 @@ def process_creatures_collisions(arbiter, space, data):
                 dmg = cfg.HIT * dt * (agent.size+agent.power)/2
                 target.energy -= dmg
                 target.color0=Color('red')
+                target.pain = True
                 agent.fitness += dmg*cfg.HIT2FIT
     agent.collide_creature = True
     return True

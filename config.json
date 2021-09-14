@@ -42,5 +42,7 @@
   "LINKS_RATE": 0.1,
   "MUTATIONS": 1,
   "TIME": 1,
-  "BORN2FIT": 100
+  "BORN2FIT": 100,
+  "RUN_COST": 4,
+  "RUN_TIME": 5
 }

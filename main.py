@@ -325,7 +325,7 @@ class Simulation():
     def draw_text(self):
         if self.selected != None:
             if isinstance(self.selected, Creature):
-                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation} | food: {self.selected.food} | fit: {round(self.selected.fitness)}', cfg.WORLD[0]/2-150, cfg.WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
+                self.manager.add_text2(f'energy: {round(self.selected.energy)} | life_time: {round(self.selected.life_time)} | run_time: {round(self.selected.run_time)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation} | food: {self.selected.food} | fit: {round(self.selected.fitness)}', cfg.WORLD[0]/2-150, cfg.WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
             elif isinstance(self.selected, Plant):
                 self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)} | time: {round(self.selected.life_time)}', cfg.WORLD[0]/2-150, cfg.WORLD[1]-25, Color('yellowgreen'), False, False, True, False)
             elif isinstance(self.selected, Meat):

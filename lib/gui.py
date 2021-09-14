@@ -8,7 +8,7 @@ from copy import copy
 from pygame import Rect
 from pygame_gui import UIManager, PackageResource
 from pygame_gui.elements import UITextBox, UIWindow, UIButton, UILabel, UITextEntryLine, UIPanel
-from lib.config import cfg, TITLE, SUBTITLE
+from lib.config import cfg, TITLE, SUBTITLE, AUTHOR
 
 
 btn_w = 150
@@ -53,7 +53,7 @@ class MenuWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect):
         super().__init__(rect, manager=manager, window_display_title='Main Menu', object_id="#menu_win", visible=True)
         self.manager = manager
-        btn_list = [('New Simulation', '#btn_sim'), ('Select Terrain', '#btn_map'), ('Save Simulation', '#btn_save'), ('Load Simulation', '#btn_load'), ('Settings', '#btn_set'), ('Quit', '#btn_quit')]
+        btn_list = [('New Simulation', '#btn_sim'), ('Select Terrain', '#btn_map'), ('Save Simulation', '#btn_save'), ('Load Simulation', '#btn_load'), ('Settings', '#btn_set'), ('Info', '#btn_info'), ('Quit', '#btn_quit')]
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
@@ -138,6 +138,19 @@ class InfoWindow(UIWindow):
         btn = UIButton(Rect((round((self.rect.width/2)-(btn_w/2)), 60), (btn_w, btn_h)), text='Accept', manager=self.manager, container=self, parent_element=self, object_id='#btn_info')
         msg = UILabel(Rect((10, 15), (self.rect.width-10, 40)), text=text, manager=manager, container=self, parent_element=self, object_id='txt_msg')
 
+class CreditsWindow(UIWindow):
+
+    def __init__(self, owner: object, manager: UIManager, rect: Rect, title: str, subtitle: str, author: str, bar_text: str=''):
+        super().__init__(rect, manager=manager, window_display_title=bar_text, object_id="#credits_win", visible=True)
+        self.manager = manager
+        btn = UIButton(Rect((round((self.rect.width/2)-(btn_w/2)), 80), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_close')
+        lab_title = UILabel(Rect((10, 5), (self.rect.width-10, 30)), text=title, manager=manager, container=self, parent_element=self, object_id='#txt_title')
+        #lab_title.font = owner.titl_font
+        lab_subtitle = UILabel(Rect((10, 35), (self.rect.width-10, 20)), text=subtitle, manager=manager, container=self, parent_element=self, object_id='#txt_subtitle')
+        #lab_subtitle.font = owner.subtitl_font
+        lab_author = UILabel(Rect((10, 55), (self.rect.width-10, 20)), text=author, manager=manager, container=self, parent_element=self, object_id='#txt_author')
+        #lab_author.font = owner.creature_font
+
 class EnviroWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, data: dict, dT: float):
@@ -221,6 +234,7 @@ class GUI():
         self.set_win = None
         self.enviro_win = None
         self.rank_win = None
+        self.credits_win = None
         self.rebuild_ui(self.view)
 
     def rebuild_ui(self, new_size: tuple):         
@@ -242,7 +256,7 @@ class GUI():
 
     def create_main_menu(self):
         w = 250
-        h = 300
+        h = 350
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.main_menu = MenuWindow(manager=self.ui_mgr, rect=pos)
 
@@ -270,6 +284,12 @@ class GUI():
         h = 150
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.info_win = InfoWindow(manager=self.ui_mgr, rect=pos, text=text, title=title)
+
+    def create_credits_win(self, title: str, subtitle: str, author: str, bar_text: str):
+        w = 250
+        h = 140
+        pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
+        self.credits_win = CreditsWindow(owner=self.owner, manager=self.ui_mgr, rect=pos, title=title, subtitle=subtitle, author=author, bar_text=bar_text)
 
     def create_rank_win(self):
         w = 320
@@ -342,7 +362,11 @@ class GUI():
                 elif event.ui_object_id == '#menu_win.#btn_save':
                     self.owner.save_project()
                     self.main_menu.kill()
-                    self.create_info_win(text=f"Project {self.owner.enviro.project_name.upper()} has been saved", title='Save Simulation')
+                elif event.ui_object_id == '#menu_win.#btn_info':
+                    self.main_menu.kill()
+                    self.create_credits_win(title=TITLE, subtitle=SUBTITLE, author=AUTHOR, bar_text=TITLE)
+                elif event.ui_object_id == '#credits_win.#btn_close':
+                    self.credits_win.kill()
                 elif event.ui_object_id == '#menu_win.#btn_load':
                     self.main_menu.kill()
                     self.create_load_menu()
