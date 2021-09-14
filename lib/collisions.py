@@ -52,7 +52,7 @@ def process_creature_meat_collisions(arbiter, space, data):
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             target.color0 = Color('yellow')
             target.energy = target.energy - cfg.EAT*dt*size0
-            meat = (hunter.food/10)*size0
+            meat = (hunter.food/5)*size0
             meat_value = cfg.EAT*dt*meat*cfg.MEAT2ENG
             hunter.eat(meat_value)
             hunter.fitness += meat_value*cfg.MEAT2FIT/size0
@@ -88,12 +88,13 @@ def detect_creature(arbiter, space, data):
     enemy = arbiter.shapes[1].body
     sensor_shape = arbiter.shapes[0]
     for sensor in creature.sensors:
-        if sensor.shape == sensor_shape:
-            sensor.set_color(Color('orange'))
-            pos0 = creature.position
-            dist = pos0.get_distance(enemy.position)
-            sensor.send_data(detect=True, distance=dist)
-            break
+        if not enemy.hide:
+            if sensor.shape == sensor_shape:
+                sensor.set_color(Color('orange'))
+                pos0 = creature.position
+                dist = pos0.get_distance(enemy.position)
+                sensor.send_data(detect=True, distance=dist)
+                break
     return True
 
 def detect_plant(arbiter, space, data):

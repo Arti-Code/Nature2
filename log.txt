@@ -3613,3 +3613,5 @@ diff: [0.03] [0.15] [0.09]
 GATUNEK: PEHFKE
 diff: [0.07] [0.27] [0.17]
 GATUNEK: PEHFKE
+diff: [0.03] [0.38] [0.2]
+GATUNEK: MATWKU
