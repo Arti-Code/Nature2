@@ -276,14 +276,14 @@
       "colours":
          {
              "dark_bg": "#00000000",
-             "normal_text": "#00FFFF",
+             "normal_text": "#c8ff00",
              "text_shadow": "#008B8B"
          },
          "font":
          {
              "name": "fira_code",
-             "size": "11",
-             "bold": "0",
+             "size": "12",
+             "bold": "1",
              "italic": "0"
          },
          "misc":

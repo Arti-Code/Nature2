@@ -189,18 +189,18 @@ class SettingsWindow(UIWindow):
             buttons.append(btn)
             i += 1
 
-    class CustomGUIWin(UIWindow):
+class CustomGUIWin(UIWindow):
 
-        def __init__(self, manager: UIManager, rect: Rect):
-            super().__init__(rect, manager=manager, window_display_title='Settings', object_id="#set_win", visible=True)
-            self.manager = manager
-            btn_list = [('Basic Data', '#btn_basic_data'), ('Back', '#btn_back')]
-            buttons = []
-            i = 1
-            for (txt, ident) in btn_list:
-                btn = UIButton(Rect((50, (btn_s+btn_h)*i), (btn_w, btn_h)), text=txt, manager=self.manager, container=self, parent_element=self, object_id=ident)
-                buttons.append(btn)
-                i += 1
+    def __init__(self, manager: UIManager, rect: Rect):
+        super().__init__(rect, manager=manager, window_display_title='Settings', object_id="#set_win", visible=True)
+        self.manager = manager
+        btn_list = [('Basic Data', '#btn_basic_data'), ('Back', '#btn_back')]
+        buttons = []
+        i = 1
+        for (txt, ident) in btn_list:
+            btn = UIButton(Rect((50, (btn_s+btn_h)*i), (btn_w, btn_h)), text=txt, manager=self.manager, container=self, parent_element=self, object_id=ident)
+            buttons.append(btn)
+            i += 1
 
 class GUI():
 
@@ -303,12 +303,12 @@ class GUI():
     def create_title(self, scr_size: tuple):
         w = 350
         h = 25
-        h2 = 15
+        h2 = 20
         title_rect = Rect((round(cfg.SCREEN[0]/2-w/2), (10)), (w, h))
-        subtitle_rect = Rect((round(cfg.SCREEN[0]/2-w/2), (40)), (w, h2))
-        world_rect = Rect((round(cfg.SCREEN[0]/2-w/2), (55)), (w, h2))
+        #subtitle_rect = Rect((round(cfg.SCREEN[0]/2-w/2), (40)), (w, h2))
+        world_rect = Rect((round(cfg.SCREEN[0]/2-w/2), (35)), (w, h2))
         self.title = UILabel(relative_rect=title_rect, text=TITLE, manager=self.ui_mgr, object_id='#lab_title')
-        self.subtitle = UILabel(relative_rect=subtitle_rect, text=SUBTITLE, manager=self.ui_mgr, object_id='#lab_subtitle')
+        #self.subtitle = UILabel(relative_rect=subtitle_rect, text=SUBTITLE, manager=self.ui_mgr, object_id='#lab_subtitle')
         if self.owner.enviro.project_name != None:
             self.world = UILabel(relative_rect=world_rect, text=self.owner.enviro.project_name, manager=self.ui_mgr, object_id='#lab_world')
 
