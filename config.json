@@ -15,7 +15,7 @@
   "MOVE_ENERGY": 0.000018,
   "REP_TIME": 100,
   "REP_ENERGY": 0.4,
-  "SPEED": 500,
+  "SPEED": 75,
   "TURN": 0.7,
   "SENSOR_SPEED": 0.7,
   "CREATURE_MIN_SIZE": 3,

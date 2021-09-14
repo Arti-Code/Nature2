@@ -22,7 +22,7 @@ class Creature(Life):
     def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
         super().__init__(screen=screen, space=space, owner=sim, collision_tag=collision_tag, position=position)
         self.angle = random()*2*PI
-        self.output = [0, 0, 0, 0, 0, 0]
+        self.output = [0, 0, 0, 0, 0, 0, 0]
         self.generation = 0
         self.fitness = 0
         self.neuro = Network()
@@ -67,6 +67,7 @@ class Creature(Life):
         self.run: bool=False
         self.life_time: float=0.0
         self.run_time = cfg.RUN_TIME
+        self.hide = False
         #signature = self.get_signature()
         #s = self.compare_signature(signature, self.get_signature(), 0.8)
 
@@ -85,12 +86,14 @@ class Creature(Life):
         #self.meat = genome['meat'] + randint(-1, 1)
         #self.vege = genome['vege'] + randint(-1, 1)
         self.power = genome['power'] + randint(-1, 1)
-        self.food = genome['power'] + randint(-1, 1)
+        self.food = genome['food'] + randint(-1, 1)
+        self.speed = genome['speed'] + randint(-1, 1)
         #self.meat = clamp(self.meat, 1, 10)
         self.size = clamp(self.size, cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
         #self.vege = clamp(self.vege, 1, 10)
         self.power = clamp(self.power, 1, 10)
         self.food = clamp(self.food, 1, 10)
+        self.speed = clamp(self.speed, 1, 10)
         self.generation = genome['gen']+1
         self.name = genome['name']
         self.signature = genome['signature']
@@ -108,8 +111,9 @@ class Creature(Life):
         #self.meat = randint(1, 10)
         #self.vege = randint(1, 10)
         self.power = randint(1, 10)
+        self.speed = randint(1, 10)
         self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
-        self.neuro.BuildRandom([37, 0, 0, 0, 0, 0, 0, 0, 6], cfg.LINKS_RATE)
+        self.neuro.BuildRandom([37, 0, 0, 0, 0, 0, 0, 0, 7], cfg.LINKS_RATE)
         self.name = random_name(3, True)
 
     def draw(self, screen: Surface, camera: Camera, selected: Body):
@@ -123,9 +127,18 @@ class Creature(Life):
         ry = rel_pos.y
         super().draw(screen, camera, selected)
         rot = self.rotation_vector
-        gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), self.color0)
-        #gfxdraw.aacircle(screen, int(rx), int(y), int(r), self.color0)
-        gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-1), self.color1)
+        color0 = self.color0
+        color1 = self.color1
+        color2 = self.color2
+        a = 255
+        if self.hide:
+            color0.a = 40
+            color1.a = 40
+            color2.a = 40
+            a = 40
+        gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r), color0)
+        #gfxdraw.aacircle(screen, int(x), int(flipy(y)), int(r), self.color0)
+        gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r-1), color1)
         if r > 2:
             x2 = round(rx + rot.x*(r/1.6))
             y2 = round(ry + rot.y*(r/1.6))
@@ -155,8 +168,8 @@ class Creature(Life):
             #c.hsla[0]=self.food*10
             #c.hsla[1]=100
             #c.hsla[2]=50
-            gfxdraw.filled_circle(screen, x2, y2, r2, Color(r, g, b))
-            gfxdraw.filled_circle(screen, int(x), int(y), r2, self.color2)
+            gfxdraw.filled_circle(screen, x2, flipy(y2), r2, Color(r, g, b, a))
+            gfxdraw.filled_circle(screen, int(x), flipy(int(y)), r2, color2)
         self.color0 = self._color0
         self.draw_energy_bar(screen, rx, ry)
         #self.draw_name(screen)
@@ -229,6 +242,7 @@ class Creature(Life):
             move = (self._move)*cfg.SPEED*dt
         if move < 0:
             move = 0
+        move *= self.speed
         turn = self._turn*cfg.TURN*dt
         sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
         self.angle = (self.angle+(turn))%(2*PI)
@@ -312,6 +326,10 @@ class Creature(Life):
             self.run = True
         else:
             self.run = False
+        if self.output[6] > 0 and not self.run and self._move < 0.2:
+            self.hide = True
+        else:
+            self.hide = False
         #for sensor in self.sensors:
         #    sensor.reset_data()
             
@@ -339,6 +357,7 @@ class Creature(Life):
         genome['size'] = self.size
         genome['fitness'] = self.fitness
         genome['power'] = self.power
+        genome['speed'] = self.speed
         genome['color0'] = self._color0
         genome['color1'] = self._color1
         genome['color2'] = self._color2
@@ -354,7 +373,8 @@ class Creature(Life):
         size_diff = abs(self.size-parent_genome['size'])
         power_diff = abs(self.power-parent_genome['power'])
         food_diff = abs(self.food-parent_genome['food'])
-        phisionomy = mean([size_diff, power_diff,food_diff])/10
+        speed_diff = abs(self.speed-parent_genome['speed'])
+        phisionomy = mean([size_diff, power_diff,food_diff, speed_diff])/10
         for node_sign in self.neuro.nodes:
             if not node_sign in parent_genome['neuro'].nodes:
                 nodes.append(node_sign)
