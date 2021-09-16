@@ -54,6 +54,7 @@ class Configuration():
         self.BORN2FIT = None
         self.RUN_TIME = None
         self.RUN_COST = None
+        self.DIET_MOD = None
         self.load_from_file(filename)
 
     def load_from_file(self, filename: str):
@@ -107,6 +108,7 @@ class Configuration():
         self.BORN2FIT               = cfg['BORN2FIT']
         self.RUN_TIME               = cfg['RUN_TIME']
         self.RUN_COST               = cfg['RUN_COST']
+        self.DIET_MOD               = cfg['DIET_MOD']
 
 
 cfg = Configuration('config.json')

@@ -314,7 +314,7 @@ class GUI():
 
     def kill_title(self):
         self.title.kill()
-        self.subtitle.kill()
+        #self.subtitle.kill()
         if self.world:
             self.world.kill()
 

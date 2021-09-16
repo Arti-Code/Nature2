@@ -128,6 +128,11 @@ class Creature(Life):
             color1.a = 40
             color2.a = 40
             a = 40
+        else:
+            color0.a = 255
+            color1.a = 255
+            color2.a = 255
+            a = 255
         gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r), color0)
         #gfxdraw.aacircle(screen, int(x), int(flipy(y)), int(r), self.color0)
         gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r-1), color1)
@@ -160,7 +165,7 @@ class Creature(Life):
             #c.hsla[0]=self.food*10
             #c.hsla[1]=100
             #c.hsla[2]=50
-            gfxdraw.filled_circle(screen, x2, flipy(y2), r2, Color(r, g, b, a))
+            gfxdraw.filled_circle(screen, x2, flipy(y2), r2, Color((r, g, b, a)))
             gfxdraw.filled_circle(screen, int(x), flipy(int(y)), r2, color2)
         self.color0 = self._color0
         self.draw_energy_bar(screen, int(x), flipy(int(y)))
@@ -199,6 +204,10 @@ class Creature(Life):
         self.calc_energy(dt, move)
         self.mem_time -= dt
         self.mem_time = clamp(self.mem_time, 0, cfg.MEM_TIME)
+        if self.hide:
+            if self.run or self._move >= 0.2:
+                self.hide = False
+                self.output[6] = 0
 
     def check_reproduction(self, dt) -> bool:
         self.reproduction_time -= dt
@@ -318,10 +327,15 @@ class Creature(Life):
             self.run = True
         else:
             self.run = False
-        if self.output[6] > 0 and not self.run and self._move < 0.2:
+        if self.output[6] > 0:
             self.hide = True
         else:
             self.hide = False
+            self.output[6] = 0
+        #if self.output[6] > 0 and not self.run and self._move < 0.2:
+        #    self.hide = True
+        #else:
+        #    self.hide = False
         #for sensor in self.sensors:
         #    sensor.reset_data()
             
