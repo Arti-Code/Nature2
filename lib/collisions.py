@@ -5,6 +5,9 @@ import pygame
 from pygame import Color
 from lib.config import *
 
+def diet(food: int, mod: float) -> float:
+    return pow(food-(10-food), 2) * mod
+
 def process_creature_plant_collisions(arbiter, space, data):
     dt = data['dt']
     hunter = arbiter.shapes[0].body
