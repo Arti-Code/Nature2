@@ -2,6 +2,7 @@ from random import random, randint
 from math import sin, cos, radians, degrees, pi as PI
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
+from pygame.math import Vector2
 import pymunk as pm
 from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
 from lib.math2 import flipy, ang2vec, ang2vec2, clamp
@@ -82,8 +83,8 @@ class Sensor():
         red = (255, 0, 0, 75)
         self.color = Color(white)
 
-    def draw(self, screen: Surface):
-        p1 = (self.shape.body.position.x, self.shape.body.position.y)
+    def draw(self, screen: Surface, rel_pos: Vector2):
+        p1 = (rel_pos.x, rel_pos.y)
         rv = self.body.rotation_vector.rotated(self.angle)
         p2 = (p1[0]+rv[0]*self.length, p1[1]+rv[1]*self.length)
         self.color.a = 25

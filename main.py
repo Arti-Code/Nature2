@@ -319,8 +319,8 @@ class Simulation():
         #self.screen.blit(self.map)
         for creature in self.creature_list:
             creature.draw(screen=self.screen, camera=self.camera, selected=self.selected)
-            creature.draw_detectors(screen=self.screen)
-            name, x, y = creature.draw_name()
+            #creature.draw_detectors(screen=self.screen)
+            name, x, y = creature.draw_name(camera=self.camera)
             self.manager.add_text2(name, x, y, Color('skyblue'))
 
         for plant in self.plant_list:

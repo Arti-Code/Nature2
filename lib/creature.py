@@ -123,6 +123,7 @@ class Creature(Life):
         if not camera.rect_on_screen(rect):
             return
         rel_pos = camera.rel_pos(Vector2(x, y))
+        self.rel_pos = rel_pos
         rx = rel_pos.x
         ry = rel_pos.y
         super().draw(screen, camera, selected)
@@ -141,12 +142,13 @@ class Creature(Life):
             color1.a = 255
             color2.a = 255
             a = 255
+        self.draw_detectors(screen=screen)
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), color0)
         #gfxdraw.aacircle(screen, int(rx), int(ry), int(r), self.color0)
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-1), color1)
         if r > 2:
             x2 = round(rx + rot.x*(r/1.6))
-            y2 = round(ry + rot.y*(r/1.6))
+            y2 = round(ry - rot.y*(r/1.6))
             #x3 = round(x - rot.x*(r/5))
             #y3 = round(y - rot.y*(r/5))
             r2 = round(r/2)
@@ -187,7 +189,7 @@ class Creature(Life):
 
     def draw_detectors(self, screen):
         for detector in self.sensors:
-            detector.draw(screen)
+            detector.draw(screen=screen, rel_pos=self.rel_pos)
             detector.reset_data()
         self.collide_creature = False
         self.collide_plant = False
@@ -195,7 +197,7 @@ class Creature(Life):
         self.collide_meat = False
 
     def draw_name(self, camera: Camera):
-        rpos = camera.rel_pos((self.position.x-20), flipy(self.position.y-14))
+        rpos = camera.rel_pos(Vector2((self.position.x-20), flipy(self.position.y-14)))
         return self.name, rpos.x, rpos.y
 
     def update(self, screen: Surface, space: Space, dt:float, selected: Body):
