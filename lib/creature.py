@@ -234,6 +234,7 @@ class Creature(Life):
         genome['neuro'] = self.neuro.Replicate()
         self.reproduction_time = cfg.REP_TIME
         self.fitness += cfg.BORN2FIT
+        self.energy -= self.energy*cfg.REP_ENERGY
         return (genome, pos)
       
     def move(self, dt: float) -> None:
