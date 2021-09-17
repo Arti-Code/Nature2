@@ -27,7 +27,7 @@ class Meat(Life):
         r = int(self.radius)
 
     def draw(self, screen: Surface, selected: Body):
-        super().draw(screen, selected)
+        #super().draw(screen, selected)
         x = int(self.position.x); y = int(self.position.y)
         r = int(self.radius)
         if r > 0:

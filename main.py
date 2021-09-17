@@ -10,6 +10,7 @@ from typing import Union
 import pygame
 from pygame import Color, Surface, image
 from pygame.constants import *
+from pygame.math import Vector2
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 import pymunk.pygame_util
 from lib.life import Life
@@ -24,6 +25,7 @@ from lib.rock import Rock
 from lib.collisions import process_creature_plant_collisions, process_creature_meat_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end, detect_meat, detect_meat_end
 from lib.meat import Meat
 from lib.utils import log_to_file
+from lib.camera import Camera
 
 class Simulation():
 
@@ -63,7 +65,10 @@ class Simulation():
         self.ranking2 = []
         log_to_file('simulation started', 'log.txt')
         self.last_save_time = 0
+        self.herbivores = False
+        self.carnivores = False
         #self.map = pygame.image.load('res/map2.png').convert()
+        self.camera = Camera(Vector2(int(view_size[0]/2), int(view_size[1]/2)), Vector2(view_size[0], view_size[1]))
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -166,6 +171,14 @@ class Simulation():
     def key_events(self, event):
         if event.key == pygame.K_ESCAPE:
             self.running = False
+        if event.key == pygame.K_KP_8:
+            self.camera.update(Vector2(0, -50))
+        if event.key == pygame.K_KP_2:
+            self.camera.update(Vector2(0, 50))
+        if event.key == pygame.K_KP_4:
+            self.camera.update(Vector2(-50, 0))
+        if event.key == pygame.K_KP_6:
+            self.camera.update(Vector2(50, 0))
         if event.key == pygame.K_LEFT:
             if self.creature_list != []:
                 if self.sel_idx > 0 and self.sel_idx <= len(self.creature_list):
@@ -187,11 +200,13 @@ class Simulation():
     def mouse_events(self, event):
         self.selected = None
         mouseX, mouseY = pygame.mouse.get_pos()
-        self.selected = self.find_creature(mouseX, flipy(mouseY))
+        rel_mouse = self.camera.rev_pos(Vector2(mouseX, mouseY))
+        print(f'mouse: {mouseX}|{mouseY} -> {rel_mouse.x}|{rel_mouse.y}')
+        self.selected = self.find_creature(rel_mouse.x, flipy(rel_mouse.y))
         if self.selected == None:
-            self.selected = self.find_plant(mouseX, flipy(mouseY))
+            self.selected = self.find_plant(rel_mouse.x, flipy(rel_mouse.y))
         if self.selected == None:
-            self.selected = self.find_meat(mouseX, flipy(mouseY))
+            self.selected = self.find_meat(rel_mouse.x, flipy(rel_mouse.y))
 
     def find_plant(self, x: float, y: float) -> Union[Plant, None]:
         for plant in self.plant_list:
@@ -303,13 +318,13 @@ class Simulation():
         #self.screen.blit(self.map, self.screen.get_rect())
         #self.screen.blit(self.map)
         for creature in self.creature_list:
-            creature.draw(screen=self.screen, selected=self.selected)
-            creature.draw_detectors(screen=self.screen)
-            name, x, y = creature.draw_name()
+            creature.draw(screen=self.screen, camera=self.camera, selected=self.selected)
+            #creature.draw_detectors(screen=self.screen)
+            name, x, y = creature.draw_name(camera=self.camera)
             self.manager.add_text2(name, x, y, Color('skyblue'))
 
         for plant in self.plant_list:
-            plant.draw(screen=self.screen, selected=self.selected)
+            plant.draw(screen=self.screen, camera=self.camera, selected=self.selected)
 
         for wall in self.wall_list:
             wall.draw(screen=self.screen)
@@ -425,6 +440,29 @@ class Simulation():
         temp_list = []
         self.check_populatiom()
 
+    def check_creature_types(self):
+        herbivores = False
+        carnivores = False
+        for creature in self.creature_list:
+            if creature.food < 6:
+                herbivores = True
+                if carnivores:
+                    break
+            else:
+                carnivores = True
+                if herbivores:
+                    break
+        if not herbivores:
+            if len(self.ranking1) > 0:
+                genome = choice(self.ranking1)
+                creature = self.add_creature(cfg.WORLD, genome)
+                self.creature_list.append(creature)
+        if not carnivores:
+            if len(self.ranking2) > 0:
+                genome = choice(self.ranking2)
+                creature = self.add_creature(cfg.WORLD, genome)
+                self.creature_list.append(creature)
+ 
     def update_plants(self, dt: float):
         for plant in self.plant_list:
             if plant.life_time_calc(dt):
@@ -451,6 +489,8 @@ class Simulation():
             f"{TITLE} [fps: {round(self.clock.get_fps())} | dT: {round(self.dt*1000)}ms]")
 
     def check_populatiom(self):
+        self.check_creature_types()
+
         if len(self.creature_list) < cfg.CREATURE_MIN_NUM:
             creature = self.add_random_creature()
             self.creature_list.append(creature)
@@ -525,5 +565,5 @@ def sort_by_fitness(creature):
 
 if __name__ == "__main__":
     set_world(cfg.WORLD)
-    sim = Simulation(cfg.WORLD)
+    sim = Simulation(cfg.SCREEN)
     sys.exit(sim.main())
