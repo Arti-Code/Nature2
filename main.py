@@ -65,6 +65,8 @@ class Simulation():
         self.ranking2 = []
         log_to_file('simulation started', 'log.txt')
         self.last_save_time = 0
+        self.herbivores = False
+        self.carnivores = False
         #self.map = pygame.image.load('res/map2.png').convert()
         self.camera = Camera(Vector2(int(view_size[0]/2), int(view_size[1]/2)), Vector2(view_size[0], view_size[1]))
 
@@ -438,6 +440,29 @@ class Simulation():
         temp_list = []
         self.check_populatiom()
 
+    def check_creature_types(self):
+        herbivores = False
+        carnivores = False
+        for creature in self.creature_list:
+            if creature.food < 6:
+                herbivores = True
+                if carnivores:
+                    break
+            else:
+                carnivores = True
+                if herbivores:
+                    break
+        if not herbivores:
+            if len(self.ranking1) > 0:
+                genome = choice(self.ranking1)
+                creature = self.add_creature(cfg.WORLD, genome)
+                self.creature_list.append(creature)
+        if not carnivores:
+            if len(self.ranking2) > 0:
+                genome = choice(self.ranking2)
+                creature = self.add_creature(cfg.WORLD, genome)
+                self.creature_list.append(creature)
+ 
     def update_plants(self, dt: float):
         for plant in self.plant_list:
             if plant.life_time_calc(dt):
@@ -464,6 +489,8 @@ class Simulation():
             f"{TITLE} [fps: {round(self.clock.get_fps())} | dT: {round(self.dt*1000)}ms]")
 
     def check_populatiom(self):
+        self.check_creature_types()
+
         if len(self.creature_list) < cfg.CREATURE_MIN_NUM:
             creature = self.add_random_creature()
             self.creature_list.append(creature)

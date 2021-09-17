@@ -136,9 +136,14 @@ class Creature(Life):
             color1.a = 40
             color2.a = 40
             a = 40
-        gfxdraw.filled_circle(screen, int(rx), flipy(int(ry)), int(r), color0)
-        #gfxdraw.aacircle(screen, int(rx), int(flipy(ry)), int(r), self.color0)
-        gfxdraw.filled_circle(screen, int(rx), flipy(int(ry)), int(r-1), color1)
+        else:
+            color0.a = 255
+            color1.a = 255
+            color2.a = 255
+            a = 255
+        gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), color0)
+        #gfxdraw.aacircle(screen, int(rx), int(ry), int(r), self.color0)
+        gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-1), color1)
         if r > 2:
             x2 = round(rx + rot.x*(r/1.6))
             y2 = round(ry + rot.y*(r/1.6))
@@ -189,8 +194,9 @@ class Creature(Life):
         self.collide_something = False
         self.collide_meat = False
 
-    def draw_name(self):
-        return self.name, self.position.x-20, flipy(self.position.y-14)
+    def draw_name(self, camera: Camera):
+        rpos = camera.rel_pos((self.position.x-20), flipy(self.position.y-14))
+        return self.name, rpos.x, rpos.y
 
     def update(self, screen: Surface, space: Space, dt:float, selected: Body):
         super().update(dt, selected)
@@ -207,6 +213,10 @@ class Creature(Life):
         self.calc_energy(dt, move)
         self.mem_time -= dt
         self.mem_time = clamp(self.mem_time, 0, cfg.MEM_TIME)
+        if self.hide:
+            if self.run or self._move >= 0.2:
+                self.hide = False
+                self.output[6] = 0
 
     def check_reproduction(self, dt) -> bool:
         self.reproduction_time -= dt
@@ -233,6 +243,7 @@ class Creature(Life):
         genome['neuro'] = self.neuro.Replicate()
         self.reproduction_time = cfg.REP_TIME
         self.fitness += cfg.BORN2FIT
+        self.energy -= self.energy*cfg.REP_ENERGY
         return (genome, pos)
       
     def move(self, dt: float) -> None:
@@ -326,10 +337,15 @@ class Creature(Life):
             self.run = True
         else:
             self.run = False
-        if self.output[6] > 0 and not self.run and self._move < 0.2:
+        if self.output[6] > 0:
             self.hide = True
         else:
             self.hide = False
+            self.output[6] = 0
+        #if self.output[6] > 0 and not self.run and self._move < 0.2:
+        #    self.hide = True
+        #else:
+        #    self.hide = False
         #for sensor in self.sensors:
         #    sensor.reset_data()
             

@@ -6,7 +6,7 @@ from pygame import Color
 from lib.config import *
 
 def diet(food: int, mod: float) -> float:
-    return pow(food-(10-food), 2) * mod
+    return pow(food, 2) * mod
 
 def process_creature_plant_collisions(arbiter, space, data):
     dt = data['dt']
@@ -27,7 +27,8 @@ def process_creature_plant_collisions(arbiter, space, data):
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             target.color0 = Color('yellow')
             target.energy = target.energy - cfg.EAT*dt*size0
-            vege = ((11-hunter.food)/10)*size0
+            vege = diet(11-hunter.food, cfg.DIET_MOD)*size0
+            #vege = ((11-hunter.food)/10)*size0
             #vege = hunter.vege/((hunter.vege+hunter.meat)/2)
             plant_value = cfg.EAT*dt*vege*cfg.VEGE2ENG
             hunter.eat(plant_value)
@@ -55,7 +56,8 @@ def process_creature_meat_collisions(arbiter, space, data):
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             target.color0 = Color('yellow')
             target.energy = target.energy - cfg.EAT*dt*size0
-            meat = (hunter.food/5)*size0
+            #meat = (hunter.food/5)*size0
+            meat = diet(hunter.food, cfg.DIET_MOD)*size0
             meat_value = cfg.EAT*dt*meat*cfg.MEAT2ENG
             hunter.eat(meat_value)
             hunter.fitness += meat_value*cfg.MEAT2FIT/size0
