@@ -1,6 +1,6 @@
 {
-  "WORLD": [1900, 1000],
-  "SCREEN": [1900, 1000],
+  "WORLD": [1500, 750],
+  "SCREEN": [1500, 750],
   "FONT_SIZE": 14,
   "PLANT_MAX_SIZE": 10,
   "PLANT_GROWTH": 5,
