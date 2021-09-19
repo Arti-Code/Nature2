@@ -142,7 +142,7 @@ class Creature(Life):
             color1.a = 255
             color2.a = 255
             a = 255
-        self.draw_detectors(screen=screen)
+        self.draw_detectors(screen=screen, rel_pos=rel_pos)
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), color0)
         #gfxdraw.aacircle(screen, int(rx), int(ry), int(r), self.color0)
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-1), color1)
@@ -187,9 +187,9 @@ class Creature(Life):
             gfxdraw.line(screen, int(self.position.x), int(flipy(self.position.y)), int(self.position.x+self.normal.x*50), int(flipy(self.position.y+self.normal.y*50)), Color('yellow'))
             #self.normal = None
 
-    def draw_detectors(self, screen):
+    def draw_detectors(self, screen, rel_pos: Vector2):
         for detector in self.sensors:
-            detector.draw(screen=screen, rel_pos=self.rel_pos)
+            detector.draw(screen=screen, rel_pos=rel_pos)
             detector.reset_data()
         self.collide_creature = False
         self.collide_plant = False

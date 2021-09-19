@@ -330,7 +330,7 @@ class Simulation():
             wall.draw(screen=self.screen)
 
         for meat in self.meat_list:
-            meat.draw(screen=self.screen, selected=self.selected)
+            meat.draw(screen=self.screen, camera=self.camera, selected=self.selected)
 
         self.draw_network()
         self.draw_text()
