@@ -3,12 +3,13 @@ from random import random, randint
 from math import sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt, log2
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
+from pygame.math import Vector2
 import pymunk as pm
 from pymunk import Vec2d, Body, Circle, Segment, Space, Poly
 from lib.life import Life
 from lib.math2 import flipy, clamp
 from lib.config import *
-
+from lib.camera import Camera
 
 class Plant(Life):
 
@@ -56,13 +57,20 @@ class Plant(Life):
         space.remove(self.shape)
         space.remove(self)
 
-    def draw(self, screen: Surface, selected: Body):
-        super().draw(screen, selected)
-        x = self.position.x; y = self.position.y
+    def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
+        x = self.position.x; y = flipy(self.position.y)
         r = self.shape.radius
+        rect = Rect(x-r, y-r, 2*r, 2*r)
+        if not camera.rect_on_screen(rect):
+            return False
+        rel_pos = camera.rel_pos(Vector2(x, y))
+        rx = rel_pos.x
+        ry = rel_pos.y
+        super().draw(screen, camera, selected)
         if r > 0:
-            gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r), self.color0)
+            gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), self.color0)
             if r >= 3 and self.color1 != None:
-                gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(r-2), self.color1)
+                gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-2), self.color1)
         #if r >= 6 and self.color3 != None:
-        #    gfxdraw.filled_circle(screen, int(x), flipy(int(y)), int(2), self.color3)
+        #    gfxdraw.filled_circle(screen, int(rx), flipy(int(ry)), int(2), self.color3)
+        return True

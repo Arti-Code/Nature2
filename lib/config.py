@@ -2,7 +2,7 @@ from math import pi as PI
 from json import loads, dumps
 
 TITLE = "NATURE"
-SUBTITLE = "v0.4.7"
+SUBTITLE = "v0.4.8"
 AUTHOR = "2019-2021 Artur Gwoździowski"
 
 class Configuration():
@@ -55,6 +55,7 @@ class Configuration():
         self.RUN_TIME = None
         self.RUN_COST = None
         self.DIET_MOD = None
+        self.SENSOR_RANGE = None
         self.load_from_file(filename)
 
     def load_from_file(self, filename: str):
@@ -109,6 +110,7 @@ class Configuration():
         self.RUN_TIME               = cfg['RUN_TIME']
         self.RUN_COST               = cfg['RUN_COST']
         self.DIET_MOD               = cfg['DIET_MOD']
+        self.SENSOR_RANGE           = cfg['SENSOR_RANGE']
 
 
 cfg = Configuration('config.json')
