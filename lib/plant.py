@@ -57,12 +57,12 @@ class Plant(Life):
         space.remove(self.shape)
         space.remove(self)
 
-    def draw(self, screen: Surface, camera: Camera, selected: Body):
+    def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
         x = self.position.x; y = flipy(self.position.y)
         r = self.shape.radius
         rect = Rect(x-r, y-r, 2*r, 2*r)
         if not camera.rect_on_screen(rect):
-            return
+            return False
         rel_pos = camera.rel_pos(Vector2(x, y))
         rx = rel_pos.x
         ry = rel_pos.y
@@ -73,3 +73,4 @@ class Plant(Life):
                 gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-2), self.color1)
         #if r >= 6 and self.color3 != None:
         #    gfxdraw.filled_circle(screen, int(rx), flipy(int(ry)), int(2), self.color3)
+        return True

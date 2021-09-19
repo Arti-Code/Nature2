@@ -2,6 +2,7 @@ import os
 import sys
 import json
 from collections import deque
+from statistics import mean
 import pygame
 import pygame_gui
 from copy import copy
@@ -208,8 +209,8 @@ class GUI():
         self.view = view
         self.owner = owner
         self.edytor = edytor
-        self.cx = round(self.view[0]/2)
-        self.cy = round(self.view[1]/2)
+        self.cx = round(cfg.SCREEN[0]/2)
+        self.cy = round(cfg.SCREEN[1]/2)
         #self.ui_mgr = UIManager(window_resolution=(self.view[0], self.view[1]), theme_path='blue.json')
         self.ui_mgr = UIManager(window_resolution=view, theme_path='res/themes/blue.json')
         #self.ui_mgr.preload_fonts(font_list=[
@@ -243,7 +244,7 @@ class GUI():
         self.size = new_size
         self.create_title(new_size)
         #self.create_enviro_win()
-        btn_pos = Rect((round(cfg.WORLD[0]-50), 10), (40, 40))
+        btn_pos = Rect((round(cfg.SCREEN[0]-50), 10), (40, 40))
         self.create_menu_btn(btn_pos)
         #self.create_title(new_size)
 
@@ -326,6 +327,10 @@ class GUI():
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         data['NEURO_TIME'] = ''
         data['PHYSIC_TIME'] = ''
+        data['SCR_CR'] = ''
+        data['SCR_PL'] = ''
+        data['SCR_RK'] = ''
+        data['SCR_MT'] = ''
         self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (200, 175)), data=data, dT=dT)
 
     def select_map(self):
@@ -345,6 +350,10 @@ class GUI():
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         data['NEURO_TIME'] = str(round(self.owner.enviro.neuro_avg_time*1000, 1)) + 'ms'
         data['PHYSIC_TIME'] = str(round(self.owner.enviro.physics_avg_time*1000, 1)) + 'ms'
+        data['SCR_CR'] = str(round(mean(self.owner.enviro.creatures_on_screen)))
+        data['SCR_PL'] = str(round(mean(self.owner.enviro.plants_on_screen)))
+        data['SCR_RK'] = str(round(mean(self.owner.enviro.rocks_on_screen)))
+        data['SCR_MT'] = str(round(mean(self.owner.enviro.meats_on_screen)))
         return data
 
     def process_event(self, event, dt: float):
@@ -378,7 +387,7 @@ class GUI():
                     self.owner.enviro.project_name = new_name
                     self.new_project_name(new_name)
                     self.new_sim.kill()
-                    self.create_title(cfg.WORLD)
+                    self.create_title(cfg.SCREEN)
                     self.owner.enviro.create_enviro()
                     self.create_info_win(text='Project created with name: ' + new_name, title=new_name)
                 elif event.ui_object_id == '#menu_win.#btn_set':
@@ -396,7 +405,7 @@ class GUI():
                     self.owner.load_last(project_name)
                     self.load_menu.kill()   
                     self.kill_title()
-                    self.create_title(cfg.WORLD) 
+                    self.create_title(cfg.SCREEN) 
                     self.create_info_win(text=f"Project {project_name.upper()} has been loaded", title='Load Simulation')
                 elif event.ui_object_id == '#load_win.#load_back':
                     self.load_menu.kill()

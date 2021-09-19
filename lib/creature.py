@@ -42,7 +42,7 @@ class Creature(Life):
             else:
                 #print(f'GATUNEK: {self.name}')
                 msg = f'GATUNEK: {self.name}'
-            log_to_file(msg, 'log.txt')
+            #log_to_file(msg, 'log.txt')
         self.shape = Circle(self, self.size)
         self.shape.collision_type = collision_tag
         space.add(self.shape)
@@ -50,9 +50,9 @@ class Creature(Life):
         self.visual_range = cfg.VISUAL_RANGE
         self.sensors = []
         self.side_angle = 0
-        self.sensors.append(Sensor(screen, self, 4, 0, 250))
-        self.sensors.append(Sensor(screen, self, 4, cfg.SENSOR_MAX_ANGLE, 250))
-        self.sensors.append(Sensor(screen, self, 4, -cfg.SENSOR_MAX_ANGLE, 250))
+        self.sensors.append(Sensor(screen, self, 4, 0, cfg.SENSOR_RANGE))
+        self.sensors.append(Sensor(screen, self, 4, cfg.SENSOR_MAX_ANGLE, cfg.SENSOR_RANGE))
+        self.sensors.append(Sensor(screen, self, 4, -cfg.SENSOR_MAX_ANGLE, cfg.SENSOR_RANGE))
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
         self.reproduction_time = cfg.REP_TIME
@@ -113,15 +113,15 @@ class Creature(Life):
         self.power = randint(1, 10)
         self.speed = randint(1, 10)
         self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
-        self.neuro.BuildRandom([37, 0, 0, 0, 0, 0, 0, 0, 7], cfg.LINKS_RATE)
+        self.neuro.BuildRandom([34, 0, 0, 0, 0, 0, 0, 0, 7], cfg.LINKS_RATE)
         self.name = random_name(3, True)
 
-    def draw(self, screen: Surface, camera: Camera, selected: Body):
+    def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
         x = self.position.x; y = flipy(self.position.y)
         r = self.shape.radius
         rect = Rect(x-r, y-r, 2*r, 2*r)
         if not camera.rect_on_screen(rect):
-            return
+            return False
         rel_pos = camera.rel_pos(Vector2(x, y))
         self.rel_pos = rel_pos
         rx = rel_pos.x
@@ -142,7 +142,7 @@ class Creature(Life):
             color1.a = 255
             color2.a = 255
             a = 255
-        self.draw_detectors(screen=screen)
+        self.draw_detectors(screen=screen, rel_pos=rel_pos)
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), color0)
         #gfxdraw.aacircle(screen, int(rx), int(ry), int(r), self.color0)
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-1), color1)
@@ -181,15 +181,16 @@ class Creature(Life):
         self.draw_energy_bar(screen, rx, ry)
         #self.draw_name(screen)
         #self.draw_normal(screen)
+        return True
 
     def draw_normal(self, screen):
         if self.normal != None:
             gfxdraw.line(screen, int(self.position.x), int(flipy(self.position.y)), int(self.position.x+self.normal.x*50), int(flipy(self.position.y+self.normal.y*50)), Color('yellow'))
             #self.normal = None
 
-    def draw_detectors(self, screen):
+    def draw_detectors(self, screen, rel_pos: Vector2):
         for detector in self.sensors:
-            detector.draw(screen=screen, rel_pos=self.rel_pos)
+            detector.draw(screen=screen, rel_pos=rel_pos)
             detector.reset_data()
         self.collide_creature = False
         self.collide_plant = False
@@ -271,9 +272,9 @@ class Creature(Life):
             move_energy *= cfg.RUN_COST
         rest_energy = 0
         size_cost = self.size * cfg.SIZE_COST * dt
-        if self.output[3] >= 0.5:
+        if self._eat:
             rest_energy += cfg.EAT_ENG
-        if self.output[4] >= 0.5:
+        if self._attack:
             rest_energy += cfg.ATK_ENG
         self.energy -= (base_energy + move_energy + rest_energy) * size_cost
         self.energy = clamp(self.energy, 0, self.max_energy)
@@ -310,9 +311,9 @@ class Creature(Life):
             #input.append(oa)
             input.append(m)
             input.append(md)
-        input.append(self.output[0])
-        input.append(self.output[1])
-        input.append(self.output[2])
+        #input.append(self.output[0])
+        #input.append(self.output[1])
+        #input.append(self.output[2])
         input.append(int(self.pain))
         self.pain = False
         return input
@@ -327,11 +328,11 @@ class Creature(Life):
                     self.output[o] = clamp(self.output[o], -1, 1)
         self._move = clamp(self.output[0], 0, 1)
         self._turn = self.output[1]
-        if self.output[2] > 0:
+        if self.output[3] > 0:
             self._eat = True
         else:
             self._eat = False
-        if self.output[3] > 0:
+        if self.output[4] > 0:
             self._attack = True
         else:
             self._attack = False
@@ -447,7 +448,7 @@ class Creature(Life):
         mean_fizjo_diff = (mean(fizjo_diff))/10
         mean_neuro_diff = neuro_diff / ((len(neuro1) + len(neuro2))/2)
         diff = mean([mean_fizjo_diff, mean_neuro_diff])
-        log_to_file(f'diff: [{round(mean_fizjo_diff, 2)}] [{round(mean_neuro_diff, 2)}] [{round(diff, 2)}]', 'log.txt')
+        #log_to_file(f'diff: [{round(mean_fizjo_diff, 2)}] [{round(mean_neuro_diff, 2)}] [{round(diff, 2)}]', 'log.txt')
         if diff <= treashold:
             return True
         else:
