@@ -279,9 +279,9 @@ class Manager:
                 'enemy0', 'dist0', 'plant0', 'dist0', 'obst0', 'dist0', 'meat0', 'dist0',
                 'enemy1', 'dist1', 'plant1', 'dist1', 'obst1', 'dist1', 'meat1', 'dist1', 
                 'enemy2', 'dist2', 'plant2', 'dist2', 'obst2', 'dist2', 'meat2', 'dist2',
-                'out0', 'out1', 'out2', 'hurt' 
+                'hurt' 
             ]
-            out_desc = ["mov", "turn", "run", "hid", "atk", "eat"]
+            out_desc = ["mov", "turn", "sens", "eat", "atk", "run", "hid"]
 
             input_keys = network.GetNodeKeyList([TYPE.INPUT])
             output_keys = network.GetNodeKeyList([TYPE.OUTPUT])
@@ -357,9 +357,9 @@ class Manager:
                 elif l == last_layer_idx:
                     #val = network.nodes[network.layers[l].nodes[n]].value
                     val = self.enviro.selected.output[out]
-                    out += 1
                     #self.add_text(f'{inp_desc[n]}: ', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
-                    self.add_text2(f'{round(val, 1)}', 50 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)
+                    self.add_text2(f'{out_desc[out]}: {round(val, 1)}', 40 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)
+                    out += 1
                 else:
                     val = network.nodes[network.layers[l].nodes[n]].value
                     self.add_text(f'{round(val, 1)}', 85 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))

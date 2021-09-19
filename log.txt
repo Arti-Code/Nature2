@@ -3666,3 +3666,50 @@ diff: [0.07] [0.27] [0.17]
 GATUNEK: RIVYPU
 diff: [0.07] [0.57] [0.32]
 NOWY GATUNEK: NYKISQ>>>JAKISQ
+simulation started
+simulation started
+simulation started
+diff: [0.03] [0.4] [0.22]
+GATUNEK: TPTWOM
+diff: [0.07] [0.33] [0.2]
+GATUNEK: TWHWQU
+simulation started
+simulation started
+diff: [0.07] [0.2] [0.13]
+GATUNEK: WUZIZE
+diff: [0.07] [0.59] [0.33]
+NOWY GATUNEK: TOZEOD>>>TOZEJU
+simulation started
+diff: [0.0] [0.34] [0.17]
+GATUNEK: UJIPFA
+diff: [0.03] [0.56] [0.29]
+GATUNEK: HLARVU
+diff: [0.07] [0.32] [0.19]
+GATUNEK: PUHVNA
+diff: [0.1] [0.13] [0.12]
+GATUNEK: JYFUVU
+diff: [0.07] [0.32] [0.19]
+GATUNEK: DITKPP
+simulation started
+diff: [0.07] [0.06] [0.07]
+GATUNEK: VATUPE
+diff: [0.03] [0.38] [0.21]
+GATUNEK: NEALTU
+diff: [0.07] [0.67] [0.37]
+NOWY GATUNEK: UFTEOK>>>UFRIOK
+diff: [0.1] [0.27] [0.18]
+GATUNEK: PWPANE
+diff: [0.07] [0.4] [0.23]
+GATUNEK: PWPANE
+diff: [0.07] [0.32] [0.19]
+GATUNEK: TAHUAV
+simulation started
+diff: [0.07] [0.24] [0.15]
+GATUNEK: SOMUZA
+diff: [0.07] [0.4] [0.23]
+GATUNEK: VUVUUH
+diff: [0.03] [0.22] [0.13]
+GATUNEK: HYONJU
+simulation started
+simulation started
+simulation started
