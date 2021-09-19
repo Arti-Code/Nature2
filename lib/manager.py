@@ -217,7 +217,7 @@ class Manager:
         json_list = f.read()
         obj_list = json.loads(json_list)
         #self.enviro.creature_list.clear()
-        self.enviro.create_empty_world(cfg.WORLD)
+        self.enviro.create_empty_world()
         self.enviro.create_rocks(cfg.ROCK_NUM)
         self.enviro.create_plants(cfg.PLANT_INIT_NUM)
         self.project_name = project_name
@@ -246,7 +246,7 @@ class Manager:
             self.enviro.ranking2.append(rank)
         if not f.closed:
             f.close()
-        log_to_file(project_name+' loaded', 'log.txt')
+        #log_to_file(project_name+' loaded', 'log.txt')
 
     def load_last(self, project_name: str):
         f = open("saves/" + project_name + "/saves.json", "r")
