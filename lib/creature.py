@@ -257,7 +257,7 @@ class Creature(Life):
             move = 0
         turn = self._turn*cfg.TURN*dt
         #sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
-        sensor_angle = (self.output[2]+1)*(PI/1.5)
+        sensor_angle = ((self.output[2]+1)/2)*(PI/2)
         self.angle = (self.angle+(turn))%(2*PI)
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
         #self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
@@ -297,12 +297,19 @@ class Creature(Life):
         eng = self.energy/self.max_energy
         input.append(eng)
         for sensor in self.sensors:
-            e, d, a, p, pd, pa, o, od, oa, m, md, ma = sensor.get_input()
-            pd = round(pd, 3)
-            od = round(od, 3)
-            md = round(md, 3)
+            #e, d, a, p, pd, pa, o, od, oa, m, md, ma = sensor.get_input()
+            detected = {}
+            detected = sensor.get_input()
+            e = detected['enemy']
+            ed = round(detected['enemy_dist'], 3)
+            p = detected['plant']
+            pd = round(detected['plant_dist'], 3)
+            o = detected['obstacle']
+            od = round(detected['obstacle_dist'], 3)
+            m = detected['meat']
+            md = round(detected['meat_dist'], 3)
             input.append(e)
-            input.append(d)
+            input.append(ed)
             #input.append(a)
             input.append(p)
             input.append(pd)

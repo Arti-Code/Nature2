@@ -11,7 +11,7 @@ from lib.config import cfg
 class SensorData():
     def __init__(self, max_angle: float, detection_range: float):
         self.max_angle = max_angle
-        self.detection_range = detection_range
+        self.detection_range = cfg.SENSOR_RANGE
         self.enemy = False
         self.distance = -1
         self.direction = 0
@@ -24,31 +24,58 @@ class SensorData():
         self.meat = False
         self.meat_distance = -1
         self.meat_direction = 0
+        self.detected = {
+            'enemy': False, 'enemy_dist': -1, 
+            'plant': False, 'plant_dist': -1, 
+            'obstacle': False, 'obstacle_dist': -1, 
+            'meat': False, 'meat_dist': -1
+        }
 
     def update(self, direction: float):
         self.direction = (direction/abs(self.max_angle))
 
-    def send_data(self, detect: bool, distance: float, direction: float):
+    def send_data(self, detect: bool, distance: float, direction: float) -> float:
         self.enemy = detect
-        self.distance = 1 - (distance/self.detection_range)
-        self.direction = (direction/abs(self.max_angle))
+        if self.detection_range >= distance:
+            self.detection_range = distance
+            self.detected['enemy'] = detect
+            self.detected['enemy_dist'] = 1-(distance/self.detection_range)
+            self.distance = 1 - (distance/self.detection_range)
+            self.direction = (direction/abs(self.max_angle))
+        return self.detection_range
 
-    def send_data2(self, detect: bool, distance: float, direction: float):
+    def send_data2(self, detect: bool, distance: float, direction: float) -> float:
         self.plant = detect
-        self.p_distance = 1 - (distance/self.detection_range)
-        self.p_direction = (direction/abs(self.max_angle))
+        if self.detection_range >= distance:
+            self.detection_range = distance
+            self.detected['plant'] = detect
+            self.detected['plant_dist'] = 1-(distance/self.detection_range)
+            self.p_distance = 1 - (distance/self.detection_range)
+            self.p_direction = (direction/abs(self.max_angle))
+        return self.detection_range
 
-    def send_data3(self, detect: bool, distance: float, direction: float):
+    def send_data3(self, detect: bool, distance: float, direction: float) -> float:
         self.obstacle = detect
-        self.obst_distance = 1 - (distance/self.detection_range)
-        self.obst_direction = (direction/abs(self.max_angle))
+        if self.detection_range >= distance:
+            self.detection_range = distance
+            self.detected['obstacle'] = detect
+            self.detected['obstacle_dist'] = 1-(distance/self.detection_range)
+            self.obst_distance = 1 - (distance/self.detection_range)
+            self.obst_direction = (direction/abs(self.max_angle))
+        return self.detection_range
 
-    def send_data4(self, detect: bool, distance: float, direction: float):
+    def send_data4(self, detect: bool, distance: float, direction: float) -> float:
         self.meat = detect
-        self.meat_distance = 1 - (distance/self.detection_range)
-        self.meat_direction = (direction/abs(self.max_angle))
+        if self.detection_range >= distance:
+            self.detection_range = distance
+            self.detected['meat'] = detect
+            self.detected['meat_dist'] = 1-(distance/self.detection_range)
+            self.meat_distance = 1 - (distance/self.detection_range)
+            self.meat_direction = (direction/abs(self.max_angle))
+        return self.detection_range
 
     def reset(self):
+        self.detection_range = cfg.SENSOR_RANGE
         self.enemy = False
         self.plant = False
         self.obstacle = False
@@ -61,9 +88,16 @@ class SensorData():
         self.obst_direction = 0
         self.meat_distance = -1
         self.meat_direction = 0
+        self.detected = {
+            'enemy': False, 'enemy_dist': -1, 
+            'plant': False, 'plant_dist': -1, 
+            'obstacle': False, 'obstacle_dist': -1, 
+            'meat': False, 'meat_dist': -1
+        }
 
-    def get_data(self):
-        return (self.enemy, self.distance, self.direction, self.plant, self.p_distance, self.p_direction, self.obstacle, self.obst_distance, self.obst_direction, self.meat, self.meat_distance, self.meat_direction)
+    def get_data(self) -> dict:
+        return self.detected
+        #return (self.enemy, self.distance, self.direction, self.plant, self.p_distance, self.p_direction, self.obstacle, self.obst_distance, self.obst_direction, self.meat, self.meat_distance, self.meat_direction)
         
 class Sensor():
 
@@ -72,6 +106,7 @@ class Sensor():
         self.body = body
         self.angle = radians
         self.length = length
+        self.max_length = length
         x2, y2 = ang2vec2(radians)
         b = (x2*length, y2*length)
         self.shape = Segment(body=body, a=(0,0), b=b, radius=1)
@@ -123,21 +158,22 @@ class Sensor():
 
 
     def send_data(self, detect: bool, distance: float):
-        self.data.send_data(detect=detect, distance=distance, direction=self.angle)
+        self.length = self.data.send_data(detect=detect, distance=distance, direction=self.angle)
 
     def send_data2(self, detect: bool, distance: float):
-        self.data.send_data2(detect=detect, distance=distance, direction=self.angle)
+        self.length = self.data.send_data2(detect=detect, distance=distance, direction=self.angle)
 
     def send_data3(self, detect: bool, distance: float):
-        self.data.send_data3(detect=detect, distance=distance, direction=self.angle)
+        self.length = self.data.send_data3(detect=detect, distance=distance, direction=self.angle)
 
     def send_data4(self, detect: bool, distance: float):
-        self.data.send_data4(detect=detect, distance=distance, direction=self.angle)
+        self.length = self.data.send_data4(detect=detect, distance=distance, direction=self.angle)
 
     def reset_data(self):
         self.data.reset()
+        self.length = self.max_length
 
-    def get_input(self):
+    def get_input(self) -> dict:
         return self.data.get_data()
 
 """ class PolySensor():
