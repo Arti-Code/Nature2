@@ -217,7 +217,7 @@ class Manager:
         json_list = f.read()
         obj_list = json.loads(json_list)
         #self.enviro.creature_list.clear()
-        self.enviro.create_empty_world(cfg.WORLD)
+        self.enviro.create_empty_world()
         self.enviro.create_rocks(cfg.ROCK_NUM)
         self.enviro.create_plants(cfg.PLANT_INIT_NUM)
         self.project_name = project_name

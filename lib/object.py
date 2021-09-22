@@ -6,7 +6,7 @@ from pygame import Surface, Color, Rect
 import pymunk as pm
 from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform, Shape
 from lib.math2 import flipy, ang2vec, ang2vec2, clamp
-from lib.sensor import Sensor, PolySensor
+from lib.sensor import Sensor
 from lib.net import Network
 from lib.config import *
 

@@ -56,6 +56,8 @@ class Configuration():
         self.RUN_COST = None
         self.DIET_MOD = None
         self.SENSOR_RANGE = None
+        self.MIN_CARNIVORES = None
+        self.MIN_HERBIVORES = None
         self.load_from_file(filename)
 
     def load_from_file(self, filename: str):
@@ -111,6 +113,7 @@ class Configuration():
         self.RUN_COST               = cfg['RUN_COST']
         self.DIET_MOD               = cfg['DIET_MOD']
         self.SENSOR_RANGE           = cfg['SENSOR_RANGE']
-
+        self.MIN_CARNIVORES         = cfg['MIN_CARNIVORES']
+        self.MIN_HERBIVORES         = cfg['MIN_HERBIVORES']
 
 cfg = Configuration('config.json')

@@ -33,15 +33,15 @@ class Creature(Life):
             self.signature = self.get_signature()
         else:
             self.genome_build(genome)
-            msg: str=''
+            #msg: str=''
             if not self.compare_signature(self.get_signature(), genome['signature'], cfg.DIFF):
                 self.signature = self.get_signature()
                 self.name = modify_name(genome['name'])
                 #print(f"NOWY GATUNEK: {genome['name']}>>>{self.name}")
-                msg = f"NOWY GATUNEK: {genome['name']}>>>{self.name}"
-            else:
+                #msg = f"NOWY GATUNEK: {genome['name']}>>>{self.name}"
+            #else:
                 #print(f'GATUNEK: {self.name}')
-                msg = f'GATUNEK: {self.name}'
+                #msg = f'GATUNEK: {self.name}'
             #log_to_file(msg, 'log.txt')
         self.shape = Circle(self, self.size)
         self.shape.collision_type = collision_tag
@@ -250,33 +250,34 @@ class Creature(Life):
         return (genome, pos)
       
     def move(self, dt: float) -> None:
+        move = cfg.SPEED*self.speed*self._move
         if self.run:
-            move = 2*cfg.SPEED*dt
-        else:
-            move = (self._move)*cfg.SPEED*dt
+           move *= 1.5
         if move < 0:
             move = 0
-        move *= self.speed
         turn = self._turn*cfg.TURN*dt
-        sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
+        #sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
+        sensor_angle = (self.output[2]+1)*(PI/1.5)
         self.angle = (self.angle+(turn))%(2*PI)
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
-        self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
-        self.sensors[2].rotate(-sensor_turn, -PI/1.5, 0)
+        #self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
+        #self.sensors[2].rotate(-sensor_turn, -PI/1.5, 0)
+        self.sensors[1].rotate_to(sensor_angle, dt)
+        self.sensors[2].rotate_to(-sensor_angle, dt)
         return abs(move)
 
     def calc_energy(self, dt: float, move: float):
-        base_energy = cfg.BASE_ENERGY
-        move_energy = move * cfg.MOVE_ENERGY
+        size_cost = self.size * cfg.SIZE_COST
+        base_energy = cfg.BASE_ENERGY * size_cost
+        move_energy = move * cfg.MOVE_ENERGY * size_cost
         if self.run:
             move_energy *= cfg.RUN_COST
         rest_energy = 0
-        size_cost = self.size * cfg.SIZE_COST * dt
         if self._eat:
             rest_energy += cfg.EAT_ENG
         if self._attack:
             rest_energy += cfg.ATK_ENG
-        self.energy -= (base_energy + move_energy + rest_energy) * size_cost
+        self.energy -= (base_energy + move_energy + rest_energy) * dt
         self.energy = clamp(self.energy, 0, self.max_energy)
 
     def get_input(self):
@@ -336,7 +337,7 @@ class Creature(Life):
             self._attack = True
         else:
             self._attack = False
-        if self.output[5] > 0 and self.run_time > 0:
+        if self.output[5] > 0 and self.run_time > 0 and self._move > 0:
             self.run = True
         else:
             self.run = False

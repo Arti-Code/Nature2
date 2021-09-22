@@ -2,7 +2,7 @@ import os
 import sys
 from time import time
 from math import degrees, hypot, sin, cos, pi as PI, floor, ceil
-from copy import deepcopy, copy
+#from copy import deepcopy, copy
 from collections import deque
 from lib.math2 import clamp
 from statistics import mean
@@ -14,14 +14,14 @@ from pygame.constants import *
 from pygame.math import Vector2
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 import pymunk.pygame_util
-from lib.life import Life
+#from lib.life import Life
 from lib.creature import Creature
 from lib.plant import Plant
 from lib.wall import Wall
 from lib.math2 import set_world, world, flipy
 from lib.config import cfg, TITLE, SUBTITLE
 from lib.manager import Manager
-from lib.autoterrain import Terrain
+#from lib.autoterrain import Terrain
 from lib.rock import Rock
 from lib.collisions import process_creature_plant_collisions, process_creature_meat_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end, detect_meat, detect_meat_end
 from lib.meat import Meat
@@ -86,19 +86,18 @@ class Simulation():
         rock = Rock(self.screen, self.space, vertices, 3, Color('grey40'), Color('grey'))
         self.wall_list.append(rock)
         
-
-    def create_enviro(self, world: tuple = None):
+    def create_enviro(self):
         self.time = 0
         self.cycles = 0
         self.kill_all_creatures()
         self.kill_all_plants()
         self.kill_things()
-        #edges = [(0, 0), (cfg.WORLD[0]-1, 0), (cfg.WORLD[0]-1, cfg.WORLD[1]-1), (0, cfg.WORLD[1]-1), (0, 0)]
-        #for e in range(4):
-        #    p1 = edges[e]
-        #    p2 = edges[e+1]
-        #    wall = self.add_wall(p1, p2, 5)
-        #    self.wall_list.append(wall)
+        edges = [(0, 0), (cfg.WORLD[0]-1, 0), (cfg.WORLD[0]-1, cfg.WORLD[1]-1), (0, cfg.WORLD[1]-1), (0, 0)]
+        for e in range(4):
+            p1 = edges[e]
+            p2 = edges[e+1]
+            wall = self.add_wall(p1, p2, 5)
+            self.wall_list.append(wall)
         #self.terr_img = image.load('res/fonts/water3.png')
         # self.terr_img.convert_alpha()
         #terrain = Terrain(self.screen, self.space, 'water3.png', 8)
@@ -118,7 +117,7 @@ class Simulation():
             plant = self.add_plant(cfg.WORLD, True)
             self.plant_list.append(plant)
 
-    def create_empty_world(self, world: tuple):
+    def create_empty_world(self):
         self.time = 0
         self.cycles = 0
         self.kill_all_creatures()
@@ -206,7 +205,7 @@ class Simulation():
         self.selected = None
         mouseX, mouseY = pygame.mouse.get_pos()
         rel_mouse = self.camera.rev_pos(Vector2(mouseX, mouseY))
-        print(f'mouse: {mouseX}|{mouseY} -> {rel_mouse.x}|{rel_mouse.y}')
+        #print(f'mouse: {mouseX}|{mouseY} -> {rel_mouse.x}|{rel_mouse.y}')
         self.selected = self.find_creature(rel_mouse.x, flipy(rel_mouse.y))
         if self.selected == None:
             self.selected = self.find_plant(rel_mouse.x, flipy(rel_mouse.y))
@@ -439,8 +438,8 @@ class Simulation():
             self.neuro_single_times = []
 
         ### MOVEMENT ###
-        for creature in self.creature_list:
-            creature.move(dt)
+        #for creature in self.creature_list:
+        #    creature.move(dt)
 
         ### REPRODUCE ###
         temp_list = []
@@ -462,23 +461,20 @@ class Simulation():
         self.check_populatiom()
 
     def check_creature_types(self):
-        herbivores = False
-        carnivores = False
+        herbivores = 0
+        carnivores = 0
         for creature in self.creature_list:
             if creature.food < 6:
-                herbivores = True
-                if carnivores:
-                    break
+                herbivores += 1
             else:
-                carnivores = True
-                if herbivores:
-                    break
-        if not herbivores:
+                carnivores += 1
+
+        if herbivores < cfg.MIN_HERBIVORES:
             if len(self.ranking1) > 0:
                 genome = choice(self.ranking1)
                 creature = self.add_creature(cfg.WORLD, genome)
                 self.creature_list.append(creature)
-        if not carnivores:
+        if carnivores < cfg.MIN_CARNIVORES:
             if len(self.ranking2) > 0:
                 genome = choice(self.ranking2)
                 creature = self.add_creature(cfg.WORLD, genome)
@@ -510,7 +506,8 @@ class Simulation():
             f"{TITLE} [fps: {round(self.clock.get_fps())} | dT: {round(self.dt*1000)}ms]")
 
     def check_populatiom(self):
-        self.check_creature_types()
+        if randint(0, 9) == 0:
+            self.check_creature_types()
 
         if len(self.creature_list) < cfg.CREATURE_MIN_NUM:
             creature = self.add_random_creature()
@@ -538,7 +535,7 @@ class Simulation():
     def main(self):
         set_win_pos(20, 20)
         # self.init(cfg.WORLD)
-        self.create_enviro(cfg.WORLD)
+        self.create_enviro()
         set_icon('planet32.png')
         #test = Test()
         while self.running:

@@ -6,6 +6,7 @@ from pygame.math import Vector2
 import pymunk as pm
 from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
 from lib.math2 import flipy, ang2vec, ang2vec2, clamp
+from lib.config import cfg
 
 class SensorData():
     def __init__(self, max_angle: float, detection_range: float):
@@ -107,6 +108,20 @@ class Sensor():
         b = (x2*self.length, y2*self.length)
         self.shape.unsafe_set_endpoints((0, 0), b)
 
+    def rotate_to(self, new_angle: float, dt: float):
+        delta_ang = cfg.SENSOR_SPEED * dt
+        if new_angle < self.angle:
+            if self.angle - delta_ang < new_angle:
+                self.angle = new_angle
+            else:
+                self.angle -= delta_ang
+        elif new_angle > self.angle:
+            if self.angle + delta_ang > new_angle:
+                self.angle = new_angle
+            else:
+                self.angle += delta_ang
+
+
     def send_data(self, detect: bool, distance: float):
         self.data.send_data(detect=detect, distance=distance, direction=self.angle)
 
@@ -125,7 +140,7 @@ class Sensor():
     def get_input(self):
         return self.data.get_data()
 
-class PolySensor():
+""" class PolySensor():
 
     def __init__(self, screen: Surface, body: Body, collision_type: any, angle: int, radial_width: int, length: int, min_angle: int, max_angle: int):
         self.screen = screen
@@ -179,3 +194,4 @@ class PolySensor():
             v0 = (0, 0)
             self.verts = [v0, v1, v2]
             self.shape.unsafe_set_vertices(self.verts)
+ """
