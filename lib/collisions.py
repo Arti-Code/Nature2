@@ -84,7 +84,7 @@ def process_creatures_collisions(arbiter, space, data):
     return True
 
 def process_edge_collisions(arbiter, space, data):
-    arbiter.shapes[0].body.position -= arbiter.normal * 1.5
+    arbiter.shapes[0].body.position -= arbiter.normal * 2.5
     arbiter.shapes[0].body.collide_something = True
     return True
 
