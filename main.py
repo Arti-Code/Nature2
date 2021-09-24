@@ -548,10 +548,10 @@ def set_win_pos(x: int = 20, y: int = 20):
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x_winpos, y_winpos)
 
 
-def random_position(space: Vec2d) -> Vec2d:
+def random_position(space: Vec2d) -> tuple:
     x = randint(0, space[0])
     y = randint(0, space[1])
-    return Vec2d(x, y)
+    return (x, y)
 
 
 def set_icon(icon_name):
