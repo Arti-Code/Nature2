@@ -218,6 +218,7 @@ class Manager:
         obj_list = json.loads(json_list)
         #self.enviro.creature_list.clear()
         self.enviro.create_empty_world()
+        self.enviro.create_borders()
         self.enviro.create_rocks(cfg.ROCK_NUM)
         self.enviro.create_plants(cfg.PLANT_INIT_NUM)
         self.project_name = project_name
@@ -246,7 +247,7 @@ class Manager:
             self.enviro.ranking2.append(rank)
         if not f.closed:
             f.close()
-        log_to_file(project_name+' loaded', 'log.txt')
+        #log_to_file(project_name+' loaded', 'log.txt')
 
     def load_last(self, project_name: str):
         f = open("saves/" + project_name + "/saves.json", "r")
@@ -277,15 +278,14 @@ class Manager:
             inp_desc = [
                 'col_cr', 'col_pl', 'col_ob', 'col_meat', 
                 #'angle', 
-                #'sid_ang', 
-                'x_pos', 'y_pos', 'eng', 
+                'sid_ang', 'x_pos', 'y_pos', 'eng', 
                 'enemy0', 'dist0', 'plant0', 'dist0', 'obst0', 'dist0', 'meat0', 'dist0',
-                #'enemy1', 'dist1', 'plant1', 'dist1', 'obst1', 'dist1', 'meat1', 'dist1', 
-                #'enemy2', 'dist2', 'plant2', 'dist2', 'obst2', 'dist2', 'meat2', 'dist2',
+                'enemy1', 'dist1', 'plant1', 'dist1', 'obst1', 'dist1', 'meat1', 'dist1', 
+                'enemy2', 'dist2', 'plant2', 'dist2', 'obst2', 'dist2', 'meat2', 'dist2',
                 'hurt' 
             ]
             out_desc = ["mov", "turn",
-                #"sens", 
+                "sens", 
                 "eat", "atk", "run", "hid"
             ]
 

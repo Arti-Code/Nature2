@@ -12,6 +12,7 @@ import pygame
 from pygame import Color, Surface, image
 from pygame.constants import *
 from pygame.math import Vector2
+from pygame.time import Clock
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 import pymunk.pygame_util
 #from lib.life import Life
@@ -30,7 +31,7 @@ from lib.camera import Camera
 
 class Simulation():
 
-    def __init__(self, view_size: tuple):
+    def __init__(self):
         self.neuro_single_times = []
         self.neuro_avg_time = 1
         self.physics_single_times = []
@@ -42,12 +43,12 @@ class Simulation():
         self.meat_list = []
         flags = pygame.DOUBLEBUF | pygame.HWSURFACE
         self.screen = pygame.display.set_mode(
-            size=view_size, flags=flags, vsync=1)
+            size=cfg.SCREEN, flags=flags, vsync=1)
         self.space = Space()
         self.FPS = 30
         self.dt = 1/self.FPS
         self.running = True
-        self.clock = pygame.time.Clock()
+        self.clock = Clock()
         self.sel_idx = 0
         self.show_network = False
         self.manager = Manager(screen=self.screen, enviro=self)
@@ -64,12 +65,10 @@ class Simulation():
         self.draw_debug: bool=False
         self.ranking1 = []
         self.ranking2 = []
-        log_to_file('simulation started', 'log.txt')
         self.last_save_time = 0
         self.herbivores = False
         self.carnivores = False
-        #self.map = pygame.image.load('res/map2.png').convert()
-        self.camera = Camera(Vector2(int(view_size[0]/2), int(view_size[1]/2)), Vector2(view_size[0], view_size[1]))
+        self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.creatures_on_screen = deque(range(30))
         self.plants_on_screen = deque(range(30))
         self.meats_on_screen = deque(range(30))
@@ -107,14 +106,22 @@ class Simulation():
             creature = self.add_creature()
             self.creature_list.append(creature)
         self.create_plants(cfg.PLANT_INIT_NUM)
-        
+    
+    def create_borders(self):
+        edges = [(0, 0), (cfg.WORLD[0]-1, 0), (cfg.WORLD[0]-1, cfg.WORLD[1]-1), (0, cfg.WORLD[1]-1), (0, 0)]
+        for e in range(4):
+            p1 = edges[e]
+            p2 = edges[e+1]
+            wall = self.add_wall(p1, p2, 8)
+            self.wall_list.append(wall)
+
     def create_rocks(self, rock_num: int):
         for _r in range(rock_num):
             self.create_rock(5, 110, random_position(cfg.WORLD))
 
     def create_plants(self, plant_num: int):
         for _p in range(plant_num):
-            plant = self.add_plant(cfg.WORLD, True)
+            plant = self.add_plant(True)
             self.plant_list.append(plant)
 
     def create_empty_world(self):
@@ -123,12 +130,6 @@ class Simulation():
         self.kill_all_creatures()
         self.kill_all_plants()
         self.kill_things()
-        edges = [(0, 0), (cfg.WORLD[0]-1, 0), (cfg.WORLD[0]-1, cfg.WORLD[1]-1), (0, cfg.WORLD[1]-1), (0, 0)]
-        for e in range(4):
-            p1 = edges[e]
-            p2 = edges[e+1]
-            wall = self.add_wall(p1, p2, 5)
-            self.wall_list.append(wall)
 
     def add_to_ranking(self, creature: Creature):
         if creature.food >= 6:
@@ -247,9 +248,6 @@ class Simulation():
         edge_collisions = self.space.add_collision_handler(2, 8)
         edge_collisions.pre_solve = process_edge_collisions
 
-        #new_plant_rock = self.space.add_collision_handler(12, 8)
-        #new_plant_rock.pre_solve = process_new_plant_rock
-
         detection = self.space.add_collision_handler(4, 2)
         detection.pre_solve = detect_creature
 
@@ -274,7 +272,7 @@ class Simulation():
         obstacle_detection_end = self.space.add_collision_handler(4, 8)
         obstacle_detection_end.separate = detect_obstacle_end
 
-    def add_creature(self, genome: dict=None, pos: tuple=None) -> Creature:
+    def add_creature(self, genome: dict=None, pos: Vec2d=None) -> Creature:
         creature: Creature
         if pos is None:
             pos = random_position(cfg.WORLD)
@@ -291,7 +289,7 @@ class Simulation():
         creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=random_position(cfg.WORLD), genome=genome)
         self.creature_list.append(creature)
 
-    def add_plant(self, world: tuple, mature: bool=False) -> Plant:
+    def add_plant(self, mature: bool=False) -> Plant:
         if mature:
             size = cfg.PLANT_MAX_SIZE
         else:
@@ -314,13 +312,10 @@ class Simulation():
     def add_wall(self, point0: tuple, point1: tuple, thickness: float) -> Wall:
         wall = Wall(self.screen, self.space, point0, point1,
                     thickness, Color('gray'), Color('navy'))
-        #space.add(wall.shape, wall.body)
         return wall
 
     def draw(self):
         self.screen.fill(Color('black'))
-        #self.screen.blit(self.map, self.screen.get_rect())
-        #self.screen.blit(self.map)
         screen_crs = 0
         screen_plants = 0
         screen_meats = 0
@@ -472,12 +467,12 @@ class Simulation():
         if herbivores < cfg.MIN_HERBIVORES:
             if len(self.ranking1) > 0:
                 genome = choice(self.ranking1)
-                creature = self.add_creature(genome)
+                creature = self.add_creature(genome=genome)
                 self.creature_list.append(creature)
         if carnivores < cfg.MIN_CARNIVORES:
             if len(self.ranking2) > 0:
                 genome = choice(self.ranking2)
-                creature = self.add_creature(genome)
+                creature = self.add_creature(genome=genome)
                 self.creature_list.append(creature)
  
     def update_plants(self, dt: float):
@@ -495,7 +490,7 @@ class Simulation():
             plant = self.add_plant(cfg.WORLD)
             self.plant_list.append(plant)
 
-    def physics_step(self, step_num: int, dt: float):
+    def physics_step(self, dt: float):
         for _ in range(1):
             self.space.step(dt)
 
@@ -546,7 +541,7 @@ class Simulation():
             if self.draw_debug:
                 self.space.debug_draw(self.options)
             physics_time = time()
-            self.physics_step(1, self.dt)
+            self.physics_step(self.dt)
             physics_time = time()-physics_time
             self.physics_single_times.append(physics_time)
             if len(self.physics_single_times) >= 150:
@@ -561,10 +556,11 @@ def set_win_pos(x: int = 20, y: int = 20):
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x_winpos, y_winpos)
 
 
-def random_position(space: Vec2d) -> Vec2d:
-    x = randint(0, space[0])
-    y = randint(0, space[1])
-    return Vec2d(x, y)
+def random_position(space: tuple) -> list:
+    x = randint(0+20, space[0]-20)
+    y = randint(0+20, space[1]-20)
+    pos = [x, y]
+    return pos
 
 
 def set_icon(icon_name):
@@ -583,5 +579,5 @@ def sort_by_fitness(creature):
 
 if __name__ == "__main__":
     set_world(cfg.WORLD)
-    sim = Simulation(cfg.SCREEN)
+    sim = Simulation()
     sys.exit(sim.main())

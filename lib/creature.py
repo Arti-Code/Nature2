@@ -51,8 +51,8 @@ class Creature(Life):
         self.sensors = []
         self.side_angle = 0
         self.sensors.append(Sensor(screen, self, 4, 0, cfg.SENSOR_RANGE))
-        #self.sensors.append(Sensor(screen, self, 4, cfg.SENSOR_MAX_ANGLE, cfg.SENSOR_RANGE))
-        #self.sensors.append(Sensor(screen, self, 4, -cfg.SENSOR_MAX_ANGLE, cfg.SENSOR_RANGE))
+        self.sensors.append(Sensor(screen, self, 4, cfg.SENSOR_MAX_ANGLE, cfg.SENSOR_RANGE))
+        self.sensors.append(Sensor(screen, self, 4, -cfg.SENSOR_MAX_ANGLE, cfg.SENSOR_RANGE))
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
         self.reproduction_time = cfg.REP_TIME
@@ -113,7 +113,7 @@ class Creature(Life):
         self.power = randint(1, 10)
         self.speed = randint(1, 10)
         self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
-        self.neuro.BuildRandom([16, 0, 0, 0, 0, 0, 0, 0, 6], cfg.LINKS_RATE)
+        self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 0, 0, 7], cfg.LINKS_RATE)
         self.name = random_name(3, True)
 
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
@@ -256,14 +256,14 @@ class Creature(Life):
         if move < 0:
             move = 0
         turn = self._turn*cfg.TURN*dt
-        #sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
-        #sensor_angle = ((self.output[2]+1)/2)*(PI/2)
+        sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
+        sensor_angle = (PI*1.5)-(((self.output[2]+1)/2)*(PI*1.5))
         self.angle = (self.angle+(turn))%(2*PI)
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
         #self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
         #self.sensors[2].rotate(-sensor_turn, -PI/1.5, 0)
-        #self.sensors[0].rotate_to(sensor_angle, dt)
-        #self.sensors[1].rotate_to(-sensor_angle, dt)
+        self.sensors[1].rotate_to(sensor_angle, dt)
+        self.sensors[2].rotate_to(-sensor_angle, dt)
         return abs(move)
 
     def calc_energy(self, dt: float, move: float):
@@ -286,10 +286,10 @@ class Creature(Life):
         input.append(self.collide_plant)
         input.append(self.collide_something)
         input.append(self.collide_meat)
-        #angle = self.angle/(2*PI)
-        #side_angle = self.sensors[1].angle/(cfg.SENSOR_MAX_ANGLE*2)
+        angle = self.angle/(2*PI)
+        side_angle = self.sensors[1].angle/(cfg.SENSOR_MAX_ANGLE*2)
         #input.append(angle)
-        #input.append(side_angle)
+        input.append(side_angle)
         x = self.position[0]/cfg.WORLD[0]
         input.append(x)
         y = self.position[1]/cfg.WORLD[1]
