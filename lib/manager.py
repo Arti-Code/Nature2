@@ -275,13 +275,19 @@ class Manager:
             base_line = []
 
             inp_desc = [
-                'col_cr', 'col_pl', 'col_ob', 'col_meat', 'angle', 'sid_ang', 'x_pos', 'y_pos', 'eng', 
+                'col_cr', 'col_pl', 'col_ob', 'col_meat', 
+                #'angle', 
+                #'sid_ang', 
+                'x_pos', 'y_pos', 'eng', 
                 'enemy0', 'dist0', 'plant0', 'dist0', 'obst0', 'dist0', 'meat0', 'dist0',
-                'enemy1', 'dist1', 'plant1', 'dist1', 'obst1', 'dist1', 'meat1', 'dist1', 
-                'enemy2', 'dist2', 'plant2', 'dist2', 'obst2', 'dist2', 'meat2', 'dist2',
+                #'enemy1', 'dist1', 'plant1', 'dist1', 'obst1', 'dist1', 'meat1', 'dist1', 
+                #'enemy2', 'dist2', 'plant2', 'dist2', 'obst2', 'dist2', 'meat2', 'dist2',
                 'hurt' 
             ]
-            out_desc = ["mov", "turn", "sens", "eat", "atk", "run", "hid"]
+            out_desc = ["mov", "turn",
+                #"sens", 
+                "eat", "atk", "run", "hid"
+            ]
 
             input_keys = network.GetNodeKeyList([TYPE.INPUT])
             output_keys = network.GetNodeKeyList([TYPE.OUTPUT])

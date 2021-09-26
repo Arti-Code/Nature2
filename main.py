@@ -104,7 +104,7 @@ class Simulation():
         self.create_rocks(cfg.ROCK_NUM)
 
         for c in range(cfg.CREATURE_INIT_NUM):
-            creature = self.add_creature(cfg.WORLD)
+            creature = self.add_creature()
             self.creature_list.append(creature)
         self.create_plants(cfg.PLANT_INIT_NUM)
         
@@ -274,7 +274,7 @@ class Simulation():
         obstacle_detection_end = self.space.add_collision_handler(4, 8)
         obstacle_detection_end.separate = detect_obstacle_end
 
-    def add_creature(self, world: tuple, genome: dict=None, pos: Vec2d=None) -> Creature:
+    def add_creature(self, genome: dict=None, pos: tuple=None) -> Creature:
         creature: Creature
         if pos is None:
             pos = random_position(cfg.WORLD)
@@ -472,12 +472,12 @@ class Simulation():
         if herbivores < cfg.MIN_HERBIVORES:
             if len(self.ranking1) > 0:
                 genome = choice(self.ranking1)
-                creature = self.add_creature(cfg.WORLD, genome)
+                creature = self.add_creature(genome)
                 self.creature_list.append(creature)
         if carnivores < cfg.MIN_CARNIVORES:
             if len(self.ranking2) > 0:
                 genome = choice(self.ranking2)
-                creature = self.add_creature(cfg.WORLD, genome)
+                creature = self.add_creature(genome)
                 self.creature_list.append(creature)
  
     def update_plants(self, dt: float):
@@ -517,14 +517,14 @@ class Simulation():
         r = randint(0, 1)
         creature: Creature = None
         if r == 0 or len(self.ranking1) == 0 or len(self.ranking2) == 0:
-            creature = self.add_creature(cfg.WORLD)
+            creature = self.add_creature()
         else:
             ranking = choice([self.ranking1, self.ranking2])
             rank_size = len(ranking)
             rnd = randint(0, rank_size-1)
             genome = ranking[rnd]
             ranking[rnd]['fitness'] *= 0.66
-            creature = self.add_creature(cfg.WORLD, genome)
+            creature = self.add_creature(genome)
         return creature
 
     def auto_save(self):
