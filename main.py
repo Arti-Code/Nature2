@@ -106,7 +106,15 @@ class Simulation():
             creature = self.add_creature()
             self.creature_list.append(creature)
         self.create_plants(cfg.PLANT_INIT_NUM)
-        
+    
+    def create_borders(self):
+        edges = [(0, 0), (cfg.WORLD[0]-1, 0), (cfg.WORLD[0]-1, cfg.WORLD[1]-1), (0, cfg.WORLD[1]-1), (0, 0)]
+        for e in range(4):
+            p1 = edges[e]
+            p2 = edges[e+1]
+            wall = self.add_wall(p1, p2, 8)
+            self.wall_list.append(wall)
+
     def create_rocks(self, rock_num: int):
         for _r in range(rock_num):
             self.create_rock(5, 110, random_position(cfg.WORLD))

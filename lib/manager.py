@@ -218,6 +218,7 @@ class Manager:
         obj_list = json.loads(json_list)
         #self.enviro.creature_list.clear()
         self.enviro.create_empty_world()
+        self.enviro.create_borders()
         self.enviro.create_rocks(cfg.ROCK_NUM)
         self.enviro.create_plants(cfg.PLANT_INIT_NUM)
         self.project_name = project_name
@@ -283,7 +284,10 @@ class Manager:
                 'enemy2', 'dist2', 'plant2', 'dist2', 'obst2', 'dist2', 'meat2', 'dist2',
                 'hurt' 
             ]
-            out_desc = ["mov", "turn", "sens", "eat", "atk", "run", "hid"]
+            out_desc = ["mov", "turn",
+                "sens", 
+                "eat", "atk", "run", "hid"
+            ]
 
             input_keys = network.GetNodeKeyList([TYPE.INPUT])
             output_keys = network.GetNodeKeyList([TYPE.OUTPUT])
