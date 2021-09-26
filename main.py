@@ -459,12 +459,12 @@ class Simulation():
         if herbivores < cfg.MIN_HERBIVORES:
             if len(self.ranking1) > 0:
                 genome = choice(self.ranking1)
-                creature = self.add_creature(cfg.WORLD, genome)
+                creature = self.add_creature(genome=genome)
                 self.creature_list.append(creature)
         if carnivores < cfg.MIN_CARNIVORES:
             if len(self.ranking2) > 0:
                 genome = choice(self.ranking2)
-                creature = self.add_creature(cfg.WORLD, genome)
+                creature = self.add_creature(genome=genome)
                 self.creature_list.append(creature)
  
     def update_plants(self, dt: float):
@@ -548,10 +548,11 @@ def set_win_pos(x: int = 20, y: int = 20):
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x_winpos, y_winpos)
 
 
-def random_position(space: Vec2d) -> tuple:
-    x = randint(0, space[0])
-    y = randint(0, space[1])
-    return (x, y)
+def random_position(space: tuple) -> list:
+    x = randint(0+20, space[0]-20)
+    y = randint(0+20, space[1]-20)
+    pos = [x, y]
+    return pos
 
 
 def set_icon(icon_name):
