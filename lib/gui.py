@@ -182,7 +182,20 @@ class SettingsWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect):
         super().__init__(rect, manager=manager, window_display_title='Settings', object_id="#set_win", visible=True)
         self.manager = manager
-        btn_list = [('Enviroment Info', '#btn_gui'), ('Ranking', '#btn_rank'), ('Reload Settings', '#btn_rel_set'), ('Back', '#btn_back')]
+        btn_list = [('Reload Settings', '#btn_rel_set'), ('Back', '#btn_back')]
+        buttons = []
+        i = 1
+        for (txt, ident) in btn_list:
+            btn = UIButton(Rect((50, (btn_s+btn_h)*i), (btn_w, btn_h)), text=txt, manager=self.manager, container=self, parent_element=self, object_id=ident)
+            buttons.append(btn)
+            i += 1
+
+class InfoMenuWindow(UIWindow):
+
+    def __init__(self, manager: UIManager, rect: Rect):
+        super().__init__(rect, manager=manager, window_display_title='Info Menu', object_id="#info_menu", visible=True)
+        self.manager = manager
+        btn_list = [('Enviroment Info', '#enviro'), ('Ranking', '#rank'), ('Credits', '#credits'), ('Back', '#info_back')]
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
@@ -233,6 +246,7 @@ class GUI():
         self.load_menu = None
         self.info_win = None
         self.set_win = None
+        self.info_menu = None
         self.enviro_win = None
         self.rank_win = None
         self.credits_win = None
@@ -263,9 +277,15 @@ class GUI():
 
     def create_settings(self):
         w = 250
-        h = 300
+        h = 200
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.set_win = SettingsWindow(manager=self.ui_mgr, rect=pos)
+
+    def create_info_menu(self):
+        w = 250
+        h = 250
+        pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
+        self.info_menu = InfoMenuWindow(manager=self.ui_mgr, rect=pos)
 
     def create_new_sim(self):
         w = 300
@@ -373,7 +393,8 @@ class GUI():
                     self.main_menu.kill()
                 elif event.ui_object_id == '#menu_win.#btn_info':
                     self.main_menu.kill()
-                    self.create_credits_win(title=TITLE, subtitle=SUBTITLE, author=AUTHOR, bar_text=TITLE)
+                    self.create_info_menu()
+                    #self.create_credits_win(title=TITLE, subtitle=SUBTITLE, author=AUTHOR, bar_text=TITLE)
                 elif event.ui_object_id == '#credits_win.#btn_close':
                     self.credits_win.kill()
                 elif event.ui_object_id == '#menu_win.#btn_load':
@@ -417,12 +438,18 @@ class GUI():
                     self.create_main_menu()
                 elif event.ui_object_id == '#set_win.#btn_rel_set':
                     self.reload_config()
-                elif event.ui_object_id == '#set_win.#btn_gui':
-                    self.set_win.kill()
+                elif event.ui_object_id == '#info_menu.#enviro':
+                    self.info_menu.kill()
                     self.create_enviro_win(dt)
-                elif event.ui_object_id == '#set_win.#btn_rank':
-                    self.set_win.kill()
+                elif event.ui_object_id == '#info_menu.#rank':
+                    self.info_menu.kill()
                     self.create_rank_win()
+                elif event.ui_object_id == '#info_menu.#credits':
+                    self.info_menu.kill()
+                    self.create_credits_win(title=TITLE, subtitle=SUBTITLE, author=AUTHOR, bar_text=TITLE)
+                elif event.ui_object_id == '#info_menu.#info_back':
+                    self.info_menu.kill()
+                    self.create_main_menu()
                 elif event.ui_object_id == '#rank_win.#btn_quit':
                     self.rank_win.kill()
                 elif event.ui_object_id == '#enviro_win.#btn_quit':
