@@ -219,7 +219,7 @@ class Creature(Life):
         if self.hide:
             if self.run or self._move >= 0.2:
                 self.hide = False
-                self.output[6] = 0
+                self.output[5] = 0
 
     def check_reproduction(self, dt) -> bool:
         self.reproduction_time -= dt
@@ -256,8 +256,8 @@ class Creature(Life):
         if move < 0:
             move = 0
         turn = self._turn*cfg.TURN*dt
-        #sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
-        sensor_angle = ((self.output[2]+1)/2)*(PI/2)
+        sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
+        sensor_angle = (PI*1.5)-(((self.output[2]+1)/2)*(PI*1.5))
         self.angle = (self.angle+(turn))%(2*PI)
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
         #self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
@@ -336,23 +336,23 @@ class Creature(Life):
                     self.output[o] = clamp(self.output[o], -1, 1)
         self._move = clamp(self.output[0], 0, 1)
         self._turn = self.output[1]
-        if self.output[3] > 0:
+        if self.output[2] > 0:
             self._eat = True
         else:
             self._eat = False
-        if self.output[4] > 0:
+        if self.output[3] > 0:
             self._attack = True
         else:
             self._attack = False
-        if self.output[5] > 0 and self.run_time > 0 and self._move > 0:
+        if self.output[4] > 0 and self.run_time > 0 and self._move > 0:
             self.run = True
         else:
             self.run = False
-        if self.output[6] > 0:
+        if self.output[5] > 0:
             self.hide = True
         else:
             self.hide = False
-            self.output[6] = 0
+            self.output[5] = 0
         #if self.output[6] > 0 and not self.run and self._move < 0.2:
         #    self.hide = True
         #else:
