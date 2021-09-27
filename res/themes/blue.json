@@ -207,6 +207,16 @@
            "normal_border": "#fab51e"
         }
     },
+    "#info_back":
+    {
+        "colours":
+        {
+           "normal_text":"#ffffff",
+           "normal_bg":"#ec9304",
+           "hovered_bg":"#ff7d1a",
+           "normal_border": "#fab51e"
+        }
+    },
     "#btn_quit":
     {
         "colours":
