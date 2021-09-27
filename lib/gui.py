@@ -54,7 +54,7 @@ class MenuWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect):
         super().__init__(rect, manager=manager, window_display_title='Main Menu', object_id="#menu_win", visible=True)
         self.manager = manager
-        btn_list = [('New Simulation', '#btn_sim'), ('Select Terrain', '#btn_map'), ('Save Simulation', '#btn_save'), ('Load Simulation', '#btn_load'), ('Settings', '#btn_set'), ('Info', '#btn_info'), ('Quit', '#btn_quit')]
+        btn_list = [('New Simulation', '#btn_sim'), ('Select Terrain', '#btn_map'), ('Save Menu', '#save_menu'), ('Load Simulation', '#btn_load'), ('Settings', '#btn_set'), ('Info', '#btn_info'), ('Quit', '#btn_quit')]
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
@@ -203,6 +203,19 @@ class InfoMenuWindow(UIWindow):
             buttons.append(btn)
             i += 1
 
+class SaveMenuWindow(UIWindow):
+
+    def __init__(self, manager: UIManager, rect: Rect):
+        super().__init__(rect, manager=manager, window_display_title='Info Menu', object_id="#save_menu", visible=True)
+        self.manager = manager
+        btn_list = [('Save Simulation', '#save_sim'), ('Save Creature', '#save_creature'), ('Back', '#save_back')]
+        buttons = []
+        i = 1
+        for (txt, ident) in btn_list:
+            btn = UIButton(Rect((50, (btn_s+btn_h)*i), (btn_w, btn_h)), text=txt, manager=self.manager, container=self, parent_element=self, object_id=ident)
+            buttons.append(btn)
+            i += 1
+
 class CustomGUIWin(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect):
@@ -247,6 +260,7 @@ class GUI():
         self.info_win = None
         self.set_win = None
         self.info_menu = None
+        self.save_menu = None
         self.enviro_win = None
         self.rank_win = None
         self.credits_win = None
@@ -286,6 +300,12 @@ class GUI():
         h = 250
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.info_menu = InfoMenuWindow(manager=self.ui_mgr, rect=pos)
+
+    def create_save_menu(self):
+        w = 250
+        h = 250
+        pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
+        self.save_menu = SaveMenuWindow(manager=self.ui_mgr, rect=pos)
 
     def create_new_sim(self):
         w = 300
@@ -388,9 +408,10 @@ class GUI():
                 elif event.ui_object_id == '#menu_win.#btn_map':
                     self.main_menu.kill()
                     self.select_map()
-                elif event.ui_object_id == '#menu_win.#btn_save':
-                    self.owner.save_project()
+                elif event.ui_object_id == '#menu_win.#save_menu':
+                    #self.owner.save_project()
                     self.main_menu.kill()
+                    self.create_save_menu()
                 elif event.ui_object_id == '#menu_win.#btn_info':
                     self.main_menu.kill()
                     self.create_info_menu()
@@ -454,6 +475,15 @@ class GUI():
                     self.rank_win.kill()
                 elif event.ui_object_id == '#enviro_win.#btn_quit':
                     self.enviro_win.kill()
+                elif event.ui_object_id == '#save_menu.#save_sim':
+                    self.save_menu.kill()
+                    self.owner.save_project()
+                elif event.ui_object_id == '#save_menu.#save_creature':
+                    self.save_menu.kill()
+                    self.owner.save_creature()
+                elif event.ui_object_id == '#save_menu.#save_back':
+                    self.save_menu.kill()
+                    self.create_main_menu()
                 elif event.ui_object_id == '#menu_win.#btn_quit':
                     pygame.quit()
                     sys.exit(0)

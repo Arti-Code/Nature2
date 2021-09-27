@@ -169,6 +169,9 @@ class Manager:
                 if not json_file.closed:
                     json_file.close()
     
+    def save_creature(self):
+        pass
+
     def add_to_projects_list(self, project_name: str):
         f = open("saves/projects.json", "r+")
         proj_list = f.read()
