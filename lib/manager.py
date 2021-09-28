@@ -28,7 +28,7 @@ class Manager:
         self.subtitl_font.set_bold(True)
         self.screen = screen
         self.enviro = enviro
-        self.gui = GUI(owner=self, view=cfg.WORLD)
+        self.gui = GUI(owner=self, view=cfg.SCREEN)
         self.font_small = pygame.font.Font("res/fonts/fira.ttf", 8)
         self.text_list: list = []
         
