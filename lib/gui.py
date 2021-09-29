@@ -10,6 +10,8 @@ from pygame import Rect
 from pygame_gui import UIManager, PackageResource
 from pygame_gui.elements import UITextBox, UIWindow, UIButton, UILabel, UITextEntryLine, UIPanel
 from lib.config import cfg, TITLE, SUBTITLE, AUTHOR
+from lib.life import Life
+from lib.creature import Creature
 
 
 btn_w = 150
@@ -293,6 +295,12 @@ class GUI():
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.info_menu = InfoMenuWindow(manager=self.ui_mgr, rect=pos)
 
+    def save_creature(self, selected: Life):
+        if not isinstance(selected, Creature):
+            return
+        else:
+            pass
+
     def create_save_menu(self):
         w = 250
         h = 250
@@ -405,7 +413,10 @@ class GUI():
                     self.create_save_menu()
                 elif event.ui_object_id == '#save_menu.#save_progress':
                     self.owner.save_project()
-                    self.main_menu.kill()
+                    self.save_menu.kill()
+                elif event.ui_object_id == '#save_menu.#save_creature':
+                    self.save_menu.kill()
+                    self.save_creature(selected=self.owner.enviro.selected)
                 elif event.ui_object_id == '#save_menu.#save_back':
                     self.save_menu.kill()
                     self.create_main_menu()
