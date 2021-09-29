@@ -7,7 +7,7 @@ AUTHOR = "2019-2021 Artur Gwoździowski"
 
 class Configuration():
 
-    def __init__(self, filename: str=None):
+    def __init__(self, filename: str):
         self.WORLD = None
         self.SCREEN = None
         self.FONT_SIZE = None
@@ -44,7 +44,7 @@ class Configuration():
         self.HIT2FIT = None
         self.VEGE2FIT = None
         self.MEAT2FIT = None
-        self.DIFF = None
+        self.DIFF: float
         self.AUTO_SAVE_TIME = None
         self.ATK_ENG = None
         self.EAT_ENG = None

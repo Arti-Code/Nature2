@@ -26,7 +26,7 @@ class Creature(Life):
         self.generation = 0
         self.fitness = 0
         self.neuro = Network()
-        self.normal: Vec2d=None
+        self.normal: Vec2d=Vec2d(0, 0)
         self.signature: list=[]
         if genome == None:
             self.random_build(color0, color1, color2, color3)
@@ -142,7 +142,8 @@ class Creature(Life):
             color1.a = 255
             color2.a = 255
             a = 255
-        self.draw_detectors(screen=screen, rel_pos=rel_pos)
+        if selected == self:
+            self.draw_detectors(screen=screen, rel_pos=rel_pos)
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), color0)
         #gfxdraw.aacircle(screen, int(rx), int(ry), int(r), self.color0)
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-1), color1)

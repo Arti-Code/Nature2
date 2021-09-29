@@ -261,7 +261,7 @@ class Manager:
     def draw_net(self, network: Network):
         if network:
             last_layer_idx: int=len(network.layers)-1
-            h_space = 40
+            h_space = 30
             v_space = 10
             nodes_to_draw = []
             dists = {}
@@ -276,12 +276,12 @@ class Manager:
             base_line = []
 
             inp_desc = [
-                'col_cr', 'col_pl', 'col_ob', 'col_meat', 
+                'crea', 'plnt', 'obst', 'meat', 
                 #'angle', 
-                'sid_ang', 'x_pos', 'y_pos', 'eng', 
-                'enemy0', 'dist0', 'plant0', 'dist0', 'obst0', 'dist0', 'meat0', 'dist0',
-                'enemy1', 'dist1', 'plant1', 'dist1', 'obst1', 'dist1', 'meat1', 'dist1', 
-                'enemy2', 'dist2', 'plant2', 'dist2', 'obst2', 'dist2', 'meat2', 'dist2',
+                'side', 'xpos', 'ypos', 'eng', 
+                'ene0', 'dst0', 'pla0', 'dst0', 'obs0', 'dst0', 'meat0', 'dst0',
+                'ene1', 'dst1', 'pla1', 'dst1', 'obs1', 'dst1', 'meat1', 'dst1', 
+                'ene2', 'dst2', 'pla2', 'dst2', 'obs2', 'dst2', 'meat2', 'dst2',
                 'hurt' 
             ]
             out_desc = ["mov", "turn",
@@ -303,7 +303,7 @@ class Manager:
                 dists[layer] = dist_nn
                 n = 0
                 desc_idx = 0
-                base_line.append(round((575 + max_nodes_num * v_space)/2))
+                base_line.append(round((375 + max_nodes_num * v_space)/2))
                 for node_key in network.layers[layer].nodes:
                     node = network.nodes[node_key]
                     if node.recombined:
@@ -341,7 +341,7 @@ class Manager:
                             r = 255 - b
                             if link.recombined:
                                 g = 255
-                        link_color = Color((r, g, b, 50))
+                        link_color = Color((r, g, b, 20))
                         node_num0 = len(network.layers[l0].nodes)
                         #pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)-1))
                         pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)))
@@ -353,18 +353,18 @@ class Manager:
             out = 0
             for c, l, n, r, d, desc in nodes_to_draw:
                 gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 3, c)
-                gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d + round(d/2), 3, c)
+                gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 3, c)
                 if r:
                     gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 5, c)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
-                    self.add_text(f'{inp_desc[n]}: ', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
-                    self.add_text(f'{round(val, 1)}', 50 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    self.add_text(f'{inp_desc[n]} {round(val, 1)}', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    #self.add_text(f'{round(val, 1)}', 50 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                 elif l == last_layer_idx:
                     #val = network.nodes[network.layers[l].nodes[n]].value
                     val = self.enviro.selected.output[out]
                     #self.add_text(f'{inp_desc[n]}: ', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
-                    self.add_text2(f'{out_desc[out]}: {round(val, 1)}', 40 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)
+                    self.add_text2(f'{out_desc[out]} {round(val, 1)}', 40 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)
                     out += 1
                 else:
                     val = network.nodes[network.layers[l].nodes[n]].value

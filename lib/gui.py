@@ -203,6 +203,19 @@ class InfoMenuWindow(UIWindow):
             buttons.append(btn)
             i += 1
 
+class SaveMenuWindow(UIWindow):
+
+    def __init__(self, manager: UIManager, rect: Rect):
+        super().__init__(rect, manager=manager, window_display_title='Save Menu', object_id="#save_menu", visible=True)
+        self.manager = manager
+        btn_list = [('Save Progress', '#save_progress'), ('Save Selected Creature', '#save_creature'), ('Duplicate Simulation', '#duplicate_sim'), ('Back', '#save_back')]
+        buttons = []
+        i = 1
+        for (txt, ident) in btn_list:
+            btn = UIButton(Rect((50, (btn_s+btn_h)*i), (btn_w, btn_h)), text=txt, manager=self.manager, container=self, parent_element=self, object_id=ident)
+            buttons.append(btn)
+            i += 1
+
 class CustomGUIWin(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect):
@@ -226,14 +239,6 @@ class GUI():
         self.cy = round(cfg.SCREEN[1]/2)
         #self.ui_mgr = UIManager(window_resolution=(self.view[0], self.view[1]), theme_path='blue.json')
         self.ui_mgr = UIManager(window_resolution=view, theme_path='res/themes/blue.json')
-        #self.ui_mgr.preload_fonts(font_list=[
-        #            {'name': 'fira_code10b', 'point_size': 10, 'style': 'bold'},
-        #            {'name': 'fira_code10r', 'point_size': 10, 'style': 'regular'},
-        #            {'name': 'fira_code9r', 'point_size': 9, 'style': 'regular'},
-        #            {'name': 'fira_code', 'point_size': 12, 'style': 'regular'},
-        #            {'name': 'fira_code', 'point_size': 14, 'style': 'regular'},
-        #            {'name': 'fira_code', 'point_size': 14, 'style': 'bold'}
-        #])
         #self.ui_mgr.load_theme('blue.json')
         self.buttons = []
         self.title = None
@@ -247,6 +252,7 @@ class GUI():
         self.info_win = None
         self.set_win = None
         self.info_menu = None
+        self.save_menu = None
         self.enviro_win = None
         self.rank_win = None
         self.credits_win = None
@@ -286,6 +292,12 @@ class GUI():
         h = 250
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.info_menu = InfoMenuWindow(manager=self.ui_mgr, rect=pos)
+
+    def create_save_menu(self):
+        w = 250
+        h = 250
+        pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
+        self.save_menu = SaveMenuWindow(manager=self.ui_mgr, rect=pos)
 
     def create_new_sim(self):
         w = 300
@@ -388,9 +400,15 @@ class GUI():
                 elif event.ui_object_id == '#menu_win.#btn_map':
                     self.main_menu.kill()
                     self.select_map()
-                elif event.ui_object_id == '#menu_win.#btn_save':
+                elif event.ui_object_id == '#menu_win.#save_menu':
+                    self.main_menu.kill()
+                    self.create_save_menu()
+                elif event.ui_object_id == '#save_menu.#save_progress':
                     self.owner.save_project()
                     self.main_menu.kill()
+                elif event.ui_object_id == '#save_menu.#save_back':
+                    self.save_menu.kill()
+                    self.create_main_menu()
                 elif event.ui_object_id == '#menu_win.#btn_info':
                     self.main_menu.kill()
                     self.create_info_menu()
