@@ -58,6 +58,7 @@ class Configuration():
         self.SENSOR_RANGE = None
         self.MIN_CARNIVORES = None
         self.MIN_HERBIVORES = None
+        self.NET = None
         self.load_from_file(filename)
 
     def load_from_file(self, filename: str):
@@ -115,5 +116,6 @@ class Configuration():
         self.SENSOR_RANGE           = cfg['SENSOR_RANGE']
         self.MIN_CARNIVORES         = cfg['MIN_CARNIVORES']
         self.MIN_HERBIVORES         = cfg['MIN_HERBIVORES']
+        self.NET                    = cfg['NET']
 
 cfg = Configuration('config.json')

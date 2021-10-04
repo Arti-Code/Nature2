@@ -113,7 +113,7 @@ class Creature(Life):
         self.power = randint(1, 10)
         self.speed = randint(1, 10)
         self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
-        self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 0, 0, 7], cfg.LINKS_RATE)
+        self.neuro.BuildRandom(cfg.NET, cfg.LINKS_RATE)
         self.name = random_name(3, True)
 
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:

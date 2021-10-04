@@ -179,6 +179,31 @@ class EnviroWindow(UIWindow):
                 self.labs[key][0].set_text(f"{key}:")
                 self.labs[key][1].set_text(f"{val}")
 
+class CreatureWindow(UIWindow):
+
+    def __init__(self, manager: UIManager, rect: Rect, data: dict, dT: float):
+        super().__init__(rect, manager=manager, window_display_title='Creature Info', object_id="#creature_win", visible=True)
+        self.manager = manager
+        i=0
+        self.labs = {}
+        for key, val in data.items():
+            lab1 = UILabel(Rect((10, 15*i+5), (90, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
+            lab2 = UILabel(Rect((120, 15*i+5), (self.rect.width/2-20, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
+            i+=1
+            self.labs[key] = (lab1, lab2)
+        self.btn_close = UIButton(Rect((rect.width/2-btn_w/2, (15+15*i)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_close')
+        self.refresh = 0
+        self.Update(data, dT)
+
+    def Update(self, data: dict, dT: float):
+        self.refresh -= dT
+        if self.refresh <= 0:
+            self.refresh = 1
+            data = data
+            for key, val in data.items():
+                self.labs[key][0].set_text(f"{key}:")
+                self.labs[key][1].set_text(f"{val}")
+
 class SettingsWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect):
@@ -197,7 +222,7 @@ class InfoMenuWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect):
         super().__init__(rect, manager=manager, window_display_title='Info Menu', object_id="#info_menu", visible=True)
         self.manager = manager
-        btn_list = [('Enviroment Info', '#enviro'), ('Ranking', '#rank'), ('Credits', '#credits'), ('Back', '#info_back')]
+        btn_list = [('Creature Info', '#creature_win'), ('Enviroment Info', '#enviro'), ('Ranking', '#rank'), ('Credits', '#credits'), ('Back', '#info_back')]
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
@@ -256,6 +281,7 @@ class GUI():
         self.info_menu = None
         self.save_menu = None
         self.enviro_win = None
+        self.creature_win = None
         self.rank_win = None
         self.credits_win = None
         self.rebuild_ui(self.view)
@@ -373,6 +399,28 @@ class GUI():
         data['SCR_MT'] = ''
         self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (200, 175)), data=data, dT=dT)
 
+    def create_creature_win(self, dT: float):
+        data = {}
+        data['SPECIE'] = self.owner.enviro.selected.name
+        data['FOOD'] = self.owner.enviro.selected.name
+        data['ENERGY'] = str(round(self.owner.enviro.selected.energy))+'/'+str(round(self.owner.enviro.selected.max_energy))
+        data['POWER'] = str(self.owner.enviro.selected.power)
+        data['SPEED'] = str(self.owner.enviro.selected.speed)
+        data['SIZE'] = str(self.owner.enviro.selected.size)
+        data['GENERATION'] = str(self.owner.enviro.selected.generation)
+        self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((0, 0), (200, 175)), data=data, dT=dT)
+
+    def update_creature_win(self) -> dict:
+        data = {}
+        data['SPECIE'] = self.owner.enviro.selected.name
+        data['FOOD'] = self.owner.enviro.selected.name
+        data['ENERGY'] = str(round(self.owner.enviro.selected.energy))+'/'+str(round(self.owner.enviro.selected.max_energy))
+        data['POWER'] = str(self.owner.enviro.selected.power)
+        data['SPEED'] = str(self.owner.enviro.selected.speed)
+        data['SIZE'] = str(self.owner.enviro.selected.size)
+        data['GENERATION'] = str(self.owner.enviro.selected.generation)
+        return data
+
     def select_map(self):
         w = 300
         h = 100
@@ -470,6 +518,9 @@ class GUI():
                 elif event.ui_object_id == '#info_menu.#enviro':
                     self.info_menu.kill()
                     self.create_enviro_win(dt)
+                elif event.ui_object_id == '#info_menu.#creature_win':
+                    self.info_menu.kill()
+                    self.create_creature_win(dt)
                 elif event.ui_object_id == '#info_menu.#rank':
                     self.info_menu.kill()
                     self.create_rank_win()
@@ -503,6 +554,9 @@ class GUI():
         if self.rank_win:
             data = self.update_ranking(ranking1, ranking2)
             self.rank_win.Update(ranking1, ranking2)
+        if self.creature_win and self.owner.enviro.selected:
+            data = self.update_creature_win()
+            self.creature_win.Update(data, dt)
 
     def draw_ui(self, screen):
         self.ui_mgr.draw_ui(screen)
