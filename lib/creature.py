@@ -49,10 +49,10 @@ class Creature(Life):
         self.eye_colors = {}
         self.visual_range = cfg.VISUAL_RANGE
         self.sensors = []
-        self.side_angle = 0
-        self.sensors.append(Sensor(screen, self, 4, 0, cfg.SENSOR_RANGE))
-        self.sensors.append(Sensor(screen, self, 4, cfg.SENSOR_MAX_ANGLE, cfg.SENSOR_RANGE))
-        self.sensors.append(Sensor(screen, self, 4, -cfg.SENSOR_MAX_ANGLE, cfg.SENSOR_RANGE))
+        self.side_angle = random()*cfg.SENSOR_MAX_ANGLE
+        self.sensors.append(Sensor(screen, self, 4, 0, 0, 0, cfg.SENSOR_RANGE))
+        self.sensors.append(Sensor(screen, self, 4, self.side_angle, 0, cfg.SENSOR_MAX_ANGLE, cfg.SENSOR_RANGE))
+        self.sensors.append(Sensor(screen, self, 4, -self.side_angle, -cfg.SENSOR_MAX_ANGLE, 0, cfg.SENSOR_RANGE))
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
         self.reproduction_time = cfg.REP_TIME
@@ -257,14 +257,15 @@ class Creature(Life):
         if move < 0:
             move = 0
         turn = self._turn*cfg.TURN*dt
-        sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
-        sensor_angle = (PI*1.5)-(((self.output[2]+1)/2)*(PI*1.5))
+        #sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
+        #sensor_angle = (PI*1.5)-(((self.output[2]+1)/2)*(PI*1.5))
         self.angle = (self.angle+(turn))%(2*PI)
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
         #self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
         #self.sensors[2].rotate(-sensor_turn, -PI/1.5, 0)
-        self.sensors[1].rotate_to(sensor_angle, dt)
-        self.sensors[2].rotate_to(-sensor_angle, dt)
+        new_sensor_ang = ((self.output[2]+1)/2)*(PI*1.5)
+        self.sensors[1].rotate_to(new_sensor_ang, dt)
+        self.sensors[2].rotate_to(-new_sensor_ang, dt)
         return abs(move)
 
     def calc_energy(self, dt: float, move: float):

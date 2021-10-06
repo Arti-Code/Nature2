@@ -117,12 +117,14 @@ class SensorData():
         
 class Sensor():
 
-    def __init__(self, screen: Surface, body: Body, collision_type: any, radians: float, length: int):
+    def __init__(self, screen: Surface, body: Body, collision_type: any, radians: float, min_angle: float, max_angle: float, length: int):
         #self.screen = screen
         self.body = body
         self.angle = radians
         self.length = length
         self.max_length = length
+        self.min_angle = min_angle
+        self.max_angle = max_angle
         x2, y2 = ang2vec2(radians)
         b = (x2*length, y2*length)
         self.shape = Segment(body=body, a=(0,0), b=b, radius=1)
@@ -160,18 +162,29 @@ class Sensor():
         self.shape.unsafe_set_endpoints((0, 0), b)
 
     def rotate_to(self, new_angle: float, dt: float):
-        delta_ang = cfg.SENSOR_SPEED * dt
-        if new_angle < self.angle:
-            if self.angle - delta_ang < new_angle:
-                self.angle = new_angle
-            else:
-                self.angle -= delta_ang
-        elif new_angle > self.angle:
-            if self.angle + delta_ang > new_angle:
+        if new_angle != self.angle:
+            delta_ang = cfg.SENSOR_SPEED * dt
+            if new_angle < self.angle:
+                delta_ang -= delta_ang
+            if (self.angle+delta_ang) < new_angle:
                 self.angle = new_angle
             else:
                 self.angle += delta_ang
-
+            self.angle = clamp(self.angle, self.min_angle, self.max_angle)
+            self.update_segments(self.angle)
+        #if new_angle < self.angle:
+        #    if self.angle - delta_ang < new_angle:
+        #        self.angle = new_angle
+        #    else:
+        #        self.angle -= delta_ang
+        #elif new_angle > self.angle:
+        #    if self.angle + delta_ang > new_angle:
+        #        self.angle = new_angle
+        #    else:
+        #        self.angle += delta_ang
+    def update_segments(self, angle: float):
+        x2, y2 = ang2vec2(angle)
+        self.shape.unsafe_set_endpoints((0, 0), (x2*self.length, y2*self.length))
 
     def send_data(self, detect: bool, distance: float):
         self.length = self.data.send_data(detect=detect, distance=distance, direction=self.angle)
