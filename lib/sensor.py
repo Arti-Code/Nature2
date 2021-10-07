@@ -111,9 +111,10 @@ class SensorData():
             'meat': False, 'meat_dist': -1
         }
 
-    def get_data(self) -> dict:
-        return self.detected
-        #return (self.enemy, self.distance, self.direction, self.plant, self.p_distance, self.p_direction, self.obstacle, self.obst_distance, self.obst_direction, self.meat, self.meat_distance, self.meat_direction)
+    def get_data(self) -> list:
+        dist = max(self.detected['enemy_dist'], self.detected['plant_dist'], self.detected['obstacle_dist'], self.detected['meat_dist'])
+        #return self.detected
+        return [self.detected['enemy'], self.detected['plant'], self.detected['obstacle'], self.detected['meat'], dist]
         
 class Sensor():
 
@@ -128,7 +129,7 @@ class Sensor():
         self.shape = Segment(body=body, a=(0,0), b=b, radius=1)
         self.shape.collision_type = collision_type
         self.shape.sensor = True
-        self.data = SensorData(max_angle=PI, detection_range=length)
+        self.data = SensorData(max_angle=cfg.SENSOR_MAX_ANGLE, detection_range=length)
         global white
         global red
         white = (255, 255, 255, 150)
@@ -159,18 +160,17 @@ class Sensor():
         b = (x2*self.length, y2*self.length)
         self.shape.unsafe_set_endpoints((0, 0), b)
 
-    def rotate_to(self, new_angle: float, dt: float):
-        delta_ang = cfg.SENSOR_SPEED * dt
-        if new_angle < self.angle:
-            if self.angle - delta_ang < new_angle:
-                self.angle = new_angle
-            else:
+    def rotate_to(self, new_angle: float, min_angle: float, max_angle: float, dt: float):
+        if new_angle != self.angle:
+            delta_ang = cfg.SENSOR_SPEED * dt
+            if new_angle < self.angle:
                 self.angle -= delta_ang
-        elif new_angle > self.angle:
-            if self.angle + delta_ang > new_angle:
-                self.angle = new_angle
-            else:
+            elif new_angle > self.angle:
                 self.angle += delta_ang
+            self.angle = clamp(self.angle, min_angle, max_angle)
+            x2, y2 = ang2vec2(self.angle)
+            b = (x2*self.length, y2*self.length)
+            self.shape.unsafe_set_endpoints((0, 0), b)
 
 
     def send_data(self, detect: bool, distance: float):
