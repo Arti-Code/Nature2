@@ -439,7 +439,7 @@ class Simulation():
         ### REPRODUCE ###
         temp_list = []
         for creature in self.creature_list:
-            creature.update(screen=self.screen, space=self.space, dt=dt, selected=self.selected)
+            creature.update(dt=dt, selected=self.selected)
             if creature.check_reproduction(dt):
                 for _ in range(cfg.CHILDS_NUM):
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)
