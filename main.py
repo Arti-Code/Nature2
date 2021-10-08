@@ -348,7 +348,7 @@ class Simulation():
         self.rocks_on_screen.popleft()
         self.meats_on_screen.popleft()
         self.draw_network()
-        self.draw_text()
+        #self.draw_text()
         self.write_text()
         self.manager.draw_gui(screen=self.screen)
 
@@ -439,7 +439,7 @@ class Simulation():
         ### REPRODUCE ###
         temp_list = []
         for creature in self.creature_list:
-            creature.update(screen=self.screen, space=self.space, dt=dt, selected=self.selected)
+            creature.update(dt=dt, selected=self.selected)
             if creature.check_reproduction(dt):
                 for _ in range(cfg.CHILDS_NUM):
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)

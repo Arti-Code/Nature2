@@ -94,6 +94,23 @@
              "text_shadow_offset": "0,0"
          }
     },
+    "#menu_win.#btn_resume": 
+    {
+        "colours":
+      {
+         "normal_text":"#ffffff",
+         "normal_bg":"#1af925d4",
+         "hovered_bg":"#88fe71ed",
+         "normal_border": "#22fa1e"
+      },
+      "font":
+      {
+          "name": "fira_code",
+          "size": "14",
+          "bold": "1",
+          "italic": "0"
+      }
+    },
     "button":
     {
       "colours":
@@ -102,13 +119,6 @@
          "normal_bg":"#1a86f9d4",
          "hovered_bg":"#71fefced",
          "normal_border": "#1e64fa"
-      },
-      "font":
-      {
-          "name": "fira_code",
-          "size": "14",
-          "bold": "1",
-          "italic": "0"
       }
     },
     "label":
@@ -197,7 +207,27 @@
            "normal_border": "#fab51e"
         }
     },
+    "#save_back":
+    {
+        "colours":
+        {
+           "normal_text":"#ffffff",
+           "normal_bg":"#ec9304f7",
+           "hovered_bg":"#fdfda0f7",
+           "normal_border": "#fab51e"
+        }
+    },
     "#btn_back":
+    {
+        "colours":
+        {
+           "normal_text":"#ffffff",
+           "normal_bg":"#ec9304",
+           "hovered_bg":"#ff7d1a",
+           "normal_border": "#fab51e"
+        }
+    },
+    "#info_back":
     {
         "colours":
         {

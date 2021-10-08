@@ -26,7 +26,7 @@ class Creature(Life):
         self.generation = 0
         self.fitness = 0
         self.neuro = Network()
-        self.normal: Vec2d=None
+        self.normal: Vec2d=Vec2d(0, 0)
         self.signature: list=[]
         if genome == None:
             self.random_build(color0, color1, color2, color3)
@@ -113,7 +113,7 @@ class Creature(Life):
         self.power = randint(1, 10)
         self.speed = randint(1, 10)
         self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
-        self.neuro.BuildRandom([33, 0, 0, 0, 0, 0, 0, 0, 7], cfg.LINKS_RATE)
+        self.neuro.BuildRandom(cfg.NET, cfg.LINKS_RATE)
         self.name = random_name(3, True)
 
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
@@ -142,7 +142,10 @@ class Creature(Life):
             color1.a = 255
             color2.a = 255
             a = 255
-        self.draw_detectors(screen=screen, rel_pos=rel_pos)
+        if selected == self:
+            self.draw_detectors(screen=screen, rel_pos=rel_pos)
+        for detector in self.sensors:
+            detector.reset_data()
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), color0)
         #gfxdraw.aacircle(screen, int(rx), int(ry), int(r), self.color0)
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-1), color1)
@@ -191,7 +194,6 @@ class Creature(Life):
     def draw_detectors(self, screen, rel_pos: Vector2):
         for detector in self.sensors:
             detector.draw(screen=screen, rel_pos=rel_pos)
-            detector.reset_data()
         self.collide_creature = False
         self.collide_plant = False
         self.collide_something = False
@@ -201,7 +203,7 @@ class Creature(Life):
         rpos = camera.rel_pos(Vector2((self.position.x-20), flipy(self.position.y-14)))
         return self.name, rpos.x, rpos.y
 
-    def update(self, screen: Surface, space: Space, dt:float, selected: Body):
+    def update(self, dt: float, selected: Body):
         super().update(dt, selected)
         self.life_time += dt*0.1
         if self.run:
@@ -262,8 +264,8 @@ class Creature(Life):
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
         #self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
         #self.sensors[2].rotate(-sensor_turn, -PI/1.5, 0)
-        self.sensors[1].rotate_to(sensor_angle, dt)
-        self.sensors[2].rotate_to(-sensor_angle, dt)
+        self.sensors[1].rotate_to(sensor_angle, 0, cfg.SENSOR_MAX_ANGLE, dt)
+        self.sensors[2].rotate_to(-sensor_angle, -cfg.SENSOR_MAX_ANGLE, 0, dt)
         return abs(move)
 
     def calc_energy(self, dt: float, move: float):
@@ -297,31 +299,18 @@ class Creature(Life):
         eng = self.energy/self.max_energy
         input.append(eng)
         for sensor in self.sensors:
-            #e, d, a, p, pd, pa, o, od, oa, m, md, ma = sensor.get_input()
-            detected = {}
+            detected = []
             detected = sensor.get_input()
-            e = detected['enemy']
-            ed = round(detected['enemy_dist'], 3)
-            p = detected['plant']
-            pd = round(detected['plant_dist'], 3)
-            o = detected['obstacle']
-            od = round(detected['obstacle_dist'], 3)
-            m = detected['meat']
-            md = round(detected['meat_dist'], 3)
+            e = detected[0]
+            p = detected[1]
+            o = detected[2]
+            m = detected[3]
+            d = round(detected[4], 2)
             input.append(e)
-            input.append(ed)
-            #input.append(a)
             input.append(p)
-            input.append(pd)
-            #input.append(pa)
-            input.append(o)
-            input.append(od)
-            #input.append(oa)
             input.append(m)
-            input.append(md)
-        #input.append(self.output[0])
-        #input.append(self.output[1])
-        #input.append(self.output[2])
+            input.append(o)
+            input.append(d)
         input.append(int(self.pain))
         self.pain = False
         return input
