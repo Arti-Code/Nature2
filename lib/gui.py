@@ -56,11 +56,11 @@ class MenuWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect):
         super().__init__(rect, manager=manager, window_display_title='Main Menu', object_id="#menu_win", visible=True)
         self.manager = manager
-        btn_list = [('New Simulation', '#btn_sim'), ('Select Terrain', '#btn_map'), ('Save Simulation', '#btn_save'), ('Load Simulation', '#btn_load'), ('Settings', '#btn_set'), ('Info', '#btn_info'), ('Quit', '#btn_quit')]
+        btn_list = [('Resume', '#btn_resume'), ('New Simulation', '#btn_sim'), ('Select Terrain', '#btn_map'), ('Save Simulation', '#btn_save'), ('Load Simulation', '#btn_load'), ('Settings', '#btn_set'), ('Info', '#btn_info'), ('Quit', '#btn_quit')]
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
-            btn = UIButton(Rect((50, (btn_s+btn_h)*i), (btn_w, btn_h)), text=txt, manager=self.manager, container=self, parent_element=self, object_id=ident)
+            btn = UIButton(Rect((50, (btn_s*(i)+btn_h*(i-1))), (btn_w, btn_h)), text=txt, manager=self.manager, container=self, parent_element=self, object_id=ident)
             buttons.append(btn)
             i += 1
 
@@ -181,21 +181,24 @@ class EnviroWindow(UIWindow):
 
 class CreatureWindow(UIWindow):
 
-    def __init__(self, manager: UIManager, rect: Rect, data: dict, dT: float):
+    def __init__(self, manager: UIManager, rect: Rect, data: dict):
         super().__init__(rect, manager=manager, window_display_title='Creature Info', object_id="#creature_win", visible=True)
         self.manager = manager
         i=0
         self.labs = {}
         for key, val in data.items():
             lab1 = UILabel(Rect((10, 15*i+5), (90, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
-            lab2 = UILabel(Rect((120, 15*i+5), (self.rect.width/2-20, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
+            if key != 'states':
+                lab2 = UILabel(Rect((120, 15*i+5), (self.rect.width/2-20, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
+            else:
+                lab2 = UILabel(Rect((110, 15*i+5), (self.rect.width/2-10, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
             i+=1
             self.labs[key] = (lab1, lab2)
         self.btn_close = UIButton(Rect((rect.width/2-btn_w/2, (15+15*i)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_close')
         self.refresh = 0
-        self.Update(data, dT)
+        self.update(data)
 
-    def Update(self, data: dict, dT: float):
+    def update(self, data: dict, dT: float=0.0):
         self.refresh -= dT
         if self.refresh <= 0:
             self.refresh = 1
@@ -400,25 +403,42 @@ class GUI():
         self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (200, 175)), data=data, dT=dT)
 
     def create_creature_win(self, dT: float):
-        data = {}
-        data['SPECIE'] = self.owner.enviro.selected.name
-        data['FOOD'] = self.owner.enviro.selected.name
-        data['ENERGY'] = str(round(self.owner.enviro.selected.energy))+'/'+str(round(self.owner.enviro.selected.max_energy))
-        data['POWER'] = str(self.owner.enviro.selected.power)
-        data['SPEED'] = str(self.owner.enviro.selected.speed)
-        data['SIZE'] = str(self.owner.enviro.selected.size)
-        data['GENERATION'] = str(self.owner.enviro.selected.generation)
-        self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((0, 0), (200, 175)), data=data, dT=dT)
+        data = self.update_creature_win()
+        if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((0, 0), (200, 175)), data=data)
 
     def update_creature_win(self) -> dict:
+        if not self.owner.enviro.selected or not isinstance(self.owner.enviro.selected, Creature):
+            data = {}
+            data['SPECIE'] = ''
+            data['FOOD'] = ''
+            data['ENERGY'] = ''
+            data['POWER'] = ''
+            data['SPEED'] = ''
+            data['SIZE'] = ''
+            data['GENERATION'] = ''
+            data['FITNESS'] = ''
+            data["LIFETIME"] = ''
+            data['STATES'] = ''
+            return data
         data = {}
         data['SPECIE'] = self.owner.enviro.selected.name
-        data['FOOD'] = self.owner.enviro.selected.name
+        data['FOOD'] = str(self.owner.enviro.selected.food)
         data['ENERGY'] = str(round(self.owner.enviro.selected.energy))+'/'+str(round(self.owner.enviro.selected.max_energy))
         data['POWER'] = str(self.owner.enviro.selected.power)
         data['SPEED'] = str(self.owner.enviro.selected.speed)
         data['SIZE'] = str(self.owner.enviro.selected.size)
         data['GENERATION'] = str(self.owner.enviro.selected.generation)
+        data['FITNESS'] = str(round(self.owner.enviro.selected.fitness))
+        data["LIFETIME"] = str(round(self.owner.enviro.selected.life_time))
+        states = []
+        if self.owner.enviro.selected.hide:
+            states.append(' [HIDE]')
+        if self.owner.enviro.selected.run:
+            states.append(' [RUN]')
+        data['STATES'] = ''
+        for state in states:
+            data['STATES'] += state
         return data
 
     def select_map(self):
@@ -450,6 +470,8 @@ class GUI():
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_object_id == '#btn_menu':
                     self.create_main_menu()
+                elif event.ui_object_id == '#menu_win.#btn_resume':
+                    self.main_menu.kill()
                 elif event.ui_object_id == '#menu_win.#btn_sim':
                     self.main_menu.kill()
                     self.create_new_sim()
@@ -545,18 +567,18 @@ class GUI():
         self.set_win.kill()
         cfg.load_from_file('config.json')
 
-    def update(self, dt: float, ranking1: list, ranking2: list):
+    def update(self, dT: float, ranking1: list, ranking2: list):
         data: dict = {}
-        self.ui_mgr.update(dt)
+        self.ui_mgr.update(time_delta=dT)
         if self.enviro_win:
-            data = self.update_enviroment(dt)
-            self.enviro_win.Update(data, dt)
+            data = self.update_enviroment(dT)
+            self.enviro_win.Update(data, dT)
         if self.rank_win:
             data = self.update_ranking(ranking1, ranking2)
             self.rank_win.Update(ranking1, ranking2)
         if self.creature_win and self.owner.enviro.selected:
             data = self.update_creature_win()
-            self.creature_win.Update(data, dt)
+            self.creature_win.update(data, dT)
 
     def draw_ui(self, screen):
         self.ui_mgr.draw_ui(screen)

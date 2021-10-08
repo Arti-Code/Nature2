@@ -348,7 +348,7 @@ class Simulation():
         self.rocks_on_screen.popleft()
         self.meats_on_screen.popleft()
         self.draw_network()
-        self.draw_text()
+        #self.draw_text()
         self.write_text()
         self.manager.draw_gui(screen=self.screen)
 
