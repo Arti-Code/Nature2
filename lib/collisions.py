@@ -4,6 +4,7 @@ from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 import pygame
 from pygame import Color
 from lib.config import *
+from lib.utils import Detection
 
 def diet(food: int, mod: float) -> float:
     return pow(food, 2) * mod
@@ -153,4 +154,67 @@ def detect_obstacle_end(arbiter, space, data):
     return True
 
 def detect_meat_end(arbiter, space, data):
+    return True
+
+def detect_creature2(arbiter, space, data):
+    creature = arbiter.shapes[0].body
+    enemy = arbiter.shapes[1].body
+    sensor_shape = arbiter.shapes[0]
+    sensor = creature.eye
+    if not enemy.hide:
+        if sensor.shape == sensor_shape:
+            sensor.set_color(Color('orange'))
+            pos0 = creature.position
+            dist = pos0.get_distance(enemy.position)
+            sensor.add_detection(creature=True, plant=False, meat=False, obstacle=False, distance=int(dist))
+    return True
+
+def detect_plant2(arbiter, space, data):
+    creature = arbiter.shapes[0].body
+    plant = arbiter.shapes[1].body
+    sensor_shape = arbiter.shapes[0]
+    sensor = creature.eye
+    if sensor.shape == sensor_shape:
+        sensor.set_color(Color('green'))
+        pos0 = creature.position
+        dist = pos0.get_distance(plant.position)
+        sensor.add_detection(creature=False, plant=True, meat=False, obstacle=False, distance=int(dist))
+    return True
+
+def detect_obstacle2(arbiter, space, data):
+    creature = arbiter.shapes[0].body
+    obstacle = arbiter.shapes[1].body
+    contact = arbiter.contact_point_set.points[0].point_a
+    sensor_shape = arbiter.shapes[0]
+    sensor = creature.eye
+    if sensor.shape == sensor_shape:
+        sensor.set_color(Color('skyblue'))
+        pos0 = creature.position
+        dist = pos0.get_distance(contact)
+        sensor.add_detection(creature=False, plant=False, meat=False, obstacle=True, distance=int(dist))
+    return True
+
+def detect_meat2(arbiter, space, data):
+    creature = arbiter.shapes[0].body
+    meat = arbiter.shapes[1].body
+    contact = arbiter.contact_point_set.points[0].point_a
+    sensor_shape = arbiter.shapes[0]
+    sensor = creature.eye
+    if sensor.shape == sensor_shape:
+        sensor.set_color(Color('red'))
+        pos0 = creature.position
+        dist = pos0.get_distance(contact)
+        sensor.add_detection(creature=False, plant=False, meat=True, obstacle=False, distance=int(dist))
+    return True
+
+def detect_plant_end2(arbiter, space, data):
+    return True
+
+def detect_creature_end2(arbiter, space, data):
+    return True
+
+def detect_obstacle_end2(arbiter, space, data):
+    return True
+
+def detect_meat_end2(arbiter, space, data):
     return True

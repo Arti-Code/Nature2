@@ -68,8 +68,12 @@ class Manager:
        pass 
 
     def add_text(self, text: str, x: int, y: int, small_font: bool=True, color: Color=Color('white')):
-       render_text = self.small_font.render(text, True, color)
-       self.screen.blit(render_text, (x, y), )
+        if small_font:
+            write_text = self.small_font.render(text, True, color)
+            self.screen.blit(write_text, (x, y), )
+        else:
+            write_text = self.norm_font.render(text, True, color)
+            self.screen.blit(write_text, (x, y), )
 
     def add_text2(self, text, x, y, color, title=False, subtitle=False, creature=False, small=False):
         if title:
@@ -261,8 +265,8 @@ class Manager:
     def draw_net(self, network: Network):
         if network:
             last_layer_idx: int=len(network.layers)-1
-            h_space = 30
-            v_space = 10
+            h_space = 40
+            v_space = 25
             nodes_to_draw = []
             dists = {}
             max_nodes_num = 0
@@ -277,14 +281,15 @@ class Manager:
 
             inp_desc = [
                 'crea', 'plnt', 'obst', 'meat', 
-                'side', 'xpos', 'ypos', 'eng', 
+                #'side',
+                'xpos', 'ypos', 'eng', 
                 'ene0', 'pla0', 'meat0', 'obs0', 'dst0',
-                'ene1', 'pla1', 'meat1', 'obs1', 'dst1', 
-                'ene2', 'pla2', 'meat2', 'obs2', 'dst2',
+                #'ene1', 'pla1', 'meat1', 'obs1', 'dst1', 
+                #'ene2', 'pla2', 'meat2', 'obs2', 'dst2',
                 'hurt' 
             ]
             out_desc = ["mov", "turn",
-                "sens", 
+                #"sens", 
                 "eat", "atk", "run", "hid"
             ]
 
@@ -302,7 +307,7 @@ class Manager:
                 dists[layer] = dist_nn
                 n = 0
                 desc_idx = 0
-                base_line.append(round((375 + max_nodes_num * v_space)/2))
+                base_line.append(round((400 + max_nodes_num * v_space)/2))
                 for node_key in network.layers[layer].nodes:
                     node = network.nodes[node_key]
                     if node.recombined:
@@ -357,13 +362,13 @@ class Manager:
                     gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 5, c)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
-                    self.add_text(f'{inp_desc[n]} {round(val, 1)}', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    self.add_text(f'{inp_desc[n]} {round(val, 1)}', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, False, Color('white'))
                     #self.add_text(f'{round(val, 1)}', 50 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                 elif l == last_layer_idx:
                     #val = network.nodes[network.layers[l].nodes[n]].value
                     val = self.enviro.selected.output[out]
                     #self.add_text(f'{inp_desc[n]}: ', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
-                    self.add_text2(f'{out_desc[out]} {round(val, 1)}', 40 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)
+                    self.add_text2(f'{out_desc[out]} {round(val, 1)}', 40 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2)-3, Color('white'), False, False, False, False)
                     out += 1
                 else:
                     val = network.nodes[network.layers[l].nodes[n]].value

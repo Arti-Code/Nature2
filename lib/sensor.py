@@ -7,6 +7,8 @@ import pymunk as pm
 from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
 from lib.math2 import flipy, ang2vec, ang2vec2, clamp
 from lib.config import cfg
+from lib.camera import Camera
+from lib.utils import Detection
 
 class SensorData():
     def __init__(self, max_angle: float, detection_range: float):
@@ -116,6 +118,7 @@ class SensorData():
         #return self.detected
         return [self.detected['enemy'], self.detected['plant'], self.detected['obstacle'], self.detected['meat'], dist]
         
+
 class Sensor():
 
     def __init__(self, screen: Surface, body: Body, collision_type: any, radians: float, length: int):
@@ -191,3 +194,93 @@ class Sensor():
 
     def get_input(self) -> dict:
         return self.data.get_data()
+
+
+class Eye():
+
+    def __init__(self, body: Body, collision_type: int, angle: float, length: int):
+        self.body = body
+        self.angle = angle
+        self.length = length
+        self.max_length = length
+        self.verts = self.calc_verts()
+        self.shape = Poly(self.body, self.verts)
+        self.shape.collision_type = collision_type
+        self.shape.sensor = True
+        self.color = Color('white')
+        self.detection  = {"creature": 0, "plant": 0, "meat": 0, "obstacle": 0, "distance": -1}
+        self.creature   = {"distance": -1, "angle": 0}
+        self.plant      = {"distance": -1, "angle": 0}
+        self.obstacle   = {"distance": -1, "angle": 0}
+        self.meat       = {"distance": -1, "angle": 0}
+
+
+    def set_color(self, color: Color):
+        self.color = color
+
+    def reset_detection(self):
+        self.detection = {"creature": 0, "plant": 0, "meat": 0, "obstacle": 0, "distance": -1}
+        self.creature   = {"distance": -1, "angle": 0}
+        self.plant      = {"distance": -1, "angle": 0}
+        self.obstacle   = {"distance": -1, "angle": 0}
+        self.meat       = {"distance": -1, "angle": 0}
+        self.set_color(Color('white'))
+
+    def calc_verts(self) -> list:
+        alfa2 = self.angle/2
+        x1, y1 = ang2vec2(alfa2)
+        x2, y2 = ang2vec2(-alfa2)
+        p0 = (0, 0)
+        p1 = (int(x1*self.length), int(y1*self.length))
+        p2 = (int(x2*self.length), int(y2*self.length))
+        return [p2, p0, p1]
+
+    def draw(self, screen: Surface, camera: Camera):
+        points = []
+        for point in self.shape.get_vertices():
+            #point = camera.rel_pos(point)
+            glob_pos = point.rotated(self.body.angle)+self.body.position
+            rel_pos = camera.rel_pos(glob_pos)
+            points.append(rel_pos)
+        gfxdraw.aatrigon(screen, int(points[0].x), int(flipy(points[0].y)), int(points[1].x), int(flipy(points[1].y)), int(points[2].x), int(flipy(points[2].y)), self.color)
+
+    """ def add_detection(self, detection: Detection, distance: int, angle: float):
+        if distance < self.detection["distance"] or self.detection["distance"] == -1:
+            self.detection = {"creature": int(creature), "plant": int(plant), "meat": int(meat), "obstacle": int(obstacle), "distance": distance}
+ """
+    def add_detection(self, detection: Detection, distance: int, angle: float):
+        if detection == Detection.CREATURE:
+            if distance < self.creature["distance"] or self.creature["distance"] == -1:
+                self.creature = {"distance": distance, "angle": angle}
+        elif detection == Detection.PLANT:
+            if distance < self.plant["distance"] or self.plant["distance"] == -1:
+                self.plant = {"distance": distance, "angle": angle}
+        elif detection == Detection.MEAT:
+            if distance < self.meat["distance"] or self.meat["distance"] == -1:
+                self.meat = {"distance": distance, "angle": angle}
+        elif detection == Detection.ROCK:
+            if distance < self.rock["distance"] or self.rock["distance"] == -1:
+                self.rock = {"distance": distance, "angle": angle}
+
+    def get_input(self) -> list:
+        cd = 1-(self.creature["distance"]/self.max_length)
+        ca = self.creature["angle"]/(0.5*self.angle)
+        pd = 1-(self.plant["distance"]/self.max_length)
+        pa = self.plant["angle"]/(0.5*self.angle)
+        md = 1-(self.meat["distance"]/self.max_length)
+        ma = self.meat["angle"]/(0.5*self.angle)
+        rd = 1-(self.rock["distance"]/self.max_length)
+        ra = self.rock["angle"]/(0.5*self.angle)
+        self.reset_detection()
+        return [cd, ca, pd, pa, md, ma, rd, ra]
+
+
+"""     def get_input(self) -> list:
+        detection = []
+        for key in self.detection:
+            val = self.detection[key]
+            if key =="distance":
+                val = 1-(val/self.max_length)
+            detection.append(val)
+        #self.reset_detection()
+        return detection.copy() """

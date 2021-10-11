@@ -10,7 +10,7 @@ import pymunk as pm
 from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
 from lib.life import Life
 from lib.math2 import flipy, clamp
-from lib.sensor import Sensor
+from lib.sensor import Sensor, Eye
 from lib.net import Network
 from lib.species import random_name, modify_name
 from lib.config import cfg
@@ -22,7 +22,7 @@ class Creature(Life):
     def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
         super().__init__(screen=screen, space=space, owner=sim, collision_tag=collision_tag, position=position)
         self.angle = random()*2*PI
-        self.output = [0, 0, 0, 0, 0, 0, 0]
+        self.output = [0, 0, 0, 0, 0, 0]
         self.generation = 0
         self.fitness = 0
         self.neuro = Network()
@@ -48,17 +48,17 @@ class Creature(Life):
         space.add(self.shape)
         self.eye_colors = {}
         self.visual_range = cfg.VISUAL_RANGE
-        self.sensors = []
+        #self.sensors = []
         self.side_angle = 0
-        self.sensors.append(Sensor(screen, self, 4, 0, cfg.SENSOR_RANGE))
-        self.sensors.append(Sensor(screen, self, 4, cfg.SENSOR_MAX_ANGLE, cfg.SENSOR_RANGE))
-        self.sensors.append(Sensor(screen, self, 4, -cfg.SENSOR_MAX_ANGLE, cfg.SENSOR_RANGE))
+        #!self.sensors.append(Sensor(screen, self, 4, 0, cfg.SENSOR_RANGE))
+        #!self.sensors.append(Sensor(screen, self, 4, cfg.SENSOR_MAX_ANGLE, cfg.SENSOR_RANGE))
+        #!self.sensors.append(Sensor(screen, self, 4, -cfg.SENSOR_MAX_ANGLE, cfg.SENSOR_RANGE))
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
         self.reproduction_time = cfg.REP_TIME
         self.energy = self.max_energy
-        for sensor in self.sensors:
-            space.add(sensor.shape)
+        #!for sensor in self.sensors:
+        #!f   space.add(sensor.shape)
         self._move: float=0.0
         self._eat: bool=False
         self._attack: bool=False
@@ -68,6 +68,9 @@ class Creature(Life):
         self.life_time: float=0.0
         self.run_time = cfg.RUN_TIME
         self.hide = False
+        self.eye = Eye(self, 16, PI/18, cfg.SENSOR_RANGE)
+        #self.sensors.append(self.eye)
+        space.add(self.eye.shape)
         #signature = self.get_signature()
         #s = self.compare_signature(signature, self.get_signature(), 0.8)
 
@@ -143,9 +146,11 @@ class Creature(Life):
             color2.a = 255
             a = 255
         if selected == self:
-            self.draw_detectors(screen=screen, rel_pos=rel_pos)
-        for detector in self.sensors:
-            detector.reset_data()
+            self.draw_detectors(screen=screen, rel_pos=rel_pos, camera=camera)
+        #self.eye.draw(screen=screen, camera=camera)
+        #for detector in self.sensors:
+            #pass
+            #detector.reset_data()
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), color0)
         #gfxdraw.aacircle(screen, int(rx), int(ry), int(r), self.color0)
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-1), color1)
@@ -191,9 +196,10 @@ class Creature(Life):
             gfxdraw.line(screen, int(self.position.x), int(flipy(self.position.y)), int(self.position.x+self.normal.x*50), int(flipy(self.position.y+self.normal.y*50)), Color('yellow'))
             #self.normal = None
 
-    def draw_detectors(self, screen, rel_pos: Vector2):
-        for detector in self.sensors:
-            detector.draw(screen=screen, rel_pos=rel_pos)
+    def draw_detectors(self, screen, rel_pos: Vector2=None, camera: Camera=None):
+        self.eye.draw(screen=screen, camera=camera)
+        #for detector in self.sensors:
+        #    detector.draw(screen=screen, rel_pos=rel_pos)
         self.collide_creature = False
         self.collide_plant = False
         self.collide_something = False
@@ -264,8 +270,8 @@ class Creature(Life):
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
         #self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
         #self.sensors[2].rotate(-sensor_turn, -PI/1.5, 0)
-        self.sensors[1].rotate_to(sensor_angle, 0, cfg.SENSOR_MAX_ANGLE, dt)
-        self.sensors[2].rotate_to(-sensor_angle, -cfg.SENSOR_MAX_ANGLE, 0, dt)
+        #self.sensors[1].rotate_to(sensor_angle, 0, cfg.SENSOR_MAX_ANGLE, dt)
+        #self.sensors[2].rotate_to(-sensor_angle, -cfg.SENSOR_MAX_ANGLE, 0, dt)
         return abs(move)
 
     def calc_energy(self, dt: float, move: float):
@@ -288,31 +294,32 @@ class Creature(Life):
         input.append(self.collide_plant)
         input.append(self.collide_something)
         input.append(self.collide_meat)
-        angle = self.angle/(2*PI)
-        side_angle = self.sensors[1].angle/(cfg.SENSOR_MAX_ANGLE*2)
+        #angle = self.angle/(2*PI)
+        #side_angle = self.sensors[1].angle/(cfg.SENSOR_MAX_ANGLE*2)
         #input.append(angle)
-        input.append(side_angle)
+        #input.append(side_angle)
         x = self.position[0]/cfg.WORLD[0]
         input.append(x)
         y = self.position[1]/cfg.WORLD[1]
         input.append(y)
         eng = self.energy/self.max_energy
         input.append(eng)
-        for sensor in self.sensors:
-            detected = []
-            detected = sensor.get_input()
-            e = detected[0]
-            p = detected[1]
-            o = detected[2]
-            m = detected[3]
-            d = round(detected[4], 2)
-            input.append(e)
-            input.append(p)
-            input.append(m)
-            input.append(o)
-            input.append(d)
+        #selffor sensor in self.sensors:
+        detected = []
+        detected = self.eye.get_input()
+        e = detected[0]
+        p = detected[1]
+        m = detected[2]
+        o = detected[3]
+        d = round(detected[4], 2)
+        input.append(e)
+        input.append(p)
+        input.append(m)
+        input.append(o)
+        input.append(d)
         input.append(int(self.pain))
         self.pain = False
+        self.eye.reset_detection()
         return input
 
     def analize(self):
@@ -358,8 +365,8 @@ class Creature(Life):
 
     def kill(self, space: Space):
         to_kill = []
-        for sensor in self.sensors:
-            to_kill.append(sensor.shape)
+        #for sensor in self.sensors:
+        to_kill.append(self.eye.shape)
         for s in to_kill:
             space.remove(s)
         space.remove(self.shape)

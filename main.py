@@ -24,7 +24,7 @@ from lib.config import cfg, TITLE, SUBTITLE
 from lib.manager import Manager
 #from lib.autoterrain import Terrain
 from lib.rock import Rock
-from lib.collisions import process_creature_plant_collisions, process_creature_meat_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end, detect_meat, detect_meat_end
+from lib.collisions import * #?process_creature_plant_collisions, process_creature_meat_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end, detect_meat, detect_meat_end
 from lib.meat import Meat
 from lib.utils import log_to_file
 from lib.camera import Camera
@@ -232,7 +232,7 @@ class Simulation():
         return None
 
     def set_collision_calls(self):
-        # 2: body | 8: wall | 4: sensor | 6: plant | 12: new_plant
+        # 2: body | 8: wall | 4: sensor | 6: plant | 12: new_plant | 16: eye
         creature_collisions = self.space.add_collision_handler(2, 2)
         creature_collisions.pre_solve = process_creatures_collisions
         creature_collisions.data['dt'] = self.dt
@@ -248,29 +248,53 @@ class Simulation():
         edge_collisions = self.space.add_collision_handler(2, 8)
         edge_collisions.pre_solve = process_edge_collisions
 
-        detection = self.space.add_collision_handler(4, 2)
-        detection.pre_solve = detect_creature
+#        detection = self.space.add_collision_handler(4, 2)
+#        detection.pre_solve = detect_creature
+#
+#        detection_end = self.space.add_collision_handler(4, 2)
+#        detection_end.separate = detect_creature_end
+#
+#        plant_detection = self.space.add_collision_handler(4, 6)
+#        plant_detection.pre_solve = detect_plant
+#
+#        plant_detection_end = self.space.add_collision_handler(4, 6)
+#        plant_detection_end.separate = detect_plant_end
+#
+#        meat_detection = self.space.add_collision_handler(4, 10)
+#        meat_detection.pre_solve = detect_meat
+#
+#        meat_detection_end = self.space.add_collision_handler(4, 10)
+#        meat_detection_end.separate = detect_meat_end
+#
+#        obstacle_detection = self.space.add_collision_handler(4, 8)
+#        obstacle_detection.pre_solve = detect_obstacle
+#
+#        obstacle_detection_end = self.space.add_collision_handler(4, 8)
+#        obstacle_detection_end.separate = detect_obstacle_end
 
-        detection_end = self.space.add_collision_handler(4, 2)
-        detection_end.separate = detect_creature_end
+        creature_detection2 = self.space.add_collision_handler(16, 2)
+        creature_detection2.pre_solve = detect_creature2
 
-        plant_detection = self.space.add_collision_handler(4, 6)
-        plant_detection.pre_solve = detect_plant
+        creature_detection_end2 = self.space.add_collision_handler(16, 2)
+        creature_detection_end2.separate = detect_creature_end2
 
-        plant_detection_end = self.space.add_collision_handler(4, 6)
-        plant_detection_end.separate = detect_plant_end
+        plant_detection2 = self.space.add_collision_handler(16, 6)
+        plant_detection2.pre_solve = detect_plant2
 
-        meat_detection = self.space.add_collision_handler(4, 10)
-        meat_detection.pre_solve = detect_meat
+        plant_detection_end2 = self.space.add_collision_handler(16, 6)
+        plant_detection_end2.separate = detect_plant_end2
 
-        meat_detection_end = self.space.add_collision_handler(4, 10)
-        meat_detection_end.separate = detect_meat_end
+        meat_detection2 = self.space.add_collision_handler(16, 10)
+        meat_detection2.pre_solve = detect_meat2
 
-        obstacle_detection = self.space.add_collision_handler(4, 8)
-        obstacle_detection.pre_solve = detect_obstacle
+        meat_detection_end2 = self.space.add_collision_handler(16, 10)
+        meat_detection_end2.separate = detect_meat_end2
 
-        obstacle_detection_end = self.space.add_collision_handler(4, 8)
-        obstacle_detection_end.separate = detect_obstacle_end
+        obstacle_detection2 = self.space.add_collision_handler(16, 8)
+        obstacle_detection2.pre_solve = detect_obstacle2
+        
+        obstacle_detection_end2 = self.space.add_collision_handler(16, 8)
+        obstacle_detection_end2.separate = detect_obstacle_end2
 
     def add_creature(self, genome: dict=None, pos: Vec2d=None) -> Creature:
         creature: Creature
