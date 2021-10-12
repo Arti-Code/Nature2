@@ -211,7 +211,7 @@ class Eye():
         self.detection  = {"creature": 0, "plant": 0, "meat": 0, "obstacle": 0, "distance": -1}
         self.creature   = {"distance": -1, "angle": 0}
         self.plant      = {"distance": -1, "angle": 0}
-        self.obstacle   = {"distance": -1, "angle": 0}
+        self.rock       = {"distance": -1, "angle": 0}
         self.meat       = {"distance": -1, "angle": 0}
 
 
@@ -220,10 +220,10 @@ class Eye():
 
     def reset_detection(self):
         self.detection = {"creature": 0, "plant": 0, "meat": 0, "obstacle": 0, "distance": -1}
-        self.creature   = {"distance": -1, "angle": 0}
-        self.plant      = {"distance": -1, "angle": 0}
-        self.obstacle   = {"distance": -1, "angle": 0}
-        self.meat       = {"distance": -1, "angle": 0}
+        self.creature   = {"distance": self.max_length*2, "angle": 0}
+        self.plant      = {"distance": self.max_length*2, "angle": 0}
+        self.rock       = {"distance": self.max_length*2, "angle": 0}
+        self.meat       = {"distance": self.max_length*2, "angle": 0}
         self.set_color(Color('white'))
 
     def calc_verts(self) -> list:
@@ -249,28 +249,29 @@ class Eye():
             self.detection = {"creature": int(creature), "plant": int(plant), "meat": int(meat), "obstacle": int(obstacle), "distance": distance}
  """
     def add_detection(self, detection: Detection, distance: int, angle: float):
+        angle = radians(angle)
         if detection == Detection.CREATURE:
-            if distance < self.creature["distance"] or self.creature["distance"] == -1:
+            if distance < self.creature["distance"] or self.creature["distance"] == self.max_length*2:
                 self.creature = {"distance": distance, "angle": angle}
         elif detection == Detection.PLANT:
-            if distance < self.plant["distance"] or self.plant["distance"] == -1:
+            if distance < self.plant["distance"] or self.plant["distance"] == self.max_length*2:
                 self.plant = {"distance": distance, "angle": angle}
         elif detection == Detection.MEAT:
-            if distance < self.meat["distance"] or self.meat["distance"] == -1:
+            if distance < self.meat["distance"] or self.meat["distance"] == self.max_length*2:
                 self.meat = {"distance": distance, "angle": angle}
         elif detection == Detection.ROCK:
-            if distance < self.rock["distance"] or self.rock["distance"] == -1:
+            if distance < self.rock["distance"] or self.rock["distance"] == self.max_length*2:
                 self.rock = {"distance": distance, "angle": angle}
 
     def get_input(self) -> list:
-        cd = 1-(self.creature["distance"]/self.max_length)
-        ca = self.creature["angle"]/(0.5*self.angle)
+        cd = (1-(self.creature["distance"]/self.max_length))
+        ca = self.creature["angle"]/(self.angle*0.5)
         pd = 1-(self.plant["distance"]/self.max_length)
-        pa = self.plant["angle"]/(0.5*self.angle)
+        pa = self.plant["angle"]/(self.angle*0.5)
         md = 1-(self.meat["distance"]/self.max_length)
-        ma = self.meat["angle"]/(0.5*self.angle)
+        ma = self.meat["angle"]/(self.angle*0.5)
         rd = 1-(self.rock["distance"]/self.max_length)
-        ra = self.rock["angle"]/(0.5*self.angle)
+        ra = self.rock["angle"]/(self.angle*0.5)
         self.reset_detection()
         return [cd, ca, pd, pa, md, ma, rd, ra]
 

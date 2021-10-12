@@ -68,7 +68,7 @@ class Creature(Life):
         self.life_time: float=0.0
         self.run_time = cfg.RUN_TIME
         self.hide = False
-        self.eye = Eye(self, 16, PI/18, cfg.SENSOR_RANGE)
+        self.eye = Eye(self, 16, PI/12, cfg.SENSOR_RANGE)
         #self.sensors.append(self.eye)
         space.add(self.eye.shape)
         #signature = self.get_signature()
@@ -290,36 +290,36 @@ class Creature(Life):
 
     def get_input(self):
         input = []
+        x = self.position[0]/cfg.WORLD[0]
+        y = self.position[1]/cfg.WORLD[1]
+        eng = self.energy/self.max_energy
+        detected = []
+        detected = self.eye.get_input()
+        cd = detected[0]
+        ca = detected[1]
+        pd = detected[2]
+        pa = detected[3]
+        md = detected[4]
+        ma = detected[5]
+        rd = detected[6]
+        ra = detected[7]
         input.append(self.collide_creature)
         input.append(self.collide_plant)
         input.append(self.collide_something)
         input.append(self.collide_meat)
-        #angle = self.angle/(2*PI)
-        #side_angle = self.sensors[1].angle/(cfg.SENSOR_MAX_ANGLE*2)
-        #input.append(angle)
-        #input.append(side_angle)
-        x = self.position[0]/cfg.WORLD[0]
         input.append(x)
-        y = self.position[1]/cfg.WORLD[1]
         input.append(y)
-        eng = self.energy/self.max_energy
         input.append(eng)
-        #selffor sensor in self.sensors:
-        detected = []
-        detected = self.eye.get_input()
-        e = detected[0]
-        p = detected[1]
-        m = detected[2]
-        o = detected[3]
-        d = round(detected[4], 2)
-        input.append(e)
-        input.append(p)
-        input.append(m)
-        input.append(o)
-        input.append(d)
-        input.append(int(self.pain))
+        input.append(cd)
+        input.append(ca)
+        input.append(pd)
+        input.append(pa)
+        input.append(md)
+        input.append(ma)
+        input.append(rd)
+        input.append(ra)
+        input.append(self.pain)
         self.pain = False
-        self.eye.reset_detection()
         return input
 
     def analize(self):

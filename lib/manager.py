@@ -280,16 +280,14 @@ class Manager:
             base_line = []
 
             inp_desc = [
-                'crea', 'plnt', 'obst', 'meat', 
-                #'side',
+                'cre', 'plt', 'rock', 'meat', 
                 'xpos', 'ypos', 'eng', 
-                'ene0', 'pla0', 'meat0', 'obs0', 'dst0',
-                #'ene1', 'pla1', 'meat1', 'obs1', 'dst1', 
-                #'ene2', 'pla2', 'meat2', 'obs2', 'dst2',
+                'crd', 'cra', 'pld', 'pla', 
+                'mtd', 'mta', 'rkd', 'rka', 
                 'hurt' 
             ]
-            out_desc = ["mov", "turn",
-                #"sens", 
+            out_desc = [
+                "mov", "turn",
                 "eat", "atk", "run", "hid"
             ]
 
