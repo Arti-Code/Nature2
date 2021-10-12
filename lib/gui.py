@@ -405,7 +405,7 @@ class GUI():
     def create_creature_win(self, dT: float):
         data = self.update_creature_win()
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((0, 0), (200, 175)), data=data)
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((0, 0), (200, 200)), data=data)
 
     def update_creature_win(self) -> dict:
         if not self.owner.enviro.selected or not isinstance(self.owner.enviro.selected, Creature):
@@ -417,6 +417,7 @@ class GUI():
             data['SPEED'] = ''
             data['SIZE'] = ''
             data['GENERATION'] = ''
+            data['CHILDS'] = ''
             data['FITNESS'] = ''
             data["LIFETIME"] = ''
             data['STATES'] = ''
@@ -429,6 +430,7 @@ class GUI():
         data['SPEED'] = str(self.owner.enviro.selected.speed)
         data['SIZE'] = str(self.owner.enviro.selected.size)
         data['GENERATION'] = str(self.owner.enviro.selected.generation)
+        data['CHILDS'] = str(self.owner.enviro.selected.childs)
         data['FITNESS'] = str(round(self.owner.enviro.selected.fitness))
         data["LIFETIME"] = str(round(self.owner.enviro.selected.life_time))
         states = []

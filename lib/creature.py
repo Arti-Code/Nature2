@@ -28,6 +28,7 @@ class Creature(Life):
         self.neuro = Network()
         self.normal: Vec2d=Vec2d(0, 0)
         self.signature: list=[]
+        self.childs = 0
         if genome == None:
             self.random_build(color0, color1, color2, color3)
             self.signature = self.get_signature()
@@ -239,6 +240,7 @@ class Creature(Life):
                 detector.set_color(Color('white'))
 
     def reproduce(self, screen: Surface, space: Space):
+        self.childs += 1
         x2: float=self.position.x+randint(-100, 100)
         y2: float=self.position.y+randint(-100, 100)
         x2 = clamp(x2, 50, cfg.WORLD[0]-50)

@@ -112,6 +112,7 @@ class Manager:
                 creature_to_save = {}
                 creature_to_save['name'] = creature.name
                 creature_to_save['gen'] = creature.generation
+                #creature_to_save['childs'] = creature.childs
                 creature_to_save['size'] = creature.shape.radius
                 creature_to_save['power'] = creature.power
                 creature_to_save['food'] = creature.food
