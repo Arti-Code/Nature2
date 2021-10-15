@@ -230,6 +230,8 @@ class Eye():
         alfa2 = self.angle/2
         x1, y1 = ang2vec2(alfa2)
         x2, y2 = ang2vec2(-alfa2)
+        x0, y0 = ang2vec2(self.body.angle)
+        r = self.body.shape.radius
         p0 = (0, 0)
         p1 = (int(x1*self.length), int(y1*self.length))
         p2 = (int(x2*self.length), int(y2*self.length))
@@ -249,7 +251,6 @@ class Eye():
             self.detection = {"creature": int(creature), "plant": int(plant), "meat": int(meat), "obstacle": int(obstacle), "distance": distance}
  """
     def add_detection(self, detection: Detection, distance: int, angle: float):
-        angle = radians(angle)
         if detection == Detection.CREATURE:
             if distance < self.creature["distance"] or self.creature["distance"] == self.max_length*2:
                 self.creature = {"distance": distance, "angle": angle}
@@ -265,13 +266,13 @@ class Eye():
 
     def get_input(self) -> list:
         cd = (1-(self.creature["distance"]/self.max_length))
-        ca = self.creature["angle"]/(self.angle*0.5)
+        ca = self.creature["angle"]/(self.angle)
         pd = 1-(self.plant["distance"]/self.max_length)
-        pa = self.plant["angle"]/(self.angle*0.5)
+        pa = self.plant["angle"]/(self.angle)
         md = 1-(self.meat["distance"]/self.max_length)
-        ma = self.meat["angle"]/(self.angle*0.5)
+        ma = self.meat["angle"]/(self.angle)
         rd = 1-(self.rock["distance"]/self.max_length)
-        ra = self.rock["angle"]/(self.angle*0.5)
+        ra = self.rock["angle"]/(self.angle)
         self.reset_detection()
         return [cd, ca, pd, pa, md, ma, rd, ra]
 
