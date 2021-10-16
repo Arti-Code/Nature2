@@ -249,7 +249,7 @@ class Eye():
             self.detection = {"creature": int(creature), "plant": int(plant), "meat": int(meat), "obstacle": int(obstacle), "distance": distance}
  """
     def add_detection(self, detection: Detection, distance: int, angle: float):
-        angle = radians(angle)
+        #angle = radians(angle)
         if detection == Detection.CREATURE:
             if distance < self.creature["distance"] or self.creature["distance"] == self.max_length*2:
                 self.creature = {"distance": distance, "angle": angle}

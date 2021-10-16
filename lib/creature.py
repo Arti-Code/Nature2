@@ -68,7 +68,7 @@ class Creature(Life):
         self.life_time: float=0.0
         self.run_time = cfg.RUN_TIME
         self.hide = False
-        self.eye = Eye(self, 16, PI/12, cfg.SENSOR_RANGE)
+        self.eye = Eye(self, 16, PI/8, cfg.SENSOR_RANGE)
         #self.sensors.append(self.eye)
         space.add(self.eye.shape)
         #signature = self.get_signature()

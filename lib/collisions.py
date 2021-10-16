@@ -165,7 +165,7 @@ def detect_creature2(arbiter, space, data):
         if sensor.shape == sensor_shape:
             sensor.set_color(Color('orange'))
             vec: Vec2d=enemy.position-creature.position
-            ang = creature.rotation_vector.get_angle_between(arbiter.normal)
+            ang = creature.rotation_vector.get_angle_between(vec)
             pos0 = creature.position
             dist = pos0.get_distance(enemy.position)
             sensor.add_detection(detection=Detection.CREATURE, distance=int(dist), angle=ang)
@@ -179,7 +179,7 @@ def detect_plant2(arbiter, space, data):
     if sensor.shape == sensor_shape:
         sensor.set_color(Color('green'))
         vec: Vec2d=plant.position-creature.position
-        ang = creature.rotation_vector.get_angle_between(arbiter.normal)
+        ang = creature.rotation_vector.get_angle_between(vec)
         pos0 = creature.position
         dist = pos0.get_distance(plant.position)
         sensor.add_detection(detection=Detection.PLANT, distance=int(dist), angle=ang)
@@ -194,7 +194,7 @@ def detect_obstacle2(arbiter, space, data):
     if sensor.shape == sensor_shape:
         sensor.set_color(Color('skyblue'))
         vec: Vec2d=contact-creature.position
-        ang = creature.rotation_vector.get_angle_between(arbiter.normal)
+        ang = creature.rotation_vector.get_angle_between(vec)
         pos0 = creature.position
         dist = pos0.get_distance(contact)
         sensor.add_detection(detection=Detection.ROCK, distance=int(dist), angle=ang)
@@ -209,7 +209,7 @@ def detect_meat2(arbiter, space, data):
     if sensor.shape == sensor_shape:
         sensor.set_color(Color('red'))
         vec: Vec2d=meat.position-creature.position
-        ang = creature.rotation_vector.get_angle_between(arbiter.normal)
+        ang = creature.rotation_vector.get_angle_between(vec)
         pos0 = creature.position
         dist = pos0.get_distance(contact)
         sensor.add_detection(detection=Detection.MEAT, distance=int(dist), angle=ang)
