@@ -45,7 +45,7 @@ class Simulation():
         self.screen = pygame.display.set_mode(
             size=cfg.SCREEN, flags=flags, vsync=1)
         self.space = Space()
-        self.FPS = 30
+        self.FPS = 60
         self.dt = 1/self.FPS
         self.running = True
         self.clock = Clock()
@@ -232,7 +232,7 @@ class Simulation():
         return None
 
     def set_collision_calls(self):
-        # 2: body | 8: wall | 4: sensor | 6: plant | 12: new_plant | 16: eye
+        #* 2: body | 8: wall | 4: sensor | 6: plant | 12: new_plant | 16: eye | 10: meat
         creature_collisions = self.space.add_collision_handler(2, 2)
         creature_collisions.pre_solve = process_creatures_collisions
         creature_collisions.data['dt'] = self.dt
@@ -247,6 +247,14 @@ class Simulation():
 
         edge_collisions = self.space.add_collision_handler(2, 8)
         edge_collisions.pre_solve = process_edge_collisions
+
+        plant_rock_collisions = self.space.add_collision_handler(6, 8)
+        plant_rock_collisions.pre_solve = process_plant_rock_collisions
+        plant_rock_collisions.data['dt'] = self.dt
+
+        meat_rock_collisions = self.space.add_collision_handler(10, 8)
+        meat_rock_collisions.pre_solve = process_meat_rock_collisions
+        meat_rock_collisions.data['dt'] = self.dt
 
 #        detection = self.space.add_collision_handler(4, 2)
 #        detection.pre_solve = detect_creature
