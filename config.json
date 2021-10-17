@@ -49,5 +49,6 @@
   "SENSOR_RANGE": 250,
   "MIN_CARNIVORES": 4,
   "MIN_HERBIVORES": 5,
+  "RANK_DECAY": 0.5,
   "NET": [24, 0, 0, 0, 0, 0, 0, 0, 0, 7]
 }

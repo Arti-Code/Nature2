@@ -487,7 +487,7 @@ class Manager():
                         pg.draw.aaline(self.screen, link_color, (40 + l0 * h_space, cfg['HEIGHT'] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (40 + l * h_space, cfg['HEIGHT'] - base_line[l] + (dist_nn * n) + round(dist_nn/2)-1))
                         pg.draw.aaline(self.screen, link_color, (40 + l0 * h_space, cfg['HEIGHT'] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (40 + l * h_space, cfg['HEIGHT'] - base_line[l] + (dist_nn * n) + round(dist_nn/2)))
                         pg.draw.aaline(self.screen, link_color, (40 + l0 * h_space, cfg['HEIGHT'] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (40 + l * h_space, cfg['HEIGHT'] - base_line[l] + (dist_nn * n) + round(dist_nn/2)+1))
-                    #if last_layer:  #TODO
+                    #if last_layer:
                     #    desc = out_desc[desc_idx]
                     #    desc_idx += 1
                     desc = ''

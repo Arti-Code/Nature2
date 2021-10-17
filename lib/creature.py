@@ -333,7 +333,7 @@ class Creature(Life):
                     self.output[o] = clamp(self.output[o], -1, 1)
         self._move = clamp(self.output[0], 0, 1)
         self._turn = self.output[1]
-        if self.output[3] > 0:  #BUG #*[x]
+        if self.output[3] > 0:
             self._eat = True
         else:
             self._eat = False

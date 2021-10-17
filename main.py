@@ -518,7 +518,7 @@ class Simulation():
             rank_size = len(ranking)
             rnd = randint(0, rank_size-1)
             genome = ranking[rnd]
-            ranking[rnd]['fitness'] *= 0.66
+            ranking[rnd]['fitness'] *= cfg.RANK_DECAY
             creature = self.add_creature(genome)
         return creature
 
