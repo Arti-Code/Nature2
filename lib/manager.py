@@ -112,7 +112,7 @@ class Manager:
                 creature_to_save = {}
                 creature_to_save['name'] = creature.name
                 creature_to_save['gen'] = creature.generation
-                #creature_to_save['childs'] = creature.childs
+                creature_to_save['mutations'] = creature.mutations
                 creature_to_save['size'] = creature.shape.radius
                 creature_to_save['power'] = creature.power
                 creature_to_save['food'] = creature.food
@@ -134,7 +134,7 @@ class Manager:
                 rank_to_save['gen'] = rank['gen']
                 rank_to_save['food'] = rank['food']
                 rank_to_save['speed'] = rank['speed']
-                #rank_to_save['vege'] = rank['vege']
+                rank_to_save['mutations'] = rank['mutations']
                 rank_to_save['size'] = rank['size']
                 rank_to_save['fitness'] = rank['fitness']
                 rank_to_save['power'] = rank['power']
@@ -152,7 +152,7 @@ class Manager:
                 rank_to_save['gen'] = rank['gen']
                 rank_to_save['food'] = rank['food']
                 rank_to_save['speed'] = rank['speed']
-                #rank_to_save['vege'] = rank['vege']
+                rank_to_save['mutations'] = rank['mutations']
                 rank_to_save['size'] = rank['size']
                 rank_to_save['fitness'] = rank['fitness']
                 rank_to_save['power'] = rank['power']
