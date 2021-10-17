@@ -402,10 +402,10 @@ class Network():
     def MutateBias(self, dt=1):
 
         for n in self.nodes:
-            if (random()) < self.MUT_BIAS+self.node_index:
+            if (random()) < self.MUT_BIAS+self.node_index*self.mutations_rate:
                 self.nodes[n].RandomBias()
             if self.nodes[n].recurrent:
-                if (random()) < self.MUT_MEM+self.node_index:
+                if (random()) < self.MUT_MEM+self.node_index*self.mutations_rate:
                     self.nodes[n].RandomMem()
 
     def MutateLinks(self, dt=1):
@@ -415,11 +415,11 @@ class Network():
         added = 0; deleted = 0
 
         for l in self.links:
-            if (random()) < self.MUT_DEL_LINK+self.link_index:
+            if (random()) < self.MUT_DEL_LINK+self.link_index*self.mutations_rate:
                 links_to_kill.append(l)
                 deleted += 1
 
-            if (random()) < self.MUT_ADD_LINK+self.link_index:
+            if (random()) < self.MUT_ADD_LINK+self.link_index*self.mutations_rate:
                 link_added = False
                 while not link_added:
                     n1 = choice(list(self.nodes.keys()))
@@ -448,7 +448,7 @@ class Network():
     
     def MutateWeights(self, dt=1):
         for l in self.links:
-            if (random()) < self.MUT_WEIGHT+self.link_index:
+            if (random()) < self.MUT_WEIGHT+self.link_index*self.mutations_rate:
                 self.links[l].RandomWeight()
 
     def MutateNodes(self, dt=1):
@@ -464,7 +464,7 @@ class Network():
         hidden_nodes = self.GetNodeKeyList([TYPE.HIDDEN])
         
         for n in self.nodes:
-            if (random()) < self.MUT_DEL_NODE+self.node_index:
+            if (random()) < self.MUT_DEL_NODE+self.node_index*self.mutations_rate:
                 if len(hidden_nodes) > 0:
                     del_node = choice(hidden_nodes)
                     if not del_node in nodes_to_kill:
@@ -476,7 +476,7 @@ class Network():
                         deleted += 1
             
             if hidden_list != []:
-                if (random()) < self.MUT_ADD_NODE+self.node_index:
+                if (random()) < self.MUT_ADD_NODE+self.node_index*self.mutations_rate:
                     layer_key = choice(hidden_list)
                     n1key = choice(input_nodes)
                     n2key = choice(output_nodes)
@@ -498,7 +498,7 @@ class Network():
     
     def MutateNodeType(self, dt=1):
         for n in self.nodes:
-            if (random()) < self.MUT_NODE_TYPE+self.node_index:
+            if (random()) < self.MUT_NODE_TYPE+self.node_index*self.mutations_rate:
                 #n_type = choice(['tanh', 'sigmoid', 'binary', 'rev_binary', 'wide_binary', 'relu', 'leaky_relu', 'linear', 'memory'])
                 n_type = choice(['tanh', 'sigmoid', 'binary', 'relu', 'leaky_relu', 'memory'])
                 if n_type == 'memory':
@@ -526,7 +526,7 @@ class Network():
                 elif n_type == 'linear':
                     self.nodes[n].activation = ACTIVATION.LINEAR
 
-    def Mutate(self, dt=1, mutation_rate: int=5):
+    def Mutate(self, mutations_rate: int=5, dt=1):
         node_num = len(self.nodes)-(len(self.GetNodeKeyList([TYPE.INPUT]))+len(self.GetNodeKeyList([TYPE.OUTPUT])))
         link_num = len(self.links)
         if node_num != 0:
@@ -537,7 +537,7 @@ class Network():
             self.link_index = 0.05/link_num
         else:
             self.link_index = 0.05
-        self.mut_rate = 1
+        self.mutations_rate = mutations_rate/10
         self.MutateBias(dt)
         added_l, deleted_l = self.MutateLinks(dt)
         self.MutateWeights(dt)

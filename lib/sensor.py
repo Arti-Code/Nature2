@@ -127,8 +127,8 @@ class Sensor():
         self.angle = radians
         self.length = length
         self.max_length = length
-        x2, y2 = ang2vec2(radians)
-        b = (x2*length, y2*length)
+        x2, y2 = ang2vec2(self.angle)
+        b = (x2*self.length, y2*self.length)
         self.shape = Segment(body=body, a=(0,0), b=b, radius=1)
         self.shape.collision_type = collision_type
         self.shape.sensor = True
@@ -138,6 +138,12 @@ class Sensor():
         white = (255, 255, 255, 150)
         red = (255, 0, 0, 75)
         self.color = Color(white)
+
+    def update(self) -> tuple:
+        #x2, y2 = ang2vec2(self.angle+self.body.angle)
+        x2, y2 = ang2vec2(self.angle)
+        b = (x2*self.length, y2*self.length)
+        self.shape.unsafe_set_endpoints((0, 0), b)
 
     def draw(self, screen: Surface, rel_pos: Vector2):
         p1 = (rel_pos.x, rel_pos.y)
@@ -161,19 +167,23 @@ class Sensor():
         self.angle = clamp(angle, min_angle, max_angle)
         x2, y2 = ang2vec2(self.angle)
         b = (x2*self.length, y2*self.length)
-        self.shape.unsafe_set_endpoints((0, 0), b)
+        self.update()
+        
 
     def rotate_to(self, new_angle: float, min_angle: float, max_angle: float, dt: float):
+        new_angle = clamp(new_angle, min_angle, max_angle)
         if new_angle != self.angle:
             delta_ang = cfg.SENSOR_SPEED * dt
             if new_angle < self.angle:
                 self.angle -= delta_ang
             elif new_angle > self.angle:
                 self.angle += delta_ang
-            self.angle = clamp(self.angle, min_angle, max_angle)
-            x2, y2 = ang2vec2(self.angle)
-            b = (x2*self.length, y2*self.length)
-            self.shape.unsafe_set_endpoints((0, 0), b)
+            self.update()
+            #self.angle = clamp(self.angle, min_angle, max_angle)
+            #self.update()
+            #x2, y2 = ang2vec2(self.angle)
+            #b = (x2*self.length, y2*self.length)
+            #self.shape.unsafe_set_endpoints((0, 0), b)
 
 
     def send_data(self, detect: bool, distance: float):
