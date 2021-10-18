@@ -19,8 +19,8 @@ from lib.camera import Camera
 
 class Creature(Life):
 
-    def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
-        super().__init__(screen=screen, space=space, owner=sim, collision_tag=collision_tag, position=position)
+    def __init__(self, screen: Surface, space: Space, time: int, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
+        super().__init__(screen=screen, space=space, collision_tag=collision_tag, position=position)
         self.angle = random()*2*PI
         self.output = [0, 0, 0, 0, 0, 0, 0]
         self.generation = 0
@@ -30,6 +30,7 @@ class Creature(Life):
         self.signature: list=[]
         self.childs = 0
         self.kills = 0
+        self.genealogy = []
         if genome == None:
             self.random_build(color0, color1, color2, color3)
             self.signature = self.get_signature()
@@ -39,6 +40,7 @@ class Creature(Life):
             if not self.compare_signature(self.get_signature(), genome['signature'], cfg.DIFF):
                 self.signature = self.get_signature()
                 self.name = modify_name(genome['name'])
+                self.genealogy.append((time, self.name))
                 #print(f"NOWY GATUNEK: {genome['name']}>>>{self.name}")
                 #msg = f"NOWY GATUNEK: {genome['name']}>>>{self.name}"
             #else:
@@ -71,6 +73,7 @@ class Creature(Life):
         self.life_time: float=0.0
         self.run_time = cfg.RUN_TIME
         self.hide = False
+        self.genealogy.append((time, self.name))
         #signature = self.get_signature()
         #s = self.compare_signature(signature, self.get_signature(), 0.8)
 

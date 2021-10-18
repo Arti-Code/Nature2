@@ -284,13 +284,13 @@ class Simulation():
         y = clamp(pos[1], 0, cfg.WORLD[1])
         cpos = Vec2d(x, y)
         if genome is None:
-            creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, color0=Color('white'), color1=Color('skyblue'), color2=Color('blue'), color3=Color('red'))
+            creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, color0=Color('white'), color1=Color('skyblue'), color2=Color('blue'), color3=Color('red'))
         else:
-            creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, genome=genome)
+            creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, genome=genome)
         return creature
 
     def add_saved_creature(self, genome: dict):
-        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=random_position(cfg.WORLD), genome=genome)
+        creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=random_position(cfg.WORLD), genome=genome)
         self.creature_list.append(creature)
 
     def add_plant(self, mature: bool=False) -> Plant:
@@ -309,7 +309,7 @@ class Simulation():
                 if d <= 0:
                     free_field = False
                     break
-        plant = Plant(screen=self.screen, space=self.space, sim=self, collision_tag=6, world_size=world,
+        plant = Plant(screen=self.screen, space=self.space, collision_tag=6, world_size=world,
                       size=size, color0=Color((127, 255, 0)), color1=Color('darkgreen'), color3=Color((110, 50, 9)), position=pos)
         return plant
 
@@ -384,8 +384,7 @@ class Simulation():
             self.time = self.time % 6000
 
     def get_time(self, digits: int = None):
-        t = self.cycles*6000 + round(self.time, digits)
-        return t
+        return self.cycles*6000 + round(self.time, digits)
 
     def kill_all_creatures(self):
         for creature in self.creature_list:
@@ -422,7 +421,7 @@ class Simulation():
         for creature in self.creature_list:
             if creature.energy <= 0:
                 self.add_to_ranking(creature)
-                meat = Meat(screen=self.screen, space=self.space, sim=self, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
+                meat = Meat(screen=self.screen, space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
                 self.meat_list.append(meat)
                 creature.kill(self.space)
                 self.creature_list.remove(creature)
@@ -448,7 +447,7 @@ class Simulation():
             if creature.check_reproduction(dt):
                 for _ in range(cfg.CHILDS_NUM):
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)
-                    new_creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=position, genome=genome)
+                    new_creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=position, genome=genome)
                     temp_list.append(new_creature)
 
         if random() <= cfg.CREATURE_MULTIPLY:

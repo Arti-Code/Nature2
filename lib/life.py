@@ -12,7 +12,7 @@ from lib.camera import Camera
 from pygame.math import Vector2
 class Life(Body):
 
-    def __init__(self, screen: Surface, space: Space, owner: object, collision_tag: int, position: Vec2d=None):
+    def __init__(self, screen: Surface, space: Space, collision_tag: int, position: Vec2d=None):
         super().__init__(self, body_type=Body.KINEMATIC)
         if position is not None:
             self.position = position

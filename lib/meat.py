@@ -11,9 +11,9 @@ from lib.camera import Camera
 
 class Meat(Life):
 
-    def __init__(self, screen: Surface, space: Space, sim: object, position: Vec2d, collision_tag: int, radius: int, energy: int, color0: Color=Color('red'), color1: Color=Color('red4')):
+    def __init__(self, screen: Surface, space: Space, position: Vec2d, collision_tag: int, radius: int, energy: int, color0: Color=Color('red'), color1: Color=Color('red4')):
         #super().__init__(self, body_type=Body.KINEMATIC)
-        super().__init__(screen=screen, space=space, owner=sim, collision_tag=collision_tag, position=position)
+        super().__init__(screen=screen, space=space, collision_tag=collision_tag, position=position)
         #self.position = position
         self.energy = energy
         self.radius = floor(log2(self.energy))
