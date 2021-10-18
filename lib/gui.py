@@ -392,7 +392,7 @@ class GUI():
         data = {}
         data['dT'] = ''
         data['TIME'] = ''
-        data['CREATURES'] = str(len(self.owner.enviro.creature_list))
+        data['CREATURES'] = 'H:'+str(self.owner.enviro.herbivores)+'|C:'+str(self.owner.enviro.carnivores)
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         data['NEURO_TIME'] = ''
         data['PHYSIC_TIME'] = ''
@@ -429,7 +429,7 @@ class GUI():
         data['SPEED'] = str(self.owner.enviro.selected.speed)
         data['SIZE'] = str(self.owner.enviro.selected.size)
         data['MUTATIONS'] = str(self.owner.enviro.selected.mutations)
-        data['CHILDS'] = str(self.owner.enviro.selected.childs)
+        data['BORN|KILL'] = str(self.owner.enviro.selected.childs)+'|'+str(self.owner.enviro.selected.kills)
         data['FITNESS'] = str(round(self.owner.enviro.selected.fitness))
         data["LIFETIME"] = str(round(self.owner.enviro.selected.life_time))
         data["REP_TIME"] = str(round(self.owner.enviro.selected.reproduction_time))
@@ -456,7 +456,7 @@ class GUI():
         data = {}
         data['dT'] = str(round(dT, 3)) + 's'
         data['TIME'] = str(self.owner.enviro.cycles*6000 + round(self.owner.enviro.time)) + 's'
-        data['CREATURES'] = str(len(self.owner.enviro.creature_list))
+        data['CREATURES'] = 'H:'+str(self.owner.enviro.herbivores)+'|C:'+str(self.owner.enviro.carnivores)
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         data['NEURO_TIME'] = str(round(self.owner.enviro.neuro_avg_time*1000, 1)) + 'ms'
         data['PHYSIC_TIME'] = str(round(self.owner.enviro.physics_avg_time*1000, 1)) + 'ms'

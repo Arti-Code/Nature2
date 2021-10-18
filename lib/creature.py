@@ -29,6 +29,7 @@ class Creature(Life):
         self.normal: Vec2d=Vec2d(0, 0)
         self.signature: list=[]
         self.childs = 0
+        self.kills = 0
         if genome == None:
             self.random_build(color0, color1, color2, color3)
             self.signature = self.get_signature()
@@ -425,6 +426,15 @@ class Creature(Life):
         #energy *= self.meat/10
         self.energy += energy
         self.energy = clamp(self.energy, 0, self.max_energy)
+
+    def hit(self, dmg: float) -> bool:
+        self.energy -= dmg
+        self.energy = clamp(self.energy, 0, self.max_energy)
+        self.pain = True
+        self.color0=Color('red')
+        if self.energy <= 0:
+            return True
+        return False
 
     def get_signature(self) -> list:
         signature: list=[]

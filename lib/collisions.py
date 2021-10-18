@@ -76,10 +76,11 @@ def process_creatures_collisions(arbiter, space, data):
         if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             if (size0+randint(0, 6)) > (size1+randint(0, 6)):
                 dmg = cfg.HIT * dt * (agent.size+agent.power)/2
-                target.energy -= dmg
-                target.color0=Color('red')
-                target.pain = True
-                agent.fitness += dmg*cfg.HIT2FIT
+                if target.hit(dmg):
+                    agent.fitness += cfg.KILL2FIT
+                    agent.kills += 1
+                else:
+                    agent.fitness += dmg*cfg.HIT2FIT
     agent.collide_creature = True
     return True
 

@@ -28,6 +28,7 @@ from lib.collisions import process_creature_plant_collisions, process_creature_m
 from lib.meat import Meat
 from lib.utils import log_to_file
 from lib.camera import Camera
+from lib.statistics import Statistics
 
 class Simulation():
 
@@ -66,13 +67,16 @@ class Simulation():
         self.ranking1 = []
         self.ranking2 = []
         self.last_save_time = 0
-        self.herbivores = False
-        self.carnivores = False
+        self.herbivores = 0
+        self.carnivores = 0
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.creatures_on_screen = deque(range(30))
         self.plants_on_screen = deque(range(30))
         self.meats_on_screen = deque(range(30))
         self.rocks_on_screen = deque(range(30))
+        self.statistics = Statistics()
+        self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
+        self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -403,6 +407,7 @@ class Simulation():
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
         self.update_meat(self.dt)
+        #self.update_statistics()
         self.manager.update_gui(self.dt, self.ranking1, self.ranking2)
 
     def update_meat(self, dT: float):
@@ -455,21 +460,36 @@ class Simulation():
         temp_list = []
         self.check_populatiom()
 
+    def update_statistics(self):
+        t = int(self.get_time()/cfg.STAT_PERIOD)
+        if t > self.populations['period']:
+            data = {
+                'plants': round(mean(self.populations['plants'])), 
+                'herbivores': round(mean(self.populations['herbivores'])), 
+                'carnivores': round(mean(self.populations['carnivores']))
+            }
+            self.statistics.add_data('populations', data)
+            self.populations = {'period': t, 'plants': [], 'herbivores': [], 'carnivores': []}
+        else:
+            self.populations['plants'].append(len(self.plant_list))
+            self.populations['herbivores'].append(self.herbivores)
+            self.populations['carnivores'].append(self.carnivores)
+
     def check_creature_types(self):
-        herbivores = 0
-        carnivores = 0
+        self.herbivores = 0
+        self.carnivores = 0
         for creature in self.creature_list:
             if creature.food < 6:
-                herbivores += 1
+                self.herbivores += 1
             else:
-                carnivores += 1
+                self.carnivores += 1
 
-        if herbivores < cfg.MIN_HERBIVORES:
+        if self.herbivores < cfg.MIN_HERBIVORES:
             if len(self.ranking1) > 0:
                 genome = choice(self.ranking1)
                 creature = self.add_creature(genome=genome)
                 self.creature_list.append(creature)
-        if carnivores < cfg.MIN_CARNIVORES:
+        if self.carnivores < cfg.MIN_CARNIVORES:
             if len(self.ranking2) > 0:
                 genome = choice(self.ranking2)
                 creature = self.add_creature(genome=genome)
