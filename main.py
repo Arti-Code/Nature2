@@ -15,20 +15,19 @@ from pygame.math import Vector2
 from pygame.time import Clock
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 import pymunk.pygame_util
-#from lib.life import Life
 from lib.creature import Creature
 from lib.plant import Plant
 from lib.wall import Wall
 from lib.math2 import set_world, world, flipy
 from lib.config import cfg, TITLE, SUBTITLE
 from lib.manager import Manager
-#from lib.autoterrain import Terrain
 from lib.rock import Rock
-from lib.collisions import process_creature_plant_collisions, process_creature_meat_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end, detect_meat, detect_meat_end
+from lib.collisions import *
 from lib.meat import Meat
 from lib.utils import log_to_file
 from lib.camera import Camera
 from lib.statistics import Statistics
+from lib.terrain import Terrain
 
 class Simulation():
 
@@ -77,6 +76,9 @@ class Simulation():
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
         self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
+        self.terrain = Terrain(res=25, size=(1000, 700))
+        self.terrain_surf = self.terrain.draw_tiles()
+        self.terrain_surf.set_alpha(150)
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -319,7 +321,8 @@ class Simulation():
         return wall
 
     def draw(self):
-        self.screen.fill(Color('black'))
+        #self.screen.fill(Color('black'))
+        self.screen.blit(self.terrain_surf, (0, 0))
         screen_crs = 0
         screen_plants = 0
         screen_meats = 0

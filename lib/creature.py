@@ -106,11 +106,13 @@ class Creature(Life):
         self.signature = genome['signature']
 
     def random_build(self, color0: Color, color1: Color, color2: Color, color3: Color):
-        self.color0 = color0
+        #self.color0 = color0
+        self.color0 = Color('black')
         self.color1 = color1
         self.color2 = color2
         self.color3 = color3
-        self._color0 = color0
+        #self._color0 = color0
+        self._color0 = Color('black')
         self._color1 = color1
         self._color2 = color2
         self._color3 = color3
