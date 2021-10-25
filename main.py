@@ -15,19 +15,19 @@ from pygame.math import Vector2
 from pygame.time import Clock
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 import pymunk.pygame_util
-#from lib.life import Life
 from lib.creature import Creature
 from lib.plant import Plant
 from lib.wall import Wall
 from lib.math2 import set_world, world, flipy
 from lib.config import cfg, TITLE, SUBTITLE
 from lib.manager import Manager
-#from lib.autoterrain import Terrain
 from lib.rock import Rock
-from lib.collisions import * #?process_creature_plant_collisions, process_creature_meat_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end, detect_obstacle, detect_obstacle_end, detect_meat, detect_meat_end
+from lib.collisions import *
 from lib.meat import Meat
 from lib.utils import log_to_file
 from lib.camera import Camera
+from lib.statistics import Statistics
+from lib.terrain import Terrain, Terrain2
 
 class Simulation():
 
@@ -66,13 +66,20 @@ class Simulation():
         self.ranking1 = []
         self.ranking2 = []
         self.last_save_time = 0
-        self.herbivores = False
-        self.carnivores = False
+        self.herbivores = 0
+        self.carnivores = 0
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.creatures_on_screen = deque(range(30))
         self.plants_on_screen = deque(range(30))
         self.meats_on_screen = deque(range(30))
         self.rocks_on_screen = deque(range(30))
+        self.statistics = Statistics()
+        self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
+        self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
+        self.terrain = Terrain2()
+        self.terrain.generate(self.space, cfg.WORLD, 1)
+        #self.terrain_surf = self.terrain.draw_tiles()
+        #self.terrain_surf.set_alpha(150)
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -312,13 +319,13 @@ class Simulation():
         y = clamp(pos[1], 0, cfg.WORLD[1])
         cpos = Vec2d(x, y)
         if genome is None:
-            creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, color0=Color('white'), color1=Color('skyblue'), color2=Color('blue'), color3=Color('red'))
+            creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, color0=Color('white'), color1=Color('skyblue'), color2=Color('blue'), color3=Color('red'))
         else:
-            creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=cpos, genome=genome)
+            creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, genome=genome)
         return creature
 
     def add_saved_creature(self, genome: dict):
-        creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=random_position(cfg.WORLD), genome=genome)
+        creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=random_position(cfg.WORLD), genome=genome)
         self.creature_list.append(creature)
 
     def add_plant(self, mature: bool=False) -> Plant:
@@ -337,7 +344,7 @@ class Simulation():
                 if d <= 0:
                     free_field = False
                     break
-        plant = Plant(screen=self.screen, space=self.space, sim=self, collision_tag=6, world_size=world,
+        plant = Plant(screen=self.screen, space=self.space, collision_tag=6, world_size=world,
                       size=size, color0=Color((127, 255, 0)), color1=Color('darkgreen'), color3=Color((110, 50, 9)), position=pos)
         return plant
 
@@ -347,7 +354,8 @@ class Simulation():
         return wall
 
     def draw(self):
-        self.screen.fill(Color('black'))
+        self.screen.fill(Color(75, 75, 75))
+        #self.screen.blit(self.terrain_surf, (0, 0))
         screen_crs = 0
         screen_plants = 0
         screen_meats = 0
@@ -412,8 +420,7 @@ class Simulation():
             self.time = self.time % 6000
 
     def get_time(self, digits: int = None):
-        t = self.cycles*6000 + round(self.time, digits)
-        return t
+        return self.cycles*6000 + round(self.time, digits)
 
     def kill_all_creatures(self):
         for creature in self.creature_list:
@@ -435,6 +442,7 @@ class Simulation():
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
         self.update_meat(self.dt)
+        #self.update_statistics()
         self.manager.update_gui(self.dt, self.ranking1, self.ranking2)
 
     def update_meat(self, dT: float):
@@ -449,7 +457,7 @@ class Simulation():
         for creature in self.creature_list:
             if creature.energy <= 0:
                 self.add_to_ranking(creature)
-                meat = Meat(screen=self.screen, space=self.space, sim=self, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
+                meat = Meat(screen=self.screen, space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
                 self.meat_list.append(meat)
                 creature.kill(self.space)
                 self.creature_list.remove(creature)
@@ -475,7 +483,7 @@ class Simulation():
             if creature.check_reproduction(dt):
                 for _ in range(cfg.CHILDS_NUM):
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)
-                    new_creature = Creature(screen=self.screen, space=self.space, sim=self, collision_tag=2, position=position, genome=genome)
+                    new_creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=position, genome=genome)
                     temp_list.append(new_creature)
 
         if random() <= cfg.CREATURE_MULTIPLY:
@@ -487,21 +495,36 @@ class Simulation():
         temp_list = []
         self.check_populatiom()
 
+    def update_statistics(self):
+        t = int(self.get_time()/cfg.STAT_PERIOD)
+        if t > self.populations['period']:
+            data = {
+                'plants': round(mean(self.populations['plants'])), 
+                'herbivores': round(mean(self.populations['herbivores'])), 
+                'carnivores': round(mean(self.populations['carnivores']))
+            }
+            self.statistics.add_data('populations', data)
+            self.populations = {'period': t, 'plants': [], 'herbivores': [], 'carnivores': []}
+        else:
+            self.populations['plants'].append(len(self.plant_list))
+            self.populations['herbivores'].append(self.herbivores)
+            self.populations['carnivores'].append(self.carnivores)
+
     def check_creature_types(self):
-        herbivores = 0
-        carnivores = 0
+        self.herbivores = 0
+        self.carnivores = 0
         for creature in self.creature_list:
             if creature.food < 6:
-                herbivores += 1
+                self.herbivores += 1
             else:
-                carnivores += 1
+                self.carnivores += 1
 
-        if herbivores < cfg.MIN_HERBIVORES:
+        if self.herbivores < cfg.MIN_HERBIVORES:
             if len(self.ranking1) > 0:
                 genome = choice(self.ranking1)
                 creature = self.add_creature(genome=genome)
                 self.creature_list.append(creature)
-        if carnivores < cfg.MIN_CARNIVORES:
+        if self.carnivores < cfg.MIN_CARNIVORES:
             if len(self.ranking2) > 0:
                 genome = choice(self.ranking2)
                 creature = self.add_creature(genome=genome)
@@ -550,7 +573,7 @@ class Simulation():
             rank_size = len(ranking)
             rnd = randint(0, rank_size-1)
             genome = ranking[rnd]
-            ranking[rnd]['fitness'] *= 0.66
+            ranking[rnd]['fitness'] *= cfg.RANK_DECAY
             creature = self.add_creature(genome)
         return creature
 

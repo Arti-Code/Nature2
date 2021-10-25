@@ -9,7 +9,7 @@ NATURE:
         ✔ beings movement (neural net based)
         ✔ beings rotation (neural net based)
         ✔ collisions between beings
-        ✘ collisions with rocks
+        ✔ collisions with rocks
         ✔ edges collisions
         ✔ seeing (simple)
         ✔ eating plants
@@ -22,19 +22,13 @@ NATURE:
         ✔ create named simulations
         ✔ save simulations state
         ✔ load simulations state
-        ✘ save single creature
-        ✘ load single creature
-        ✘ save single network
-        ✘ load single network
-        ✘ real-time bokeh network display
         ✔ creature skills (size, strength, speed, attack)
         ✔ obstacles detection
         ✔ obstacles collision
         ✔ fix: create inside obstacles
     0.3:
-        ✘ camera movement
+        ✔ camera movement
         ✔ gui ('Creatures' based)
-        ✘ camera zoom in/out
         ✔ attack only ahead
         ✔ inherite
         ✔ mutations
@@ -48,10 +42,21 @@ NATURE:
         ✔ config from .py to .json
         ✔ species
         ✔ similarity
-        ☐ health and energy
-        ☐ water needs
         ✔ memory neurons
-        ☐ update settings during sim runs
-        ☐ creatures info window
+        ✔ update settings during sim runs
+        ✔ creatures info window
         ✔ save ranking also
         ✔ fix: dt
+    0.5:
+        ☐ health and energy
+        ☐ water needs
+        ☐ save single creature
+        ☐ load single creature
+        ☐ save single network
+        ☐ load single network
+        ☐ delete single projects
+        ☐ real-time bokeh network display
+        ☐ camera zoom in/out
+        ✔ terrain: perlin-noise list
+        ✔ terrain: ground Surface
+        ☐ terrain: interactions

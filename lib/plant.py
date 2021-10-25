@@ -13,8 +13,8 @@ from lib.camera import Camera
 
 class Plant(Life):
 
-    def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color=None, color3=None, position: Vec2d=None):
-        super().__init__(screen=screen, space=space, owner=sim, collision_tag=collision_tag, position=position)
+    def __init__(self, screen: Surface, space: Space, collision_tag: int, world_size: Vec2d, size: int, color0: Color, color1: Color, color2: Color=None, color3=None, position: Vec2d=None):
+        super().__init__(screen=screen, space=space, collision_tag=collision_tag, position=position)
         self.life_time = cfg.PLANT_LIFE
         self.size = size
         self.max_size = cfg.PLANT_MAX_SIZE

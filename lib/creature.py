@@ -10,7 +10,7 @@ import pymunk as pm
 from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
 from lib.life import Life
 from lib.math2 import flipy, clamp
-from lib.sensor import Sensor, Eye
+from lib.sensor import Sensor
 from lib.net import Network
 from lib.species import random_name, modify_name
 from lib.config import cfg
@@ -19,8 +19,8 @@ from lib.camera import Camera
 
 class Creature(Life):
 
-    def __init__(self, screen: Surface, space: Space, sim: object, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
-        super().__init__(screen=screen, space=space, owner=sim, collision_tag=collision_tag, position=position)
+    def __init__(self, screen: Surface, space: Space, time: int, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
+        super().__init__(screen=screen, space=space, collision_tag=collision_tag, position=position)
         self.angle = random()*2*PI
         self.output = [0, 0, 0, 0, 0, 0]
         self.generation = 0
@@ -29,6 +29,8 @@ class Creature(Life):
         self.normal: Vec2d=Vec2d(0, 0)
         self.signature: list=[]
         self.childs = 0
+        self.kills = 0
+        self.genealogy = []
         if genome == None:
             self.random_build(color0, color1, color2, color3)
             self.signature = self.get_signature()
@@ -38,6 +40,7 @@ class Creature(Life):
             if not self.compare_signature(self.get_signature(), genome['signature'], cfg.DIFF):
                 self.signature = self.get_signature()
                 self.name = modify_name(genome['name'])
+                self.genealogy.append((time, self.name))
                 #print(f"NOWY GATUNEK: {genome['name']}>>>{self.name}")
                 #msg = f"NOWY GATUNEK: {genome['name']}>>>{self.name}"
             #else:
@@ -70,9 +73,7 @@ class Creature(Life):
         self.life_time: float=0.0
         self.run_time = cfg.RUN_TIME
         self.hide = False
-        self.eye = Eye(self, 16, PI/8, cfg.SENSOR_RANGE)
-        #self.sensors.append(self.eye)
-        space.add(self.eye.shape)
+        self.genealogy.append((time, self.name))
         #signature = self.get_signature()
         #s = self.compare_signature(signature, self.get_signature(), 0.8)
 
@@ -105,11 +106,13 @@ class Creature(Life):
         self.signature = genome['signature']
 
     def random_build(self, color0: Color, color1: Color, color2: Color, color3: Color):
-        self.color0 = color0
+        #self.color0 = color0
+        self.color0 = Color('black')
         self.color1 = color1
         self.color2 = color2
         self.color3 = color3
-        self._color0 = color0
+        #self._color0 = color0
+        self._color0 = Color('black')
         self._color1 = color1
         self._color2 = color2
         self._color3 = color3
@@ -340,7 +343,7 @@ class Creature(Life):
                     self.output[o] = clamp(self.output[o], -1, 1)
         self._move = clamp(self.output[0], 0, 1)
         self._turn = self.output[1]
-        if self.output[3] > 0:  #BUG #*[x]
+        if self.output[3] > 0:
             self._eat = True
         else:
             self._eat = False
@@ -432,6 +435,15 @@ class Creature(Life):
         #energy *= self.meat/10
         self.energy += energy
         self.energy = clamp(self.energy, 0, self.max_energy)
+
+    def hit(self, dmg: float) -> bool:
+        self.energy -= dmg
+        self.energy = clamp(self.energy, 0, self.max_energy)
+        self.pain = True
+        self.color0=Color('red')
+        if self.energy <= 0:
+            return True
+        return False
 
     def get_signature(self) -> list:
         signature: list=[]

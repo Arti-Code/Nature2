@@ -2,7 +2,7 @@ from math import pi as PI
 from json import loads, dumps
 
 TITLE = "NATURE"
-SUBTITLE = "v0.5.1"
+SUBTITLE = "v0.5.2"
 AUTHOR = "2019-2021 Artur Gwoździowski"
 
 class Configuration():
@@ -42,6 +42,7 @@ class Configuration():
         self.MEAT2ENG = None
         self.VEGE2ENG = None
         self.HIT2FIT = None
+        self.KILL2FIT = None
         self.VEGE2FIT = None
         self.MEAT2FIT = None
         self.DIFF: float
@@ -59,6 +60,8 @@ class Configuration():
         self.MIN_CARNIVORES = None
         self.MIN_HERBIVORES = None
         self.NET = None
+        self.RANK_DECAY = None
+        self.STAT_PERIOD = None
         self.load_from_file(filename)
 
     def load_from_file(self, filename: str):
@@ -100,6 +103,7 @@ class Configuration():
         self.MEAT2ENG               = cfg['MEAT2ENG']
         self.VEGE2ENG               = cfg['VEGE2ENG']
         self.HIT2FIT                = cfg['HIT2FIT']
+        self.KILL2FIT               = cfg['KILL2FIT']
         self.DIFF                   = cfg['DIFF']
         self.VEGE2FIT               = cfg['VEGE2FIT']
         self.MEAT2FIT               = cfg['MEAT2FIT'] 
@@ -117,5 +121,7 @@ class Configuration():
         self.MIN_CARNIVORES         = cfg['MIN_CARNIVORES']
         self.MIN_HERBIVORES         = cfg['MIN_HERBIVORES']
         self.NET                    = cfg['NET']
+        self.RANK_DECAY             = cfg['RANK_DECAY']
+        self.STAT_PERIOD            = cfg['STAT_PERIOD']
 
 cfg = Configuration('config.json')
