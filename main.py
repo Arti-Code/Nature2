@@ -27,7 +27,7 @@ from lib.meat import Meat
 from lib.utils import log_to_file
 from lib.camera import Camera
 from lib.statistics import Statistics
-from lib.terrain import Terrain
+from lib.terrain import Terrain, Terrain2
 
 class Simulation():
 
@@ -76,9 +76,10 @@ class Simulation():
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
         self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
-        self.terrain = Terrain(res=25, size=(1000, 700))
-        self.terrain_surf = self.terrain.draw_tiles()
-        self.terrain_surf.set_alpha(150)
+        self.terrain = Terrain2()
+        self.terrain.generate(self.space, cfg.WORLD, 1)
+        #self.terrain_surf = self.terrain.draw_tiles()
+        #self.terrain_surf.set_alpha(150)
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -321,8 +322,8 @@ class Simulation():
         return wall
 
     def draw(self):
-        #self.screen.fill(Color('black'))
-        self.screen.blit(self.terrain_surf, (0, 0))
+        self.screen.fill(Color(75, 75, 75))
+        #self.screen.blit(self.terrain_surf, (0, 0))
         screen_crs = 0
         screen_plants = 0
         screen_meats = 0
