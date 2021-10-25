@@ -76,10 +76,10 @@ class Simulation():
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
         self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
-        self.terrain = Terrain2()
-        self.terrain.generate(self.space, cfg.WORLD, 1)
-        #self.terrain_surf = self.terrain.draw_tiles()
-        #self.terrain_surf.set_alpha(150)
+        self.terrain = Terrain()
+        #self.terrain.generate(self.space, cfg.WORLD, 1)  #
+        self.terrain_surf = self.terrain.draw_tiles()
+        self.terrain_surf.set_alpha(150)
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -263,30 +263,6 @@ class Simulation():
         meat_rock_collisions.pre_solve = process_meat_rock_collisions
         meat_rock_collisions.data['dt'] = self.dt
 
-#        detection = self.space.add_collision_handler(4, 2)
-#        detection.pre_solve = detect_creature
-#
-#        detection_end = self.space.add_collision_handler(4, 2)
-#        detection_end.separate = detect_creature_end
-#
-#        plant_detection = self.space.add_collision_handler(4, 6)
-#        plant_detection.pre_solve = detect_plant
-#
-#        plant_detection_end = self.space.add_collision_handler(4, 6)
-#        plant_detection_end.separate = detect_plant_end
-#
-#        meat_detection = self.space.add_collision_handler(4, 10)
-#        meat_detection.pre_solve = detect_meat
-#
-#        meat_detection_end = self.space.add_collision_handler(4, 10)
-#        meat_detection_end.separate = detect_meat_end
-#
-#        obstacle_detection = self.space.add_collision_handler(4, 8)
-#        obstacle_detection.pre_solve = detect_obstacle
-#
-#        obstacle_detection_end = self.space.add_collision_handler(4, 8)
-#        obstacle_detection_end.separate = detect_obstacle_end
-
         creature_detection2 = self.space.add_collision_handler(16, 2)
         creature_detection2.pre_solve = detect_creature2
 
@@ -310,6 +286,30 @@ class Simulation():
         
         obstacle_detection_end2 = self.space.add_collision_handler(16, 8)
         obstacle_detection_end2.separate = detect_obstacle_end2
+
+#        detection = self.space.add_collision_handler(4, 2)
+#        detection.pre_solve = detect_creature
+#
+#        detection_end = self.space.add_collision_handler(4, 2)
+#        detection_end.separate = detect_creature_end
+#
+#        plant_detection = self.space.add_collision_handler(4, 6)
+#        plant_detection.pre_solve = detect_plant
+#
+#        plant_detection_end = self.space.add_collision_handler(4, 6)
+#        plant_detection_end.separate = detect_plant_end
+#
+#        meat_detection = self.space.add_collision_handler(4, 10)
+#        meat_detection.pre_solve = detect_meat
+#
+#        meat_detection_end = self.space.add_collision_handler(4, 10)
+#        meat_detection_end.separate = detect_meat_end
+#
+#        obstacle_detection = self.space.add_collision_handler(4, 8)
+#        obstacle_detection.pre_solve = detect_obstacle
+#
+#        obstacle_detection_end = self.space.add_collision_handler(4, 8)
+#        obstacle_detection_end.separate = detect_obstacle_end
 
     def add_creature(self, genome: dict=None, pos: Vec2d=None) -> Creature:
         creature: Creature
@@ -355,7 +355,7 @@ class Simulation():
 
     def draw(self):
         self.screen.fill(Color(75, 75, 75))
-        #self.screen.blit(self.terrain_surf, (0, 0))
+        self.screen.blit(self.terrain_surf, (0, 0))
         screen_crs = 0
         screen_plants = 0
         screen_meats = 0

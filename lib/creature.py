@@ -89,12 +89,9 @@ class Creature(Life):
         self.neuro = genome['neuro']
         self.size = genome['size'] + randint(-1, 1)
         self.mutations = genome['mutations'] + randint(-1, 1)
-        #self.meat = genome['meat'] + randint(-1, 1)
-        #self.vege = genome['vege'] + randint(-1, 1)
         self.power = genome['power'] + randint(-1, 1)
         self.food = genome['food'] + randint(-1, 1)
         self.speed = genome['speed'] + randint(-1, 1)
-        #self.meat = clamp(self.meat, 1, 10)
         self.size = clamp(self.size, cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
         self.mutations = clamp(self.mutations, 1, 10)
         self.power = clamp(self.power, 1, 10)
@@ -153,10 +150,6 @@ class Creature(Life):
             a = 255
         if selected == self:
             self.draw_detectors(screen=screen, rel_pos=rel_pos, camera=camera)
-        #self.eye.draw(screen=screen, camera=camera)
-        #for detector in self.sensors:
-            #pass
-            #detector.reset_data()
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), color0)
         #gfxdraw.aacircle(screen, int(rx), int(ry), int(r), self.color0)
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-1), color1)
@@ -185,10 +178,6 @@ class Creature(Life):
                 g +=50
                 r = clamp(r, 0, 255)
                 g = clamp(g, 0, 255)
-            #c = Color.hsla(self.food*10, 100, 50)
-            #c.hsla[0]=self.food*10
-            #c.hsla[1]=100
-            #c.hsla[2]=50
             gfxdraw.filled_circle(screen, int(x2), int(y2), int(r2), Color(r, g, b, a))
             gfxdraw.filled_circle(screen, int(rx), int(ry), int(r2), color2)
         self.color0 = self._color0
@@ -203,9 +192,8 @@ class Creature(Life):
             #self.normal = None
 
     def draw_detectors(self, screen, rel_pos: Vector2=None, camera: Camera=None):
-        self.eye.draw(screen=screen, camera=camera)
-        #for detector in self.sensors:
-        #    detector.draw(screen=screen, rel_pos=rel_pos)
+        for detector in self.sensors:
+            detector.draw(screen=screen, rel_pos=rel_pos)
         self.collide_creature = False
         self.collide_plant = False
         self.collide_something = False
@@ -271,7 +259,7 @@ class Creature(Life):
         if move < 0:
             move = 0
         turn = self._turn*cfg.TURN*dt
-        sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
+        #sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
         #sensor_angle = (PI*1.5)-(((self.output[2]+1)/2)*(PI*1.5))
         sensor_angle = ((self.output[2]+1)/2)*(PI/1.5)
         #sensor_angle = self.output[2]*(PI/2)
