@@ -4,7 +4,6 @@ from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 import pygame
 from pygame import Color
 from lib.config import *
-from lib.utils import Detection
 
 def diet(food: int, mod: float) -> float:
     return pow(food, 2) * mod
@@ -21,7 +20,7 @@ def process_creature_plant_collisions(arbiter, space, data):
         hunter.position -= arbiter.normal*0.2
     size1 = arbiter.shapes[1].radius
     if size1 != 0:
-        target.position += arbiter.normal*size0/size1*0.5
+        target.position += arbiter.normal*size0/size1*0.2
     else:
         target.position += arbiter.normal*0.2
     if hunter._eat:
@@ -50,7 +49,7 @@ def process_creature_meat_collisions(arbiter, space, data):
         hunter.position -= arbiter.normal*0.2
     size1 = arbiter.shapes[1].radius
     if size1 != 0:
-        target.position += arbiter.normal*size0/size1*0.5
+        target.position += arbiter.normal*size0/size1*0.2
     else:
         target.position += arbiter.normal*0.2
     if hunter._eat:
@@ -71,8 +70,8 @@ def process_creatures_collisions(arbiter, space, data):
     target = arbiter.shapes[1].body
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
-    agent.position -= arbiter.normal*size1/size0*0.7
-    target.position += arbiter.normal*size0/size1*0.7
+    agent.position -= arbiter.normal*size1/size0*0.5
+    target.position += arbiter.normal*size0/size1*0.5
     if agent._attack:
         if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             if (size0+randint(0, 6)) > (size1+randint(0, 6)):
@@ -86,16 +85,8 @@ def process_creatures_collisions(arbiter, space, data):
     return True
 
 def process_edge_collisions(arbiter, space, data):
-    arbiter.shapes[0].body.position -= arbiter.normal * 2
+    arbiter.shapes[0].body.position -= arbiter.normal * 2.5
     arbiter.shapes[0].body.collide_something = True
-    return True
-
-def process_plant_rock_collisions(arbiter, space, data):
-    arbiter.shapes[0].body.position -= arbiter.normal * 2
-    return True
-
-def process_meat_rock_collisions(arbiter, space, data):
-    arbiter.shapes[0].body.position -= arbiter.normal * 2
     return True
 
 def detect_creature(arbiter, space, data):
@@ -163,75 +154,4 @@ def detect_obstacle_end(arbiter, space, data):
     return True
 
 def detect_meat_end(arbiter, space, data):
-    return True
-
-def detect_creature2(arbiter, space, data):
-    creature = arbiter.shapes[0].body
-    enemy = arbiter.shapes[1].body
-    sensor_shape = arbiter.shapes[0]
-    sensor = creature.eye
-    if not enemy.hide:
-        if sensor.shape == sensor_shape:
-            sensor.set_color(Color('orange'))
-            vec: Vec2d=enemy.position-creature.position
-            ang = creature.rotation_vector.get_angle_between(vec)
-            pos0 = creature.position
-            dist = pos0.get_distance(enemy.position)
-            sensor.add_detection(detection=Detection.CREATURE, distance=int(dist), angle=ang)
-    return True
-
-def detect_plant2(arbiter, space, data):
-    creature = arbiter.shapes[0].body
-    plant = arbiter.shapes[1].body
-    sensor_shape = arbiter.shapes[0]
-    sensor = creature.eye
-    if sensor.shape == sensor_shape:
-        sensor.set_color(Color('green'))
-        vec: Vec2d=plant.position-creature.position
-        ang = creature.rotation_vector.get_angle_between(vec)
-        pos0 = creature.position
-        dist = pos0.get_distance(plant.position)
-        sensor.add_detection(detection=Detection.PLANT, distance=int(dist), angle=ang)
-    return True
-
-def detect_obstacle2(arbiter, space, data):
-    creature = arbiter.shapes[0].body
-    obstacle = arbiter.shapes[1].body
-    contact = arbiter.contact_point_set.points[0].point_a
-    sensor_shape = arbiter.shapes[0]
-    sensor = creature.eye
-    if sensor.shape == sensor_shape:
-        sensor.set_color(Color('skyblue'))
-        vec: Vec2d=contact-creature.position
-        ang = creature.rotation_vector.get_angle_between(vec)
-        pos0 = creature.position
-        dist = pos0.get_distance(contact)
-        sensor.add_detection(detection=Detection.ROCK, distance=int(dist), angle=ang)
-    return True
-
-def detect_meat2(arbiter, space, data):
-    creature = arbiter.shapes[0].body
-    meat = arbiter.shapes[1].body
-    contact = arbiter.contact_point_set.points[0].point_a
-    sensor_shape = arbiter.shapes[0]
-    sensor = creature.eye
-    if sensor.shape == sensor_shape:
-        sensor.set_color(Color('red'))
-        vec: Vec2d=meat.position-creature.position
-        ang = creature.rotation_vector.get_angle_between(vec)
-        pos0 = creature.position
-        dist = pos0.get_distance(contact)
-        sensor.add_detection(detection=Detection.MEAT, distance=int(dist), angle=ang)
-    return True
-
-def detect_plant_end2(arbiter, space, data):
-    return True
-
-def detect_creature_end2(arbiter, space, data):
-    return True
-
-def detect_obstacle_end2(arbiter, space, data):
-    return True
-
-def detect_meat_end2(arbiter, space, data):
     return True

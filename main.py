@@ -45,7 +45,7 @@ class Simulation():
         self.screen = pygame.display.set_mode(
             size=cfg.SCREEN, flags=flags, vsync=1)
         self.space = Space()
-        self.FPS = 60
+        self.FPS = 30
         self.dt = 1/self.FPS
         self.running = True
         self.clock = Clock()

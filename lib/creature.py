@@ -52,7 +52,7 @@ class Creature(Life):
         space.add(self.shape)
         self.eye_colors = {}
         self.visual_range = cfg.VISUAL_RANGE
-        #self.sensors = []
+        self.sensors = []
         self.side_angle = 0
         sensors_angle = ((random()+1)/2)*(PI/1.5)
         self.sensors.append(Sensor(screen, self, 4, 0, cfg.SENSOR_RANGE))
@@ -62,8 +62,8 @@ class Creature(Life):
         self.max_energy = self.size*cfg.SIZE2ENG
         self.reproduction_time = cfg.REP_TIME
         self.energy = self.max_energy
-        #!for sensor in self.sensors:
-        #!f   space.add(sensor.shape)
+        for sensor in self.sensors:
+           space.add(sensor.shape)
         self._move: float=0.0
         self._eat: bool=False
         self._attack: bool=False
@@ -149,7 +149,9 @@ class Creature(Life):
             color2.a = 255
             a = 255
         if selected == self:
-            self.draw_detectors(screen=screen, rel_pos=rel_pos, camera=camera)
+            self.draw_detectors(screen=screen, rel_pos=rel_pos)
+        for detector in self.sensors:
+            detector.reset_data()
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), color0)
         #gfxdraw.aacircle(screen, int(rx), int(ry), int(r), self.color0)
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-1), color1)
@@ -191,7 +193,7 @@ class Creature(Life):
             gfxdraw.line(screen, int(self.position.x), int(flipy(self.position.y)), int(self.position.x+self.normal.x*50), int(flipy(self.position.y+self.normal.y*50)), Color('yellow'))
             #self.normal = None
 
-    def draw_detectors(self, screen, rel_pos: Vector2=None, camera: Camera=None):
+    def draw_detectors(self, screen, rel_pos: Vector2):
         for detector in self.sensors:
             detector.draw(screen=screen, rel_pos=rel_pos)
         self.collide_creature = False
@@ -289,35 +291,34 @@ class Creature(Life):
 
     def get_input(self):
         input = []
-        x = self.position[0]/cfg.WORLD[0]
-        y = self.position[1]/cfg.WORLD[1]
-        eng = self.energy/self.max_energy
-        detected = []
-        detected = self.eye.get_input()
-        cd = detected[0]
-        ca = detected[1]
-        pd = detected[2]
-        pa = detected[3]
-        md = detected[4]
-        ma = detected[5]
-        rd = detected[6]
-        ra = detected[7]
         input.append(self.collide_creature)
         input.append(self.collide_plant)
         input.append(self.collide_something)
         input.append(self.collide_meat)
+        angle = self.angle/(2*PI)
+        side_angle = self.sensors[1].angle/(cfg.SENSOR_MAX_ANGLE*2)
+        #input.append(angle)
+        input.append(side_angle)
+        x = self.position[0]/cfg.WORLD[0]
         input.append(x)
+        y = self.position[1]/cfg.WORLD[1]
         input.append(y)
+        eng = self.energy/self.max_energy
         input.append(eng)
-        input.append(cd)
-        input.append(ca)
-        input.append(pd)
-        input.append(pa)
-        input.append(md)
-        input.append(ma)
-        input.append(rd)
-        input.append(ra)
-        input.append(self.pain)
+        for sensor in self.sensors:
+            detected = []
+            detected = sensor.get_input()
+            e = detected[0]
+            p = detected[1]
+            o = detected[2]
+            m = detected[3]
+            d = round(detected[4], 2)
+            input.append(e)
+            input.append(p)
+            input.append(m)
+            input.append(o)
+            input.append(d)
+        input.append(int(self.pain))
         self.pain = False
         return input
 
@@ -364,8 +365,8 @@ class Creature(Life):
 
     def kill(self, space: Space):
         to_kill = []
-        #for sensor in self.sensors:
-        to_kill.append(self.eye.shape)
+        for sensor in self.sensors:
+            to_kill.append(sensor.shape)
         for s in to_kill:
             space.remove(s)
         space.remove(self.shape)
