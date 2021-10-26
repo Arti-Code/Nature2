@@ -277,12 +277,12 @@ class Manager:
             base_line = []
 
             inp_desc = [
-                'crea', 'plnt', 'obst', 'meat', 
+                'crea', 'plnt', 'meat', 'H2O',
                 'side', 'xpos', 'ypos', 'eng', 
-                'ene0', 'pla0', 'meat0', 'obs0', 'dst0',
-                'ene1', 'pla1', 'meat1', 'obs1', 'dst1', 
-                'ene2', 'pla2', 'meat2', 'obs2', 'dst2',
-                'hurt' 
+                'ene0', 'pla0', 'meat0', 'dst0',
+                'ene1', 'pla1', 'meat1', 'dst1', 
+                'ene2', 'pla2', 'meat2', 'dst2',
+                'H2O', 'hurt' 
             ]
             out_desc = ["mov", "turn",
                 "sens", 

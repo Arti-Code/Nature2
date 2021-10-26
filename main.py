@@ -76,10 +76,11 @@ class Simulation():
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
         self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
-        self.terrain = Terrain(cfg.WORLD, 20)
+        self.terrain = Terrain((cfg.WORLD[0], cfg.WORLD[0]), 10)
         #self.terrain.generate(self.space, cfg.WORLD, 1)  #
         self.terrain_surf = self.terrain.draw_tiles()
-        self.terrain_surf.set_alpha(150)
+        self.terrain_surf.set_alpha(255)
+        self.map_time = 0.0
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -252,33 +253,33 @@ class Simulation():
         creature_meat_collisions.pre_solve = process_creature_meat_collisions
         creature_meat_collisions.data['dt'] = self.dt
 
-        edge_collisions = self.space.add_collision_handler(2, 8)
-        edge_collisions.pre_solve = process_edge_collisions
+#        edge_collisions = self.space.add_collision_handler(2, 8)
+#        edge_collisions.pre_solve = process_edge_collisions
 
-        creature_detection2 = self.space.add_collision_handler(16, 2)
-        creature_detection2.pre_solve = detect_creature
+        creature_detection = self.space.add_collision_handler(4, 2)
+        creature_detection.pre_solve = detect_creature
 
-        creature_detection_end2 = self.space.add_collision_handler(16, 2)
-        creature_detection_end2.separate = detect_creature_end
+        creature_detection_end = self.space.add_collision_handler(4, 2)
+        creature_detection_end.separate = detect_creature_end
 
-        plant_detection2 = self.space.add_collision_handler(16, 6)
-        plant_detection2.pre_solve = detect_plant
+        plant_detection = self.space.add_collision_handler(4, 6)
+        plant_detection.pre_solve = detect_plant
 
-        plant_detection_end2 = self.space.add_collision_handler(16, 6)
-        plant_detection_end2.separate = detect_plant_end
+        plant_detection_end = self.space.add_collision_handler(4, 6)
+        plant_detection_end.separate = detect_plant_end
 
-        meat_detection2 = self.space.add_collision_handler(16, 10)
-        meat_detection2.pre_solve = detect_meat
+        meat_detection = self.space.add_collision_handler(4, 10)
+        meat_detection.pre_solve = detect_meat
 
-        meat_detection_end2 = self.space.add_collision_handler(16, 10)
-        meat_detection_end2.separate = detect_meat_end
+        meat_detection_end = self.space.add_collision_handler(4, 10)
+        meat_detection_end.separate = detect_meat_end
 
-        obstacle_detection2 = self.space.add_collision_handler(16, 8)
-        obstacle_detection2.pre_solve = detect_obstacle
-        
-        obstacle_detection_end2 = self.space.add_collision_handler(16, 8)
-        obstacle_detection_end2.separate = detect_obstacle_end
-
+#        obstacle_detection = self.space.add_collision_handler(4, 8)
+#        obstacle_detection.pre_solve = detect_obstacle
+#        
+#        obstacle_detection_end = self.space.add_collision_handler(4, 8)
+#        obstacle_detection_end.separate = detect_obstacle_end
+#
 #        detection = self.space.add_collision_handler(4, 2)
 #        detection.pre_solve = detect_creature
 #
@@ -346,7 +347,7 @@ class Simulation():
         return wall
 
     def draw(self):
-        self.screen.fill(Color(75, 75, 75))
+        self.screen.fill(Color('black'))
         self.screen.blit(self.terrain_surf, (0, 0))
         screen_crs = 0
         screen_plants = 0
@@ -435,6 +436,7 @@ class Simulation():
         self.update_plants(self.dt)
         self.update_meat(self.dt)
         #self.update_statistics()
+        self.update_terrain(self.dt)
         self.manager.update_gui(self.dt, self.ranking1, self.ranking2)
 
     def update_meat(self, dT: float):
@@ -449,8 +451,9 @@ class Simulation():
         for creature in self.creature_list:
             if creature.energy <= 0:
                 self.add_to_ranking(creature)
-                meat = Meat(screen=self.screen, space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
-                self.meat_list.append(meat)
+                if not creature.on_water:
+                    meat = Meat(screen=self.screen, space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
+                    self.meat_list.append(meat)
                 creature.kill(self.space)
                 self.creature_list.remove(creature)
 
@@ -486,6 +489,31 @@ class Simulation():
             self.creature_list.append(new_one)
         temp_list = []
         self.check_populatiom()
+
+    def update_terrain(self, dt):
+        self.map_time += dt
+        if self.map_time < 1.0:
+            return
+        #self.terrain.update()
+        for creature in self.creature_list:
+            coord = creature.get_tile_coord()
+            vec = creature.rotation_vector.int_tuple
+            coord0 = coord
+            coord1 = (coord0[0]+(vec[0]), coord0[1]-((vec[1])))
+            coords = [coord0, coord1]
+            if self.terrain.is_water_tile(coord0):
+                creature.on_water = True
+            else:
+                creature.on_water = False
+            if self.terrain.is_water_tile(coord1):
+                creature.water_ahead = True
+            else:
+                creature.water_ahead = False
+        #    for coord in coords:   
+        #        self.terrain.set_occupied(coord, True)
+        #self.terrain_surf = self.terrain.draw_tiles()
+        #self.terrain_surf.set_alpha(255)
+        self.map_time = self.map_time-1.0
 
     def update_statistics(self):
         t = int(self.get_time()/cfg.STAT_PERIOD)

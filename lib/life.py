@@ -10,6 +10,8 @@ from lib.math2 import flipy, clamp
 from lib.config import cfg
 from lib.camera import Camera
 from pygame.math import Vector2
+from lib.terrain import Tile, Terrain
+
 class Life(Body):
 
     def __init__(self, screen: Surface, space: Space, collision_tag: int, position: Vec2d=None):
@@ -27,6 +29,7 @@ class Life(Body):
         self.collide_plant = False
         self.collide_something = False
         self.collide_meat = False
+        self.rect = Rect(self.position.x-5, flipy(self.position.y)-5, 10, 10)
 
     def draw(self, screen: Surface, camera: Camera, selected: Body):
         if self == selected:
@@ -34,13 +37,20 @@ class Life(Body):
             x =rel_pos.x; y =rel_pos.y
             r = self.shape.radius
             self.draw_selection(screen, x, y, r)
+        #gfxdraw.rectangle(screen, self.rect, Color('orange'))
 
     def update(self, dt: float, selected: Body):
+        r = self.shape.radius
+        self.rect = Rect(self.position.x-r, flipy(self.position.y)-r, 2*r, 2*r)
         if self == selected:
             self.selection_time += dt*2
             self.selection_time = self.selection_time%(PI)
         else:
             self.selection_time = 0
+
+    def get_tile_coord(self) -> tuple:
+        x = self.position.x; y = flipy(self.position.y)
+        return (int(x/10), int(y/10))
     
     def draw_selection(self, screen: Surface, x, y, r):
         c = abs(sin(self.selection_time))

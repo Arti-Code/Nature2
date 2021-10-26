@@ -12,6 +12,7 @@ from lib.camera import Camera
 from pygame.math import Vector2
 from perlin_noise import PerlinNoise
 from enum import IntEnum
+from typing import Union
 
 
 class Tile(Rect):
@@ -19,17 +20,28 @@ class Tile(Rect):
     def __init__(self, l: int, t: int, w: int, h: int, depth: float):
         super().__init__(l*w, t*h, w, h)
         self.depth = depth
+        self.evols = []
+        self.occupied: bool= False
+        self.water = 0
 
     def draw(self, surface: Surface, water_level: float=0.7):
+        if self.occupied:
+            gfxdraw.rectangle(surface, self, Color('yellow'))
+            return
         water_level = clamp(water_level, 0.0, 2.0)
         height = self.depth
         height = round((height+1), 1)
         color = Color(0, 0, 0)
         if height > water_level:
             color = Color(int(127*height), int(127*height), int(127*height))
+            self.water = 0
+        elif height == water_level:
+            color = Color(int(75*height), int(100*height), int(134+60*height))
+            self.water = 1
         else:
             depth = (height*200)/water_level
-            color = Color(int(80*(height/water_level)), int(80*(height/water_level)), int(50+depth))
+            color = Color(int(40*(height/water_level)), int(40*(height/water_level)), int(50+depth))
+            self.water = 1
         gfxdraw.box(surface, self, color)
         #if c2 > water_level:
         #    height = c2
@@ -40,6 +52,15 @@ class Tile(Rect):
         #gfxdraw.box(surface, self, color)
         #gfxdraw.rectangle(surface, self, Color('gray'))
 
+    def is_water(self) -> bool:
+        if self.water > 0: return True
+        return False
+
+    def overlap(self, rect: Rect) -> bool:
+        return self.colliderect(rect)
+
+    def update(self):
+        self.occupied = False
 
 class Terrain():
 
@@ -53,20 +74,23 @@ class Terrain():
 
     def generate_perlin_map(self, world_size: tuple, res: int) -> list:
         terrain = []
-        noise1 = PerlinNoise(octaves=4)
-        noise2 = PerlinNoise(octaves=8)
-        noise3 = PerlinNoise(octaves=12)
+        noise1 = PerlinNoise(octaves=5)
+        noise2 = PerlinNoise(octaves=12)
+        #noise3 = PerlinNoise(octaves=14)
         x_res, y_res = (int(world_size[0]/res), int(world_size[1]/res))
         for y in range(y_res):
             row = []
+            y_tiles = []
             for x in range(x_res):
                 pix = noise1([x/x_res, y/y_res])
                 pix += 0.5 * noise2([x/x_res, y/y_res])
-                pix += 0.25 * noise3([x/x_res, y/y_res])
+                #pix += 0.25 * noise3([x/x_res, y/y_res])
                 row.append(pix)
                 tile = Tile(x, y, res, res, pix)
-                self.tiles.append(tile)
+                y_tiles.append(tile)
+                #self.tiles.append(tile)
             terrain.append(row)
+            self.tiles.append(y_tiles)
         return terrain
 
     def generate_perlin_map2(self, world_size: tuple, res: int) -> list:
@@ -85,8 +109,9 @@ class Terrain():
 
     def draw_tiles(self) -> Surface:
         terrain = Surface(self.world_size)
-        for tile in self.tiles:
-            tile.draw(terrain, 0.8)
+        for y_tiles in self.tiles:
+            for tile in y_tiles:
+                tile.draw(terrain, 0.8)
         return terrain
 
     def redraw_terrain(self, terrain: list, resolution: int, world_size: tuple) -> Surface:
@@ -109,6 +134,24 @@ class Terrain():
     def get_map(self) -> Surface:
         return self.gfx_terrain
 
+    def get_tile(self, coord: tuple) -> Tile:
+        if coord[0] < len(self.tiles) and coord[0] >= 0 and coord[1] < len(self.tiles) and coord[1] >= 0:
+            return self.tiles[coord[1]][coord[0]]
+        return None
+    
+    def is_water_tile(self, coord: tuple) -> bool:
+        if coord[0] < len(self.tiles) and coord[0] >= 0 and coord[1] < len(self.tiles) and coord[1] >= 0:
+            return self.tiles[coord[1]][coord[0]].is_water()
+        return False
+
+    def set_occupied(self, coord: tuple, state: bool=True):
+        if coord[0] < len(self.tiles) and coord[0] >= 0 and coord[1] < len(self.tiles) and coord[1] >= 0:
+            self.tiles[coord[1]][coord[0]].occupied = state
+
+    def update(self):
+        for y_tiles in self.tiles:
+            for tile in y_tiles:
+                tile.update()
 
 class Terrain2():
 

@@ -1,6 +1,6 @@
 {
-  "WORLD": [900, 600],
-  "SCREEN": [900, 600],
+  "WORLD": [1600, 900],
+  "SCREEN": [1600, 900],
   "FONT_SIZE": 14,
   "PLANT_MAX_SIZE": 10,
   "PLANT_GROWTH": 5,
@@ -18,8 +18,8 @@
   "SPEED": 3,
   "TURN": 0.5,
   "SENSOR_SPEED": 0.3,
-  "CREATURE_MIN_SIZE": 2,
-  "CREATURE_MAX_SIZE": 7,
+  "CREATURE_MIN_SIZE": 3,
+  "CREATURE_MAX_SIZE": 10,
   "HIT": 300,
   "MEM_TIME": 0.2,
   "SENSOR_MAX_ANGLE": 2.35,
@@ -52,5 +52,8 @@
   "MIN_HERBIVORES": 5,
   "RANK_DECAY": 0.5,
   "STAT_PERIOD": 10,
-  "NET": [24, 0, 0, 0, 6, 0, 0, 0, 0, 7]
+  "MAP_RES": 10,
+  "WATER_COST": 0.05,
+  "WATER_MOVE": 0.25,
+  "NET": [22, 0, 0, 0, 6, 0, 0, 0, 0, 7]
 }

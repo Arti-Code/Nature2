@@ -196,9 +196,9 @@ class CreatureWindow(UIWindow):
             self.labs[key] = (lab1, lab2)
         self.btn_close = UIButton(Rect((rect.width/2-btn_w/2, (15+15*i)), (btn_w, btn_h)), text='History', manager=self.manager, container=self, parent_element=self, object_id='#btn_history')
         self.refresh = 0
-        self.update(data, dT)
+        self.Update(data, dT)
 
-    def update(self, data: dict, dT: float):
+    def Update(self, data: dict, dT: float):
         self.refresh -= dT
         if self.refresh <= 0:
             self.refresh = 1
@@ -462,6 +462,7 @@ class GUI():
         data['SPEED'] = str(self.owner.enviro.selected.speed)
         data['SIZE'] = str(self.owner.enviro.selected.size)
         data['MUTATIONS'] = str(self.owner.enviro.selected.mutations)
+        data['CHILDS'] = str(self.owner.enviro.selected.childs)
         data['BORN|KILL'] = str(self.owner.enviro.selected.childs)+'|'+str(self.owner.enviro.selected.kills)
         data['FITNESS'] = str(round(self.owner.enviro.selected.fitness))
         data["LIFETIME"] = str(round(self.owner.enviro.selected.life_time))
@@ -603,7 +604,7 @@ class GUI():
 
     def update(self, dT: float, ranking1: list, ranking2: list):
         data: dict = {}
-        self.ui_mgr.update(time_delta=dT)
+        self.ui_mgr.update(dT)
         if self.enviro_win:
             data = self.update_enviroment(dT)
             self.enviro_win.Update(data, dT)
@@ -612,7 +613,7 @@ class GUI():
             self.rank_win.Update(ranking1, ranking2)
         if self.creature_win and self.owner.enviro.selected:
             data = self.update_creature_win()
-            self.creature_win.update(data, dT)
+            self.creature_win.Update(data, dT)
         if self.history_win and self.owner.enviro.selected:
             self.update_creature_history(dT=dT)
 
