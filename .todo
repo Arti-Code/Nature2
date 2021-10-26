@@ -60,3 +60,4 @@ NATURE:
         ✔ terrain: perlin-noise list
         ✔ terrain: ground Surface
         ☐ terrain: interactions
+        ✔ water terrain, slowing, drawing
