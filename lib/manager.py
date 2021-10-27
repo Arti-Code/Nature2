@@ -126,6 +126,7 @@ class Manager:
                 creature_to_save['color3'] = [creature.color3.r, creature.color3.g, creature.color3.b, creature.color3.a]
                 creature_to_save['neuro'] = creature.neuro.ToJSON()
                 creature_to_save['signature'] = deepcopy(creature.signature)
+                creature_to_save['genealogy'] = deepcopy(creature.genealogy)
                 project['creatures'].append(creature_to_save)
             project['ranking1'] = []
             for rank in self.enviro.ranking1:
@@ -144,6 +145,7 @@ class Manager:
                 rank_to_save['color3'] = [rank['color3'][0], rank['color3'][1], rank['color3'][2], rank['color3'][3]]
                 rank_to_save['neuro'] = rank['neuro'].ToJSON()
                 rank_to_save['signature'] = deepcopy(rank['signature'])
+                rank_to_save['genealogy'] = deepcopy(rank['genealogy'])
                 project['ranking1'].append(rank_to_save)
             project['ranking2'] = []
             for rank in self.enviro.ranking2:
@@ -162,6 +164,7 @@ class Manager:
                 rank_to_save['color3'] = [rank['color3'][0], rank['color3'][1], rank['color3'][2], rank['color3'][3]]
                 rank_to_save['neuro'] = rank['neuro'].ToJSON()
                 rank_to_save['signature'] = deepcopy(rank['signature'])
+                rank_to_save['genealogy'] = deepcopy(rank['genealogy'])
                 project['ranking2'].append(rank_to_save)
 
             if self.add_to_save_list(project_name, str(self.enviro.get_time(1))):
@@ -277,12 +280,12 @@ class Manager:
             base_line = []
 
             inp_desc = [
-                'crea', 'plnt', 'obst', 'meat', 
+                'crea', 'plnt', 'meat', 'H2O',
                 'side', 'xpos', 'ypos', 'eng', 
-                'ene0', 'pla0', 'meat0', 'obs0', 'dst0',
-                'ene1', 'pla1', 'meat1', 'obs1', 'dst1', 
-                'ene2', 'pla2', 'meat2', 'obs2', 'dst2',
-                'hurt' 
+                'ene0', 'pla0', 'meat0', 'dst0',
+                'ene1', 'pla1', 'meat1', 'dst1', 
+                'ene2', 'pla2', 'meat2', 'dst2',
+                'H2O', 'hurt' 
             ]
             out_desc = ["mov", "turn",
                 "sens", 

@@ -32,7 +32,7 @@ class Creature(Life):
         self.kills = 0
         self.genealogy = []
         if genome == None:
-            self.random_build(color0, color1, color2, color3)
+            self.random_build(color0, color1, color2, color3, time)
             self.signature = self.get_signature()
         else:
             self.genome_build(genome)
@@ -40,13 +40,7 @@ class Creature(Life):
             if not self.compare_signature(self.get_signature(), genome['signature'], cfg.DIFF):
                 self.signature = self.get_signature()
                 self.name = modify_name(genome['name'])
-                self.genealogy.append((time, self.name))
-                #print(f"NOWY GATUNEK: {genome['name']}>>>{self.name}")
-                #msg = f"NOWY GATUNEK: {genome['name']}>>>{self.name}"
-            #else:
-                #print(f'GATUNEK: {self.name}')
-                #msg = f'GATUNEK: {self.name}'
-            #log_to_file(msg, 'log.txt')
+                self.add_specie(self.name, self.generation, time)
         self.shape = Circle(self, self.size)
         self.shape.collision_type = collision_tag
         space.add(self.shape)
@@ -63,7 +57,7 @@ class Creature(Life):
         self.reproduction_time = cfg.REP_TIME
         self.energy = self.max_energy
         for sensor in self.sensors:
-            space.add(sensor.shape)
+           space.add(sensor.shape)
         self._move: float=0.0
         self._eat: bool=False
         self._attack: bool=False
@@ -73,9 +67,8 @@ class Creature(Life):
         self.life_time: float=0.0
         self.run_time = cfg.RUN_TIME
         self.hide = False
-        self.genealogy.append((time, self.name))
-        #signature = self.get_signature()
-        #s = self.compare_signature(signature, self.get_signature(), 0.8)
+        self.on_water = False
+        self.water_ahead = False
 
     def genome_build(self, genome: dict):
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
@@ -89,23 +82,21 @@ class Creature(Life):
         self.neuro = genome['neuro']
         self.size = genome['size'] + randint(-1, 1)
         self.mutations = genome['mutations'] + randint(-1, 1)
-        #self.meat = genome['meat'] + randint(-1, 1)
-        #self.vege = genome['vege'] + randint(-1, 1)
         self.power = genome['power'] + randint(-1, 1)
         self.food = genome['food'] + randint(-1, 1)
         self.speed = genome['speed'] + randint(-1, 1)
-        #self.meat = clamp(self.meat, 1, 10)
         self.size = clamp(self.size, cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
         self.mutations = clamp(self.mutations, 1, 10)
         self.power = clamp(self.power, 1, 10)
         self.food = clamp(self.food, 1, 10)
         self.speed = clamp(self.speed, 1, 10)
         self.generation = genome['gen']+1
+        self.genealogy = genome['genealogy']
         self.name = genome['name']
         self.neuro.Mutate(mutations_rate=self.mutations)
         self.signature = genome['signature']
 
-    def random_build(self, color0: Color, color1: Color, color2: Color, color3: Color):
+    def random_build(self, color0: Color, color1: Color, color2: Color, color3: Color, time: int):
         #self.color0 = color0
         self.color0 = Color('black')
         self.color1 = color1
@@ -124,6 +115,7 @@ class Creature(Life):
         self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
         self.neuro.BuildRandom(cfg.NET, cfg.LINKS_RATE)
         self.name = random_name(3, True)
+        self.add_specie(self.name, self.generation, time)
 
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
         x = self.position.x; y = flipy(self.position.y)
@@ -155,8 +147,9 @@ class Creature(Life):
             self.draw_detectors(screen=screen, rel_pos=rel_pos)
         for detector in self.sensors:
             detector.reset_data()
+        gfxdraw.aacircle(screen, int(rx), int(ry), int(r), color0)
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), color0)
-        #gfxdraw.aacircle(screen, int(rx), int(ry), int(r), self.color0)
+        gfxdraw.aacircle(screen, int(rx), int(ry), int(r-1), self.color1)
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-1), color1)
         if r > 2:
             x2 = round(rx + rot.x*(r/1.6))
@@ -183,11 +176,9 @@ class Creature(Life):
                 g +=50
                 r = clamp(r, 0, 255)
                 g = clamp(g, 0, 255)
-            #c = Color.hsla(self.food*10, 100, 50)
-            #c.hsla[0]=self.food*10
-            #c.hsla[1]=100
-            #c.hsla[2]=50
+            gfxdraw.aacircle(screen, int(x2), int(y2), int(r2), Color(r, g, b, a))    
             gfxdraw.filled_circle(screen, int(x2), int(y2), int(r2), Color(r, g, b, a))
+            gfxdraw.aacircle(screen, int(rx), int(ry), int(r2), color2)
             gfxdraw.filled_circle(screen, int(rx), int(ry), int(r2), color2)
         self.color0 = self._color0
         self.draw_energy_bar(screen, rx, ry)
@@ -267,8 +258,10 @@ class Creature(Life):
            move *= 1.5
         if move < 0:
             move = 0
+        if self.on_water:
+            move *= cfg.WATER_MOVE
         turn = self._turn*cfg.TURN*dt
-        sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
+        #sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
         #sensor_angle = (PI*1.5)-(((self.output[2]+1)/2)*(PI*1.5))
         sensor_angle = ((self.output[2]+1)/2)*(PI/1.5)
         #sensor_angle = self.output[2]*(PI/2)
@@ -284,8 +277,8 @@ class Creature(Life):
 
     def calc_energy(self, dt: float, move: float):
         size_cost = self.size * cfg.SIZE_COST
-        base_energy = cfg.BASE_ENERGY * size_cost
         move_energy = move * cfg.MOVE_ENERGY * size_cost
+        base_energy = cfg.BASE_ENERGY
         if self.run:
             move_energy *= cfg.RUN_COST
         rest_energy = 0
@@ -293,6 +286,9 @@ class Creature(Life):
             rest_energy += cfg.EAT_ENG
         if self._attack:
             rest_energy += cfg.ATK_ENG
+        if self.on_water:
+            base_energy += cfg.WATER_COST
+        base_energy *= size_cost
         self.energy -= (base_energy + move_energy + rest_energy) * dt
         self.energy = clamp(self.energy, 0, self.max_energy)
 
@@ -300,8 +296,9 @@ class Creature(Life):
         input = []
         input.append(self.collide_creature)
         input.append(self.collide_plant)
-        input.append(self.collide_something)
+        #input.append(self.collide_something)
         input.append(self.collide_meat)
+        input.append(self.on_water)
         angle = self.angle/(2*PI)
         side_angle = self.sensors[1].angle/(cfg.SENSOR_MAX_ANGLE*2)
         #input.append(angle)
@@ -317,14 +314,15 @@ class Creature(Life):
             detected = sensor.get_input()
             e = detected[0]
             p = detected[1]
-            o = detected[2]
+            #o = detected[2]
             m = detected[3]
             d = round(detected[4], 2)
             input.append(e)
             input.append(p)
             input.append(m)
-            input.append(o)
+            #input.append(o)
             input.append(d)
+        input.append(self.water_ahead)
         input.append(int(self.pain))
         self.pain = False
         return input
@@ -347,7 +345,7 @@ class Creature(Life):
             self._attack = True
         else:
             self._attack = False
-        if self.output[5] > 0 and self.run_time > 0 and self._move > 0:
+        if self.output[5] > 0 and self.run_time > 0 and self._move > 0 and not self.on_water:
             self.run = True
         else:
             self.run = False
@@ -356,12 +354,6 @@ class Creature(Life):
         else:
             self.hide = False
             self.output[5] = 0
-        #if self.output[6] > 0 and not self.run and self._move < 0.2:
-        #    self.hide = True
-        #else:
-        #    self.hide = False
-        #for sensor in self.sensors:
-        #    sensor.reset_data()
             
     def draw_energy_bar(self, screen: Surface, rx: int, ry: int):
         bar_red = Color(255, 0, 0)
@@ -379,6 +371,10 @@ class Creature(Life):
         space.remove(self.shape)
         space.remove(self)
 
+    def add_specie(self, name: str, generation: int, time: int):
+        data = (name, generation, time)
+        self.genealogy.append(data)
+
     def get_genome(self) -> dict:
         genome: dict = {}
         genome['name'] = copy(self.name)
@@ -395,6 +391,7 @@ class Creature(Life):
         genome['color3'] = self._color3
         genome['neuro'] = self.neuro.Replicate()
         genome['signature'] = deepcopy(self.signature)
+        genome['genealogy'] = copy(self.genealogy)
         return genome
 
     def similar(self, parent_genome: dict, treashold: float) -> bool:

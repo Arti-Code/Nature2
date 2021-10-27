@@ -194,11 +194,12 @@ class CreatureWindow(UIWindow):
                 lab2 = UILabel(Rect((85, 15*i+5), (self.rect.width/2-15, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
             i+=1
             self.labs[key] = (lab1, lab2)
-        self.btn_close = UIButton(Rect((rect.width/2-btn_w/2, (15+15*i)), (btn_w, btn_h)), text='History', manager=self.manager, container=self, parent_element=self, object_id='#btn_history')
+        btn_w = 80; btn_h = 20
+        self.btn_ancestors = UIButton(Rect((rect.width/2-btn_w/2, (15+15*i)), (btn_w, btn_h)), text='ANCESTORS', manager=self.manager, container=self, parent_element=self, object_id="#btn_ancestors")
         self.refresh = 0
-        self.update(data, dT)
+        self.Update(data, dT)
 
-    def update(self, data: dict, dT: float):
+    def Update(self, data: dict, dT: float):
         self.refresh -= dT
         if self.refresh <= 0:
             self.refresh = 1
@@ -206,6 +207,19 @@ class CreatureWindow(UIWindow):
             for key, val in data.items():
                 self.labs[key][0].set_text(f"{key}:")
                 self.labs[key][1].set_text(f"{val}")
+
+class AncestorsWindow(UIWindow):
+
+    def __init__(self, manager: UIManager, rect: Rect, history: list):
+        super().__init__(rect, manager=manager, window_display_title='Ancestors', object_id="#genealogy_win", visible=True)
+        self.manager = manager
+        i=0
+        self.labels = []
+        for (specie, gen, time) in history:
+            lab = UILabel(Rect((5, 10*i+2), (190, 15)), text=f"T({time}) \t {specie} \t GEN({gen})", manager=self.manager, container=self, parent_element=self, object_id='lab_ancestor'+str(i))
+            self.labels.append(lab)
+            i += 1
+
 
 class CreatureHistoryWindow(UIWindow):
 
@@ -310,6 +324,7 @@ class GUI():
         self.rank_win = None
         self.credits_win = None
         self.history_win = None
+        self.ancestors_win = None
         self.rebuild_ui(self.view)
 
     def rebuild_ui(self, new_size: tuple):         
@@ -422,9 +437,18 @@ class GUI():
         self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (200, 125)), data=data, dT=dT)
 
     def create_creature_win(self, dT: float):
-        data = self.update_creature_win()
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (150, 220)), data=data, dT=dT)
+            data = self.update_creature_win()
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (180, 300)), data=data, dT=dT)
+
+    def create_ancestors_win(self, dT: float):
+        if self.ancestors_win:
+            self.ancestors_win.kill()
+        if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
+            data = self.owner.enviro.selected.genealogy
+            count = len(data)
+            height = 2 + 15 * count
+            self.ancestors_win = AncestorsWindow(manager=self.ui_mgr, rect=Rect((500, 0), (200, height)), history=data)
 
     def create_history_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
@@ -462,6 +486,7 @@ class GUI():
         data['SPEED'] = str(self.owner.enviro.selected.speed)
         data['SIZE'] = str(self.owner.enviro.selected.size)
         data['MUTATIONS'] = str(self.owner.enviro.selected.mutations)
+        data['CHILDS'] = str(self.owner.enviro.selected.childs)
         data['BORN|KILL'] = str(self.owner.enviro.selected.childs)+'|'+str(self.owner.enviro.selected.kills)
         data['FITNESS'] = str(round(self.owner.enviro.selected.fitness))
         data["LIFETIME"] = str(round(self.owner.enviro.selected.life_time))
@@ -574,9 +599,8 @@ class GUI():
                 elif event.ui_object_id == '#info_menu.#creature_win':
                     self.info_menu.kill()
                     self.create_creature_win(dt)
-                elif event.ui_object_id == '#info_menu.#creature_win.#history_win':
-                    #self.creature_win.kill()
-                    self.create_history_win(dt)
+                elif event.ui_object_id == '#creature_win.#btn_ancestors':
+                    self.create_ancestors_win(dt)
                 elif event.ui_object_id == '#info_menu.#rank':
                     self.info_menu.kill()
                     self.create_rank_win()
@@ -603,7 +627,7 @@ class GUI():
 
     def update(self, dT: float, ranking1: list, ranking2: list):
         data: dict = {}
-        self.ui_mgr.update(time_delta=dT)
+        self.ui_mgr.update(dT)
         if self.enviro_win:
             data = self.update_enviroment(dT)
             self.enviro_win.Update(data, dT)
@@ -612,7 +636,7 @@ class GUI():
             self.rank_win.Update(ranking1, ranking2)
         if self.creature_win and self.owner.enviro.selected:
             data = self.update_creature_win()
-            self.creature_win.update(data, dT)
+            self.creature_win.Update(data, dT)
         if self.history_win and self.owner.enviro.selected:
             self.update_creature_history(dT=dT)
 

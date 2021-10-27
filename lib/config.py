@@ -2,7 +2,7 @@ from math import pi as PI
 from json import loads, dumps
 
 TITLE = "NATURE"
-SUBTITLE = "v0.5.2"
+SUBTITLE = "v0.5.3"
 AUTHOR = "2019-2021 Artur Gwoździowski"
 
 class Configuration():
@@ -62,6 +62,9 @@ class Configuration():
         self.NET = None
         self.RANK_DECAY = None
         self.STAT_PERIOD = None
+        self.MAP_RES = None
+        self.WATER_MOVE = None
+        self.WATER_COST = None
         self.load_from_file(filename)
 
     def load_from_file(self, filename: str):
@@ -123,5 +126,8 @@ class Configuration():
         self.NET                    = cfg['NET']
         self.RANK_DECAY             = cfg['RANK_DECAY']
         self.STAT_PERIOD            = cfg['STAT_PERIOD']
+        self.MAP_RES                = cfg['MAP_RES']
+        self.WATER_MOVE             = cfg['WATER_MOVE']
+        self.WATER_COST             = cfg['WATER_COST']
 
 cfg = Configuration('config.json')
