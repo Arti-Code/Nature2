@@ -187,6 +187,16 @@
          "normal_border": "#14c80e"
       }
     },
+    "#btn_ancestors":
+    {
+        "colours":
+        {
+            "normal_text":"#ffffff",
+            "normal_bg":"#f9ab1a",
+            "hovered_bg":"#f6f646",
+            "normal_border": "#ff600a"
+        }
+    },
     "#btn_info":
     {
         "colours":
@@ -353,17 +363,17 @@
         {
             "colours":
             {
-               "normal_text":"#ffffff",
-               "normal_bg":"#74ee11c4",
-               "hovered_bg":"#92fb3cd6",
-               "normal_border": "#14c80e"
+               "normal_text":"#16b701",
+               "normal_bg":"#0134b7",
+               "hovered_bg":"#0134b7",
+               "normal_border": "#00b8b5"
             }
         },
         "#credits_win.#txt_title":
         {
             "colours":
             {
-                "normal_text":"#fa4b00"
+                "normal_text":"#b85f00"
             },
             "font":
             {
@@ -377,7 +387,7 @@
         {
             "colours":
             {
-                "normal_text":"#faa200"
+                "normal_text":"#aeb800"
             },
             "font":
             {
@@ -391,14 +401,14 @@
         {
             "colours":
             {
-                "normal_text":"#25fa00"
+                "normal_text":"#43b800"
             },
             "font":
             {
                 "name": "fira_code",
-                "size": "12",
-                "bold": "1",
-                "italic": "0"
+                "size": "14",
+                "bold": "0",
+                "italic": "1"
             }
         }
     }

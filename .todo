@@ -47,7 +47,7 @@ NATURE:
         ✔ creatures info window
         ✔ save ranking also
         ✔ fix: dt
-    0.5:
+    0.5:    
         ☐ health and energy
         ☐ water needs
         ☐ save single creature
@@ -61,3 +61,5 @@ NATURE:
         ✔ terrain: ground Surface
         ☐ terrain: interactions
         ✔ water terrain, slowing, drawing
+        ✔ ancestor trackink
+        ✔ save&load with ancestors

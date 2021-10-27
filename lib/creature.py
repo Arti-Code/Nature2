@@ -32,7 +32,7 @@ class Creature(Life):
         self.kills = 0
         self.genealogy = []
         if genome == None:
-            self.random_build(color0, color1, color2, color3)
+            self.random_build(color0, color1, color2, color3, time)
             self.signature = self.get_signature()
         else:
             self.genome_build(genome)
@@ -40,13 +40,7 @@ class Creature(Life):
             if not self.compare_signature(self.get_signature(), genome['signature'], cfg.DIFF):
                 self.signature = self.get_signature()
                 self.name = modify_name(genome['name'])
-                self.genealogy.append((time, self.name))
-                #print(f"NOWY GATUNEK: {genome['name']}>>>{self.name}")
-                #msg = f"NOWY GATUNEK: {genome['name']}>>>{self.name}"
-            #else:
-                #print(f'GATUNEK: {self.name}')
-                #msg = f'GATUNEK: {self.name}'
-            #log_to_file(msg, 'log.txt')
+                self.add_specie(self.name, self.generation, time)
         self.shape = Circle(self, self.size)
         self.shape.collision_type = collision_tag
         space.add(self.shape)
@@ -75,9 +69,6 @@ class Creature(Life):
         self.hide = False
         self.on_water = False
         self.water_ahead = False
-        self.genealogy.append((time, self.name))
-        #signature = self.get_signature()
-        #s = self.compare_signature(signature, self.get_signature(), 0.8)
 
     def genome_build(self, genome: dict):
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
@@ -100,11 +91,12 @@ class Creature(Life):
         self.food = clamp(self.food, 1, 10)
         self.speed = clamp(self.speed, 1, 10)
         self.generation = genome['gen']+1
+        self.genealogy = genome['genealogy']
         self.name = genome['name']
         self.neuro.Mutate(mutations_rate=self.mutations)
         self.signature = genome['signature']
 
-    def random_build(self, color0: Color, color1: Color, color2: Color, color3: Color):
+    def random_build(self, color0: Color, color1: Color, color2: Color, color3: Color, time: int):
         #self.color0 = color0
         self.color0 = Color('black')
         self.color1 = color1
@@ -123,6 +115,7 @@ class Creature(Life):
         self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
         self.neuro.BuildRandom(cfg.NET, cfg.LINKS_RATE)
         self.name = random_name(3, True)
+        self.add_specie(self.name, self.generation, time)
 
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
         x = self.position.x; y = flipy(self.position.y)
@@ -378,6 +371,10 @@ class Creature(Life):
         space.remove(self.shape)
         space.remove(self)
 
+    def add_specie(self, name: str, generation: int, time: int):
+        data = (name, generation, time)
+        self.genealogy.append(data)
+
     def get_genome(self) -> dict:
         genome: dict = {}
         genome['name'] = copy(self.name)
@@ -394,6 +391,7 @@ class Creature(Life):
         genome['color3'] = self._color3
         genome['neuro'] = self.neuro.Replicate()
         genome['signature'] = deepcopy(self.signature)
+        genome['genealogy'] = copy(self.genealogy)
         return genome
 
     def similar(self, parent_genome: dict, treashold: float) -> bool:
