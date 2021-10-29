@@ -7,7 +7,7 @@ from pygame.draw import line, lines, polygon
 from pygame import Surface, Color, Rect
 import pymunk as pm
 from pymunk import Segment, Poly, Body, Space, autogeometry, BB
-from lib.math2 import flipy
+from lib.math2 import flipy, sort_by_water
 from lib.camera import Camera
 from pygame.math import Vector2
 from perlin_noise import PerlinNoise
@@ -15,14 +15,16 @@ from enum import IntEnum
 from typing import Union
 
 
+
+
 class Tile(Rect):
 
-    def __init__(self, l: int, t: int, w: int, h: int, depth: float):
+    def __init__(self, l: int, t: int, w: int, h: int, depth: float, water_lvl):
         super().__init__(l*w, t*h, w, h)
         self.depth = depth
         self.evols = []
         self.occupied: bool= False
-        self.water = 0
+        self.water = 
 
     def draw(self, surface: Surface, water_level: float=0.7):
         if self.occupied:
@@ -31,7 +33,9 @@ class Tile(Rect):
         water_level = clamp(water_level, 0.0, 2.0)
         height = self.depth
         height = round((height+1), 1)
+        water = water_level - height
         color = Color(0, 0, 0)
+        color = Color(int(127*height), int(127*height), int(127*height))
         if height > water_level:
             color = Color(int(127*height), int(127*height), int(127*height))
             self.water = 0
@@ -62,17 +66,44 @@ class Tile(Rect):
     def update(self):
         self.occupied = False
 
+
+class Water(Rect):
+    def __init__(self, l: int, t: int, w: int, h: int, depth: float, water_lvl: float):
+        super().__init__(l*w, t*h, w, h)
+        self.depth = depth
+        self.position = (int((l*w)+0.5*w), int((t*h)+0.5*h))
+        self.water_lvl = water_lvl
+
+    def get_coord(self) -> tuple:
+        return self.position
+
+    def kill(self):
+        self.kill()
+
+    #def get_tiles_arround(self) -> list:
+    #    x = self.position.x, y=self.position.y
+    #    tiles = list(
+    #        (x-1, y-1), (x, y-1), (x+1, y-1)
+    #        (x-1, y), (x+1, y)
+    #        (x-1, y+1), (x, y+1), (x+1, y+1)
+    #    )
+    #    return tiles
+#
+    #def update(self, water: list):
+        pass
+
 class Terrain():
 
-    def __init__(self, world_size: tuple, res: int):
+    def __init__(self, world_size: tuple, res: int, water_lvl: float):
         self.map = []
+        self.water = []
         self.tiles = []
         self.world_size = world_size
         self.res = res
-        self.terrain = self.generate_perlin_map(world_size, res)
+        self.terrain = self.generate_perlin_map(world_size, res, water_lvl)
         #self.gfx_terrain = self.redraw_terrain(self.terrain, res, world_size)
 
-    def generate_perlin_map(self, world_size: tuple, res: int) -> list:
+    def generate_perlin_map(self, world_size: tuple, res: int, water_lvl) -> list:
         terrain = []
         noise1 = PerlinNoise(octaves=5)
         noise2 = PerlinNoise(octaves=12)
@@ -81,14 +112,18 @@ class Terrain():
         for y in range(y_res):
             row = []
             y_tiles = []
+            y_water = []
             for x in range(x_res):
                 pix = noise1([x/x_res, y/y_res])
                 pix += 0.5 * noise2([x/x_res, y/y_res])
                 #pix += 0.25 * noise3([x/x_res, y/y_res])
                 row.append(pix)
-                tile = Tile(x, y, res, res, pix)
+                tile = Tile(x, y, res, res, pix, water_lvl)
                 y_tiles.append(tile)
                 #self.tiles.append(tile)
+                #if random() < 0.1:
+                #    water = Water(x, y, res, res, 1.0)
+                #self.water.append(water)
             terrain.append(row)
             self.tiles.append(y_tiles)
         return terrain
@@ -114,6 +149,10 @@ class Terrain():
                 tile.draw(terrain, 0.8)
         return terrain
 
+    def draw_water(self) -> Surface:
+        self.water.sort(ke=sort_by_water, reverse=True)
+
+
     def redraw_terrain(self, terrain: list, resolution: int, world_size: tuple) -> Surface:
         gfx_terrain = Surface(world_size=world_size)
         for y in range(len(terrain)-1):
@@ -121,8 +160,8 @@ class Terrain():
                 c = terrain[y][x]
                 c2 = round((c+1)/2, 1)
                 color = Color(0, 0, 0)
-                #if c2 > 0.4 and c2 < 0.7:
-                #    c2 = 0.5
+                if c2 > 0.4 and c2 < 0.7:
+                    c2 = 0.5
                 if c2 > 0.4:
                     color = Color(int(255*c2), int(255*c2), int(255*c2))
                 else:
@@ -152,6 +191,9 @@ class Terrain():
         for y_tiles in self.tiles:
             for tile in y_tiles:
                 tile.update()
+
+    #def update_water(self):
+
 
 class Terrain2():
 

@@ -56,6 +56,7 @@ class Creature(Life):
         self.max_energy = self.size*cfg.SIZE2ENG
         self.reproduction_time = cfg.REP_TIME
         self.energy = self.max_energy
+        self.water = self.max_energy
         for sensor in self.sensors:
            space.add(sensor.shape)
         self._move: float=0.0
@@ -182,6 +183,7 @@ class Creature(Life):
             gfxdraw.filled_circle(screen, int(rx), int(ry), int(r2), color2)
         self.color0 = self._color0
         self.draw_energy_bar(screen, rx, ry)
+        self.draw_water_bar(screen, rx, ry)
         #self.draw_name(screen)
         #self.draw_normal(screen)
         return True
@@ -206,6 +208,7 @@ class Creature(Life):
     def update(self, dt: float, selected: Body):
         super().update(dt, selected)
         self.life_time += dt*0.1
+        self.drink(dt)
         if self.run:
             self.run_time -= dt
             if self.run_time < 0:
@@ -279,6 +282,7 @@ class Creature(Life):
         size_cost = self.size * cfg.SIZE_COST
         move_energy = move * cfg.MOVE_ENERGY * size_cost
         base_energy = cfg.BASE_ENERGY
+        water_lost = cfg.WATER_NEEDS*size_cost
         if self.run:
             move_energy *= cfg.RUN_COST
         rest_energy = 0
@@ -290,7 +294,14 @@ class Creature(Life):
             base_energy += cfg.WATER_COST
         base_energy *= size_cost
         self.energy -= (base_energy + move_energy + rest_energy) * dt
+        self.water -= water_lost * dt
         self.energy = clamp(self.energy, 0, self.max_energy)
+        self.water = clamp(self.water, 0, self.max_energy)
+
+    def drink(self, dt: float):
+        if self.on_water:
+            if self._eat:
+                self.water += cfg.WATER*dt
 
     def get_input(self):
         input = []
@@ -361,7 +372,14 @@ class Creature(Life):
         size = self.shape.radius
         gfxdraw.box(screen, Rect(rx-round(10), ry+round(size+3), round(19), 1), bar_red)
         gfxdraw.box(screen, Rect(rx-round(10), ry+round(size+3), round(20*(self.energy/self.max_energy)), 1), bar_green)
-
+    
+    def draw_water_bar(self, screen: Surface, rx: int, ry: int):
+        bar_blue = Color(0, 0, 255)
+        bar_gray = Color(150, 150, 150)
+        size = self.shape.radius
+        gfxdraw.box(screen, Rect(rx-round(10), ry+round(size+6), round(19), 1), bar_gray)
+        gfxdraw.box(screen, Rect(rx-round(10), ry+round(size+6), round(20*(self.water/self.max_energy)), 1), bar_blue)
+    
     def kill(self, space: Space):
         to_kill = []
         for sensor in self.sensors:

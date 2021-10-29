@@ -65,6 +65,7 @@ class Configuration():
         self.MAP_RES = None
         self.WATER_MOVE = None
         self.WATER_COST = None
+        self.WATER = None
         self.load_from_file(filename)
 
     def load_from_file(self, filename: str):
@@ -129,5 +130,7 @@ class Configuration():
         self.MAP_RES                = cfg['MAP_RES']
         self.WATER_MOVE             = cfg['WATER_MOVE']
         self.WATER_COST             = cfg['WATER_COST']
+        self.WATER_NEEDS            = cfg['WATER_NEEDS']
+        self.WATER                  = cfg['WATER']
 
 cfg = Configuration('config.json')

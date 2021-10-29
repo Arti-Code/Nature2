@@ -2,7 +2,6 @@ import os
 import sys
 from time import time
 from math import degrees, hypot, sin, cos, pi as PI, floor, ceil
-#from copy import deepcopy, copy
 from collections import deque
 from lib.math2 import clamp
 from statistics import mean
@@ -449,7 +448,7 @@ class Simulation():
     def update_creatures(self, dt: float):
         ### CHECK ENERGY ###
         for creature in self.creature_list:
-            if creature.energy <= 0:
+            if creature.energy <= 0 or creature.water <= 0:
                 self.add_to_ranking(creature)
                 if not creature.on_water:
                     meat = Meat(screen=self.screen, space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
