@@ -69,7 +69,7 @@ class Creature(Life):
         self.run_time = cfg.RUN_TIME
         self.hide = False
         self.on_water = False
-        self.water_ahead = False
+        #self.water_ahead = False
 
     def genome_build(self, genome: dict):
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
@@ -188,14 +188,21 @@ class Creature(Life):
         #self.draw_normal(screen)
         return True
 
+    def detect_water(self) -> list:
+        return self.sensors[0].get_water_detectors()
+
     def draw_normal(self, screen):
         if self.normal != None:
             gfxdraw.line(screen, int(self.position.x), int(flipy(self.position.y)), int(self.position.x+self.normal.x*50), int(flipy(self.position.y+self.normal.y*50)), Color('yellow'))
             #self.normal = None
 
     def draw_detectors(self, screen, rel_pos: Vector2):
+        first = True
         for detector in self.sensors:
+            if self.water_ahead and first:
+                detector.set_color('blue')
             detector.draw(screen=screen, rel_pos=rel_pos)
+            first = False
         self.collide_creature = False
         self.collide_plant = False
         self.collide_something = False

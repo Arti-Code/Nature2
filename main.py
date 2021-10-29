@@ -75,7 +75,7 @@ class Simulation():
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
         self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
-        self.terrain = Terrain((cfg.WORLD[0], cfg.WORLD[0]), 10)
+        self.terrain = Terrain((cfg.WORLD[0], cfg.WORLD[0]), 10, 1.0)
         #self.terrain.generate(self.space, cfg.WORLD, 1)  #
         self.terrain_surf = self.terrain.draw_tiles()
         self.terrain_surf.set_alpha(255)
@@ -495,19 +495,31 @@ class Simulation():
             return
         #self.terrain.update()
         for creature in self.creature_list:
-            coord = creature.get_tile_coord()
-            vec = creature.rotation_vector.int_tuple
-            coord0 = coord
-            coord1 = (coord0[0]+(vec[0]), coord0[1]-((vec[1])))
-            coords = [coord0, coord1]
+            coord0 = creature.get_tile_coord()
+            vec = creature.rotation_vector
+            coord = ((creature.position+(vec*100))/10)
+            creature.water_ahead = False
+            water_detectors = creature.detect_water()
+            for detector in water_detectors:
+                if self.terrain.is_water_tile(detector):
+                    creature.water_ahead = True
+                    break
+
             if self.terrain.is_water_tile(coord0):
                 creature.on_water = True
             else:
                 creature.on_water = False
-            if self.terrain.is_water_tile(coord1):
-                creature.water_ahead = True
-            else:
-                creature.water_ahead = False
+            #    a, b = sensor.get_points()
+            #    sensor.detect_water(self.terrain.detect_water(sensor.get_rect(), a, b))
+            #vec = creature.rotation_vector.int_tuple
+            #coord0 = coord
+            #coord1 = (coord0[0]+(vec[0]), coord0[1]-((vec[1])))
+            #coords = [coord0, coord1]
+            
+            #if self.terrain.is_water_tile(coord1):
+            #    creature.water_ahead = True
+            #else:
+            #    creature.water_ahead = False
         #    for coord in coords:   
         #        self.terrain.set_occupied(coord, True)
         #self.terrain_surf = self.terrain.draw_tiles()

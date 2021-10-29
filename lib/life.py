@@ -24,6 +24,7 @@ class Life(Body):
             self.position = Vec2d(x, y)
         space.add(self)
         self.selection_time = 0
+        self.water_ahead = False
         
         self.collide_creature = False
         self.collide_plant = False
@@ -53,9 +54,10 @@ class Life(Body):
         return (int(x/10), int(y/10))
     
     def draw_selection(self, screen: Surface, x, y, r):
+        color = Color('orange')
         c = abs(sin(self.selection_time))
-        gfxdraw.aacircle(screen, int(x), int(y), int(r+3+(r+2)*c), Color('orange'))
-        gfxdraw.aacircle(screen, int(x), int(y), int(r+3+(r+3)*c), Color('orange'))
+        gfxdraw.aacircle(screen, int(x), int(y), int(r+3+(r+2)*c), color)
+        gfxdraw.aacircle(screen, int(x), int(y), int(r+3+(r+3)*c), color)
 
     
 

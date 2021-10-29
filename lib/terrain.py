@@ -19,12 +19,12 @@ from typing import Union
 
 class Tile(Rect):
 
-    def __init__(self, l: int, t: int, w: int, h: int, depth: float, water_lvl):
+    def __init__(self, l: int, t: int, w: int, h: int, depth: float, water: float):
         super().__init__(l*w, t*h, w, h)
         self.depth = depth
         self.evols = []
         self.occupied: bool= False
-        self.water = 
+        self.water = 0
 
     def draw(self, surface: Surface, water_level: float=0.7):
         if self.occupied:
@@ -96,7 +96,7 @@ class Terrain():
 
     def __init__(self, world_size: tuple, res: int, water_lvl: float):
         self.map = []
-        self.water = []
+        self.water = {}
         self.tiles = []
         self.world_size = world_size
         self.res = res
@@ -108,38 +108,19 @@ class Terrain():
         noise1 = PerlinNoise(octaves=5)
         noise2 = PerlinNoise(octaves=12)
         #noise3 = PerlinNoise(octaves=14)
-        x_res, y_res = (int(world_size[0]/res), int(world_size[1]/res))
-        for y in range(y_res):
+        x_axe, y_axe = (int(world_size[0]/res), int(world_size[1]/res))
+        for y in range(y_axe):
             row = []
             y_tiles = []
-            y_water = []
-            for x in range(x_res):
-                pix = noise1([x/x_res, y/y_res])
-                pix += 0.5 * noise2([x/x_res, y/y_res])
-                #pix += 0.25 * noise3([x/x_res, y/y_res])
+            for x in range(x_axe):
+                pix = noise1([x/x_axe, y/y_axe])
+                pix += 0.5 * noise2([x/x_axe, y/y_axe])
+                #pix += 0.25 * noise3([x/x_axe, y/y_axe])
                 row.append(pix)
-                tile = Tile(x, y, res, res, pix, water_lvl)
+                tile = Tile(x, y, res, res, pix, water_lvl-pix)
                 y_tiles.append(tile)
-                #self.tiles.append(tile)
-                #if random() < 0.1:
-                #    water = Water(x, y, res, res, 1.0)
-                #self.water.append(water)
             terrain.append(row)
             self.tiles.append(y_tiles)
-        return terrain
-
-    def generate_perlin_map2(self, world_size: tuple, res: int) -> list:
-        terrain = []
-        noise1 = PerlinNoise(octaves=4)
-        noise2 = PerlinNoise(octaves=8)
-        x_res, y_res = (int(world_size[0]/res), int(world_size[1]/res))
-        for y in range(y_res):
-            row = []
-            for x in range(x_res):
-                pix = noise1([x/x_res, y/y_res])
-                pix += 0.5 * noise2([x/x_res, y/y_res])
-                row.append(pix)
-            terrain.append(row)
         return terrain
 
     def draw_tiles(self) -> Surface:
@@ -192,9 +173,24 @@ class Terrain():
             for tile in y_tiles:
                 tile.update()
 
-    #def update_water(self):
+    def detect_water(self, sensor_rect: Rect, p0: tuple, p1: tuple) -> bool:
+        l = round(sensor_rect.left/self.res)
+        t = round(sensor_rect.top/self.res)
+        w = round(sensor_rect.width/self.res)
+        h = round(sensor_rect.height/self.res)
+        for y in range(t, t+h-1):
+            for x in range(l, l+w-1):
+                tile = self.get_tile((x, y))
+                if not tile is None:
+                    if tile.is_water():
+                        if tile.clipline(p0, p1):
+                            return True
+        return False
 
-
+    def detect_water2(self, position: tuple) -> bool:
+        title = self.get_tile(position)
+        if title.is_water(): return True
+        return False
 class Terrain2():
 
     def __init__(self):
@@ -263,3 +259,4 @@ class Terrain2():
             poly = Poly(space.static_body, autogeometry.to_convex_hull(line, 0.5))
             poly.collision_type = 8
             space.add(poly)
+
