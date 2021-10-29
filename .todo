@@ -49,7 +49,7 @@ NATURE:
         ✔ fix: dt
     0.5:    
         ☐ health and energy
-        ☐ water needs
+        ✔ water needs
         ☐ save single creature
         ☐ load single creature
         ☐ save single network
@@ -59,7 +59,7 @@ NATURE:
         ☐ camera zoom in/out
         ✔ terrain: perlin-noise list
         ✔ terrain: ground Surface
-        ☐ terrain: interactions
+        ✔ terrain: interactions
         ✔ water terrain, slowing, drawing
         ✔ ancestor trackink
         ✔ save&load with ancestors
