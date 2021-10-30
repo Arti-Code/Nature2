@@ -281,7 +281,7 @@ class Manager:
 
             inp_desc = [
                 'crea', 'plnt', 'meat', 'H2O',
-                'side', 'xpos', 'ypos', 'eng', 
+                'side', 'xpos', 'ypos', 'eng', 'wat',
                 'ene0', 'pla0', 'meat0', 'dst0',
                 'ene1', 'pla1', 'meat1', 'dst1', 
                 'ene2', 'pla2', 'meat2', 'dst2',
