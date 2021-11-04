@@ -164,19 +164,19 @@ class Sensor():
             #gfxdraw.filled_circle(screen, int(c[0]), flipy(int(c[1])), 1, Color('yellow'))
         self.set_color(Color(white))
         #rect = self.get_rect()
-        #self.get_water_detectors(screen)
+        self.get_water_detectors(screen)
 
 
-    def get_water_detectors(self) -> list:
+    def get_water_detectors(self, screen: Surface) -> list:
         x = self.body.position.x; y = flipy(self.body.position.y)
         p1 = (x, y)
         rv = self.body.rotation_vector.rotated(self.angle)
         tiles = []
-        for n in range(1,4):
-            l = round((p1[0]+rv[0]*80*n)/10)
-            t = round((p1[1]-rv[1]*80*n)/10)
-            tile = Rect(l, t, 10, 10)
-            #draw.rect(screen, Color((255, 125, 0)), tile, 1)
+        for n in range(1,5):
+            l = round((p1[0]+rv[0]*40*n)/10)
+            t = round((p1[1]-rv[1]*40*n)/10)
+            tile = Rect(l*10-5, t*10-5, 10, 10)
+            draw.rect(screen, Color((255, 125, 0)), tile, 1)
             tiles.append((l, t))
         return tiles
 

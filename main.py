@@ -499,7 +499,7 @@ class Simulation():
             vec = creature.rotation_vector
             coord = ((creature.position+(vec*100))/10)
             creature.water_ahead = False
-            water_detectors = creature.detect_water()
+            water_detectors = creature.detect_water(self.screen)
             for detector in water_detectors:
                 if self.terrain.is_water_tile(detector):
                     creature.water_ahead = True
@@ -507,6 +507,7 @@ class Simulation():
 
             if self.terrain.is_water_tile(coord0):
                 creature.on_water = True
+                creature.drink(dt)
             else:
                 creature.on_water = False
             #    a, b = sensor.get_points()

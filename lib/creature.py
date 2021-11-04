@@ -188,8 +188,8 @@ class Creature(Life):
         #self.draw_normal(screen)
         return True
 
-    def detect_water(self) -> list:
-        return self.sensors[0].get_water_detectors()
+    def detect_water(self, screen: Surface) -> list:
+        return self.sensors[0].get_water_detectors(screen)
 
     def draw_normal(self, screen):
         if self.normal != None:
@@ -215,7 +215,7 @@ class Creature(Life):
     def update(self, dt: float, selected: Body):
         super().update(dt, selected)
         self.life_time += dt*0.1
-        self.drink(dt)
+        self.drink(dt) 
         if self.run:
             self.run_time -= dt
             if self.run_time < 0:

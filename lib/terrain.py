@@ -94,33 +94,39 @@ class Water(Rect):
 
 class Terrain():
 
-    def __init__(self, world_size: tuple, res: int, water_lvl: float):
+    def __init__(self, world_size: tuple, res: int, water_lvl: float, octaves: tuple=(5, 12)):
         self.map = []
-        self.water = {}
+        self.water = []
         self.tiles = []
         self.world_size = world_size
         self.res = res
-        self.terrain = self.generate_perlin_map(world_size, res, water_lvl)
+        self.terrain = self.generate_perlin_map(world_size, res, water_lvl, octaves)
         #self.gfx_terrain = self.redraw_terrain(self.terrain, res, world_size)
 
-    def generate_perlin_map(self, world_size: tuple, res: int, water_lvl) -> list:
+    def generate_perlin_map(self, world_size: tuple, res: int, water_lvl, octaves: tuple) -> list:
         terrain = []
-        noise1 = PerlinNoise(octaves=5)
-        noise2 = PerlinNoise(octaves=12)
+        noise1 = PerlinNoise(octaves=octaves[0])
+        noise2 = PerlinNoise(octaves=octaves[1])
         #noise3 = PerlinNoise(octaves=14)
         x_axe, y_axe = (int(world_size[0]/res), int(world_size[1]/res))
         for y in range(y_axe):
             row = []
-            y_tiles = []
+            tiles_row = []
+            water_row = []
             for x in range(x_axe):
                 pix = noise1([x/x_axe, y/y_axe])
                 pix += 0.5 * noise2([x/x_axe, y/y_axe])
                 #pix += 0.25 * noise3([x/x_axe, y/y_axe])
                 row.append(pix)
-                tile = Tile(x, y, res, res, pix, water_lvl-pix)
-                y_tiles.append(tile)
+                water_edge = water_lvl-pix
+                water_edge = clamp(water_edge, 0, 2)
+                tile = Tile(x, y, res, res, pix, water_edge)
+                water = water_lvl-pix
+                tiles_row.append(tile)
+                water_row.append(water)
             terrain.append(row)
-            self.tiles.append(y_tiles)
+            self.water.append(water_row)
+            self.tiles.append(tiles_row)
         return terrain
 
     def draw_tiles(self) -> Surface:
@@ -132,7 +138,6 @@ class Terrain():
 
     def draw_water(self) -> Surface:
         self.water.sort(ke=sort_by_water, reverse=True)
-
 
     def redraw_terrain(self, terrain: list, resolution: int, world_size: tuple) -> Surface:
         gfx_terrain = Surface(world_size=world_size)
