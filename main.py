@@ -75,7 +75,7 @@ class Simulation():
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
         self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
-        self.terrain = Terrain((cfg.WORLD[0], cfg.WORLD[0]), 10, 1.0)
+        self.terrain = Terrain((cfg.WORLD[0], cfg.WORLD[0]), 10, 0.15, (4, 8))
         #self.terrain.generate(self.space, cfg.WORLD, 1)  #
         self.terrain_surf = self.terrain.draw_tiles()
         self.terrain_surf.set_alpha(255)
@@ -252,9 +252,6 @@ class Simulation():
         creature_meat_collisions.pre_solve = process_creature_meat_collisions
         creature_meat_collisions.data['dt'] = self.dt
 
-#        edge_collisions = self.space.add_collision_handler(2, 8)
-#        edge_collisions.pre_solve = process_edge_collisions
-
         creature_detection = self.space.add_collision_handler(4, 2)
         creature_detection.pre_solve = detect_creature
 
@@ -272,36 +269,6 @@ class Simulation():
 
         meat_detection_end = self.space.add_collision_handler(4, 10)
         meat_detection_end.separate = detect_meat_end
-
-#        obstacle_detection = self.space.add_collision_handler(4, 8)
-#        obstacle_detection.pre_solve = detect_obstacle
-#        
-#        obstacle_detection_end = self.space.add_collision_handler(4, 8)
-#        obstacle_detection_end.separate = detect_obstacle_end
-#
-#        detection = self.space.add_collision_handler(4, 2)
-#        detection.pre_solve = detect_creature
-#
-#        detection_end = self.space.add_collision_handler(4, 2)
-#        detection_end.separate = detect_creature_end
-#
-#        plant_detection = self.space.add_collision_handler(4, 6)
-#        plant_detection.pre_solve = detect_plant
-#
-#        plant_detection_end = self.space.add_collision_handler(4, 6)
-#        plant_detection_end.separate = detect_plant_end
-#
-#        meat_detection = self.space.add_collision_handler(4, 10)
-#        meat_detection.pre_solve = detect_meat
-#
-#        meat_detection_end = self.space.add_collision_handler(4, 10)
-#        meat_detection_end.separate = detect_meat_end
-#
-#        obstacle_detection = self.space.add_collision_handler(4, 8)
-#        obstacle_detection.pre_solve = detect_obstacle
-#
-#        obstacle_detection_end = self.space.add_collision_handler(4, 8)
-#        obstacle_detection_end.separate = detect_obstacle_end
 
     def add_creature(self, genome: dict=None, pos: Vec2d=None) -> Creature:
         creature: Creature
@@ -504,12 +471,12 @@ class Simulation():
                 if self.terrain.is_water_tile(detector):
                     creature.water_ahead = True
                     break
-
-            if self.terrain.is_water_tile(coord0):
-                creature.on_water = True
-                creature.drink(dt)
+            on_water_tile = self.terrain.is_water_tile(coord0)
+            if on_water_tile[0]:
+                creature.on_water = (True, on_water_tile[1])
+                #creature.drink(dt)
             else:
-                creature.on_water = False
+                creature.on_water = (False, on_water_tile[1])
             #    a, b = sensor.get_points()
             #    sensor.detect_water(self.terrain.detect_water(sensor.get_rect(), a, b))
             #vec = creature.rotation_vector.int_tuple

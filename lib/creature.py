@@ -68,7 +68,7 @@ class Creature(Life):
         self.life_time: float=0.0
         self.run_time = cfg.RUN_TIME
         self.hide = False
-        self.on_water = False
+        self.on_water = (False, 0)
         #self.water_ahead = False
 
     def genome_build(self, genome: dict):
@@ -297,8 +297,8 @@ class Creature(Life):
             rest_energy += cfg.EAT_ENG
         if self._attack:
             rest_energy += cfg.ATK_ENG
-        if self.on_water:
-            base_energy += cfg.WATER_COST
+        if self.on_water[0]:
+            base_energy += cfg.WATER_COST * self.on_water[1]
         base_energy *= size_cost
         self.energy -= (base_energy + move_energy + rest_energy) * dt
         self.water -= water_lost * dt
@@ -316,7 +316,7 @@ class Creature(Life):
         input.append(self.collide_plant)
         #input.append(self.collide_something)
         input.append(self.collide_meat)
-        input.append(self.on_water)
+        input.append(self.on_water[0])
         angle = self.angle/(2*PI)
         side_angle = self.sensors[1].angle/(cfg.SENSOR_MAX_ANGLE*2)
         #input.append(angle)

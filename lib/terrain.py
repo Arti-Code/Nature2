@@ -19,33 +19,32 @@ from typing import Union
 
 class Tile(Rect):
 
-    def __init__(self, l: int, t: int, w: int, h: int, depth: float, water: float):
+    def __init__(self, l: int, t: int, w: int, h: int, depth: float, water: float=0.0):
         super().__init__(l*w, t*h, w, h)
         self.depth = depth
         self.evols = []
         self.occupied: bool= False
-        self.water = 0
+        self.water = water
 
-    def draw(self, surface: Surface, water_level: float=0.7):
+    def draw(self, surface: Surface, water_level: float=0.4):
         if self.occupied:
             gfxdraw.rectangle(surface, self, Color('yellow'))
             return
-        water_level = clamp(water_level, 0.0, 2.0)
+        water_level = clamp(water_level, 0.0, 1.0)
         height = self.depth
-        height = round((height+1), 1)
-        water = water_level - height
+        #height = round((height+1), 1)
+        #water = water_level - height
         color = Color(0, 0, 0)
-        color = Color(int(127*height), int(127*height), int(127*height))
-        if height > water_level:
-            color = Color(int(127*height), int(127*height), int(127*height))
-            self.water = 0
-        elif height == water_level:
-            color = Color(int(75*height), int(100*height), int(134+60*height))
-            self.water = 1
+        if self.water <= 0.0:
+            color = Color(int(75+154*height), int(75+154*height), int(75+154*height))
+        elif self.water <= 0.2:
+            color = Color(int(100), int(100), int(184+70*self.water))
+            #self.water = 1
+        elif self.water <= 0.4:
+            color = Color(int(20), int(20), int(200+50*self.water))
         else:
-            depth = (height*200)/water_level
-            color = Color(int(40*(height/water_level)), int(40*(height/water_level)), int(50+depth))
-            self.water = 1
+            color = Color(int(10), int(10), int(100+100*self.water))
+            #self.water = 1
         gfxdraw.box(surface, self, color)
         #if c2 > water_level:
         #    height = c2
@@ -56,9 +55,10 @@ class Tile(Rect):
         #gfxdraw.box(surface, self, color)
         #gfxdraw.rectangle(surface, self, Color('gray'))
 
-    def is_water(self) -> bool:
-        if self.water > 0: return True
-        return False
+    def is_water(self) -> tuple:
+        if self.water > 0:
+            return (True, self.water)
+        return (False, 0)
 
     def overlap(self, rect: Rect) -> bool:
         return self.colliderect(rect)
@@ -96,14 +96,14 @@ class Terrain():
 
     def __init__(self, world_size: tuple, res: int, water_lvl: float, octaves: tuple=(5, 12)):
         self.map = []
-        self.water = []
+        #self.water = []
         self.tiles = []
         self.world_size = world_size
         self.res = res
         self.terrain = self.generate_perlin_map(world_size, res, water_lvl, octaves)
         #self.gfx_terrain = self.redraw_terrain(self.terrain, res, world_size)
 
-    def generate_perlin_map(self, world_size: tuple, res: int, water_lvl, octaves: tuple) -> list:
+    def generate_perlin_map(self, world_size: tuple, res: int, water_lvl: float=0.3, octaves: tuple=(4, 6)) -> list:
         terrain = []
         noise1 = PerlinNoise(octaves=octaves[0])
         noise2 = PerlinNoise(octaves=octaves[1])
@@ -112,20 +112,20 @@ class Terrain():
         for y in range(y_axe):
             row = []
             tiles_row = []
-            water_row = []
+            #water_row = []
             for x in range(x_axe):
                 pix = noise1([x/x_axe, y/y_axe])
                 pix += 0.5 * noise2([x/x_axe, y/y_axe])
-                #pix += 0.25 * noise3([x/x_axe, y/y_axe])
-                row.append(pix)
-                water_edge = water_lvl-pix
-                water_edge = clamp(water_edge, 0, 2)
-                tile = Tile(x, y, res, res, pix, water_edge)
-                water = water_lvl-pix
+                height = round(pix, 1)
+                row.append(height)
+                water_edge = round(water_lvl-height, 1)
+                water_edge = clamp(water_edge, 0, 1)
+                tile = Tile(x, y, res, res, height, water_edge)
+                #water = water_lvl-height
                 tiles_row.append(tile)
-                water_row.append(water)
+                #water_row.append(water)
             terrain.append(row)
-            self.water.append(water_row)
+            #self.water.append(water_row)
             self.tiles.append(tiles_row)
         return terrain
 
@@ -133,25 +133,25 @@ class Terrain():
         terrain = Surface(self.world_size)
         for y_tiles in self.tiles:
             for tile in y_tiles:
-                tile.draw(terrain, 0.8)
+                tile.draw(terrain, 0.4)
         return terrain
 
     def draw_water(self) -> Surface:
         self.water.sort(ke=sort_by_water, reverse=True)
 
-    def redraw_terrain(self, terrain: list, resolution: int, world_size: tuple) -> Surface:
+    def redraw_terrain(self, terrain: list, resolution: int, world_size: tuple, water_level: float) -> Surface:
         gfx_terrain = Surface(world_size=world_size)
         for y in range(len(terrain)-1):
             for x in range(len(terrain[y])-1):
-                c = terrain[y][x]
-                c2 = round((c+1)/2, 1)
-                color = Color(0, 0, 0)
-                if c2 > 0.4 and c2 < 0.7:
-                    c2 = 0.5
-                if c2 > 0.4:
-                    color = Color(int(255*c2), int(255*c2), int(255*c2))
+                h = terrain[y][x]
+                if h >= water_level:
+                    color = Color(int(254*h), int(254*h), int(254*h))
                 else:
-                    color = Color(0, 0, int(155+100*c2))
+                    d = water_level - h
+                    if d <= 0.1:
+                        color = Color(75, 75, int(155+100*d))
+                    else:
+                        color = Color(0, 0, int(100+154*d))
                 rect = Rect(y*resolution, x*resolution, resolution, resolution)
                 gfxdraw.box(gfx_terrain, rect, color)
         return gfx_terrain
@@ -164,10 +164,10 @@ class Terrain():
             return self.tiles[coord[1]][coord[0]]
         return None
     
-    def is_water_tile(self, coord: tuple) -> bool:
+    def is_water_tile(self, coord: tuple) -> tuple:
         if coord[0] < len(self.tiles) and coord[0] >= 0 and coord[1] < len(self.tiles) and coord[1] >= 0:
             return self.tiles[coord[1]][coord[0]].is_water()
-        return False
+        return (False, 0)
 
     def set_occupied(self, coord: tuple, state: bool=True):
         if coord[0] < len(self.tiles) and coord[0] >= 0 and coord[1] < len(self.tiles) and coord[1] >= 0:
