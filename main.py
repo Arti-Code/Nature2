@@ -26,7 +26,7 @@ from lib.meat import Meat
 from lib.utils import log_to_file
 from lib.camera import Camera
 from lib.statistics import Statistics
-from lib.terrain import Terrain, Terrain2
+from lib.terrain import Terrain
 
 class Simulation():
 
@@ -75,7 +75,7 @@ class Simulation():
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
         self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
-        self.terrain = Terrain((cfg.WORLD[0], cfg.WORLD[0]), 10, 0.15, (4, 8))
+        self.terrain = Terrain((cfg.WORLD[0], cfg.WORLD[0]), 10, 0.5, (5, 16))
         #self.terrain.generate(self.space, cfg.WORLD, 1)  #
         self.terrain_surf = self.terrain.draw_tiles()
         self.terrain_surf.set_alpha(255)
