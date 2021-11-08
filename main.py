@@ -75,8 +75,7 @@ class Simulation():
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
         self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
-        self.terrain = Terrain((cfg.WORLD[0], cfg.WORLD[0]), 10, 0.5, (5, 16))
-        #self.terrain.generate(self.space, cfg.WORLD, 1)  #
+        self.terrain = Terrain((cfg.WORLD[0], cfg.WORLD[0]), cfg.TILE_RES, 0.0, (2, 10))
         self.terrain_surf = self.terrain.draw_tiles()
         self.terrain_surf.set_alpha(255)
         self.map_time = 0.0
@@ -415,7 +414,7 @@ class Simulation():
     def update_creatures(self, dt: float):
         ### CHECK ENERGY ###
         for creature in self.creature_list:
-            if creature.energy <= 0 or creature.water <= 0:
+            if creature.energy <= 0:
                 self.add_to_ranking(creature)
                 if not creature.on_water:
                     meat = Meat(screen=self.screen, space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
@@ -458,7 +457,7 @@ class Simulation():
 
     def update_terrain(self, dt):
         self.map_time += dt
-        if self.map_time < 1.0:
+        if self.map_time < 0.8:
             return
         #self.terrain.update()
         for creature in self.creature_list:
@@ -468,13 +467,12 @@ class Simulation():
             creature.water_ahead = False
             water_detectors = creature.detect_water(self.screen)
             for detector in water_detectors:
-                if self.terrain.is_water_tile(detector):
+                if self.terrain.is_water_tile(detector)[0]:
                     creature.water_ahead = True
                     break
             on_water_tile = self.terrain.is_water_tile(coord0)
             if on_water_tile[0]:
                 creature.on_water = (True, on_water_tile[1])
-                #creature.drink(dt)
             else:
                 creature.on_water = (False, on_water_tile[1])
             #    a, b = sensor.get_points()

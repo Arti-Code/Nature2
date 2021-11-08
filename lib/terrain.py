@@ -27,11 +27,10 @@ class Tile(Rect):
         self.occupied: bool= False
         self.water = water
 
-    def draw(self, surface: Surface, water_level: float=0.4):
+    def draw(self, surface: Surface):
         if self.occupied:
             gfxdraw.rectangle(surface, self, Color('yellow'))
             return
-        water_level = clamp(water_level, 0.0, 1.0)
         height = self.depth
         color = Color(0, 0, 0)
         if self.water <= 0.0:
@@ -71,55 +70,36 @@ class Water(Rect):
     def kill(self):
         self.kill()
 
-    #def get_tiles_arround(self) -> list:
-    #    x = self.position.x, y=self.position.y
-    #    tiles = list(
-    #        (x-1, y-1), (x, y-1), (x+1, y-1)
-    #        (x-1, y), (x+1, y)
-    #        (x-1, y+1), (x, y+1), (x+1, y+1)
-    #    )
-    #    return tiles
-#
-    #def update(self, water: list):
-        pass
 
 class Terrain():
 
     def __init__(self, world_size: tuple, res: int, water_lvl: float, octaves: tuple=(5, 12)):
         self.map = []
-        #self.water = []
         self.tiles = []
         self.world_size = world_size
         self.res = res
         self.water_lvl = water_lvl
         self.octaves = octaves
         self.terrain = self.generate_perlin_map(self.world_size, self.res, self.water_lvl, self.octaves)
-        #self.gfx_terrain = self.redraw_terrain(self.terrain, res, world_size)
 
     def generate_perlin_map(self, world_size: tuple, res: int, water_lvl: float=0.3, octaves: tuple=(4, 6)) -> list:
         terrain = []
         noise1 = PerlinNoise(octaves=octaves[0], seed=int((time()%int(time()))*10000))
         noise2 = PerlinNoise(octaves=octaves[1], seed=int((time()%int(time()))*10000))
-        #noise3 = PerlinNoise(octaves=14)
         x_axe, y_axe = (int(world_size[0]/res), int(world_size[1]/res))
         for y in range(y_axe):
             row = []
             tiles_row = []
-            #water_row = []
             for x in range(x_axe):
                 pix = noise1([x/x_axe, y/y_axe])
                 pix += 0.4 * noise2([x/x_axe, y/y_axe])
                 height = round((pix+1)/2, 1)
-                #height = round(pix, 2)
                 row.append(height)
                 water_edge = round(water_lvl-height, 1)
                 water_edge = clamp(water_edge, 0, 1)
                 tile = Tile(x, y, res, res, height, water_edge)
-                #water = water_lvl-height
                 tiles_row.append(tile)
-                #water_row.append(water)
             terrain.append(row)
-            #self.water.append(water_row)
             self.tiles.append(tiles_row)
         return terrain
 
@@ -127,7 +107,7 @@ class Terrain():
         terrain = Surface(self.world_size)
         for y_tiles in self.tiles:
             for tile in y_tiles:
-                tile.draw(terrain, 0.4)
+                tile.draw(terrain)
         return terrain
 
     def draw_water(self) -> Surface:

@@ -66,6 +66,7 @@ class Configuration():
         self.WATER_MOVE = None
         self.WATER_COST = None
         self.WATER = None
+        self.TILE_RES = None
         self.load_from_file(filename)
 
     def load_from_file(self, filename: str):
@@ -132,5 +133,6 @@ class Configuration():
         self.WATER_COST             = cfg['WATER_COST']
         self.WATER_NEEDS            = cfg['WATER_NEEDS']
         self.WATER                  = cfg['WATER']
+        self.TILE_RES               = cfg['TILE_RES']
 
 cfg = Configuration('config.json')

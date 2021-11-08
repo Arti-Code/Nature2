@@ -468,7 +468,7 @@ class GUI():
             data['GENERATION'] = ''
             data['FOOD'] = ''
             data['ENERGY'] = ''
-            data['ENERGY'] = ''
+            #data['ENERGY'] = ''
             data['POWER'] = ''
             data['SPEED'] = ''
             data['SIZE'] = ''
@@ -484,7 +484,7 @@ class GUI():
         data['GENERATION'] = str(self.owner.enviro.selected.generation)
         data['FOOD'] = str(self.owner.enviro.selected.food)
         data['ENERGY'] = str(round(self.owner.enviro.selected.energy))+'/'+str(round(self.owner.enviro.selected.max_energy))
-        data['WATER'] = str(round(self.owner.enviro.selected.water))+'/'+str(round(self.owner.enviro.selected.max_energy))
+        #data['WATER'] = str(round(self.owner.enviro.selected.water))+'/'+str(round(self.owner.enviro.selected.max_energy))
         data['POWER'] = str(self.owner.enviro.selected.power)
         data['SPEED'] = str(self.owner.enviro.selected.speed)
         data['SIZE'] = str(self.owner.enviro.selected.size)
@@ -501,7 +501,7 @@ class GUI():
             states.append(' [A]')
         if self.owner.enviro.selected.run:
             states.append(' [R]')
-        if self.owner.enviro.selected.on_water:
+        if self.owner.enviro.selected.on_water[0]:
             states.append(' [W]')
         if self.owner.enviro.selected._eat:
             states.append(' [E]')

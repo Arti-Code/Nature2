@@ -53,9 +53,10 @@
   "RANK_DECAY": 0.5,
   "STAT_PERIOD": 10,
   "MAP_RES": 10,
-  "WATER_COST": 0.005,
+  "WATER_COST": 0.2,
   "WATER_MOVE": 0.25,
-  "WATER_NEEDS": 0.0005,
-  "WATER": 2,
+  "WATER_NEEDS": 0.006,
+  "WATER": 20,
+  "TILE_RES": 10,
   "NET": [22, 0, 0, 0, 6, 0, 0, 0, 0, 7]
 }
