@@ -416,7 +416,7 @@ class Simulation():
         for creature in self.creature_list:
             if creature.energy <= 0:
                 self.add_to_ranking(creature)
-                if not creature.on_water:
+                if not creature.on_water[0]:
                     meat = Meat(screen=self.screen, space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
                     self.meat_list.append(meat)
                 creature.kill(self.space)
