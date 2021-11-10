@@ -49,17 +49,22 @@ NATURE:
         ✔ fix: dt
     0.5:    
         ☐ health and energy
-        ✔ water needs
+        ✘ water needs
         ☐ save single creature
         ☐ load single creature
         ☐ save single network
         ☐ load single network
         ☐ delete single projects
         ☐ real-time bokeh network display
-        ☐ camera zoom in/out
+        ✘ camera zoom in/out
         ✔ terrain: perlin-noise list
         ✔ terrain: ground Surface
         ✔ terrain: interactions
         ✔ water terrain, slowing, drawing
         ✔ ancestor trackink
         ✔ save&load with ancestors
+        ☐ FIX: compilation
+        ☐ generate physic geometry: water
+        ☐ generate physic geometry: rocks
+        ☐ complex body physics shapes
+        ☐ creatures sprites layer

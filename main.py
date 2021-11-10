@@ -26,11 +26,34 @@ from lib.meat import Meat
 from lib.utils import log_to_file
 from lib.camera import Camera
 from lib.statistics import Statistics
-from lib.terrain import Terrain, Terrain2
+from lib.enviroment import generate_geometry
+#from lib.terrain import Terrain
 
 class Simulation():
 
     def __init__(self):
+        flags = pygame.DOUBLEBUF | pygame.HWSURFACE
+        self.screen = pygame.display.set_mode(size=cfg.SCREEN, flags=flags, vsync=1)
+        self.space = Space()
+        self.clock = Clock()
+        self.manager = Manager(screen=self.screen, enviro=self)
+        pygame.init()
+        self.space.gravity = (0.0, 0.0)
+        self.set_collision_calls()
+        pymunk.pygame_util.positive_y_is_up = True
+        self.options = pymunk.pygame_util.DrawOptions(self.screen)
+        self.space.debug_draw(self.options)
+        self.draw_debug: bool=False
+        self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
+        self.init_vars()
+        self.statistics = Statistics()
+        self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
+        #self.terrain = Terrain((cfg.WORLD[0], cfg.WORLD[0]), cfg.TILE_RES, 0.0, (2, 10))
+        #self.terrain_surf = self.terrain.draw_tiles()
+        #self.terrain_surf.set_alpha(255)
+        
+
+    def init_vars(self):
         self.neuro_single_times = []
         self.neuro_avg_time = 1
         self.physics_single_times = []
@@ -40,45 +63,24 @@ class Simulation():
         self.plant_list = []
         self.wall_list = []
         self.meat_list = []
-        flags = pygame.DOUBLEBUF | pygame.HWSURFACE
-        self.screen = pygame.display.set_mode(
-            size=cfg.SCREEN, flags=flags, vsync=1)
-        self.space = Space()
+        self.sel_idx = 0
         self.FPS = 30
         self.dt = 1/self.FPS
         self.running = True
-        self.clock = Clock()
-        self.sel_idx = 0
-        self.show_network = False
-        self.manager = Manager(screen=self.screen, enviro=self)
-
-        pygame.init()
-        self.space.gravity = (0.0, 0.0)
-        self.set_collision_calls()
-        pymunk.pygame_util.positive_y_is_up = True
+        self.show_network = True
         self.selected = None
-        self.options = pymunk.pygame_util.DrawOptions(self.screen)
-        self.space.debug_draw(self.options)
         self.time = 0
         self.cycles = 0
-        self.draw_debug: bool=False
         self.ranking1 = []
         self.ranking2 = []
         self.last_save_time = 0
         self.herbivores = 0
         self.carnivores = 0
-        self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.creatures_on_screen = deque(range(30))
         self.plants_on_screen = deque(range(30))
         self.meats_on_screen = deque(range(30))
         self.rocks_on_screen = deque(range(30))
-        self.statistics = Statistics()
-        self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
         self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
-        self.terrain = Terrain((cfg.WORLD[0], cfg.WORLD[0]), 10, 0.15, (4, 8))
-        #self.terrain.generate(self.space, cfg.WORLD, 1)  #
-        self.terrain_surf = self.terrain.draw_tiles()
-        self.terrain_surf.set_alpha(255)
         self.map_time = 0.0
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
@@ -415,9 +417,9 @@ class Simulation():
     def update_creatures(self, dt: float):
         ### CHECK ENERGY ###
         for creature in self.creature_list:
-            if creature.energy <= 0 or creature.water <= 0:
+            if creature.energy <= 0:
                 self.add_to_ranking(creature)
-                if not creature.on_water:
+                if not creature.on_water[0]:
                     meat = Meat(screen=self.screen, space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
                     self.meat_list.append(meat)
                 creature.kill(self.space)
@@ -458,7 +460,7 @@ class Simulation():
 
     def update_terrain(self, dt):
         self.map_time += dt
-        if self.map_time < 1.0:
+        if self.map_time < 0.8:
             return
         #self.terrain.update()
         for creature in self.creature_list:
@@ -468,13 +470,12 @@ class Simulation():
             creature.water_ahead = False
             water_detectors = creature.detect_water(self.screen)
             for detector in water_detectors:
-                if self.terrain.is_water_tile(detector):
+                if self.terrain.is_water_tile(detector)[0]:
                     creature.water_ahead = True
                     break
             on_water_tile = self.terrain.is_water_tile(coord0)
             if on_water_tile[0]:
                 creature.on_water = (True, on_water_tile[1])
-                #creature.drink(dt)
             else:
                 creature.on_water = (False, on_water_tile[1])
             #    a, b = sensor.get_points()

@@ -164,7 +164,7 @@ class Sensor():
             #gfxdraw.filled_circle(screen, int(c[0]), flipy(int(c[1])), 1, Color('yellow'))
         self.set_color(Color(white))
         #rect = self.get_rect()
-        self.get_water_detectors(screen)
+        #self.get_water_detectors(screen)
 
 
     def get_water_detectors(self, screen: Surface) -> list:
