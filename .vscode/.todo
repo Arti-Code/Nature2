@@ -64,7 +64,7 @@ NATURE:
         ✔ ancestor trackink
         ✔ save&load with ancestors
         ☐ FIX: compilation
-        ☐ generate physic geometry: water
+        ✔ generate physic geometry: water
         ☐ generate physic geometry: rocks
         ☐ complex body physics shapes
         ☐ creatures sprites layer
