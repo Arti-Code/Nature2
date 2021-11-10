@@ -414,10 +414,8 @@ class GUI():
         h = 25
         h2 = 20
         title_rect = Rect((round(cfg.SCREEN[0]/2-w/2), (10)), (w, h))
-        #subtitle_rect = Rect((round(cfg.SCREEN[0]/2-w/2), (40)), (w, h2))
         world_rect = Rect((round(cfg.SCREEN[0]/2-w/2), (35)), (w, h2))
         self.title = UILabel(relative_rect=title_rect, text=TITLE, manager=self.ui_mgr, object_id='#lab_title')
-        #self.subtitle = UILabel(relative_rect=subtitle_rect, text=SUBTITLE, manager=self.ui_mgr, object_id='#lab_subtitle')
         if self.owner.enviro.project_name != None:
             self.world = UILabel(relative_rect=world_rect, text=self.owner.enviro.project_name, manager=self.ui_mgr, object_id='#lab_world')
 
@@ -484,7 +482,6 @@ class GUI():
         data['GENERATION'] = str(self.owner.enviro.selected.generation)
         data['FOOD'] = str(self.owner.enviro.selected.food)
         data['ENERGY'] = str(round(self.owner.enviro.selected.energy))+'/'+str(round(self.owner.enviro.selected.max_energy))
-        #data['WATER'] = str(round(self.owner.enviro.selected.water))+'/'+str(round(self.owner.enviro.selected.max_energy))
         data['POWER'] = str(self.owner.enviro.selected.power)
         data['SPEED'] = str(self.owner.enviro.selected.speed)
         data['SIZE'] = str(self.owner.enviro.selected.size)
@@ -501,12 +498,10 @@ class GUI():
             states.append(' [A]')
         if self.owner.enviro.selected.run:
             states.append(' [R]')
-        if self.owner.enviro.selected.on_water[0]:
+        if self.owner.enviro.selected.on_water:
             states.append(' [W]')
         if self.owner.enviro.selected._eat:
             states.append(' [E]')
-            if self.owner.enviro.selected.on_water[0]:
-                states.append(' [D]')
         data['S'] = ''
         for state in states:
             data['S'] += state

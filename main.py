@@ -26,8 +26,7 @@ from lib.meat import Meat
 from lib.utils import log_to_file
 from lib.camera import Camera
 from lib.statistics import Statistics
-from lib.enviroment import generate_geometry
-#from lib.terrain import Terrain
+from lib.terrain import generate_terrain
 
 class Simulation():
 
@@ -36,22 +35,20 @@ class Simulation():
         self.screen = pygame.display.set_mode(size=cfg.SCREEN, flags=flags, vsync=1)
         self.space = Space()
         self.clock = Clock()
-        self.manager = Manager(screen=self.screen, enviro=self)
         pygame.init()
+        self.init_vars()
+        self.manager = Manager(screen=self.screen, enviro=self)
         self.space.gravity = (0.0, 0.0)
         self.set_collision_calls()
-        pymunk.pygame_util.positive_y_is_up = True
+        pymunk.pygame_util.positive_y_is_up = False
         self.options = pymunk.pygame_util.DrawOptions(self.screen)
         self.space.debug_draw(self.options)
         self.draw_debug: bool=False
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
-        self.init_vars()
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
-        #self.terrain = Terrain((cfg.WORLD[0], cfg.WORLD[0]), cfg.TILE_RES, 0.0, (2, 10))
-        #self.terrain_surf = self.terrain.draw_tiles()
-        #self.terrain_surf.set_alpha(255)
-        
+        self.create_terrain('res/images/land7.png')
+        # self.create_terrain('res/images/land02.png')
 
     def init_vars(self):
         self.neuro_single_times = []
@@ -63,6 +60,7 @@ class Simulation():
         self.plant_list = []
         self.wall_list = []
         self.meat_list = []
+        self.lands = []
         self.sel_idx = 0
         self.FPS = 30
         self.dt = 1/self.FPS
@@ -82,6 +80,12 @@ class Simulation():
         self.rocks_on_screen = deque(range(30))
         self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
         self.map_time = 0.0
+        self.terrain = image.load('res/images/land7.png').convert()
+
+    def create_terrain(self, filename: str):
+        img = image.load(filename).convert()
+        land = generate_terrain(img, self.space)
+        self.lands.append(land)
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -241,7 +245,7 @@ class Simulation():
         return None
 
     def set_collision_calls(self):
-        #* 2: body | 8: wall | 4: sensor | 6: plant | 12: new_plant | 16: eye | 10: meat
+        #* 2: body | 8: wall | 4: sensor | 6: plant | 12: new_plant | 16: eye | 10: meat | 14: water
         creature_collisions = self.space.add_collision_handler(2, 2)
         creature_collisions.pre_solve = process_creatures_collisions
         creature_collisions.data['dt'] = self.dt
@@ -253,6 +257,13 @@ class Simulation():
         creature_meat_collisions = self.space.add_collision_handler(2, 10)
         creature_meat_collisions.pre_solve = process_creature_meat_collisions
         creature_meat_collisions.data['dt'] = self.dt
+
+        creature_water_collisions = self.space.add_collision_handler(2, 14)
+        creature_water_collisions.pre_solve = process_creature_water_collisions
+        creature_water_collisions.data['dt'] = self.dt
+
+        creature_water_collisions_end = self.space.add_collision_handler(2, 14)
+        creature_water_collisions_end.separate = process_creature_water_collisions_end
 
         creature_detection = self.space.add_collision_handler(4, 2)
         creature_detection.pre_solve = detect_creature
@@ -316,7 +327,7 @@ class Simulation():
 
     def draw(self):
         self.screen.fill(Color('black'))
-        self.screen.blit(self.terrain_surf, (0, 0))
+        self.screen.blit(self.terrain, (0, 0))
         screen_crs = 0
         screen_plants = 0
         screen_meats = 0
@@ -404,7 +415,7 @@ class Simulation():
         self.update_plants(self.dt)
         self.update_meat(self.dt)
         #self.update_statistics()
-        self.update_terrain(self.dt)
+        #self.update_terrain(self.dt)
         self.manager.update_gui(self.dt, self.ranking1, self.ranking2)
 
     def update_meat(self, dT: float):
@@ -419,7 +430,7 @@ class Simulation():
         for creature in self.creature_list:
             if creature.energy <= 0:
                 self.add_to_ranking(creature)
-                if not creature.on_water[0]:
+                if not creature.on_water:
                     meat = Meat(screen=self.screen, space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
                     self.meat_list.append(meat)
                 creature.kill(self.space)

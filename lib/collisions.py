@@ -64,6 +64,14 @@ def process_creature_meat_collisions(arbiter, space, data):
     hunter.collide_meat = True
     return True
 
+def process_creature_water_collisions(arbiter, space, data):
+    agent = arbiter.shapes[0].body.on_water = True
+    return False
+
+def process_creature_water_collisions_end(arbiter, space, data):
+    agent = arbiter.shapes[0].body.on_water = False
+    return False
+
 def process_creatures_collisions(arbiter, space, data):
     dt = data['dt']
     agent = arbiter.shapes[0].body
@@ -109,7 +117,7 @@ def detect_plant(arbiter, space, data):
     sensor_shape = arbiter.shapes[0]
     for sensor in creature.sensors:
         if sensor.shape == sensor_shape:
-            sensor.set_color(Color('green'))
+            sensor.set_color(Color('darkgreen'))
             pos0 = creature.position
             dist = pos0.get_distance(plant.position)
             sensor.send_data2(detect=True, distance=dist)

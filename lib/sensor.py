@@ -153,7 +153,7 @@ class Sensor():
     def draw(self, screen: Surface, rel_pos: Vector2):
         p1 = (rel_pos.x, rel_pos.y)
         rv = self.body.rotation_vector.rotated(self.angle)
-        p2 = (p1[0]+rv[0]*self.length, p1[1]-rv[1]*self.length)
+        p2 = (p1[0]+rv[0]*self.length, p1[1]+rv[1]*self.length)
         #self.color.a = 75
         draw.aaline(screen, self.color, (int(p1[0]), int(p1[1])), (int(p2[0]), int(p2[1])), 1)
         #if self.data.obstacle:

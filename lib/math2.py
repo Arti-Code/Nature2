@@ -22,8 +22,11 @@ def set_world(size: tuple):
     finally:
         pass
 
-def flipy(y):
+def flipy2(y):
     return -y + world[1]
+
+def flipy(y):
+    return y
 
 def flipy2(y):
     return -y + 600

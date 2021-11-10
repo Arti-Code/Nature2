@@ -4,13 +4,12 @@ from math import sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
 import pymunk as pm
-from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
+from pymunk import Vec2d, Body, Space
 from lib.object import Object
 from lib.math2 import flipy, clamp
 from lib.config import cfg
 from lib.camera import Camera
 from pygame.math import Vector2
-from lib.terrain import Tile, Terrain
 
 class Life(Body):
 
@@ -51,7 +50,7 @@ class Life(Body):
 
     def get_tile_coord(self) -> tuple:
         x = self.position.x; y = flipy(self.position.y)
-        return (int(x/10), int(y/10))
+        return (int(x/cfg.TILE_RES), int(y/cfg.TILE_RES))
     
     def draw_selection(self, screen: Surface, x, y, r):
         color = Color('orange')

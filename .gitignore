@@ -387,3 +387,6 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+lib/__pycache__/camera.cpython-39.pyc
+lib/__pycache__/species.cpython-39.pyc
+lib/__pycache__/statistics.cpython-39.pyc
