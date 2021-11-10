@@ -26,11 +26,34 @@ from lib.meat import Meat
 from lib.utils import log_to_file
 from lib.camera import Camera
 from lib.statistics import Statistics
-from lib.terrain import Terrain
+from lib.enviroment import generate_geometry
+#from lib.terrain import Terrain
 
 class Simulation():
 
     def __init__(self):
+        flags = pygame.DOUBLEBUF | pygame.HWSURFACE
+        self.screen = pygame.display.set_mode(size=cfg.SCREEN, flags=flags, vsync=1)
+        self.space = Space()
+        self.clock = Clock()
+        self.manager = Manager(screen=self.screen, enviro=self)
+        pygame.init()
+        self.space.gravity = (0.0, 0.0)
+        self.set_collision_calls()
+        pymunk.pygame_util.positive_y_is_up = True
+        self.options = pymunk.pygame_util.DrawOptions(self.screen)
+        self.space.debug_draw(self.options)
+        self.draw_debug: bool=False
+        self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
+        self.init_vars()
+        self.statistics = Statistics()
+        self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
+        #self.terrain = Terrain((cfg.WORLD[0], cfg.WORLD[0]), cfg.TILE_RES, 0.0, (2, 10))
+        #self.terrain_surf = self.terrain.draw_tiles()
+        #self.terrain_surf.set_alpha(255)
+        
+
+    def init_vars(self):
         self.neuro_single_times = []
         self.neuro_avg_time = 1
         self.physics_single_times = []
@@ -40,44 +63,24 @@ class Simulation():
         self.plant_list = []
         self.wall_list = []
         self.meat_list = []
-        flags = pygame.DOUBLEBUF | pygame.HWSURFACE
-        self.screen = pygame.display.set_mode(
-            size=cfg.SCREEN, flags=flags, vsync=1)
-        self.space = Space()
+        self.sel_idx = 0
         self.FPS = 30
         self.dt = 1/self.FPS
         self.running = True
-        self.clock = Clock()
-        self.sel_idx = 0
-        self.show_network = False
-        self.manager = Manager(screen=self.screen, enviro=self)
-
-        pygame.init()
-        self.space.gravity = (0.0, 0.0)
-        self.set_collision_calls()
-        pymunk.pygame_util.positive_y_is_up = True
+        self.show_network = True
         self.selected = None
-        self.options = pymunk.pygame_util.DrawOptions(self.screen)
-        self.space.debug_draw(self.options)
         self.time = 0
         self.cycles = 0
-        self.draw_debug: bool=False
         self.ranking1 = []
         self.ranking2 = []
         self.last_save_time = 0
         self.herbivores = 0
         self.carnivores = 0
-        self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.creatures_on_screen = deque(range(30))
         self.plants_on_screen = deque(range(30))
         self.meats_on_screen = deque(range(30))
         self.rocks_on_screen = deque(range(30))
-        self.statistics = Statistics()
-        self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
         self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
-        self.terrain = Terrain((cfg.WORLD[0], cfg.WORLD[0]), cfg.TILE_RES, 0.0, (2, 10))
-        self.terrain_surf = self.terrain.draw_tiles()
-        self.terrain_surf.set_alpha(255)
         self.map_time = 0.0
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
