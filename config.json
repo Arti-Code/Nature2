@@ -42,7 +42,7 @@
   "EAT_ENG": 0.01,
   "LINKS_RATE": 0.16,
   "MUTATIONS": 0.4,
-  "TIME": 1,
+  "TIME": 2,
   "BORN2FIT": 250,
   "RUN_COST": 6,
   "RUN_TIME": 6,
