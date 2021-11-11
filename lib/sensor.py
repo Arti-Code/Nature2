@@ -18,16 +18,16 @@ class SensorData():
         self.plant = False
         self.p_distance = -1
         self.p_direction = 0
-        self.obstacle = False
-        self.obst_distance = -1
-        self.obst_direction = 0
+        self.water = False
+        self.water_distance = -1
+        self.water_direction = 0
         self.meat = False
         self.meat_distance = -1
         self.meat_direction = 0
         self.detected = {
             'enemy': False, 'enemy_dist': -1, 
             'plant': False, 'plant_dist': -1, 
-            'obstacle': False, 'obstacle_dist': -1, 
+            'water': False, 'water_dist': -1, 
             'meat': False, 'meat_dist': -1
         }
 
@@ -63,17 +63,17 @@ class SensorData():
         return self.detection_range
 
     def send_data3(self, detect: bool, distance: float, direction: float) -> float:
-        self.obstacle = detect
+        self.water = detect
         if self.detection_range >= distance:
             self.detection_range = distance
-            self.detected['obstacle'] = detect
+            self.detected['water'] = detect
             if self.detection_range != 0:
-                self.detected['obstacle_dist'] = 1-(distance/cfg.SENSOR_RANGE)
-                self.obst_distance = 1 - (distance/cfg.SENSOR_RANGE)
+                self.detected['water_dist'] = 1-(distance/cfg.SENSOR_RANGE)
+                self.water_distance = 1 - (distance/cfg.SENSOR_RANGE)
             else:
-                self.detected['obstacle_dist'] = 0.1
-                self.obst_distance = 0.1
-            self.obst_direction = (direction/abs(self.max_angle))
+                self.detected['water_dist'] = 0.1
+                self.water_distance = 0.1
+            self.water_direction = (direction/abs(self.max_angle))
         return self.detection_range
 
     def send_data4(self, detect: bool, distance: float, direction: float) -> float:
@@ -100,21 +100,20 @@ class SensorData():
         self.direction = 0
         self.p_distance = -1
         self.p_direction = 0
-        self.obst_distance = -1
-        self.obst_direction = 0
+        self.water_distance = -1
+        self.water_direction = 0
         self.meat_distance = -1
         self.meat_direction = 0
         self.detected = {
             'enemy': False, 'enemy_dist': -1, 
             'plant': False, 'plant_dist': -1, 
-            'obstacle': False, 'obstacle_dist': -1, 
+            'water': False, 'water_dist': -1, 
             'meat': False, 'meat_dist': -1
         }
 
     def get_data(self) -> list:
-        dist = max(self.detected['enemy_dist'], self.detected['plant_dist'], self.detected['obstacle_dist'], self.detected['meat_dist'])
-        #return self.detected
-        return [self.detected['enemy'], self.detected['plant'], self.detected['obstacle'], self.detected['meat'], dist]
+        dist = max(self.detected['enemy_dist'], self.detected['plant_dist'], self.detected['water_dist'], self.detected['meat_dist'])
+        return [self.detected['enemy'], self.detected['plant'], self.detected['water'], self.detected['meat'], dist]
         
 class Sensor():
 
@@ -160,7 +159,7 @@ class Sensor():
         #    c = (p1[0]+rv[0]*(1-self.data.obst_distance)*self.length, p1[1]+rv[1]*(1-self.data.obst_distance)*self.length)
         #    gfxdraw.filled_circle(screen, int(c[0]), flipy(int(c[1])), 1, Color('yellow'))
         if self.data.meat:
-            c = (p1[0]+rv[0]*(1-self.data.obst_distance)*self.length, p1[1]+rv[1]*(1-self.data.obst_distance)*self.length)
+            c = (p1[0]+rv[0]*(1-self.data.water_distance)*self.length, p1[1]+rv[1]*(1-self.data.water_distance)*self.length)
             #gfxdraw.filled_circle(screen, int(c[0]), flipy(int(c[1])), 1, Color('yellow'))
         self.set_color(Color(white))
         #rect = self.get_rect()

@@ -283,6 +283,13 @@ class Simulation():
         meat_detection_end = self.space.add_collision_handler(4, 10)
         meat_detection_end.separate = detect_meat_end
 
+        water_detection = self.space.add_collision_handler(4, 14)
+        water_detection.pre_solve = detect_water
+
+        water_detection_end = self.space.add_collision_handler(4, 14)
+        water_detection_end.separate = detect_water_end
+
+
     def add_creature(self, genome: dict=None, pos: Vec2d=None) -> Creature:
         creature: Creature
         if pos is None:
