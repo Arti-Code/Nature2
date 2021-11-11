@@ -94,7 +94,7 @@ class SensorData():
         self.detection_range = cfg.SENSOR_RANGE
         self.enemy = False
         self.plant = False
-        self.obstacle = False
+        self.water = False
         self.meat = False
         self.distance = -1
         self.direction = 0
@@ -118,7 +118,6 @@ class SensorData():
 class Sensor():
 
     def __init__(self, screen: Surface, body: Body, collision_type: any, radians: float, length: int):
-        #self.screen = screen
         self.body = body
         self.angle = radians
         self.length = length
@@ -126,11 +125,6 @@ class Sensor():
         x2, y2 = ang2vec2(self.angle)
         b = (x2*self.length, y2*self.length)
         self.shape = Segment(body=body, a=(0,0), b=b, radius=1)
-        #l = min([self.body.x, self.body.x+b[0]])
-        #r = max([self.body.x, self.body.x+b[0]])
-        #t = min([flipy(self.body.y), flipy(self.body.y)+b[1]])
-        #d = max([flipy(self.body.y), flipy(self.body.y)+b[1]])
-        #self.rect = Rect(l, t, r-l, d-t)
         self.shape.collision_type = collision_type
         self.shape.sensor = True
         self.data = SensorData(max_angle=cfg.SENSOR_MAX_ANGLE, detection_range=length)
@@ -143,7 +137,6 @@ class Sensor():
         self.last_tile = None
 
     def update(self) -> tuple:
-        #x2, y2 = ang2vec2(self.angle+self.body.angle)
         x2, y2 = ang2vec2(self.angle)
         b = (x2*self.length, y2*self.length)
         self.shape.unsafe_set_endpoints((0, 0), b)
@@ -162,22 +155,6 @@ class Sensor():
             c = (p1[0]+rv[0]*(1-self.data.water_distance)*self.length, p1[1]+rv[1]*(1-self.data.water_distance)*self.length)
             #gfxdraw.filled_circle(screen, int(c[0]), flipy(int(c[1])), 1, Color('yellow'))
         self.set_color(Color(white))
-        #rect = self.get_rect()
-        #self.get_water_detectors(screen)
-
-
-    def get_water_detectors(self, screen: Surface) -> list:
-        x = self.body.position.x; y = flipy(self.body.position.y)
-        p1 = (x, y)
-        rv = self.body.rotation_vector.rotated(self.angle)
-        tiles = []
-        for n in range(1,5):
-            l = round((p1[0]+rv[0]*40*n)/10)
-            t = round((p1[1]-rv[1]*40*n)/10)
-            tile = Rect(l*10-5, t*10-5, 10, 10)
-            draw.rect(screen, Color((255, 125, 0)), tile, 1)
-            tiles.append((l, t))
-        return tiles
 
     def set_color(self, color: Color):
         self.color = color
@@ -188,7 +165,6 @@ class Sensor():
         x2, y2 = ang2vec2(self.angle)
         b = (x2*self.length, y2*self.length)
         self.update()
-        
 
     def rotate_to(self, new_angle: float, min_angle: float, max_angle: float, dt: float):
         new_angle = clamp(new_angle, min_angle, max_angle)
@@ -204,13 +180,6 @@ class Sensor():
             #x2, y2 = ang2vec2(self.angle)
             #b = (x2*self.length, y2*self.length)
             #self.shape.unsafe_set_endpoints((0, 0), b)
-
-    def get_rect(self) -> Rect:
-        l = int(self.shape.bb[0])
-        b = int(self.shape.bb[3])
-        r = int(self.shape.bb[2])
-        t = int(self.shape.bb[1])
-        return Rect(l, b, r-l, t-b)
 
     def get_points(self) ->tuple:
         a = self.body.local_to_world((0, 0))
@@ -231,13 +200,9 @@ class Sensor():
     def send_data4(self, detect: bool, distance: float):
         self.length = self.data.send_data4(detect=detect, distance=distance, direction=self.angle)
 
-    def detect_water(self, detect: bool):
-        self.water = detect
-
     def reset_data(self):
         self.data.reset()
         self.length = self.max_length
-        #self.water = False
 
     def get_input(self) -> dict:
         return self.data.get_data()

@@ -47,8 +47,7 @@ class Simulation():
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
-        self.create_terrain('res/images/land7.png')
-        # self.create_terrain('res/images/land02.png')
+        self.create_terrain('res/images/land8.png')
 
     def init_vars(self):
         self.neuro_single_times = []
@@ -80,7 +79,7 @@ class Simulation():
         self.rocks_on_screen = deque(range(30))
         self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
         self.map_time = 0.0
-        self.terrain = image.load('res/images/land7.png').convert()
+        self.terrain = image.load('res/images/land8.png').convert()
 
     def create_terrain(self, filename: str):
         img = image.load(filename).convert()
@@ -289,7 +288,6 @@ class Simulation():
         water_detection_end = self.space.add_collision_handler(4, 14)
         water_detection_end.separate = detect_water_end
 
-
     def add_creature(self, genome: dict=None, pos: Vec2d=None) -> Creature:
         creature: Creature
         if pos is None:
@@ -421,9 +419,9 @@ class Simulation():
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
         self.update_meat(self.dt)
+        self.manager.update_gui(self.dt, self.ranking1, self.ranking2)
         #self.update_statistics()
         #self.update_terrain(self.dt)
-        self.manager.update_gui(self.dt, self.ranking1, self.ranking2)
 
     def update_meat(self, dT: float):
         for meat in self.meat_list:
@@ -496,21 +494,6 @@ class Simulation():
                 creature.on_water = (True, on_water_tile[1])
             else:
                 creature.on_water = (False, on_water_tile[1])
-            #    a, b = sensor.get_points()
-            #    sensor.detect_water(self.terrain.detect_water(sensor.get_rect(), a, b))
-            #vec = creature.rotation_vector.int_tuple
-            #coord0 = coord
-            #coord1 = (coord0[0]+(vec[0]), coord0[1]-((vec[1])))
-            #coords = [coord0, coord1]
-            
-            #if self.terrain.is_water_tile(coord1):
-            #    creature.water_ahead = True
-            #else:
-            #    creature.water_ahead = False
-        #    for coord in coords:   
-        #        self.terrain.set_occupied(coord, True)
-        #self.terrain_surf = self.terrain.draw_tiles()
-        #self.terrain_surf.set_alpha(255)
         self.map_time = self.map_time-1.0
 
     def update_statistics(self):
@@ -605,7 +588,6 @@ class Simulation():
         # self.init(cfg.WORLD)
         self.create_enviro()
         set_icon('planet32.png')
-        #test = Test()
         while self.running:
             self.auto_save()
             self.events()

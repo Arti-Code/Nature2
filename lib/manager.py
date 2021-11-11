@@ -32,7 +32,6 @@ class Manager:
         self.font_small = pygame.font.Font("res/fonts/fira.ttf", 8)
         self.text_list: list = []
         
-
     def new_project(self, new_name: str):
         self.add_to_project_list(new_name)
         try:
@@ -280,12 +279,12 @@ class Manager:
             base_line = []
 
             inp_desc = [
-                'crea', 'plnt', 'meat', 'H2O',
+                'crea', 'plnt', 'meat', 'wet',
                 'side', 'xpos', 'ypos', 'eng', 
-                'ene0', 'pla0', 'meat0', 'dst0',
-                'ene1', 'pla1', 'meat1', 'dst1', 
-                'ene2', 'pla2', 'meat2', 'dst2',
-                'H2O', 'hurt' 
+                'ene0', 'pla0', 'meat0', 'wet0', 'dist0',
+                'ene1', 'pla1', 'meat1', 'wet1', 'dist1',
+                'ene2', 'pla2', 'meat2', 'wet2', 'dist2',
+                'hurt' 
             ]
             out_desc = ["mov", "turn",
                 "sens", 

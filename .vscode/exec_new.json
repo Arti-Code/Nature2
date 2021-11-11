@@ -1,0 +1,93 @@
+{
+ "version": "auto-py-to-exe-configuration_v1",
+ "pyinstallerOptions": [
+  {
+   "optionDest": "noconfirm",
+   "value": true
+  },
+  {
+   "optionDest": "filenames",
+   "value": "C:/Users/gwozd/Kody/PYTHON/Nature/main.py"
+  },
+  {
+   "optionDest": "onefile",
+   "value": true
+  },
+  {
+   "optionDest": "console",
+   "value": false
+  },
+  {
+   "optionDest": "icon_file",
+   "value": "C:/Users/gwozd/Kody/PYTHON/Nature/res/icons/planet05.ico"
+  },
+  {
+   "optionDest": "name",
+   "value": "evo"
+  },
+  {
+   "optionDest": "ascii",
+   "value": false
+  },
+  {
+   "optionDest": "clean_build",
+   "value": false
+  },
+  {
+   "optionDest": "strip",
+   "value": false
+  },
+  {
+   "optionDest": "noupx",
+   "value": false
+  },
+  {
+   "optionDest": "uac_admin",
+   "value": false
+  },
+  {
+   "optionDest": "uac_uiaccess",
+   "value": false
+  },
+  {
+   "optionDest": "win_private_assemblies",
+   "value": false
+  },
+  {
+   "optionDest": "win_no_prefer_redirects",
+   "value": false
+  },
+  {
+   "optionDest": "bootloader_ignore_signals",
+   "value": false
+  },
+  {
+   "optionDest": "disable_windowed_traceback",
+   "value": false
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/gwozd/Kody/PYTHON/Nature/res/icons/planet05.ico;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/gwozd/Kody/PYTHON/Nature/res;res/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/gwozd/Kody/PYTHON/Nature/saves;saves/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/gwozd/Kody/PYTHON/Nature/planet32.png;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/gwozd/AppData/Local/Programs/Python/Python39/Lib/site-packages/pygame_gui/data;pygame_gui/data/"
+  }
+ ],
+ "nonPyinstallerOptions": {
+  "increaseRecursionLimit": true,
+  "manualArguments": ""
+ }
+}

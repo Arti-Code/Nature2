@@ -185,24 +185,17 @@ class Creature(Life):
         #self.draw_normal(screen)
         return True
 
-    def detect_water(self, screen: Surface) -> list:
-        return self.sensors[0].get_water_detectors(screen)
-
     def draw_normal(self, screen):
         if self.normal != None:
             gfxdraw.line(screen, int(self.position.x), int(flipy(self.position.y)), int(self.position.x+self.normal.x*50), int(flipy(self.position.y+self.normal.y*50)), Color('yellow'))
             #self.normal = None
 
     def draw_detectors(self, screen, rel_pos: Vector2):
-        first = True
         for detector in self.sensors:
-            if self.water_ahead and first:
-                detector.set_color('blue')
             detector.draw(screen=screen, rel_pos=rel_pos)
-            first = False
         self.collide_creature = False
         self.collide_plant = False
-        self.collide_something = False
+        self.collide_water = False
         self.collide_meat = False
 
     def draw_name(self, camera: Camera):
@@ -292,48 +285,46 @@ class Creature(Life):
             rest_energy += cfg.EAT_ENG
         if self._attack:
             rest_energy += cfg.ATK_ENG
-        #if self.on_water[0]:
-        #    base_energy += cfg.WATER_COST * self.on_water[1]
+        if self.on_water:
+            base_energy += cfg.WATER_COST
         base_energy *= size_cost
         self.energy -= (base_energy + move_energy + rest_energy) * dt
         self.energy = clamp(self.energy, 0, self.max_energy)
 
-    def drink(self, dt: float):
-        if self.on_water[0]:
-            if self._eat:
-                self.water += cfg.WATER*dt
-
     def get_input(self):
         input = []
+        side_angle = self.sensors[1].angle/(cfg.SENSOR_MAX_ANGLE*2)
+        #angle = self.angle/(2*PI)
+        #input.append(angle)
+        x = self.position[0]/cfg.WORLD[0]
+        y = self.position[1]/cfg.WORLD[1]
+        eng = self.energy/self.max_energy
         input.append(self.collide_creature)
         input.append(self.collide_plant)
         input.append(self.collide_meat)
         input.append(self.on_water)
-        #angle = self.angle/(2*PI)
-        side_angle = self.sensors[1].angle/(cfg.SENSOR_MAX_ANGLE*2)
-        #input.append(angle)
         input.append(side_angle)
-        x = self.position[0]/cfg.WORLD[0]
         input.append(x)
-        y = self.position[1]/cfg.WORLD[1]
         input.append(y)
-        eng = self.energy/self.max_energy
         input.append(eng)
+        #^   +8
         for sensor in self.sensors:
             detected = []
             detected = sensor.get_input()
             e = detected[0]
             p = detected[1]
-            #o = detected[2]
+            w = detected[2]
             m = detected[3]
             d = round(detected[4], 2)
             input.append(e)
             input.append(p)
+            input.append(w)
             input.append(m)
-            #input.append(o)
             input.append(d)
-        input.append(self.water_ahead)
+        #^   +3*5
         input.append(int(self.pain))
+        #^  +1
+        #^  =24
         self.pain = False
         return input
 
@@ -371,14 +362,7 @@ class Creature(Life):
         size = self.shape.radius
         gfxdraw.box(screen, Rect(rx-round(10), ry+round(size+3), round(19), 1), bar_red)
         gfxdraw.box(screen, Rect(rx-round(10), ry+round(size+3), round(20*(self.energy/self.max_energy)), 1), bar_green)
-    
-    def draw_water_bar(self, screen: Surface, rx: int, ry: int):
-        bar_blue = Color(0, 0, 255)
-        bar_gray = Color(150, 150, 150)
-        size = self.shape.radius
-        gfxdraw.box(screen, Rect(rx-round(10), ry+round(size+6), round(19), 1), bar_gray)
-        gfxdraw.box(screen, Rect(rx-round(10), ry+round(size+6), round(20*(self.water/self.max_energy)), 1), bar_blue)
-    
+  
     def kill(self, space: Space):
         to_kill = []
         for sensor in self.sensors:
