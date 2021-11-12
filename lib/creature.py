@@ -44,7 +44,7 @@ class Creature(Life):
         self.shape.collision_type = collision_tag
         space.add(self.shape)
         self.eye_colors = {}
-        self.visual_range = cfg.VISUAL_RANGE
+        self.visual_range = cfg.SENSOR_RANGE
         self.sensors = []
         self.side_angle = 0
         sensors_angle = ((random()+1)/2)*(PI/1.5)
@@ -315,16 +315,16 @@ class Creature(Life):
             p = detected[1]
             w = detected[2]
             m = detected[3]
-            d = round(detected[4], 2)
+            #d = round(detected[4], 2)
             input.append(e)
             input.append(p)
             input.append(w)
             input.append(m)
-            input.append(d)
-        #^   +3*5
+            #input.append(d)
+        #^   +3*4
         input.append(int(self.pain))
         #^  +1
-        #^  =24
+        #^  =21
         self.pain = False
         return input
 

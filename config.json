@@ -26,7 +26,6 @@
   "ROCK_NUM": 0,
   "RANK_SIZE": 10,
   "MEAT_TIME": 60,
-  "VISUAL_RANGE": 250,
   "SIZE2ENG": 200,
   "SIZE_COST": 180,
   "CHILDS_NUM": 1,
@@ -52,11 +51,7 @@
   "MIN_HERBIVORES": 5,
   "RANK_DECAY": 0.5,
   "STAT_PERIOD": 10,
-  "MAP_RES": 10,
-  "WATER_COST": 0.4,
+  "WATER_COST": 0.01,
   "WATER_MOVE": 0.1,
-  "WATER_NEEDS": 0.006,
-  "WATER": 20,
-  "TILE_RES": 10,
-  "NET": [24, 0, 0, 0, 6, 0, 0, 0, 0, 7]
+  "NET": [21, 0, 0, 0, 6, 0, 0, 0, 0, 7]
 }

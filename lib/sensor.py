@@ -65,7 +65,7 @@ class SensorData():
     def send_data3(self, detect: bool, distance: float, direction: float) -> float:
         self.water = detect
         if self.detection_range >= distance:
-            self.detection_range = distance
+            #self.detection_range = distance
             self.detected['water'] = detect
             if self.detection_range != 0:
                 self.detected['water_dist'] = 1-(distance/cfg.SENSOR_RANGE)
@@ -113,7 +113,7 @@ class SensorData():
 
     def get_data(self) -> list:
         dist = max(self.detected['enemy_dist'], self.detected['plant_dist'], self.detected['water_dist'], self.detected['meat_dist'])
-        return [self.detected['enemy'], self.detected['plant'], self.detected['water'], self.detected['meat'], dist]
+        return [self.detected['enemy_dist'], self.detected['plant_dist'], self.detected['water_dist'], self.detected['meat_dist']]
         
 class Sensor():
 
