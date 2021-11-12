@@ -66,6 +66,7 @@ class Simulation():
         self.dt = 1/self.FPS
         self.running = True
         self.show_network = True
+        self.show_specie_name = True
         self.selected = None
         self.time = 0
         self.cycles = 0
@@ -216,6 +217,8 @@ class Simulation():
             self.show_network = not self.show_network
         if event.key == pygame.K_d:
             self.draw_debug = not self.draw_debug
+        if event.key == pygame.K_c:
+            self.show_specie_name = not self.show_specie_name
 
     def mouse_events(self, event):
         self.selected = None
@@ -336,62 +339,46 @@ class Simulation():
     def draw(self):
         self.screen.fill(Color('black'))
         self.screen.blit(self.terrain, (0, 0))
-        screen_crs = 0
-        screen_plants = 0
-        screen_meats = 0
-        screen_rocks = 0
+        self.draw_creatures()
+        self.draw_plants()
+        self.draw_meat()
+        self.draw_rocks()
+        self.draw_interface()
+    
+    def draw_creatures(self):
         for creature in self.creature_list:
             if creature.draw(screen=self.screen, camera=self.camera, selected=self.selected):
-                screen_crs += 1
-            #creature.draw_detectors(screen=self.screen)
-            name, x, y = creature.draw_name(camera=self.camera)
-            self.manager.add_text2(name, x, y, Color('skyblue'))
+                if self.show_specie_name:
+                    name, x, y = creature.draw_name(camera=self.camera)
+                    self.manager.add_text2(name, x, y, Color('skyblue'))
 
+    def draw_plants(self):
         for plant in self.plant_list:
-            if plant.draw(screen=self.screen, camera=self.camera, selected=self.selected):
-                screen_plants += 1
+            plant.draw(screen=self.screen, camera=self.camera, selected=self.selected)
 
-        for wall in self.wall_list:
-            if wall.draw(screen=self.screen, camera=self.camera):
-                screen_rocks += 1
-
+    def draw_meat(self):
         for meat in self.meat_list:
-            if meat.draw(screen=self.screen, camera=self.camera, selected=self.selected):
-                screen_meats += 1
+            meat.draw(screen=self.screen, camera=self.camera, selected=self.selected)
 
-        self.creatures_on_screen.append(screen_crs)
-        self.plants_on_screen.append(screen_plants)
-        self.rocks_on_screen.append(screen_rocks)
-        self.meats_on_screen.append(screen_meats)
-        self.creatures_on_screen.popleft()
-        self.plants_on_screen.popleft()
-        self.rocks_on_screen.popleft()
-        self.meats_on_screen.popleft()
+    def draw_rocks(self):
+        for wall in self.wall_list:
+            wall.draw(screen=self.screen, camera=self.camera)
+
+    def draw_interface(self):
         self.draw_network()
-        #self.draw_text()
-        self.write_text()
+        self.draw_texts()
         self.manager.draw_gui(screen=self.screen)
 
-    def draw_text(self):
-        if self.selected != None:
-            if isinstance(self.selected, Creature):
-                self.manager.add_text2(f'energy: {round(self.selected.energy)} | life_time: {round(self.selected.life_time)} | run_time: {round(self.selected.run_time)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation} | food: {self.selected.food} | fit: {round(self.selected.fitness)}', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
-            elif isinstance(self.selected, Plant):
-                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)} | time: {round(self.selected.life_time)}', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
-            elif isinstance(self.selected, Meat):
-                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.radius)} | time: {round(self.selected.time)}', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
-            else:                
-                self.manager.add_text2(f'no info', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
-    
-    def write_text(self):
+    def write_texts(self):
         for txt, rect in self.manager.text_list:
             self.screen.blit(txt, rect)
         self.manager.text_list.clear()
 
     def draw_network(self):
         if self.show_network:
-            if isinstance(self.selected, Creature):
-                self.manager.draw_net(self.selected.neuro)
+            if self.selected != None:
+                if isinstance(self.selected, Creature):
+                    self.manager.draw_net(self.selected.neuro)
 
     def calc_time(self):
         self.time += self.dt*0.1
@@ -606,6 +593,18 @@ class Simulation():
                 self.physics_avg_time = mean(self.physics_single_times)
                 self.physics_single_times = []
             self.clock_step()
+
+#    def draw_text(self):
+#        if self.selected != None:
+#            if isinstance(self.selected, Creature):
+#                self.manager.add_text2(f'energy: {round(self.selected.energy)} | life_time: {round(self.selected.life_time)} | run_time: {round(self.selected.run_time)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation} | food: {self.selected.food} | fit: {round(self.selected.fitness)}', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
+#            elif isinstance(self.selected, Plant):
+#                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)} | time: {round(self.selected.life_time)}', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
+#            elif isinstance(self.selected, Meat):
+#                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.radius)} | time: {round(self.selected.time)}', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
+#            else:                
+#                self.manager.add_text2(f'no info', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
+
 
 
 def set_win_pos(x: int = 20, y: int = 20):

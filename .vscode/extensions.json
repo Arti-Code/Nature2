@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "tushortz.pygame-snippets",
-        "dhanush.pygame-snips"
+        "dhanush.pygame-snips",
+        "wakatime.vscode-wakatime"
     ]
 }
