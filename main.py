@@ -26,7 +26,7 @@ from lib.meat import Meat
 from lib.utils import log_to_file
 from lib.camera import Camera
 from lib.statistics import Statistics
-from lib.terrain import generate_terrain
+from lib.terrain import generate_terrain_blue, generate_terrain_red
 
 class Simulation():
 
@@ -47,7 +47,7 @@ class Simulation():
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
-        self.create_terrain('res/images/land9.png')
+        self.create_terrain('res/images/terra3.png')
 
     def init_vars(self):
         self.neuro_single_times = []
@@ -81,14 +81,16 @@ class Simulation():
         self.rocks_on_screen = deque(range(30))
         self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
         self.map_time = 0.0
-        self.terrain = image.load('res/images/land9.png').convert()
+        self.terrain = image.load('res/images/terra3.png').convert()
 
     def create_terrain(self, filename: str):
         img = image.load(filename).convert()
-        water = generate_terrain(img, self.space, 2, 0.392, 0, 14, Color((255, 0, 255, 100)))
+        rock = generate_terrain_red(img, self.space, 2, 1, 0, 8, Color((0, 0, 0, 255)))
+        self.lands.append(rock)
+        img = image.load(filename).convert()
+        water = generate_terrain_blue(img, self.space, 2, 0.392, 0, 14, Color((0, 150, 150, 100)))
         self.lands.append(water)
-        #rock = generate_terrain(img, self.space, 0, 0.392, 0, 8, Color((50, 50, 0, 100)))
-        #self.lands.append(rock)
+        
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -267,6 +269,13 @@ class Simulation():
         creature_water_collisions.pre_solve = process_creature_water_collisions
         creature_water_collisions.data['dt'] = self.dt
 
+        creature_rock_collisions = self.space.add_collision_handler(2, 8)
+        creature_rock_collisions.pre_solve = process_creatures_rock_collisions
+        creature_rock_collisions.data['dt'] = self.dt
+
+        creatures_rock_collisions_end = self.space.add_collision_handler(2, 8)
+        creatures_rock_collisions_end.separate = process_creatures_rock_collisions_end
+
         creature_water_collisions_end = self.space.add_collision_handler(2, 14)
         creature_water_collisions_end.separate = process_creature_water_collisions_end
 
@@ -369,7 +378,7 @@ class Simulation():
         self.draw_texts()
         self.manager.draw_gui(screen=self.screen)
 
-    def write_texts(self):
+    def draw_texts(self):
         for txt, rect in self.manager.text_list:
             self.screen.blit(txt, rect)
         self.manager.text_list.clear()

@@ -92,9 +92,13 @@ def process_creatures_collisions(arbiter, space, data):
     agent.collide_creature = True
     return False
 
-def process_edge_collisions(arbiter, space, data):
+def process_creatures_rock_collisions(arbiter, space, data):
     arbiter.shapes[0].body.position -= arbiter.normal * 2.5
     arbiter.shapes[0].body.collide_something = True
+    return False
+
+def process_creatures_rock_collisions_end(arbiter, space, data):
+    arbiter.shapes[0].body.collide_something = False
     return False
 
 def detect_creature(arbiter, space, data):
