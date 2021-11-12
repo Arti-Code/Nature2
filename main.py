@@ -60,6 +60,7 @@ class Simulation():
         self.wall_list = []
         self.meat_list = []
         self.lands = []
+        self.rocks = []
         self.sel_idx = 0
         self.FPS = 30
         self.dt = 1/self.FPS
@@ -83,8 +84,10 @@ class Simulation():
 
     def create_terrain(self, filename: str):
         img = image.load(filename).convert()
-        land = generate_terrain(img, self.space)
-        self.lands.append(land)
+        water = generate_terrain(img, self.space, 2, 0.392, 0, 14, Color((255, 0, 255, 100)))
+        self.lands.append(water)
+        #rock = generate_terrain(img, self.space, 0, 0.392, 0, 8, Color((50, 50, 0, 100)))
+        #self.lands.append(rock)
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num

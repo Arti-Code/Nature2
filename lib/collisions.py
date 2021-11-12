@@ -117,7 +117,7 @@ def detect_plant(arbiter, space, data):
     sensor_shape = arbiter.shapes[0]
     for sensor in creature.sensors:
         if sensor.shape == sensor_shape:
-            sensor.set_color(Color('yellowgreen'))
+            sensor.set_color(Color('limegreen'))
             pos0 = creature.position
             dist = pos0.get_distance(plant.position)
             sensor.send_data2(detect=True, distance=dist)
@@ -145,7 +145,7 @@ def detect_water(arbiter, space, data):
     sensor_shape = arbiter.shapes[0]
     for sensor in creature.sensors:
         if sensor.shape == sensor_shape:
-            sensor.set_color(Color('skyblue'))
+            sensor.set_color(Color('blue'))
             pos0 = creature.position
             dist = pos0.get_distance(contact)
             sensor.send_data3(detect=True, distance=dist)
