@@ -142,6 +142,21 @@ def detect_meat(arbiter, space, data):
             break
     return False
 
+def detect_rock(arbiter, space, data):
+    creature = arbiter.shapes[0].body
+    rock = arbiter.shapes[1].body
+    contact = arbiter.contact_point_set.points[0].point_a
+    sensor_shape = arbiter.shapes[0]
+    for sensor in creature.sensors:
+        if sensor.shape == sensor_shape:
+            sensor.set_color(Color('black'))
+            pos0 = creature.position
+            dist = pos0.get_distance(contact)
+            sensor.send_data5(detect=True, distance=dist)
+            break
+    return False
+
+
 def detect_water(arbiter, space, data):
     creature = arbiter.shapes[0].body
     water = arbiter.shapes[1].body
@@ -163,6 +178,9 @@ def detect_creature_end(arbiter, space, data):
     return False
 
 def detect_meat_end(arbiter, space, data):
+    return False
+
+def detect_rock_end(arbiter, space, data):
     return False
 
 def detect_water_end(arbiter, space, data):

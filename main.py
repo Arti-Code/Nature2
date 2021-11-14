@@ -81,7 +81,7 @@ class Simulation():
         self.rocks_on_screen = deque(range(30))
         self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
         self.map_time = 0.0
-        self.terrain = image.load('res/images/terra3.png').convert()
+        self.terrain = image.load('res/images/terra4.png').convert()
 
     def create_terrain(self, filename: str):
         img = image.load(filename).convert()
@@ -295,6 +295,12 @@ class Simulation():
         meat_detection.pre_solve = detect_meat
 
         meat_detection_end = self.space.add_collision_handler(4, 10)
+        meat_detection_end.separate = detect_meat_end
+
+        rock_detection = self.space.add_collision_handler(4, 8)
+        rock_detection.pre_solve = detect_rock
+
+        meat_detection_end = self.space.add_collision_handler(4, 8)
         meat_detection_end.separate = detect_meat_end
 
         water_detection = self.space.add_collision_handler(4, 14)

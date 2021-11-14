@@ -28,7 +28,8 @@ class SensorData():
             'enemy': False, 'enemy_dist': -1, 
             'plant': False, 'plant_dist': -1, 
             'water': False, 'water_dist': -1, 
-            'meat': False, 'meat_dist': -1
+            'meat': False, 'meat_dist': -1,
+            'rock': False, 'rock_dist': -1
         }
 
     def update(self, direction: float):
@@ -90,6 +91,20 @@ class SensorData():
             self.meat_direction = (direction/abs(self.max_angle))
         return self.detection_range
 
+    def send_data5(self, detect: bool, distance: float, direction: float) -> float:
+        self.meat = detect
+        if self.detection_range >= distance:
+            self.detection_range = distance
+            self.detected['rock'] = detect
+            if self.detection_range != 0:
+                self.detected['rock_dist'] = 1-(distance/cfg.SENSOR_RANGE)
+                self.meat_distance = 1 - (distance/cfg.SENSOR_RANGE)
+            else:
+                self.detected['rock_dist'] = 0.1
+                self.meat_distance = 0.1
+            self.meat_direction = (direction/abs(self.max_angle))
+        return self.detection_range
+
     def reset(self):
         self.detection_range = cfg.SENSOR_RANGE
         self.enemy = False
@@ -108,12 +123,13 @@ class SensorData():
             'enemy': False, 'enemy_dist': -1, 
             'plant': False, 'plant_dist': -1, 
             'water': False, 'water_dist': -1, 
-            'meat': False, 'meat_dist': -1
+            'meat': False, 'meat_dist': -1,
+            'rock': False, 'rock_dist': -1
         }
 
     def get_data(self) -> list:
-        dist = max(self.detected['enemy_dist'], self.detected['plant_dist'], self.detected['water_dist'], self.detected['meat_dist'])
-        return [self.detected['enemy_dist'], self.detected['plant_dist'], self.detected['water_dist'], self.detected['meat_dist']]
+        dist = max(self.detected['enemy_dist'], self.detected['plant_dist'], self.detected['water_dist'], self.detected['meat_dist'], self.detected['rock_dist'])
+        return [self.detected['enemy_dist'], self.detected['plant_dist'], self.detected['water_dist'], self.detected['meat_dist'], self.detected['rock_dist']]
         
 class Sensor():
 
@@ -199,6 +215,9 @@ class Sensor():
 
     def send_data4(self, detect: bool, distance: float):
         self.length = self.data.send_data4(detect=detect, distance=distance, direction=self.angle)
+
+    def send_data5(self, detect: bool, distance: float):
+        self.length = self.data.send_data5(detect=detect, distance=distance, direction=self.angle)
 
     def reset_data(self):
         self.data.reset()

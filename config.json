@@ -35,7 +35,7 @@
   "KILL2FIT": 50,
   "MEAT2FIT": 0.01,
   "VEGE2FIT": 0.01,
-  "DIFF": 0.25,
+  "DIFF": 0.4,
   "AUTO_SAVE_TIME": 100,
   "ATK_ENG": 0.01,
   "EAT_ENG": 0.01,
@@ -53,5 +53,5 @@
   "STAT_PERIOD": 10,
   "WATER_COST": 0.005,
   "WATER_MOVE": 0.1,
-  "NET": [21, 0, 0, 0, 6, 0, 0, 0, 0, 7]
+  "NET": [24, 0, 0, 0, 6, 0, 0, 0, 0, 7]
 }

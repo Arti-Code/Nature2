@@ -214,6 +214,14 @@ class Creature(Life):
             if self.run_time > cfg.RUN_TIME:
                 self.run_time = cfg.RUN_TIME
         move = self.move(dt)
+        #if self.position.x <= 0:
+        #    self.position.x = 2
+        #elif self.position.x >= cfg.WORLD[0]:
+        #    self.position.x = cfg.WORLD[0]-2
+        #if self.position.y <= 0:
+        #    self.position.y = 2
+        #elif self.position.y >= cfg.WORLD[1]:
+        #    self.position.y = cfg.WORLD[1]-2
         self.calc_energy(dt, move)
         self.mem_time -= dt
         self.mem_time = clamp(self.mem_time, 0, cfg.MEM_TIME)
@@ -315,12 +323,13 @@ class Creature(Life):
             p = detected[1]
             w = detected[2]
             m = detected[3]
+            r = detected[4]
             #d = round(detected[4], 2)
             input.append(e)
             input.append(p)
             input.append(w)
             input.append(m)
-            #input.append(d)
+            input.append(r)
         #^   +3*4
         input.append(int(self.pain))
         #^  +1
