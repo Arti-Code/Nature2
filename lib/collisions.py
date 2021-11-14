@@ -15,12 +15,12 @@ def process_creature_plant_collisions(arbiter, space, data):
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
     if size0 != 0:
-        hunter.position -= arbiter.normal*size1/size0*0.2
+        hunter.position -= arbiter.normal*(size1/size0)*0.5
     else:
         hunter.position -= arbiter.normal*0.2
     size1 = arbiter.shapes[1].radius
     if size1 != 0:
-        target.position += arbiter.normal*size0/size1*0.2
+        target.position += arbiter.normal*(size0/size1)*0.5
     else:
         target.position += arbiter.normal*0.2
     if hunter._eat:
@@ -44,12 +44,12 @@ def process_creature_meat_collisions(arbiter, space, data):
     size1 = arbiter.shapes[1].radius
     #~ new changes
     if size0 != 0:
-        hunter.position -= arbiter.normal*size1/size0*0.2
+        hunter.position -= arbiter.normal*(size1/size0)*0.5
     else:
         hunter.position -= arbiter.normal*0.2
     size1 = arbiter.shapes[1].radius
     if size1 != 0:
-        target.position += arbiter.normal*size0/size1*0.2
+        target.position += arbiter.normal*(size0/size1)*0.5
     else:
         target.position += arbiter.normal*0.2
     if hunter._eat:
@@ -78,8 +78,8 @@ def process_creatures_collisions(arbiter, space, data):
     target = arbiter.shapes[1].body
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
-    agent.position -= arbiter.normal*size1/size0*0.5
-    target.position += arbiter.normal*size0/size1*0.5
+    agent.position -= arbiter.normal*(size1/size0)*0.5
+    target.position += arbiter.normal*(size0/size1)*0.5
     if agent._attack:
         if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             if (size0+randint(0, 6)) > (size1+randint(0, 6)):
