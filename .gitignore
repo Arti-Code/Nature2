@@ -252,6 +252,7 @@ log.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
+lib/__pycache__/
 *.py[cod]
 *$py.class
 
@@ -388,7 +389,11 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 lib/__pycache__/
+lib/__pycache__/*.pyc
 lib/__pycache__
+lib/__pycache__/camera.cpython-39.pyc
+lib/__pycache__/species.cpython-39.pyc
+lib/__pycache__/statistics.cpython-39.pyc
 lib/__pycache__/camera.cpython-39.pyc
 lib/__pycache__/species.cpython-39.pyc
 lib/__pycache__/statistics.cpython-39.pyc

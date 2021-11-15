@@ -251,7 +251,9 @@ class Creature(Life):
         y2: float=self.position.y+randint(-100, 100)
         x2 = clamp(x2, 50, cfg.WORLD[0]-50)
         y2 = clamp(y2, 50, cfg.WORLD[1]-50)
-        pos = Vec2d(x2, y2)
+        x1: float=self.position.x
+        y1: float=self.position.y
+        pos = Vec2d(x1, y1)
         genome: dict=self.get_genome()
         genome['neuro'] = self.neuro.Replicate()
         self.reproduction_time = cfg.REP_TIME

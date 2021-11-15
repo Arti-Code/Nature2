@@ -12,7 +12,7 @@ from pygame import Color, Surface, image
 from pygame.constants import *
 from pygame.math import Vector2
 from pygame.time import Clock
-from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
+from pymunk import Vec2d, Space, Segment, Body, Circle, Shape, ShapeFilter
 import pymunk.pygame_util
 from lib.creature import Creature
 from lib.plant import Plant
@@ -47,7 +47,7 @@ class Simulation():
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
-        self.create_terrain('res/images/terra3.png')
+        self.create_terrain('res/images/rocks.png', 'res/images/water.png')
 
     def init_vars(self):
         self.neuro_single_times = []
@@ -81,17 +81,16 @@ class Simulation():
         self.rocks_on_screen = deque(range(30))
         self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
         self.map_time = 0.0
-        self.terrain = image.load('res/images/terra4.png').convert()
+        self.terrain = image.load('res/images/map.png').convert()
 
-    def create_terrain(self, filename: str):
-        img = image.load(filename).convert()
-        rock = generate_terrain_red(img, self.space, 2, 1, 0, 8, Color((0, 0, 0, 255)))
+    def create_terrain(self, rocks_filename: str, water_filename: str):
+        rock_img = image.load(rocks_filename).convert()
+        rock = generate_terrain_red(rock_img, self.space, 2, 1, 0, 8, Color((0, 0, 0, 255)))
         self.lands.append(rock)
-        img = image.load(filename).convert()
-        water = generate_terrain_blue(img, self.space, 2, 0.392, 0, 14, Color((0, 150, 150, 100)))
+        water_img = image.load(water_filename).convert()
+        water = generate_terrain_blue(water_img, self.space, 2, 0.392, 0, 14, Color((0, 150, 150, 100)))
         self.lands.append(water)
         
-
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
         vertices = []
@@ -309,13 +308,37 @@ class Simulation():
         water_detection_end = self.space.add_collision_handler(4, 14)
         water_detection_end.separate = detect_water_end
 
+    def is_position_free(self, position: Vector2, size: float, categories: int) -> bool:
+        f_shapes = ShapeFilter(group=0, categories=categories)
+        veryf_pos = self.space.point_query(position, size, f_shapes)
+        if veryf_pos == []:
+            return True
+        return False
+
+    def free_random_position(self, position: Union[Vec2d, tuple], range: Union[Vec2d, tuple], size: float, categories: int=0b10000010000000) ->Vec2d:
+        pos0 = position-range
+        pos1 = position+range
+        rnd_pos = None
+        free_pos = False
+        i = 0
+        while not free_pos:
+            x = randint(int(pos0[0]), int(pos1[0]))
+            y = randint(int(pos0[1]), int(pos1[1]))
+            rnd_pos = Vec2d(x, y)
+            free_pos = self.is_position_free(rnd_pos, size, categories)
+            i += 1
+            if i > 50:
+                return rnd_pos
+        return rnd_pos
+
+
     def add_creature(self, genome: dict=None, pos: Vec2d=None) -> Creature:
         creature: Creature
+        cpos = None
         if pos is None:
-            pos = random_position(cfg.WORLD)
-        x = clamp(pos[0], 0, cfg.WORLD[0])
-        y = clamp(pos[1], 0, cfg.WORLD[1])
-        cpos = Vec2d(x, y)
+            cpos = self.free_random_position(Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), cfg.CREATURE_MAX_SIZE, categories=0b10000010000000)
+        else:
+            cpos = pos
         if genome is None:
             creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, color0=Color('white'), color1=Color('skyblue'), color2=Color('blue'), color3=Color('red'))
         else:
@@ -331,17 +354,7 @@ class Simulation():
             size = cfg.PLANT_MAX_SIZE
         else:
             size = 3
-        free_field = False
-        while not free_field:
-            x = randint(50, cfg.WORLD[0]-50)
-            y = randint(50, cfg.WORLD[1]-50)
-            pos = Vec2d(x, y)
-            free_field = True
-            for rock in self.wall_list:
-                d =  rock.shape.point_query(pos).distance
-                if d <= 0:
-                    free_field = False
-                    break
+        pos = self.free_random_position(Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), size, 0b10000010000000)
         plant = Plant(screen=self.screen, space=self.space, collision_tag=6, world_size=world,
                       size=size, color0=Color((127, 255, 0)), color1=Color('darkgreen'), color3=Color((110, 50, 9)), position=pos)
         return plant
@@ -467,7 +480,8 @@ class Simulation():
             if creature.check_reproduction(dt):
                 for _ in range(cfg.CHILDS_NUM):
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)
-                    new_creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=position, genome=genome)
+                    new_position = self.free_random_position(position=position, range=Vec2d(100, 100), size=genome['size'], categories=0b10000010000000)
+                    new_creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=new_position, genome=genome)
                     temp_list.append(new_creature)
 
         if random() <= cfg.CREATURE_MULTIPLY:

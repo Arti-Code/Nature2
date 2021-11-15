@@ -26,11 +26,11 @@ def generate_terrain_blue(surface: Surface, space: Space, channel: int, mod_a: f
             print(e)
             return 0
 
-    line_set = pymunk.autogeometry.march_soft(BB(0, 0, 1200, 700), int(1200), int(700), 90, sample_func1)
+    line_set = pymunk.autogeometry.march_soft(BB(0, 0, 1599, 799), int(160), int(80), 90, sample_func1)
         #BB(0, 0, cfg.WORLD[0]-1, cfg.WORLD[1]-1), int(cfg.WORLD[0]/1), int(cfg.WORLD[1]/1), 90, sample_func)
 
     for polyline in line_set:
-        verts = pymunk.autogeometry.simplify_curves(polyline, 0.5)
+        verts = pymunk.autogeometry.simplify_curves(polyline, 1.0)
         decompose_verts = pymunk.autogeometry.convex_decomposition(verts, 1)
         for hull_verts in decompose_verts:
             land = Poly(space.static_body, hull_verts, None, 0.6)
@@ -60,11 +60,11 @@ def generate_terrain_red(surface: Surface, space: Space, channel: int, mod_a: fl
             print(e)
             return 0
 
-    line_set = pymunk.autogeometry.march_soft(BB(0, 0, 1200, 700), int(1200), int(700), 90, sample_func2)
+    line_set = pymunk.autogeometry.march_soft(BB(0, 0, 1599, 799), int(160), int(80), 90, sample_func2)
         #BB(0, 0, cfg.WORLD[0]-1, cfg.WORLD[1]-1), int(cfg.WORLD[0]/1), int(cfg.WORLD[1]/1), 90, sample_func)
 
     for polyline in line_set:
-        verts = pymunk.autogeometry.simplify_curves(polyline, 0.5)
+        verts = pymunk.autogeometry.simplify_curves(polyline, 1.0)
         decompose_verts = pymunk.autogeometry.convex_decomposition(verts, 1)
         for hull_verts in decompose_verts:
             land = Poly(space.static_body, hull_verts, None, 0.6)
