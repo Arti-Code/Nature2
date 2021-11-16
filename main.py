@@ -47,7 +47,7 @@ class Simulation():
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
-        self.create_terrain('res/images/land.png', 'res/images/land.png')
+        self.create_terrain('res/images/land3200.png', 'res/images/land3200.png')
 
     def init_vars(self):
         self.neuro_single_times = []
@@ -81,7 +81,7 @@ class Simulation():
         self.rocks_on_screen = deque(range(30))
         self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
         self.map_time = 0.0
-        self.terrain = image.load('res/images/land.png').convert()
+        self.terrain = image.load('res/images/land3200.png').convert()
 
     def create_terrain(self, rocks_filename: str, water_filename: str):
         rock_img = image.load(rocks_filename).convert()
@@ -366,7 +366,7 @@ class Simulation():
 
     def draw(self):
         self.screen.fill(Color('black'))
-        self.screen.blit(self.terrain, (0, 0))
+        self.screen.blit(self.terrain, (-self.camera.get_offset_tuple()[0], -self.camera.get_offset_tuple()[1]))
         self.draw_creatures()
         self.draw_plants()
         self.draw_meat()
@@ -622,17 +622,6 @@ class Simulation():
                 self.physics_avg_time = mean(self.physics_single_times)
                 self.physics_single_times = []
             self.clock_step()
-
-#    def draw_text(self):
-#        if self.selected != None:
-#            if isinstance(self.selected, Creature):
-#                self.manager.add_text2(f'energy: {round(self.selected.energy)} | life_time: {round(self.selected.life_time)} | run_time: {round(self.selected.run_time)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation} | food: {self.selected.food} | fit: {round(self.selected.fitness)}', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
-#            elif isinstance(self.selected, Plant):
-#                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)} | time: {round(self.selected.life_time)}', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
-#            elif isinstance(self.selected, Meat):
-#                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.radius)} | time: {round(self.selected.time)}', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
-#            else:                
-#                self.manager.add_text2(f'no info', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
 
 
 
