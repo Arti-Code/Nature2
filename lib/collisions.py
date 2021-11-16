@@ -15,12 +15,12 @@ def process_creature_plant_collisions(arbiter, space, data):
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
     if size0 != 0:
-        hunter.position -= arbiter.normal*size1/size0*0.2
+        hunter.position -= arbiter.normal*(size1/size0)*0.5
     else:
         hunter.position -= arbiter.normal*0.2
     size1 = arbiter.shapes[1].radius
     if size1 != 0:
-        target.position += arbiter.normal*size0/size1*0.2
+        target.position += arbiter.normal*(size0/size1)*0.5
     else:
         target.position += arbiter.normal*0.2
     if hunter._eat:
@@ -34,7 +34,7 @@ def process_creature_plant_collisions(arbiter, space, data):
             hunter.eat(plant_value)
             hunter.fitness += plant_value*cfg.VEGE2FIT/size0
     hunter.collide_plant = True
-    return True
+    return False
 
 def process_creature_meat_collisions(arbiter, space, data):
     dt = data['dt']
@@ -44,12 +44,12 @@ def process_creature_meat_collisions(arbiter, space, data):
     size1 = arbiter.shapes[1].radius
     #~ new changes
     if size0 != 0:
-        hunter.position -= arbiter.normal*size1/size0*0.2
+        hunter.position -= arbiter.normal*(size1/size0)*0.5
     else:
         hunter.position -= arbiter.normal*0.2
     size1 = arbiter.shapes[1].radius
     if size1 != 0:
-        target.position += arbiter.normal*size0/size1*0.2
+        target.position += arbiter.normal*(size0/size1)*0.5
     else:
         target.position += arbiter.normal*0.2
     if hunter._eat:
@@ -62,7 +62,15 @@ def process_creature_meat_collisions(arbiter, space, data):
             hunter.eat(meat_value)
             hunter.fitness += meat_value*cfg.MEAT2FIT/size0
     hunter.collide_meat = True
-    return True
+    return False
+
+def process_creature_water_collisions(arbiter, space, data):
+    agent = arbiter.shapes[0].body.on_water = True
+    return False
+
+def process_creature_water_collisions_end(arbiter, space, data):
+    agent = arbiter.shapes[0].body.on_water = False
+    return False
 
 def process_creatures_collisions(arbiter, space, data):
     dt = data['dt']
@@ -70,8 +78,8 @@ def process_creatures_collisions(arbiter, space, data):
     target = arbiter.shapes[1].body
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
-    agent.position -= arbiter.normal*size1/size0*0.5
-    target.position += arbiter.normal*size0/size1*0.5
+    agent.position -= arbiter.normal*(size1/size0)*0.5
+    target.position += arbiter.normal*(size0/size1)*0.5
     if agent._attack:
         if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             if (size0+randint(0, 6)) > (size1+randint(0, 6)):
@@ -82,12 +90,16 @@ def process_creatures_collisions(arbiter, space, data):
                 else:
                     agent.fitness += dmg*cfg.HIT2FIT
     agent.collide_creature = True
-    return True
+    return False
 
-def process_edge_collisions(arbiter, space, data):
+def process_creatures_rock_collisions(arbiter, space, data):
     arbiter.shapes[0].body.position -= arbiter.normal * 2.5
     arbiter.shapes[0].body.collide_something = True
-    return True
+    return False
+
+def process_creatures_rock_collisions_end(arbiter, space, data):
+    arbiter.shapes[0].body.collide_something = False
+    return False
 
 def detect_creature(arbiter, space, data):
     creature = arbiter.shapes[0].body
@@ -101,7 +113,7 @@ def detect_creature(arbiter, space, data):
                 dist = pos0.get_distance(enemy.position)
                 sensor.send_data(detect=True, distance=dist)
                 break
-    return True
+    return False
 
 def detect_plant(arbiter, space, data):
     creature = arbiter.shapes[0].body
@@ -109,26 +121,12 @@ def detect_plant(arbiter, space, data):
     sensor_shape = arbiter.shapes[0]
     for sensor in creature.sensors:
         if sensor.shape == sensor_shape:
-            sensor.set_color(Color('green'))
+            sensor.set_color(Color('limegreen'))
             pos0 = creature.position
             dist = pos0.get_distance(plant.position)
             sensor.send_data2(detect=True, distance=dist)
             break
-    return True
-
-def detect_obstacle(arbiter, space, data):
-    creature = arbiter.shapes[0].body
-    obstacle = arbiter.shapes[1].body
-    contact = arbiter.contact_point_set.points[0].point_a
-    sensor_shape = arbiter.shapes[0]
-    for sensor in creature.sensors:
-        if sensor.shape == sensor_shape:
-            sensor.set_color(Color('skyblue'))
-            pos0 = creature.position
-            dist = pos0.get_distance(contact)
-            sensor.send_data3(detect=True, distance=dist)
-            break
-    return True
+    return False
 
 def detect_meat(arbiter, space, data):
     creature = arbiter.shapes[0].body
@@ -142,16 +140,48 @@ def detect_meat(arbiter, space, data):
             dist = pos0.get_distance(contact)
             sensor.send_data4(detect=True, distance=dist)
             break
-    return True
+    return False
+
+def detect_rock(arbiter, space, data):
+    creature = arbiter.shapes[0].body
+    rock = arbiter.shapes[1].body
+    contact = arbiter.contact_point_set.points[0].point_a
+    sensor_shape = arbiter.shapes[0]
+    for sensor in creature.sensors:
+        if sensor.shape == sensor_shape:
+            sensor.set_color(Color('gray'))
+            pos0 = creature.position
+            dist = pos0.get_distance(contact)
+            sensor.send_data5(detect=True, distance=dist)
+            break
+    return False
+
+
+def detect_water(arbiter, space, data):
+    creature = arbiter.shapes[0].body
+    water = arbiter.shapes[1].body
+    contact = arbiter.contact_point_set.points[0].point_a
+    sensor_shape = arbiter.shapes[0]
+    for sensor in creature.sensors:
+        if sensor.shape == sensor_shape:
+            sensor.set_color(Color('blue'))
+            pos0 = creature.position
+            dist = pos0.get_distance(contact)
+            sensor.send_data3(detect=True, distance=dist)
+            break
+    return False
 
 def detect_plant_end(arbiter, space, data):
-    return True
+    return False
 
 def detect_creature_end(arbiter, space, data):
-    return True
-
-def detect_obstacle_end(arbiter, space, data):
-    return True
+    return False
 
 def detect_meat_end(arbiter, space, data):
-    return True
+    return False
+
+def detect_rock_end(arbiter, space, data):
+    return False
+
+def detect_water_end(arbiter, space, data):
+    return False

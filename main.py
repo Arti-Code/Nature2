@@ -12,7 +12,7 @@ from pygame import Color, Surface, image
 from pygame.constants import *
 from pygame.math import Vector2
 from pygame.time import Clock
-from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
+from pymunk import Vec2d, Space, Segment, Body, Circle, Shape, ShapeFilter
 import pymunk.pygame_util
 from lib.creature import Creature
 from lib.plant import Plant
@@ -26,11 +26,30 @@ from lib.meat import Meat
 from lib.utils import log_to_file
 from lib.camera import Camera
 from lib.statistics import Statistics
-from lib.terrain import Terrain, Terrain2
+from lib.terrain import generate_terrain_blue, generate_terrain_red
 
 class Simulation():
 
     def __init__(self):
+        flags = pygame.DOUBLEBUF | pygame.HWSURFACE
+        self.screen = pygame.display.set_mode(size=cfg.SCREEN, flags=flags, vsync=1)
+        self.space = Space()
+        self.clock = Clock()
+        pygame.init()
+        self.init_vars()
+        self.manager = Manager(screen=self.screen, enviro=self)
+        self.space.gravity = (0.0, 0.0)
+        self.set_collision_calls()
+        pymunk.pygame_util.positive_y_is_up = False
+        self.options = pymunk.pygame_util.DrawOptions(self.screen)
+        self.space.debug_draw(self.options)
+        self.draw_debug: bool=False
+        self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
+        self.statistics = Statistics()
+        self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
+        self.create_terrain('res/images/land.png', 'res/images/land.png')
+
+    def init_vars(self):
         self.neuro_single_times = []
         self.neuro_avg_time = 1
         self.physics_single_times = []
@@ -40,47 +59,38 @@ class Simulation():
         self.plant_list = []
         self.wall_list = []
         self.meat_list = []
-        flags = pygame.DOUBLEBUF | pygame.HWSURFACE
-        self.screen = pygame.display.set_mode(
-            size=cfg.SCREEN, flags=flags, vsync=1)
-        self.space = Space()
+        self.lands = []
+        self.rocks = []
+        self.sel_idx = 0
         self.FPS = 30
         self.dt = 1/self.FPS
         self.running = True
-        self.clock = Clock()
-        self.sel_idx = 0
-        self.show_network = False
-        self.manager = Manager(screen=self.screen, enviro=self)
-
-        pygame.init()
-        self.space.gravity = (0.0, 0.0)
-        self.set_collision_calls()
-        pymunk.pygame_util.positive_y_is_up = True
+        self.show_network = True
+        self.show_specie_name = True
         self.selected = None
-        self.options = pymunk.pygame_util.DrawOptions(self.screen)
-        self.space.debug_draw(self.options)
         self.time = 0
         self.cycles = 0
-        self.draw_debug: bool=False
         self.ranking1 = []
         self.ranking2 = []
         self.last_save_time = 0
         self.herbivores = 0
         self.carnivores = 0
-        self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.creatures_on_screen = deque(range(30))
         self.plants_on_screen = deque(range(30))
         self.meats_on_screen = deque(range(30))
         self.rocks_on_screen = deque(range(30))
-        self.statistics = Statistics()
-        self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
         self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
-        self.terrain = Terrain((cfg.WORLD[0], cfg.WORLD[0]), 10, 1.0)
-        #self.terrain.generate(self.space, cfg.WORLD, 1)  #
-        self.terrain_surf = self.terrain.draw_tiles()
-        self.terrain_surf.set_alpha(255)
         self.map_time = 0.0
+        self.terrain = image.load('res/images/land.png').convert()
 
+    def create_terrain(self, rocks_filename: str, water_filename: str):
+        rock_img = image.load(rocks_filename).convert()
+        rock = generate_terrain_red(rock_img, self.space, 2, 1, 0, 8, Color((150, 150, 150, 255)))
+        self.lands.append(rock)
+        water_img = image.load(water_filename).convert()
+        water = generate_terrain_blue(water_img, self.space, 2, 0.392, 0, 14, Color((0, 0, 255, 255)))
+        self.lands.append(water)
+        
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
         vertices = []
@@ -208,6 +218,8 @@ class Simulation():
             self.show_network = not self.show_network
         if event.key == pygame.K_d:
             self.draw_debug = not self.draw_debug
+        if event.key == pygame.K_c:
+            self.show_specie_name = not self.show_specie_name
 
     def mouse_events(self, event):
         self.selected = None
@@ -239,7 +251,7 @@ class Simulation():
         return None
 
     def set_collision_calls(self):
-        #* 2: body | 8: wall | 4: sensor | 6: plant | 12: new_plant | 16: eye | 10: meat
+        #* 2: body | 8: wall | 4: sensor | 6: plant | 12: new_plant | 16: eye | 10: meat | 14: water
         creature_collisions = self.space.add_collision_handler(2, 2)
         creature_collisions.pre_solve = process_creatures_collisions
         creature_collisions.data['dt'] = self.dt
@@ -252,8 +264,19 @@ class Simulation():
         creature_meat_collisions.pre_solve = process_creature_meat_collisions
         creature_meat_collisions.data['dt'] = self.dt
 
-#        edge_collisions = self.space.add_collision_handler(2, 8)
-#        edge_collisions.pre_solve = process_edge_collisions
+        creature_water_collisions = self.space.add_collision_handler(2, 14)
+        creature_water_collisions.pre_solve = process_creature_water_collisions
+        creature_water_collisions.data['dt'] = self.dt
+
+        creature_rock_collisions = self.space.add_collision_handler(2, 8)
+        creature_rock_collisions.pre_solve = process_creatures_rock_collisions
+        creature_rock_collisions.data['dt'] = self.dt
+
+        creatures_rock_collisions_end = self.space.add_collision_handler(2, 8)
+        creatures_rock_collisions_end.separate = process_creatures_rock_collisions_end
+
+        creature_water_collisions_end = self.space.add_collision_handler(2, 14)
+        creature_water_collisions_end.separate = process_creature_water_collisions_end
 
         creature_detection = self.space.add_collision_handler(4, 2)
         creature_detection.pre_solve = detect_creature
@@ -273,43 +296,49 @@ class Simulation():
         meat_detection_end = self.space.add_collision_handler(4, 10)
         meat_detection_end.separate = detect_meat_end
 
-#        obstacle_detection = self.space.add_collision_handler(4, 8)
-#        obstacle_detection.pre_solve = detect_obstacle
-#        
-#        obstacle_detection_end = self.space.add_collision_handler(4, 8)
-#        obstacle_detection_end.separate = detect_obstacle_end
-#
-#        detection = self.space.add_collision_handler(4, 2)
-#        detection.pre_solve = detect_creature
-#
-#        detection_end = self.space.add_collision_handler(4, 2)
-#        detection_end.separate = detect_creature_end
-#
-#        plant_detection = self.space.add_collision_handler(4, 6)
-#        plant_detection.pre_solve = detect_plant
-#
-#        plant_detection_end = self.space.add_collision_handler(4, 6)
-#        plant_detection_end.separate = detect_plant_end
-#
-#        meat_detection = self.space.add_collision_handler(4, 10)
-#        meat_detection.pre_solve = detect_meat
-#
-#        meat_detection_end = self.space.add_collision_handler(4, 10)
-#        meat_detection_end.separate = detect_meat_end
-#
-#        obstacle_detection = self.space.add_collision_handler(4, 8)
-#        obstacle_detection.pre_solve = detect_obstacle
-#
-#        obstacle_detection_end = self.space.add_collision_handler(4, 8)
-#        obstacle_detection_end.separate = detect_obstacle_end
+        rock_detection = self.space.add_collision_handler(4, 8)
+        rock_detection.pre_solve = detect_rock
+
+        meat_detection_end = self.space.add_collision_handler(4, 8)
+        meat_detection_end.separate = detect_meat_end
+
+        water_detection = self.space.add_collision_handler(4, 14)
+        water_detection.pre_solve = detect_water
+
+        water_detection_end = self.space.add_collision_handler(4, 14)
+        water_detection_end.separate = detect_water_end
+
+    def is_position_free(self, position: Vector2, size: float, categories: int) -> bool:
+        f_shapes = ShapeFilter(group=0, categories=categories)
+        veryf_pos = self.space.point_query(position, size, f_shapes)
+        if veryf_pos == []:
+            return True
+        return False
+
+    def free_random_position(self, position: Union[Vec2d, tuple], range: Union[Vec2d, tuple], size: float, categories: int=0b10000010000000) ->Vec2d:
+        pos0 = position-range
+        pos1 = position+range
+        rnd_pos = None
+        free_pos = False
+        i = 0
+        while not free_pos:
+            x = randint(int(pos0[0]), int(pos1[0]))
+            y = randint(int(pos0[1]), int(pos1[1]))
+            rnd_pos = Vec2d(x, y)
+            free_pos = self.is_position_free(rnd_pos, size, categories)
+            i += 1
+            if i > 50:
+                return rnd_pos
+        return rnd_pos
+
 
     def add_creature(self, genome: dict=None, pos: Vec2d=None) -> Creature:
         creature: Creature
+        cpos = None
         if pos is None:
-            pos = random_position(cfg.WORLD)
-        x = clamp(pos[0], 0, cfg.WORLD[0])
-        y = clamp(pos[1], 0, cfg.WORLD[1])
-        cpos = Vec2d(x, y)
+            cpos = self.free_random_position(Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), cfg.CREATURE_MAX_SIZE, categories=0b10000010000000)
+        else:
+            cpos = pos
         if genome is None:
             creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, color0=Color('white'), color1=Color('skyblue'), color2=Color('blue'), color3=Color('red'))
         else:
@@ -325,17 +354,7 @@ class Simulation():
             size = cfg.PLANT_MAX_SIZE
         else:
             size = 3
-        free_field = False
-        while not free_field:
-            x = randint(50, cfg.WORLD[0]-50)
-            y = randint(50, cfg.WORLD[1]-50)
-            pos = Vec2d(x, y)
-            free_field = True
-            for rock in self.wall_list:
-                d =  rock.shape.point_query(pos).distance
-                if d <= 0:
-                    free_field = False
-                    break
+        pos = self.free_random_position(Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), size, 0b10000010000000)
         plant = Plant(screen=self.screen, space=self.space, collision_tag=6, world_size=world,
                       size=size, color0=Color((127, 255, 0)), color1=Color('darkgreen'), color3=Color((110, 50, 9)), position=pos)
         return plant
@@ -347,63 +366,47 @@ class Simulation():
 
     def draw(self):
         self.screen.fill(Color('black'))
-        self.screen.blit(self.terrain_surf, (0, 0))
-        screen_crs = 0
-        screen_plants = 0
-        screen_meats = 0
-        screen_rocks = 0
+        self.screen.blit(self.terrain, (0, 0))
+        self.draw_creatures()
+        self.draw_plants()
+        self.draw_meat()
+        self.draw_rocks()
+        self.draw_interface()
+    
+    def draw_creatures(self):
         for creature in self.creature_list:
             if creature.draw(screen=self.screen, camera=self.camera, selected=self.selected):
-                screen_crs += 1
-            #creature.draw_detectors(screen=self.screen)
-            name, x, y = creature.draw_name(camera=self.camera)
-            self.manager.add_text2(name, x, y, Color('skyblue'))
+                if self.show_specie_name:
+                    name, x, y = creature.draw_name(camera=self.camera)
+                    self.manager.add_text2(name, x, y, Color('skyblue'))
 
+    def draw_plants(self):
         for plant in self.plant_list:
-            if plant.draw(screen=self.screen, camera=self.camera, selected=self.selected):
-                screen_plants += 1
+            plant.draw(screen=self.screen, camera=self.camera, selected=self.selected)
 
-        for wall in self.wall_list:
-            if wall.draw(screen=self.screen, camera=self.camera):
-                screen_rocks += 1
-
+    def draw_meat(self):
         for meat in self.meat_list:
-            if meat.draw(screen=self.screen, camera=self.camera, selected=self.selected):
-                screen_meats += 1
+            meat.draw(screen=self.screen, camera=self.camera, selected=self.selected)
 
-        self.creatures_on_screen.append(screen_crs)
-        self.plants_on_screen.append(screen_plants)
-        self.rocks_on_screen.append(screen_rocks)
-        self.meats_on_screen.append(screen_meats)
-        self.creatures_on_screen.popleft()
-        self.plants_on_screen.popleft()
-        self.rocks_on_screen.popleft()
-        self.meats_on_screen.popleft()
+    def draw_rocks(self):
+        for wall in self.wall_list:
+            wall.draw(screen=self.screen, camera=self.camera)
+
+    def draw_interface(self):
         self.draw_network()
-        #self.draw_text()
-        self.write_text()
+        self.draw_texts()
         self.manager.draw_gui(screen=self.screen)
 
-    def draw_text(self):
-        if self.selected != None:
-            if isinstance(self.selected, Creature):
-                self.manager.add_text2(f'energy: {round(self.selected.energy)} | life_time: {round(self.selected.life_time)} | run_time: {round(self.selected.run_time)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation} | food: {self.selected.food} | fit: {round(self.selected.fitness)}', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
-            elif isinstance(self.selected, Plant):
-                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)} | time: {round(self.selected.life_time)}', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
-            elif isinstance(self.selected, Meat):
-                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.radius)} | time: {round(self.selected.time)}', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
-            else:                
-                self.manager.add_text2(f'no info', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
-    
-    def write_text(self):
+    def draw_texts(self):
         for txt, rect in self.manager.text_list:
             self.screen.blit(txt, rect)
         self.manager.text_list.clear()
 
     def draw_network(self):
         if self.show_network:
-            if isinstance(self.selected, Creature):
-                self.manager.draw_net(self.selected.neuro)
+            if self.selected != None:
+                if isinstance(self.selected, Creature):
+                    self.manager.draw_net(self.selected.neuro)
 
     def calc_time(self):
         self.time += self.dt*0.1
@@ -434,9 +437,9 @@ class Simulation():
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
         self.update_meat(self.dt)
-        #self.update_statistics()
-        self.update_terrain(self.dt)
         self.manager.update_gui(self.dt, self.ranking1, self.ranking2)
+        #self.update_statistics()
+        #self.update_terrain(self.dt)
 
     def update_meat(self, dT: float):
         for meat in self.meat_list:
@@ -448,7 +451,7 @@ class Simulation():
     def update_creatures(self, dt: float):
         ### CHECK ENERGY ###
         for creature in self.creature_list:
-            if creature.energy <= 0 or creature.water <= 0:
+            if creature.energy <= 0:
                 self.add_to_ranking(creature)
                 if not creature.on_water:
                     meat = Meat(screen=self.screen, space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
@@ -477,7 +480,8 @@ class Simulation():
             if creature.check_reproduction(dt):
                 for _ in range(cfg.CHILDS_NUM):
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)
-                    new_creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=position, genome=genome)
+                    new_position = self.free_random_position(position=position, range=Vec2d(100, 100), size=genome['size'], categories=0b10000010000000)
+                    new_creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=new_position, genome=genome)
                     temp_list.append(new_creature)
 
         if random() <= cfg.CREATURE_MULTIPLY:
@@ -491,7 +495,7 @@ class Simulation():
 
     def update_terrain(self, dt):
         self.map_time += dt
-        if self.map_time < 1.0:
+        if self.map_time < 0.8:
             return
         #self.terrain.update()
         for creature in self.creature_list:
@@ -501,30 +505,14 @@ class Simulation():
             creature.water_ahead = False
             water_detectors = creature.detect_water(self.screen)
             for detector in water_detectors:
-                if self.terrain.is_water_tile(detector):
+                if self.terrain.is_water_tile(detector)[0]:
                     creature.water_ahead = True
                     break
-
-            if self.terrain.is_water_tile(coord0):
-                creature.on_water = True
-                creature.drink(dt)
+            on_water_tile = self.terrain.is_water_tile(coord0)
+            if on_water_tile[0]:
+                creature.on_water = (True, on_water_tile[1])
             else:
-                creature.on_water = False
-            #    a, b = sensor.get_points()
-            #    sensor.detect_water(self.terrain.detect_water(sensor.get_rect(), a, b))
-            #vec = creature.rotation_vector.int_tuple
-            #coord0 = coord
-            #coord1 = (coord0[0]+(vec[0]), coord0[1]-((vec[1])))
-            #coords = [coord0, coord1]
-            
-            #if self.terrain.is_water_tile(coord1):
-            #    creature.water_ahead = True
-            #else:
-            #    creature.water_ahead = False
-        #    for coord in coords:   
-        #        self.terrain.set_occupied(coord, True)
-        #self.terrain_surf = self.terrain.draw_tiles()
-        #self.terrain_surf.set_alpha(255)
+                creature.on_water = (False, on_water_tile[1])
         self.map_time = self.map_time-1.0
 
     def update_statistics(self):
@@ -619,7 +607,6 @@ class Simulation():
         # self.init(cfg.WORLD)
         self.create_enviro()
         set_icon('planet32.png')
-        #test = Test()
         while self.running:
             self.auto_save()
             self.events()
@@ -635,6 +622,18 @@ class Simulation():
                 self.physics_avg_time = mean(self.physics_single_times)
                 self.physics_single_times = []
             self.clock_step()
+
+#    def draw_text(self):
+#        if self.selected != None:
+#            if isinstance(self.selected, Creature):
+#                self.manager.add_text2(f'energy: {round(self.selected.energy)} | life_time: {round(self.selected.life_time)} | run_time: {round(self.selected.run_time)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation} | food: {self.selected.food} | fit: {round(self.selected.fitness)}', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
+#            elif isinstance(self.selected, Plant):
+#                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)} | time: {round(self.selected.life_time)}', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
+#            elif isinstance(self.selected, Meat):
+#                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.radius)} | time: {round(self.selected.time)}', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
+#            else:                
+#                self.manager.add_text2(f'no info', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
+
 
 
 def set_win_pos(x: int = 20, y: int = 20):

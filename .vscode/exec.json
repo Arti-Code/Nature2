@@ -19,11 +19,11 @@
   },
   {
    "optionDest": "icon_file",
-   "value": "D:/PYTHON/Nature/res/icons/planet05.ico"
+   "value": "D:/PYTHON/Nature/res/icons/planet03.ico"
   },
   {
    "optionDest": "name",
-   "value": "nature"
+   "value": "evo"
   },
   {
    "optionDest": "ascii",
@@ -62,20 +62,28 @@
    "value": false
   },
   {
-   "optionDest": "datas",
-   "value": "D:/PYTHON/Nature/res/icons/planet05.ico;."
+   "optionDest": "disable_windowed_traceback",
+   "value": false
   },
   {
    "optionDest": "datas",
-   "value": "D:/PYTHON/Nature/res/images/planet05.png;."
-  },
-  {
-   "optionDest": "datas",
-   "value": "D:/PYTHON/Nature/lib;lib/"
+   "value": "D:/PYTHON/Nature/res/icons/planet01.ico;."
   },
   {
    "optionDest": "datas",
    "value": "D:/PYTHON/Nature/res;res/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "D:/PYTHON/Nature/saves;saves/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "D:/PYTHON/Nature/planet32.png;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "D:/PYTHON/Nature/env/Lib/site-packages/pygame_gui/data;pygame_gui/data/"
   }
  ],
  "nonPyinstallerOptions": {

@@ -187,11 +187,12 @@ class CreatureWindow(UIWindow):
         i=0
         self.labs = {}
         for key, val in data.items():
-            lab1 = UILabel(Rect((5, 15*i+5), (70, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
             if key != 'states':
+                lab1 = UILabel(Rect((5, 15*i+5), (70, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
                 lab2 = UILabel(Rect((85, 15*i+5), (self.rect.width/2-15, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
             else:
-                lab2 = UILabel(Rect((85, 15*i+5), (self.rect.width/2-15, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
+                lab1 = UILabel(Rect((5, 15*i+5), (10, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
+                lab2 = UILabel(Rect((16, 15*i+5), (self.rect.width-21, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
             i+=1
             self.labs[key] = (lab1, lab2)
         btn_w = 80; btn_h = 20
@@ -413,10 +414,8 @@ class GUI():
         h = 25
         h2 = 20
         title_rect = Rect((round(cfg.SCREEN[0]/2-w/2), (10)), (w, h))
-        #subtitle_rect = Rect((round(cfg.SCREEN[0]/2-w/2), (40)), (w, h2))
         world_rect = Rect((round(cfg.SCREEN[0]/2-w/2), (35)), (w, h2))
         self.title = UILabel(relative_rect=title_rect, text=TITLE, manager=self.ui_mgr, object_id='#lab_title')
-        #self.subtitle = UILabel(relative_rect=subtitle_rect, text=SUBTITLE, manager=self.ui_mgr, object_id='#lab_subtitle')
         if self.owner.enviro.project_name != None:
             self.world = UILabel(relative_rect=world_rect, text=self.owner.enviro.project_name, manager=self.ui_mgr, object_id='#lab_world')
 
@@ -439,7 +438,7 @@ class GUI():
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (180, 300)), data=data, dT=dT)
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (220, 300)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
@@ -467,6 +466,7 @@ class GUI():
             data['GENERATION'] = ''
             data['FOOD'] = ''
             data['ENERGY'] = ''
+            #data['ENERGY'] = ''
             data['POWER'] = ''
             data['SPEED'] = ''
             data['SIZE'] = ''
@@ -475,7 +475,7 @@ class GUI():
             data['FITNESS'] = ''
             data["LIFETIME"] = ''
             data["REP_TIME"] = ''
-            data['STATES'] = ''
+            data['S'] = ''
             return data
         data = {}
         data['SPECIE'] = self.owner.enviro.selected.name
@@ -493,12 +493,18 @@ class GUI():
         data["REP_TIME"] = str(round(self.owner.enviro.selected.reproduction_time))
         states = []
         if self.owner.enviro.selected.hide:
-            states.append(' [HIDE]')
+            states.append(' [H]')
+        if self.owner.enviro.selected._attack:
+            states.append(' [A]')
         if self.owner.enviro.selected.run:
-            states.append(' [RUN]')
-        data['STATES'] = ''
+            states.append(' [R]')
+        if self.owner.enviro.selected.on_water:
+            states.append(' [W]')
+        if self.owner.enviro.selected._eat:
+            states.append(' [E]')
+        data['S'] = ''
         for state in states:
-            data['STATES'] += state
+            data['S'] += state
         return data
 
     def select_map(self):

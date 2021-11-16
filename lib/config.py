@@ -2,7 +2,7 @@ from math import pi as PI
 from json import loads, dumps
 
 TITLE = "NATURE"
-SUBTITLE = "v0.5.3"
+SUBTITLE = "v0.5.6"
 AUTHOR = "2019-2021 Artur Gwoździowski"
 
 class Configuration():
@@ -35,7 +35,6 @@ class Configuration():
         self.ROCK_NUM = None
         self.RANK_SIZE = None
         self.MEAT_TIME = None
-        self.VISUAL_RANGE = None
         self.SIZE2ENG = None
         self.SIZE_COST = None
         self.CHILDS_NUM = None
@@ -45,7 +44,7 @@ class Configuration():
         self.KILL2FIT = None
         self.VEGE2FIT = None
         self.MEAT2FIT = None
-        self.DIFF: float
+        self.DIFF = None
         self.AUTO_SAVE_TIME = None
         self.ATK_ENG = None
         self.EAT_ENG = None
@@ -62,10 +61,8 @@ class Configuration():
         self.NET = None
         self.RANK_DECAY = None
         self.STAT_PERIOD = None
-        self.MAP_RES = None
         self.WATER_MOVE = None
         self.WATER_COST = None
-        self.WATER = None
         self.load_from_file(filename)
 
     def load_from_file(self, filename: str):
@@ -100,7 +97,6 @@ class Configuration():
         self.ROCK_NUM               = cfg['ROCK_NUM']
         self.RANK_SIZE              = cfg['RANK_SIZE']
         self.MEAT_TIME              = cfg['MEAT_TIME']
-        self.VISUAL_RANGE           = cfg['VISUAL_RANGE']
         self.SIZE2ENG               = cfg['SIZE2ENG']
         self.SIZE_COST              = cfg['SIZE_COST']
         self.CHILDS_NUM             = cfg['CHILDS_NUM']
@@ -127,10 +123,7 @@ class Configuration():
         self.NET                    = cfg['NET']
         self.RANK_DECAY             = cfg['RANK_DECAY']
         self.STAT_PERIOD            = cfg['STAT_PERIOD']
-        self.MAP_RES                = cfg['MAP_RES']
         self.WATER_MOVE             = cfg['WATER_MOVE']
         self.WATER_COST             = cfg['WATER_COST']
-        self.WATER_NEEDS            = cfg['WATER_NEEDS']
-        self.WATER                  = cfg['WATER']
 
 cfg = Configuration('config.json')

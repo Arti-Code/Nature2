@@ -49,7 +49,7 @@ NATURE:
         ✔ fix: dt
     0.5:    
         ☐ health and energy
-        ✔ water needs
+        ✘ water needs
         ☐ save single creature
         ☐ load single creature
         ☐ save single network
@@ -63,3 +63,8 @@ NATURE:
         ✔ water terrain, slowing, drawing
         ✔ ancestor trackink
         ✔ save&load with ancestors
+        ☐ FIX: compilation
+        ✔ generate physic geometry: water
+        ☐ generate physic geometry: rocks
+        ☐ complex body physics shapes
+        ☐ creatures sprites layer
