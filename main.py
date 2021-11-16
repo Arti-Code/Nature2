@@ -47,7 +47,7 @@ class Simulation():
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
-        self.create_terrain('res/images/rocks.png', 'res/images/water.png')
+        self.create_terrain('res/images/land.png', 'res/images/land.png')
 
     def init_vars(self):
         self.neuro_single_times = []
@@ -81,14 +81,14 @@ class Simulation():
         self.rocks_on_screen = deque(range(30))
         self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
         self.map_time = 0.0
-        self.terrain = image.load('res/images/map.png').convert()
+        self.terrain = image.load('res/images/land.png').convert()
 
     def create_terrain(self, rocks_filename: str, water_filename: str):
         rock_img = image.load(rocks_filename).convert()
-        rock = generate_terrain_red(rock_img, self.space, 2, 1, 0, 8, Color((0, 0, 0, 255)))
+        rock = generate_terrain_red(rock_img, self.space, 2, 1, 0, 8, Color((150, 150, 150, 255)))
         self.lands.append(rock)
         water_img = image.load(water_filename).convert()
-        water = generate_terrain_blue(water_img, self.space, 2, 0.392, 0, 14, Color((0, 150, 150, 100)))
+        water = generate_terrain_blue(water_img, self.space, 2, 0.392, 0, 14, Color((0, 0, 255, 255)))
         self.lands.append(water)
         
     def create_rock(self, vert_num: int, size: int, position: Vec2d):

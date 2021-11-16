@@ -149,7 +149,7 @@ def detect_rock(arbiter, space, data):
     sensor_shape = arbiter.shapes[0]
     for sensor in creature.sensors:
         if sensor.shape == sensor_shape:
-            sensor.set_color(Color('black'))
+            sensor.set_color(Color('gray'))
             pos0 = creature.position
             dist = pos0.get_distance(contact)
             sensor.send_data5(detect=True, distance=dist)
