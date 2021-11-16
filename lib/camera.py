@@ -1,5 +1,6 @@
 from pygame.math import Vector2
 from pygame import Rect
+from typing import Union
 
 
 class Camera():
@@ -13,6 +14,12 @@ class Camera():
     def update(self, move: Vector2=Vector2(0, 0)):
         self.center += move
         self.rect = Rect(int(self.center.x-self.size.x/2), int(self.center.y-self.size.y/2), self.size.x, self.size.y)
+
+    def get_offset_vec(self) -> Vector2:
+        return Vector2(self.rect.x, self.rect.y)
+
+    def get_offset_tuple(self) -> tuple:
+        return (self.rect.x, self.rect.y)
 
     def rel_pos(self, position: Vector2) -> Vector2:
         rx = position.x - self.rect.left
