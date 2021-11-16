@@ -56,7 +56,7 @@ NATURE:
         ☐ load single network
         ☐ delete single projects
         ☐ real-time bokeh network display
-        ☐ camera zoom in/out
+        ✘ camera zoom in/out
         ✔ terrain: perlin-noise list
         ✔ terrain: ground Surface
         ✔ terrain: interactions

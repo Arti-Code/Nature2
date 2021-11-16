@@ -1,6 +1,6 @@
 {
-  "WORLD": [1600, 900],
-  "SCREEN": [1600, 900],
+  "WORLD": [1800, 900],
+  "SCREEN": [1800, 900],
   "FONT_SIZE": 14,
   "PLANT_MAX_SIZE": 10,
   "PLANT_GROWTH": 5,
@@ -57,5 +57,5 @@
   "WATER_MOVE": 0.25,
   "WATER_NEEDS": 0.005,
   "WATER": 2,
-  "NET": [22, 0, 0, 0, 6, 0, 0, 0, 0, 7]
+  "NET": [23, 0, 0, 0, 6, 0, 0, 0, 0, 7]
 }

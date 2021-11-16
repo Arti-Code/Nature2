@@ -327,6 +327,8 @@ class Creature(Life):
         input.append(y)
         eng = self.energy/self.max_energy
         input.append(eng)
+        wat = self.water/self.max_energy
+        input.append(wat)
         for sensor in self.sensors:
             detected = []
             detected = sensor.get_input()
