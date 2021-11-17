@@ -55,7 +55,7 @@ NATURE:
         ☐ save single network
         ☐ load single network
         ☐ delete single projects
-        ☐ real-time bokeh network display
+        ✘ real-time bokeh network display
         ✘ camera zoom in/out
         ✔ terrain: perlin-noise list
         ✔ terrain: ground Surface
@@ -65,6 +65,6 @@ NATURE:
         ✔ save&load with ancestors
         ☐ FIX: compilation
         ✔ generate physic geometry: water
-        ☐ generate physic geometry: rocks
+        ✔ generate physic geometry: rocks
         ☐ complex body physics shapes
         ☐ creatures sprites layer

@@ -182,15 +182,15 @@ class EnviroWindow(UIWindow):
 class CreatureWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, data: dict, dT: float):
-        super().__init__(rect, manager=manager, window_display_title='Creature Info', object_id="#creature_win", visible=True)
+        super().__init__(rect, manager=manager, window_display_title=data['SPECIE']+'  '+data['ENERGY'], object_id="#creature_win", visible=True)
         self.manager = manager
         i=0
         self.labs = {}
         for key, val in data.items():
-            if key != 'states':
+            if key != 'S' or key != 'SPECIE' or key != 'ENERGY':
                 lab1 = UILabel(Rect((5, 15*i+5), (70, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
                 lab2 = UILabel(Rect((85, 15*i+5), (self.rect.width/2-15, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
-            else:
+            elif key == 'S':
                 lab1 = UILabel(Rect((5, 15*i+5), (10, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
                 lab2 = UILabel(Rect((16, 15*i+5), (self.rect.width-21, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
             i+=1
@@ -202,6 +202,7 @@ class CreatureWindow(UIWindow):
 
     def Update(self, data: dict, dT: float):
         self.refresh -= dT
+        self.set_display_title(data['SPECIE']+'  '+data['ENERGY'])
         if self.refresh <= 0:
             self.refresh = 1
             data = data
@@ -438,7 +439,7 @@ class GUI():
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (220, 260)), data=data, dT=dT)
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (220, 240)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
