@@ -220,6 +220,8 @@ class Simulation():
             self.draw_debug = not self.draw_debug
         if event.key == pygame.K_c:
             self.show_specie_name = not self.show_specie_name
+        if event.key == pygame.K_s:
+            self.statistics.plot('populations')
 
     def mouse_events(self, event):
         self.selected = None
@@ -516,15 +518,16 @@ class Simulation():
         self.map_time = self.map_time-1.0
 
     def update_statistics(self):
-        t = int(self.get_time()/cfg.STAT_PERIOD)
-        if t > self.populations['period']:
+        last = self.statistics.get_last_time('populations')
+        t = int(self.get_time())
+        if t >= int(last+cfg.STAT_PERIOD):
             data = {
                 'plants': round(mean(self.populations['plants'])), 
                 'herbivores': round(mean(self.populations['herbivores'])), 
                 'carnivores': round(mean(self.populations['carnivores']))
             }
-            self.statistics.add_data('populations', data)
-            self.populations = {'period': t, 'plants': [], 'herbivores': [], 'carnivores': []}
+            self.statistics.add_data('populations', last+cfg.STAT_PERIOD, data)
+            self.populations = {'period': t*cfg.STAT_PERIOD, 'plants': [], 'herbivores': [], 'carnivores': []}
         else:
             self.populations['plants'].append(len(self.plant_list))
             self.populations['herbivores'].append(self.herbivores)
@@ -576,8 +579,8 @@ class Simulation():
             f"{TITLE} [fps: {round(self.clock.get_fps())} | dT: {round(self.dt*1000)}ms]")
 
     def check_populatiom(self):
-        if randint(0, 9) == 0:
-            self.check_creature_types()
+        #if randint(0, 9) == 0:
+        self.check_creature_types()
 
         if len(self.creature_list) < cfg.CREATURE_MIN_NUM:
             creature = self.add_random_creature()

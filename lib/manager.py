@@ -264,8 +264,8 @@ class Manager:
     def draw_net(self, network: Network):
         if network:
             last_layer_idx: int=len(network.layers)-1
-            h_space = 30
-            v_space = 10
+            h_space = 50
+            v_space = 14
             nodes_to_draw = []
             dists = {}
             max_nodes_num = 0

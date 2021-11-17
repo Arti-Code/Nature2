@@ -78,7 +78,7 @@ def process_creatures_collisions(arbiter, space, data):
     target = arbiter.shapes[1].body
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
-    agent.position -= arbiter.normal*(size1/size0)*0.5
+    agent.position -= arbiter.normal*(size1/size0)*0.8
     target.position += arbiter.normal*(size0/size1)*0.5
     if agent._attack:
         if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:

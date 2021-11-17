@@ -196,7 +196,7 @@ class CreatureWindow(UIWindow):
             i+=1
             self.labs[key] = (lab1, lab2)
         btn_w = 80; btn_h = 20
-        self.btn_ancestors = UIButton(Rect((rect.width/2-btn_w/2, (15+15*i)), (btn_w, btn_h)), text='ANCESTORS', manager=self.manager, container=self, parent_element=self, object_id="#btn_ancestors")
+        self.btn_ancestors = UIButton(Rect((rect.width/2-btn_w/2, (5+15*i)), (btn_w, btn_h)), text='ANCESTORS', manager=self.manager, container=self, parent_element=self, object_id="#btn_ancestors")
         self.refresh = 0
         self.Update(data, dT)
 
@@ -438,7 +438,7 @@ class GUI():
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (220, 300)), data=data, dT=dT)
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (220, 260)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
@@ -471,7 +471,7 @@ class GUI():
             data['SPEED'] = ''
             data['SIZE'] = ''
             data['MUTATIONS'] = ''
-            data['CHILDS'] = ''
+            #data['CHILDS'] = ''
             data['FITNESS'] = ''
             data["LIFETIME"] = ''
             data["REP_TIME"] = ''
@@ -486,7 +486,7 @@ class GUI():
         data['SPEED'] = str(self.owner.enviro.selected.speed)
         data['SIZE'] = str(self.owner.enviro.selected.size)
         data['MUTATIONS'] = str(self.owner.enviro.selected.mutations)
-        data['CHILDS'] = str(self.owner.enviro.selected.childs)
+        #data['CHILDS'] = str(self.owner.enviro.selected.childs)
         data['BORN|KILL'] = str(self.owner.enviro.selected.childs)+'|'+str(self.owner.enviro.selected.kills)
         data['FITNESS'] = str(round(self.owner.enviro.selected.fitness))
         data["LIFETIME"] = str(round(self.owner.enviro.selected.life_time))
