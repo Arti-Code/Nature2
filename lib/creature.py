@@ -152,6 +152,8 @@ class Creature(Life):
         if r > 2:
             x2 = round(rx + rot.x*(r/1.6))
             y2 = round(ry + rot.y*(r/1.6))
+            x3 = round(rx + rot.x*(r/1.1))
+            y3 = round(ry + rot.y*(r/1.1))
             #x3 = round(x - rot.x*(r/5))
             #y3 = round(y - rot.y*(r/5))
             r2 = round(r/2)
@@ -178,6 +180,7 @@ class Creature(Life):
             gfxdraw.filled_circle(screen, int(x2), int(y2), int(r2), Color(r, g, b, a))
             gfxdraw.aacircle(screen, int(rx), int(ry), int(r2), color2)
             gfxdraw.filled_circle(screen, int(rx), int(ry), int(r2), color2)
+            gfxdraw.filled_circle(screen, int(x3), int(y3), int(r2*0.67), Color('black'))
         self.color0 = self._color0
         self.draw_energy_bar(screen, rx, ry)
         #self.draw_water_bar(screen, rx, ry)

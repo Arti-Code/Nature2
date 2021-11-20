@@ -165,7 +165,8 @@ class Manager:
                 rank_to_save['signature'] = deepcopy(rank['signature'])
                 rank_to_save['genealogy'] = deepcopy(rank['genealogy'])
                 project['ranking2'].append(rank_to_save)
-
+            project['statistics'] = {}
+            project['statistics']['populations'] = self.enviro.statistics.get_collection('populations')
             if self.add_to_save_list(project_name, str(self.enviro.get_time(1))):
                 with open("saves/" + project_name + "/" + str(self.enviro.get_time(1)) + ".json", 'w+') as json_file:
                     json.dump(project, json_file)
@@ -248,6 +249,8 @@ class Manager:
             neuro.FromJSON(rank['neuro'])
             rank['neuro'] = neuro
             self.enviro.ranking2.append(rank)
+        for stat in obj_list['statistics']:
+            self.enviro.statistics.load_statistics(stat, obj_list['statistics'][stat])
         if not f.closed:
             f.close()
         #log_to_file(project_name+' loaded', 'log.txt')

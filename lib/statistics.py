@@ -1,3 +1,4 @@
+from calendar import c
 from matplotlib.image import FigureImage
 import numpy as np
 from bokeh.io import show
@@ -23,10 +24,13 @@ class Statistics():
 
     def get_last_time(self, collection_name: str) -> int:
         l = len(self.data[collection_name]['time'])
-        if l > 0:
+        if l >= 1:
             return self.data[collection_name]['time'][l-1]
         else:
             return 0
+
+    def get_collection(self, collection_name: str) -> dict:
+        return self.data[collection_name]
 
     def plot(self, collection_name: str):
         data = self.data[collection_name]
@@ -43,3 +47,6 @@ class Statistics():
                     color = RGB(255, 0, 0)
                 p.line(data['time'], d, line_width=2, line_color=color)
         show(p)
+
+    def load_statistics(self, collection_name: str, data: dict):
+        self.data[collection_name] = data

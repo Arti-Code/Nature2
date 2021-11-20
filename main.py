@@ -79,7 +79,7 @@ class Simulation():
         self.plants_on_screen = deque(range(30))
         self.meats_on_screen = deque(range(30))
         self.rocks_on_screen = deque(range(30))
-        self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
+        self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
         self.map_time = 0.0
         self.terrain = image.load('res/images/land3200.png').convert()
 
@@ -440,7 +440,7 @@ class Simulation():
         self.update_plants(self.dt)
         self.update_meat(self.dt)
         self.manager.update_gui(self.dt, self.ranking1, self.ranking2)
-        #self.update_statistics()
+        self.update_statistics()
         #self.update_terrain(self.dt)
 
     def update_meat(self, dT: float):
@@ -527,7 +527,7 @@ class Simulation():
                 'carnivores': round(mean(self.populations['carnivores']))
             }
             self.statistics.add_data('populations', last+cfg.STAT_PERIOD, data)
-            self.populations = {'period': t*cfg.STAT_PERIOD, 'plants': [], 'herbivores': [], 'carnivores': []}
+            self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
         else:
             self.populations['plants'].append(len(self.plant_list))
             self.populations['herbivores'].append(self.herbivores)

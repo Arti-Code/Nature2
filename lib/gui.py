@@ -104,10 +104,10 @@ class RankWindow(UIWindow):
             text = '.'
             num = UILabel(Rect((2, 15*i+5), (13, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position_'+str(i))
             spec = UILabel(Rect((5+10, 15*i+5), (60, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_specie_'+str(i))
-            gen = UILabel(Rect((5+70, 15*i+5), (55, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_generation_'+str(i))
-            pwr = UILabel(Rect((5+125, 15*i+5), (45, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_power_'+str(i))
-            eat = UILabel(Rect((5+170, 15*i+5), (45, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eat_'+str(i))
-            fit = UILabel(Rect((5+215, 15*i+5), (70, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_fitness_'+str(i))
+            gen = UILabel(Rect((5+70, 15*i+5), (35, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_generation_'+str(i))
+            pwr = UILabel(Rect((5+110, 15*i+5), (30, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_power_'+str(i))
+            eat = UILabel(Rect((5+150, 15*i+5), (30, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eat_'+str(i))
+            fit = UILabel(Rect((5+190, 15*i+5), (55, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_fitness_'+str(i))
             self.labels.append([num, spec, gen, pwr, eat, fit])
         #self.btn_close = UIButton(Rect((round((rect.width/2)-(btn_w/2)), (15*i+25)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
 
@@ -116,19 +116,19 @@ class RankWindow(UIWindow):
         for i in range(rank_count1):
             self.labels[i][0].set_text(str(i)+'.')
             self.labels[i][1].set_text(ranking1[i]['name'])
-            self.labels[i][2].set_text('GEN ' + str(ranking1[i]['gen']))
-            self.labels[i][3].set_text('PWR ' + str(ranking1[i]['power']))
-            self.labels[i][4].set_text('EAT ' + str(ranking1[i]['food']))
-            self.labels[i][5].set_text('FIT ' + str(round(ranking1[i]['fitness'])))
+            self.labels[i][2].set_text('G ' + str(ranking1[i]['gen']))
+            self.labels[i][3].set_text('P ' + str(ranking1[i]['power']))
+            self.labels[i][4].set_text('E ' + str(ranking1[i]['food']))
+            self.labels[i][5].set_text('F ' + str(round(ranking1[i]['fitness'])))
         rank_count2 = len(ranking2)
         for i in range(rank_count2):
             j = i + rank_count1
             self.labels[j][0].set_text(str(i)+'.')
             self.labels[j][1].set_text(ranking2[i]['name'])
-            self.labels[j][2].set_text('GEN ' + str(ranking2[i]['gen']))
-            self.labels[j][3].set_text('PWR ' + str(ranking2[i]['power']))
-            self.labels[j][4].set_text('EAT ' + str(ranking2[i]['food']))
-            self.labels[j][5].set_text('FIT ' + str(round(ranking2[i]['fitness'])))
+            self.labels[j][2].set_text('G ' + str(ranking2[i]['gen']))
+            self.labels[j][3].set_text('P ' + str(ranking2[i]['power']))
+            self.labels[j][4].set_text('E ' + str(ranking2[i]['food']))
+            self.labels[j][5].set_text('F ' + str(round(ranking2[i]['fitness'])))
 
             #text = str(i) + '. ' + ranking[i]['name'] + ' \t GEN: ' + str(ranking[i]['gen']) + ' \t POW: ' + str(ranking[i]['power']) + ' \t MEAT|VEGE: ' + str(ranking[i]['meat']) + '|' + str(ranking[i]['vege']) + ' \t FIT: ' + str(round(ranking[i]['fitness']))
             #lab.set_text(text)
@@ -402,8 +402,8 @@ class GUI():
         self.credits_win = CreditsWindow(owner=self.owner, manager=self.ui_mgr, rect=pos, title=title, subtitle=subtitle, author=author, bar_text=bar_text)
 
     def create_rank_win(self):
-        w = 290
-        h = 350
+        w = 250
+        h = 650
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)
 
