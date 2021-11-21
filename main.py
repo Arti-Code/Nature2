@@ -333,7 +333,6 @@ class Simulation():
                 return rnd_pos
         return rnd_pos
 
-
     def add_creature(self, genome: dict=None, pos: Vec2d=None) -> Creature:
         creature: Creature
         cpos = None

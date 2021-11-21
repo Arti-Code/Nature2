@@ -156,7 +156,6 @@ def detect_rock(arbiter, space, data):
             break
     return False
 
-
 def detect_water(arbiter, space, data):
     creature = arbiter.shapes[0].body
     water = arbiter.shapes[1].body
