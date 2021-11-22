@@ -14,6 +14,7 @@ from lib.config import cfg
 from lib.gui import GUI
 from lib.utils import log_to_file
 
+
 class Manager:
 
     def __init__(self, screen: Surface, enviro):
