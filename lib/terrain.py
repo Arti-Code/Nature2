@@ -30,8 +30,8 @@ def generate_terrain_blue(surface: Surface, space: Space, channel: int, mod_a: f
         #BB(0, 0, cfg.WORLD[0]-1, cfg.WORLD[1]-1), int(cfg.WORLD[0]/1), int(cfg.WORLD[1]/1), 90, sample_func)
 
     for polyline in line_set:
-        verts = pymunk.autogeometry.simplify_curves(polyline, 1.0)
-        decompose_verts = pymunk.autogeometry.convex_decomposition(verts, 1)
+        verts = pymunk.autogeometry.simplify_curves(polyline, 0.7)
+        decompose_verts = pymunk.autogeometry.convex_decomposition(verts, 0.7)
         for hull_verts in decompose_verts:
             land = Poly(space.static_body, hull_verts, None, 0.6)
             land.friction = 0.5
@@ -64,8 +64,8 @@ def generate_terrain_red(surface: Surface, space: Space, channel: int, mod_a: fl
         #BB(0, 0, cfg.WORLD[0]-1, cfg.WORLD[1]-1), int(cfg.WORLD[0]/1), int(cfg.WORLD[1]/1), 90, sample_func)
 
     for polyline in line_set:
-        verts = pymunk.autogeometry.simplify_curves(polyline, 1.0)
-        decompose_verts = pymunk.autogeometry.convex_decomposition(verts, 1)
+        verts = pymunk.autogeometry.simplify_curves(polyline, 0.7)
+        decompose_verts = pymunk.autogeometry.convex_decomposition(verts, 0.7)
         for hull_verts in decompose_verts:
             land = Poly(space.static_body, hull_verts, None, 0.6)
             land.friction = 0.5

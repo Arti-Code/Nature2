@@ -12,9 +12,7 @@ from lib.camera import Camera
 class Meat(Life):
 
     def __init__(self, screen: Surface, space: Space, position: Vec2d, collision_tag: int, radius: int, energy: int, color0: Color=Color('red'), color1: Color=Color('red4')):
-        #super().__init__(self, body_type=Body.KINEMATIC)
         super().__init__(screen=screen, space=space, collision_tag=collision_tag, position=position)
-        #self.position = position
         self.energy = energy
         self.radius = floor(log2(self.energy))
         self._color0 = color0
@@ -25,11 +23,9 @@ class Meat(Life):
         self.shape = Circle(self, self.radius)
         self.shape.collision_type = collision_tag
         space.add(self.shape)
-        #x = int(self.position.x); y = int(self.position.y)
         r = int(self.radius)
 
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
-        #super().draw(screen, selected)
         x = self.position.x; y = flipy(self.position.y)
         r = self.radius
         rect = Rect(x-r, y-r, 2*r, 2*r)

@@ -39,7 +39,7 @@ class Simulation():
         self.init_vars()
         self.manager = Manager(screen=self.screen, enviro=self)
         self.space.gravity = (0.0, 0.0)
-        self.set_collision_calls()
+        set_collision_calls(self.space, self.dt)
         pymunk.pygame_util.positive_y_is_up = False
         self.options = pymunk.pygame_util.DrawOptions(self.screen)
         self.space.debug_draw(self.options)
@@ -47,7 +47,7 @@ class Simulation():
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
-        self.create_terrain('res/images/land3200.png', 'res/images/land3200.png')
+        self.create_terrain('res/images/map2.png', 'res/images/map2.png')
 
     def init_vars(self):
         self.neuro_single_times = []
@@ -81,7 +81,7 @@ class Simulation():
         self.rocks_on_screen = deque(range(30))
         self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
         self.map_time = 0.0
-        self.terrain = image.load('res/images/land3200.png').convert()
+        self.terrain = image.load('res/images/map2.png').convert()
 
     def create_terrain(self, rocks_filename: str, water_filename: str):
         rock_img = image.load(rocks_filename).convert()
@@ -114,9 +114,6 @@ class Simulation():
             p2 = edges[e+1]
             wall = self.add_wall(p1, p2, 5)
             self.wall_list.append(wall)
-        #self.terr_img = image.load('res/fonts/water3.png')
-        # self.terr_img.convert_alpha()
-        #terrain = Terrain(self.screen, self.space, 'water3.png', 8)
         self.create_rocks(cfg.ROCK_NUM)
 
         for c in range(cfg.CREATURE_INIT_NUM):
@@ -147,6 +144,12 @@ class Simulation():
         self.kill_all_creatures()
         self.kill_all_plants()
         self.kill_things()
+        self.project_name = None
+        self.last_save_time = 0
+        self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
+        self.map_time = 0.0
+        self.statistics = Statistics()
+        self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
 
     def add_to_ranking(self, creature: Creature):
         if creature.food >= 6:
@@ -251,64 +254,6 @@ class Simulation():
             if hypot(creature.position.x-x, creature.position.y-y) <= creature.shape.radius:
                 return creature
         return None
-
-    def set_collision_calls(self):
-        #* 2: body | 8: wall | 4: sensor | 6: plant | 12: new_plant | 16: eye | 10: meat | 14: water
-        creature_collisions = self.space.add_collision_handler(2, 2)
-        creature_collisions.pre_solve = process_creatures_collisions
-        creature_collisions.data['dt'] = self.dt
-
-        creature_plant_collisions = self.space.add_collision_handler(2, 6)
-        creature_plant_collisions.pre_solve = process_creature_plant_collisions
-        creature_plant_collisions.data['dt'] = self.dt
-
-        creature_meat_collisions = self.space.add_collision_handler(2, 10)
-        creature_meat_collisions.pre_solve = process_creature_meat_collisions
-        creature_meat_collisions.data['dt'] = self.dt
-
-        creature_water_collisions = self.space.add_collision_handler(2, 14)
-        creature_water_collisions.pre_solve = process_creature_water_collisions
-        creature_water_collisions.data['dt'] = self.dt
-
-        creature_rock_collisions = self.space.add_collision_handler(2, 8)
-        creature_rock_collisions.pre_solve = process_creatures_rock_collisions
-        creature_rock_collisions.data['dt'] = self.dt
-
-        creatures_rock_collisions_end = self.space.add_collision_handler(2, 8)
-        creatures_rock_collisions_end.separate = process_creatures_rock_collisions_end
-
-        creature_water_collisions_end = self.space.add_collision_handler(2, 14)
-        creature_water_collisions_end.separate = process_creature_water_collisions_end
-
-        creature_detection = self.space.add_collision_handler(4, 2)
-        creature_detection.pre_solve = detect_creature
-
-        creature_detection_end = self.space.add_collision_handler(4, 2)
-        creature_detection_end.separate = detect_creature_end
-
-        plant_detection = self.space.add_collision_handler(4, 6)
-        plant_detection.pre_solve = detect_plant
-
-        plant_detection_end = self.space.add_collision_handler(4, 6)
-        plant_detection_end.separate = detect_plant_end
-
-        meat_detection = self.space.add_collision_handler(4, 10)
-        meat_detection.pre_solve = detect_meat
-
-        meat_detection_end = self.space.add_collision_handler(4, 10)
-        meat_detection_end.separate = detect_meat_end
-
-        rock_detection = self.space.add_collision_handler(4, 8)
-        rock_detection.pre_solve = detect_rock
-
-        meat_detection_end = self.space.add_collision_handler(4, 8)
-        meat_detection_end.separate = detect_meat_end
-
-        water_detection = self.space.add_collision_handler(4, 14)
-        water_detection.pre_solve = detect_water
-
-        water_detection_end = self.space.add_collision_handler(4, 14)
-        water_detection_end.separate = detect_water_end
 
     def is_position_free(self, position: Vector2, size: float, categories: int) -> bool:
         f_shapes = ShapeFilter(group=0, categories=categories)
@@ -604,11 +549,15 @@ class Simulation():
             self.manager.save_project()
             self.last_save_time = round((self.cycles*6000+self.time), 1)
     
+    def set_icon(self, icon_file: str):
+        img = image.load(icon_file)
+        pygame.display.set_icon(img)
+
     def main(self):
         set_win_pos(20, 20)
         # self.init(cfg.WORLD)
         self.create_enviro()
-        set_icon('planet32.png')
+        self.set_icon('planet32.png')
         while self.running:
             self.auto_save()
             self.events()

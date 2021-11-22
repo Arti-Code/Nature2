@@ -1,52 +1,52 @@
-NATURE:
-    0.1:
-        ✔ render loop
-        ✔ pymunk integration
-        ✔ circle-shaped beings
-        ✔ cloud git repository
-        ✔ neural network inside
-        ✔ enviroment perception (simple)
-        ✔ beings movement (neural net based)
-        ✔ beings rotation (neural net based)
-        ✔ collisions between beings
-        ✔ collisions with rocks
-        ✔ edges collisions
-        ✔ seeing (simple)
-        ✔ eating plants
-        ✔ plants growth
-        ✔ plant procreation (simple)
-    0.2:
-        ✔ drawing neural network
-        ✔ move gui from Evolution project (first step)
-        ✔ main Simulation class
-        ✔ create named simulations
-        ✔ save simulations state
-        ✔ load simulations state
-        ✔ creature skills (size, strength, speed, attack)
-        ✔ obstacles detection
-        ✔ obstacles collision
-        ✔ fix: create inside obstacles
-    0.3:
-        ✔ camera movement
-        ✔ gui ('Creatures' based)
-        ✔ attack only ahead
-        ✔ inherite
-        ✔ mutations
-        ✔ gui based ranking
-        ✔ fix: saving state
-        ✔ fix: loading state
-        ✔ performance issue
-        ✔ compilation to executable
-        ✔ meat
-    0.4:
-        ✔ config from .py to .json
-        ✔ species
-        ✔ similarity
-        ✔ memory neurons
-        ✔ update settings during sim runs
-        ✔ creatures info window
-        ✔ save ranking also
-        ✔ fix: dt
+NATURE: { 
+    0.1:    {cm} {c}
+        ✔ render loop {cm}
+        ✔ pymunk integration {cm}
+        ✔ circle-shaped beings {cm}
+        ✔ cloud git repository {cm}
+        ✔ neural network inside {cm}
+        ✔ enviroment perception (simple) {cm}
+        ✔ beings movement (neural net based) {cm}
+        ✔ beings rotation (neural net based) {cm}
+        ✔ collisions between beings {cm}
+        ✔ collisions with rocks {cm}
+        ✔ edges collisions {cm}
+        ✔ seeing (simple) {cm}
+        ✔ eating plants {cm}
+        ✔ plants growth {cm}
+        ✔ plant procreation (simple) {cm}
+    0.2:    {cm}
+        ✔ drawing neural network {cm}
+        ✔ move gui from Evolution project (first step) {cm}
+        ✔ main Simulation class {cm}
+        ✔ create named simulations {cm}
+        ✔ save simulations state {cm}
+        ✔ load simulations state {cm}
+        ✔ creature skills (size, strength, speed, attack) {cm}
+        ✔ obstacles detection {cm}
+        ✔ obstacles collision {cm}
+        ✔ fix: create inside obstacles {cm}
+    0.3:  {cm:2021-11-21} 
+        ✔ camera movement {cm}
+        ✔ gui ('Creatures' based) {cm}
+        ✔ attack only ahead {cm}
+        ✔ inherite  {cm}
+        ✔ mutations {cm}
+        ✔ gui based ranking {cm}
+        ✔ fix: saving state  {cm}
+        ✔ fix: loading state {cm}
+        ✔ performance issue {cm}
+        ✔ compilation to executable {cm}
+        ✔ meat {cm}
+    0.4:    {cm}
+        ✔ config from .py to .json {cm}
+        ✔ species {cm}
+        ✔ similarity {cm}
+        ✔ memory neurons {cm}
+        ✔ update settings during sim runs {cm}
+        ✔ creatures info window {cm}
+        ✔ save ranking also {cm}
+        ✔ fix: dt {cm}
     0.5:    
         ☐ health and energy
         ✘ water needs
@@ -54,17 +54,23 @@ NATURE:
         ☐ load single creature
         ☐ save single network
         ☐ load single network
-        ☐ delete single projects
+        ✔ delete single projects
         ✘ real-time bokeh network display
         ✘ camera zoom in/out
-        ✔ terrain: perlin-noise list
-        ✔ terrain: ground Surface
-        ✔ terrain: interactions
-        ✔ water terrain, slowing, drawing
-        ✔ ancestor trackink
-        ✔ save&load with ancestors
+        ✔ terrain: perlin-noise list {cm}
+        ✔ terrain: ground Surface {cm}
+        ✔ terrain: interactions {cm}
+        ✔ water terrain, slowing, drawing {cm}
+        ✔ ancestor trackink {cm}
+        ✔ save&load with ancestors {cm}
         ☐ FIX: compilation
-        ✔ generate physic geometry: water
-        ✔ generate physic geometry: rocks
+        ✔ generate physic geometry: water {cm}
+        ✔ generate physic geometry: rocks {cm}
         ☐ complex body physics shapes
         ☐ creatures sprites layer
+        ✔ resize gui windows {cm}
+        ✔ clean gui events
+        ✔ adjust some windows sizes and positions
+        ✔ change info button to green "OK"
+        ✔ plant/meat-rocks collisions
+        ☐ individual configs for each simulations

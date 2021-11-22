@@ -1,4 +1,5 @@
 from copy import copy, deepcopy
+from shutil import rmtree
 import os
 import json
 from random import random, randint
@@ -188,6 +189,21 @@ class Manager:
         else:
             return False
 
+    def delete_from_projects_list(self, project_name: str):
+        f = open("saves/projects.json", "r+")
+        proj_list = f.read()
+        f.close()
+        projects_list = json.loads(proj_list)
+        if project_name in projects_list["projects"]:
+            projects_list["projects"].remove(project_name)
+            proj_json = json.dumps(projects_list)
+            f = open("saves/projects.json", "w+")
+            f.write(proj_json)
+            f.close()
+            return True
+        else:
+            return False
+
     def add_to_save_list(self, project_name: str, save_time: str):
         saves_list = {}
         try:
@@ -263,6 +279,13 @@ class Manager:
         total_num = len(saves["saves"])
         save_name = saves["saves"][total_num - 1]
         self.load_project(project_name, save_name)
+
+    def delete_project(self, sim_name: str) -> bool:
+        if self.delete_from_projects_list(sim_name):
+            rmtree('saves/' + sim_name)
+            return True
+        else:
+            return False
 
     def draw_net(self, network: Network):
         if network:

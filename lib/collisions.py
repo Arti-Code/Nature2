@@ -8,6 +8,73 @@ from lib.config import *
 def diet(food: int, mod: float) -> float:
     return pow(food, 2) * mod
 
+def set_collision_calls(space: Space, dt: float):
+    #* 2: body | 8: rock | 4: sensor | 6: plant | 12: new_plant | 16: eye | 10: meat | 14: water
+    #COLLISIONS:
+    creature_collisions = space.add_collision_handler(2, 2)
+    creature_collisions.pre_solve = process_creatures_collisions
+    creature_collisions.data['dt'] = dt
+
+    creature_plant_collisions = space.add_collision_handler(2, 6)
+    creature_plant_collisions.pre_solve = process_creature_plant_collisions
+    creature_plant_collisions.data['dt'] = dt
+
+    creature_meat_collisions = space.add_collision_handler(2, 10)
+    creature_meat_collisions.pre_solve = process_creature_meat_collisions
+    creature_meat_collisions.data['dt'] = dt
+
+    creature_water_collisions = space.add_collision_handler(2, 14)
+    creature_water_collisions.pre_solve = process_creature_water_collisions
+    creature_water_collisions.data['dt'] = dt
+
+    creature_rock_collisions = space.add_collision_handler(2, 8)
+    creature_rock_collisions.pre_solve = process_creatures_rock_collisions
+    creature_rock_collisions.data['dt'] = dt
+
+    creatures_rock_collisions_end = space.add_collision_handler(2, 8)
+    creatures_rock_collisions_end.separate = process_creatures_rock_collisions_end
+
+    creature_water_collisions_end = space.add_collision_handler(2, 14)
+    creature_water_collisions_end.separate = process_creature_water_collisions_end
+
+    meat_rock_collisions = space.add_collision_handler(10, 8)
+    meat_rock_collisions.pre_solve = process_meat_rock_collisions
+    meat_rock_collisions.data['dt'] = dt
+
+    meat_rock_collisions_end = space.add_collision_handler(10, 8)
+    meat_rock_collisions_end.separate = process_meat_rock_collisions_end
+
+    #DETECTIONS:
+    creature_detection = space.add_collision_handler(4, 2)
+    creature_detection.pre_solve = detect_creature
+
+    creature_detection_end = space.add_collision_handler(4, 2)
+    creature_detection_end.separate = detect_creature_end
+
+    plant_detection = space.add_collision_handler(4, 6)
+    plant_detection.pre_solve = detect_plant
+
+    plant_detection_end = space.add_collision_handler(4, 6)
+    plant_detection_end.separate = detect_plant_end
+
+    meat_detection = space.add_collision_handler(4, 10)
+    meat_detection.pre_solve = detect_meat
+
+    meat_detection_end = space.add_collision_handler(4, 10)
+    meat_detection_end.separate = detect_meat_end
+
+    rock_detection = space.add_collision_handler(4, 8)
+    rock_detection.pre_solve = detect_rock
+
+    meat_detection_end = space.add_collision_handler(4, 8)
+    meat_detection_end.separate = detect_meat_end
+
+    water_detection = space.add_collision_handler(4, 14)
+    water_detection.pre_solve = detect_water
+
+    water_detection_end = space.add_collision_handler(4, 14)
+    water_detection_end.separate = detect_water_end
+
 def process_creature_plant_collisions(arbiter, space, data):
     dt = data['dt']
     hunter = arbiter.shapes[0].body
@@ -99,6 +166,13 @@ def process_creatures_rock_collisions(arbiter, space, data):
 
 def process_creatures_rock_collisions_end(arbiter, space, data):
     arbiter.shapes[0].body.collide_something = False
+    return False
+
+def process_meat_rock_collisions(arbiter, space, data):
+    arbiter.shapes[0].body.position -= arbiter.normal
+    return False
+
+def process_meat_rock_collisions_end(arbiter, space, data):
     return False
 
 def detect_creature(arbiter, space, data):
