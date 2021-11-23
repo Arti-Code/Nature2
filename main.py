@@ -47,7 +47,7 @@ class Simulation():
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
-        self.create_terrain('res/images/map2.png', 'res/images/map2.png')
+        self.create_terrain('res/images/map3.png', 'res/images/map3.png')
 
     def init_vars(self):
         self.neuro_single_times = []
@@ -81,7 +81,7 @@ class Simulation():
         self.rocks_on_screen = deque(range(30))
         self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
         self.map_time = 0.0
-        self.terrain = image.load('res/images/map2.png').convert()
+        self.terrain = image.load('res/images/map3.png').convert()
 
     def create_terrain(self, rocks_filename: str, water_filename: str):
         rock_img = image.load(rocks_filename).convert()
