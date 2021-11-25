@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+from shutil import copy
 from collections import deque
 from statistics import mean
 import pygame
@@ -667,6 +668,7 @@ class GUI():
     def new_project_name(self, name: str):
         try:
             os.mkdir('saves/' + name)
+            copy('config.json', 'saves/' + name + '/config.json')
         except FileExistsError:
             pass
         f = open("saves/projects.json", "r+")
