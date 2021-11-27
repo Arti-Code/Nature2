@@ -668,7 +668,7 @@ class GUI():
     def new_project_name(self, name: str):
         try:
             os.mkdir('saves/' + name)
-            copy('config.json', 'saves/' + name + '/config.json')
+            #copy('config.json', 'saves/' + name + '/config.json')
         except FileExistsError:
             pass
         f = open("saves/projects.json", "r+")

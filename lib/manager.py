@@ -242,6 +242,7 @@ class Manager:
         self.enviro.create_rocks(cfg.ROCK_NUM)
         self.enviro.create_plants(cfg.PLANT_INIT_NUM)
         self.project_name = project_name
+        self.enviro.project_name = project_name
         self.enviro.time = round(obj_list['time'], 1)
         self.enviro.cycles = obj_list['cycles']
         self.enviro.last_save_time = obj_list['last_save_time']
