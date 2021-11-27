@@ -145,10 +145,10 @@ class Creature(Life):
             self.draw_detectors(screen=screen, rel_pos=rel_pos)
         for detector in self.sensors:
             detector.reset_data()
-        gfxdraw.aacircle(screen, int(rx), int(ry), int(r), color0)
-        gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), color0)
-        gfxdraw.aacircle(screen, int(rx), int(ry), int(r-1), self.color1)
-        gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-1), color1)
+        gfxdraw.aacircle(screen, int(rx), int(ry), int(r), color2)
+        gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), color2)
+        gfxdraw.aacircle(screen, int(rx), int(ry), int(r-1), self.color2)
+        gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-1), color2)
         if r > 2:
             x2 = round(rx + rot.x*(r/1.6))
             y2 = round(ry + rot.y*(r/1.6))
@@ -176,10 +176,10 @@ class Creature(Life):
                 g +=50
                 r = clamp(r, 0, 255)
                 g = clamp(g, 0, 255)
-            gfxdraw.aacircle(screen, int(x2), int(y2), int(r2), Color(r, g, b, a))    
-            gfxdraw.filled_circle(screen, int(x2), int(y2), int(r2), Color(r, g, b, a))
-            gfxdraw.aacircle(screen, int(rx), int(ry), int(r2), color2)
-            gfxdraw.filled_circle(screen, int(rx), int(ry), int(r2), color2)
+            gfxdraw.aacircle(screen, int(x2), int(y2), int(r2), Color(175, 175, 175, a))    
+            gfxdraw.filled_circle(screen, int(x2), int(y2), int(r2), Color(175, 175, 175, a))
+            gfxdraw.aacircle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
+            gfxdraw.filled_circle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
             gfxdraw.filled_circle(screen, int(x3), int(y3), int(r2*0.67), Color('black'))
         self.color0 = self._color0
         self.draw_energy_bar(screen, rx, ry)
