@@ -308,7 +308,7 @@ class Manager:
             inp_desc = [
                 'crea', 'plnt', 'meat', 'watr',
                 'side', 'xpos', 'ypos', 'engy', 
-                'cre0', 'pln0', 'wat0', 'met0', 'rok0',
+#                'cre0', 'pln0', 'wat0', 'met0', 'rok0',
                 'cre1', 'pln1', 'wat1', 'met1', 'rok1',
                 'cre2', 'pln2', 'wat2', 'met2', 'rok2',
                 'hurt' 

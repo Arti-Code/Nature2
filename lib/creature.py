@@ -47,8 +47,8 @@ class Creature(Life):
         self.visual_range = cfg.SENSOR_RANGE
         self.sensors = []
         self.side_angle = 0
-        sensors_angle = ((random()+1)/2)*(PI/1.5)
-        self.sensors.append(Sensor(screen, self, 4, 0, cfg.SENSOR_RANGE))
+        sensors_angle = ((random()+1)/2)*cfg.SENSOR_MAX_ANGLE
+        #self.sensors.append(Sensor(screen, self, 4, 0, cfg.SENSOR_RANGE))
         self.sensors.append(Sensor(screen, self, 4, sensors_angle, cfg.SENSOR_RANGE))
         self.sensors.append(Sensor(screen, self, 4, -sensors_angle, cfg.SENSOR_RANGE))
         self.mem_time = 0
@@ -275,14 +275,14 @@ class Creature(Life):
         turn = self._turn*cfg.TURN*dt
         #sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
         #sensor_angle = (PI*1.5)-(((self.output[2]+1)/2)*(PI*1.5))
-        sensor_angle = ((self.output[2]+1)/2)*(PI/1.5)
+        sensor_angle = (1-((self.output[2]+1)/2))*cfg.SENSOR_MAX_ANGLE
         #sensor_angle = self.output[2]*(PI/2)
         self.angle = (self.angle+(turn))%(2*PI)
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
         #self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
         #self.sensors[2].rotate(-sensor_turn, -PI/1.5, 0)
-        self.sensors[1].rotate_to(sensor_angle, 0, cfg.SENSOR_MAX_ANGLE, dt)
-        self.sensors[2].rotate_to(-sensor_angle, -cfg.SENSOR_MAX_ANGLE, 0, dt)
+        self.sensors[0].rotate_to(sensor_angle, 0, cfg.SENSOR_MAX_ANGLE, dt)
+        self.sensors[1].rotate_to(-sensor_angle, -cfg.SENSOR_MAX_ANGLE, 0, dt)
         #for sensor in self.sensors:
         #    sensor.update()
         return abs(move)
