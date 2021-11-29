@@ -57,15 +57,15 @@ class Creature(Life):
         self.energy = self.max_energy
         for sensor in self.sensors:
            space.add(sensor.shape)
-        self._move: float=0.0
-        self._eat: bool=False
-        self._attack: bool=False
-        self._turn: float=0.0
+        self.moving: float=0.0
+        self.eating: bool=False
+        self.attacking: bool=False
+        self.turning: float=0.0
         self.pain: bool=False
-        self.run: bool=False
+        self.running: bool=False
         self.life_time: float=0.0
         self.run_time = cfg.RUN_TIME
-        self.hide = False
+        self.hidding = False
         self.on_water = False
 
     def genome_build(self, genome: dict):
@@ -131,7 +131,7 @@ class Creature(Life):
         color1 = self.color1
         color2 = self.color2
         a = 255
-        if self.hide:
+        if self.hidding:
             color0.a = 40
             color1.a = 40
             color2.a = 40
@@ -149,6 +149,16 @@ class Creature(Life):
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), color2)
         gfxdraw.aacircle(screen, int(rx), int(ry), int(r-1), self.color2)
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-1), color2)
+        if self.running:
+            shadow = color2
+            shadow.a = 80
+            for i in range(3):
+                sx = rx-(rot.x*r*(0.8*(i+1)))
+                sy = ry-(rot.y*r*(0.8*(i+1)))
+                gfxdraw.aacircle(screen, int(sx), int(sy), int(r), shadow)
+                gfxdraw.filled_circle(screen, int(sx), int(sy), int(r), shadow)
+                gfxdraw.aacircle(screen, int(sx), int(sy), int(r-1), shadow)
+                gfxdraw.filled_circle(screen, int(sx), int(sy), int(r-1), shadow)
         if r > 2:
             x2 = round(rx + rot.x*(r/1.6))
             y2 = round(ry + rot.y*(r/1.6))
@@ -208,10 +218,12 @@ class Creature(Life):
     def update(self, dt: float, selected: Body):
         super().update(dt, selected)
         self.life_time += dt*0.1
-        if self.run:
+        if self.running:
+            self.hidding = False
             self.run_time -= dt
             if self.run_time < 0:
                 self.run_time = 0
+                self.running = False
         else:
             self.run_time += dt
             if self.run_time > cfg.RUN_TIME:
@@ -228,10 +240,10 @@ class Creature(Life):
         self.calc_energy(dt, move)
         self.mem_time -= dt
         self.mem_time = clamp(self.mem_time, 0, cfg.MEM_TIME)
-        if self.hide:
-            if self.run or self._move >= 0.2:
-                self.hide = False
-                self.output[5] = 0
+        #if self.hidding:
+        #    if self.running or self.moving >= 0.2:
+        #        self.hidding = False
+        #        self.output[5] = 0
 
     def check_reproduction(self, dt) -> bool:
         self.reproduction_time -= dt
@@ -265,14 +277,18 @@ class Creature(Life):
         return (genome, pos)
       
     def move(self, dt: float) -> None:
-        move = cfg.SPEED*self.speed*self._move
-        if self.run:
-           move *= 1.5
+        move = 0
+        if self.running and not self.on_water:
+           move = cfg.SPEED*self.speed*2
+        elif self.on_water:
+            move = cfg.SPEED*self.speed*self.moving*cfg.WATER_MOVE
+        elif self.hidding:
+            move = cfg.SPEED*self.speed*self.moving*0.1
+        else:
+            move = cfg.SPEED*self.speed*self.moving
         if move < 0:
             move = 0
-        if self.on_water:
-            move *= cfg.WATER_MOVE
-        turn = self._turn*cfg.TURN*dt
+        turn = self.turning*cfg.TURN*dt
         #sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
         #sensor_angle = (PI*1.5)-(((self.output[2]+1)/2)*(PI*1.5))
         sensor_angle = (1-((self.output[2]+1)/2))*cfg.SENSOR_MAX_ANGLE
@@ -291,12 +307,12 @@ class Creature(Life):
         size_cost = self.size * cfg.SIZE_COST
         move_energy = move * cfg.MOVE_ENERGY * size_cost
         base_energy = cfg.BASE_ENERGY
-        if self.run:
+        if self.running:
             move_energy *= cfg.RUN_COST
         rest_energy = 0
-        if self._eat:
+        if self.eating:
             rest_energy += cfg.EAT_ENG
-        if self._attack:
+        if self.attacking:
             rest_energy += cfg.ATK_ENG
         if self.on_water:
             base_energy += cfg.WATER_COST
@@ -350,24 +366,27 @@ class Creature(Life):
             for o in range(len(self.output)):
                 if self.output[o] < -1 or self.output[o] > 1:
                     self.output[o] = clamp(self.output[o], -1, 1)
-        self._move = clamp(self.output[0], 0, 1)
-        self._turn = self.output[1]
+        self.moving = clamp(self.output[0], 0, 1)
+        self.turning = self.output[1]
         if self.output[3] > 0:
-            self._eat = True
+            self.eating = True
         else:
-            self._eat = False
+            self.eating = False
         if self.output[4] > 0:
-            self._attack = True
+            self.attacking = True
         else:
-            self._attack = False
-        if self.output[5] > 0 and self.run_time > 0 and self._move > 0 and not self.on_water:
-            self.run = True
+            self.attacking = False
+        if self.output[5] > 0.5 and not self.on_water:
+            if not self.running and self.run_time >= int(cfg.RUN_TIME/2):
+                self.running = True
+            if self.running:
+                self.running = True
         else:
-            self.run = False
-        if self.output[6] > 0:
-            self.hide = True
+            self.running = False
+        if self.output[6] > 0.5 and not self.running:
+            self.hidding = True
         else:
-            self.hide = False
+            self.hidding = False
             self.output[5] = 0
             
     def draw_energy_bar(self, screen: Surface, rx: int, ry: int):

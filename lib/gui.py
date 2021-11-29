@@ -474,12 +474,10 @@ class GUI():
             data['GENERATION'] = ''
             data['FOOD'] = ''
             data['ENERGY'] = ''
-            #data['ENERGY'] = ''
             data['POWER'] = ''
             data['SPEED'] = ''
             data['SIZE'] = ''
             data['MUTATIONS'] = ''
-            #data['CHILDS'] = ''
             data['FITNESS'] = ''
             data["LIFETIME"] = ''
             data["REP_TIME"] = ''
@@ -494,21 +492,20 @@ class GUI():
         data['SPEED'] = str(self.owner.enviro.selected.speed)
         data['SIZE'] = str(self.owner.enviro.selected.size)
         data['MUTATIONS'] = str(self.owner.enviro.selected.mutations)
-        #data['CHILDS'] = str(self.owner.enviro.selected.childs)
         data['BORN|KILL'] = str(self.owner.enviro.selected.childs)+'|'+str(self.owner.enviro.selected.kills)
         data['FITNESS'] = str(round(self.owner.enviro.selected.fitness))
         data["LIFETIME"] = str(round(self.owner.enviro.selected.life_time))
         data["REP_TIME"] = str(round(self.owner.enviro.selected.reproduction_time))
         states = []
-        if self.owner.enviro.selected.hide:
+        if self.owner.enviro.selected.hidding:
             states.append(' [H]')
-        if self.owner.enviro.selected._attack:
+        if self.owner.enviro.selected.attacking:
             states.append(' [A]')
-        if self.owner.enviro.selected.run:
+        if self.owner.enviro.selected.running:
             states.append(' [R]')
         if self.owner.enviro.selected.on_water:
             states.append(' [W]')
-        if self.owner.enviro.selected._eat:
+        if self.owner.enviro.selected.eating:
             states.append(' [E]')
         data['S'] = ''
         for state in states:

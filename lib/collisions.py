@@ -90,7 +90,7 @@ def process_creature_plant_collisions(arbiter, space, data):
         target.position += arbiter.normal*(size0/size1)*0.5
     else:
         target.position += arbiter.normal*0.2
-    if hunter._eat:
+    if hunter.eating:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             target.color0 = Color('yellow')
             target.energy = target.energy - cfg.EAT*dt*size0
@@ -119,7 +119,7 @@ def process_creature_meat_collisions(arbiter, space, data):
         target.position += arbiter.normal*(size0/size1)*0.5
     else:
         target.position += arbiter.normal*0.2
-    if hunter._eat:
+    if hunter.eating:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             target.color0 = Color('yellow')
             target.energy = target.energy - cfg.EAT*dt*size0
@@ -147,7 +147,7 @@ def process_creatures_collisions(arbiter, space, data):
     size1 = arbiter.shapes[1].radius
     agent.position -= arbiter.normal*(size1/size0)*0.7
     target.position += arbiter.normal*(size0/size1)*0.7
-    if agent._attack:
+    if agent.attacking:
         if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             if (size0+randint(0, 6)) > (size1+randint(0, 6)):
                 dmg = cfg.HIT * dt * (agent.size+agent.power)/2
@@ -180,7 +180,7 @@ def detect_creature(arbiter, space, data):
     enemy = arbiter.shapes[1].body
     sensor_shape = arbiter.shapes[0]
     for sensor in creature.sensors:
-        if not enemy.hide:
+        if not enemy.hidding:
             if sensor.shape == sensor_shape:
                 sensor.set_color(Color('orange'))
                 pos0 = creature.position
