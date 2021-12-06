@@ -233,6 +233,7 @@ class Manager:
         self.load_project(project_name, save_name)
 
     def load_project(self, project_name: str, save_num):
+        cfg.load_from_file("saves/" + project_name + "/config.json")
         f = open("saves/" + project_name + "/" + str(save_num) + ".json", "r")
         json_list = f.read()
         obj_list = json.loads(json_list)
@@ -283,8 +284,10 @@ class Manager:
 
     def delete_project(self, sim_name: str) -> bool:
         if self.delete_from_projects_list(sim_name):
-            rmtree('saves/' + sim_name)
-            return True
+            try:
+                rmtree('saves/' + sim_name)
+            finally:
+                return True
         else:
             return False
 

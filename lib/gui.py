@@ -1,7 +1,7 @@
 import os
 import sys
 import json
-from shutil import copy
+from shutil import copyfile
 from collections import deque
 from statistics import mean
 import pygame
@@ -383,9 +383,10 @@ class GUI():
         self.new_sim = NewSimWindow(manager=self.ui_mgr, rect=pos)
 
     def create_new_sim(self):
-        new_name = self.new_sim.edit.get_text()                    
+        new_name = self.new_sim.edit.get_text()
         self.owner.enviro.project_name = new_name
         self.new_project_name(new_name)
+        cfg.load_from_file('saves/' + new_name + '/config.json')
         self.create_title(cfg.SCREEN)
         self.owner.enviro.create_enviro()
         self.create_info_win(text='Project created with name: ' + new_name, title=new_name)
@@ -642,7 +643,7 @@ class GUI():
 
     def reload_config(self):
         self.set_win.kill()
-        cfg.load_from_file('config.json')
+        cfg.load_from_file('saves/' + self.owner.enviro.project_name + '/config.json')
 
     def update(self, dT: float, ranking1: list, ranking2: list):
         data: dict = {}
@@ -665,7 +666,7 @@ class GUI():
     def new_project_name(self, name: str):
         try:
             os.mkdir('saves/' + name)
-            #copy('config.json', 'saves/' + name + '/config.json')
+            copyfile('config.json', 'saves/' + name + '/config.json')
         except FileExistsError:
             pass
         f = open("saves/projects.json", "r+")
