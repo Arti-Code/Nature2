@@ -12,6 +12,7 @@ from pygame import Color, Surface, image
 from pygame.constants import *
 from pygame.math import Vector2
 from pygame.time import Clock
+from pygame.transform import scale2x, scale
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape, ShapeFilter
 import pymunk.pygame_util
 from lib.creature import Creature
@@ -31,8 +32,9 @@ from lib.terrain import generate_terrain_blue, generate_terrain_red
 class Simulation():
 
     def __init__(self):
-        flags = pygame.DOUBLEBUF | pygame.HWSURFACE
-        self.screen = pygame.display.set_mode(size=cfg.SCREEN, flags=flags, vsync=1)
+        flags = pygame.OPENGL
+        #self.screen = Surface(size=cfg.SCREEN, flags=0)
+        self.screen = pygame.display.set_mode(size=cfg.SCREEN, flags=0, vsync=1)
         self.space = Space()
         self.clock = Clock()
         pygame.init()
@@ -152,11 +154,11 @@ class Simulation():
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
 
     def add_to_ranking(self, creature: Creature):
-        if creature.food >= 6:
-            ranking = self.ranking2
-        else:
-            ranking = self.ranking1
-        #ranking = self.ranking1
+        #if creature.food >= 6:
+        #    ranking = self.ranking2
+        #else:
+        #    ranking = self.ranking1
+        ranking = self.ranking1
         ranking.sort(key=sort_by_fitness, reverse=True)
         for rank in reversed(ranking):
             if rank['name'] == creature.name:
@@ -486,16 +488,16 @@ class Simulation():
             else:
                 self.carnivores += 1
 
-        if self.herbivores < cfg.MIN_HERBIVORES:
-            if len(self.ranking1) > 0:
-                genome = choice(self.ranking1)
-                creature = self.add_creature(genome=genome)
-                self.creature_list.append(creature)
-        if self.carnivores < cfg.MIN_CARNIVORES:
-            if len(self.ranking2) > 0:
-                genome = choice(self.ranking2)
-                creature = self.add_creature(genome=genome)
-                self.creature_list.append(creature)
+        #if self.herbivores < cfg.MIN_HERBIVORES:
+            #if len(self.ranking1) > 0:
+            #    genome = choice(self.ranking1)
+            #    creature = self.add_creature(genome=genome)
+            #    self.creature_list.append(creature)
+        #if self.carnivores < cfg.MIN_CARNIVORES:
+            #if len(self.ranking2) > 0:
+            #    genome = choice(self.ranking2)
+            #    creature = self.add_creature(genome=genome)
+            #    self.creature_list.append(creature)
  
     def update_plants(self, dt: float):
         for plant in self.plant_list:
@@ -536,7 +538,8 @@ class Simulation():
         if r == 0 or len(self.ranking1) == 0 or len(self.ranking2) == 0:
             creature = self.add_creature()
         else:
-            ranking = choice([self.ranking1, self.ranking2])
+            #ranking = choice([self.ranking1, self.ranking2])
+            ranking = self.ranking1
             rank_size = len(ranking)
             rnd = randint(0, rank_size-1)
             genome = ranking[rnd]

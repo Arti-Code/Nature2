@@ -411,5 +411,24 @@
                 "italic": "1"
             }
         }
+    },
+    "#rank_win":
+    {
+        "label": 
+        {
+            "colours":
+            {
+               "dark_bg": "#3fb7fd00",
+               "normal_text": "#ffffff",
+               "text_shadow": "#787878"
+            },
+            "font":
+            {
+               "name": "fira_code",
+               "size": "9",
+               "bold": "0",
+               "italic": "0"
+            }
+        }
     }
  }
