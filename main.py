@@ -12,6 +12,7 @@ from pygame import Color, Surface, image
 from pygame.constants import *
 from pygame.math import Vector2
 from pygame.time import Clock
+from pygame.transform import scale2x, scale
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape, ShapeFilter
 import pymunk.pygame_util
 from lib.creature import Creature
@@ -31,15 +32,16 @@ from lib.terrain import generate_terrain_blue, generate_terrain_red
 class Simulation():
 
     def __init__(self):
-        flags = pygame.DOUBLEBUF | pygame.HWSURFACE
-        self.screen = pygame.display.set_mode(size=cfg.SCREEN, flags=flags, vsync=1)
+        flags = pygame.OPENGL
+        #self.screen = Surface(size=cfg.SCREEN, flags=0)
+        self.screen = pygame.display.set_mode(size=cfg.SCREEN, flags=0, vsync=1)
         self.space = Space()
         self.clock = Clock()
         pygame.init()
         self.init_vars()
         self.manager = Manager(screen=self.screen, enviro=self)
         self.space.gravity = (0.0, 0.0)
-        self.set_collision_calls()
+        set_collision_calls(self.space, self.dt)
         pymunk.pygame_util.positive_y_is_up = False
         self.options = pymunk.pygame_util.DrawOptions(self.screen)
         self.space.debug_draw(self.options)
@@ -47,7 +49,7 @@ class Simulation():
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
-        self.create_terrain('res/images/land.png', 'res/images/land.png')
+        self.create_terrain('res/images/map2700.png', 'res/images/map2700.png')
 
     def init_vars(self):
         self.neuro_single_times = []
@@ -79,9 +81,9 @@ class Simulation():
         self.plants_on_screen = deque(range(30))
         self.meats_on_screen = deque(range(30))
         self.rocks_on_screen = deque(range(30))
-        self.populations = {'period': 0, 'plants': [], 'herbivores': [], 'carnivores': []}
+        self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
         self.map_time = 0.0
-        self.terrain = image.load('res/images/land.png').convert()
+        self.terrain = image.load('res/images/map2700.png').convert()
 
     def create_terrain(self, rocks_filename: str, water_filename: str):
         rock_img = image.load(rocks_filename).convert()
@@ -114,9 +116,6 @@ class Simulation():
             p2 = edges[e+1]
             wall = self.add_wall(p1, p2, 5)
             self.wall_list.append(wall)
-        #self.terr_img = image.load('res/fonts/water3.png')
-        # self.terr_img.convert_alpha()
-        #terrain = Terrain(self.screen, self.space, 'water3.png', 8)
         self.create_rocks(cfg.ROCK_NUM)
 
         for c in range(cfg.CREATURE_INIT_NUM):
@@ -147,13 +146,19 @@ class Simulation():
         self.kill_all_creatures()
         self.kill_all_plants()
         self.kill_things()
+        self.project_name = None
+        self.last_save_time = 0
+        self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
+        self.map_time = 0.0
+        self.statistics = Statistics()
+        self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
 
     def add_to_ranking(self, creature: Creature):
-        if creature.food >= 6:
-            ranking = self.ranking2
-        else:
-            ranking = self.ranking1
-        #ranking = self.ranking1
+        #if creature.food >= 6:
+        #    ranking = self.ranking2
+        #else:
+        #    ranking = self.ranking1
+        ranking = self.ranking1
         ranking.sort(key=sort_by_fitness, reverse=True)
         for rank in reversed(ranking):
             if rank['name'] == creature.name:
@@ -220,6 +225,8 @@ class Simulation():
             self.draw_debug = not self.draw_debug
         if event.key == pygame.K_c:
             self.show_specie_name = not self.show_specie_name
+        if event.key == pygame.K_s:
+            self.statistics.plot('populations')
 
     def mouse_events(self, event):
         self.selected = None
@@ -250,64 +257,6 @@ class Simulation():
                 return creature
         return None
 
-    def set_collision_calls(self):
-        #* 2: body | 8: wall | 4: sensor | 6: plant | 12: new_plant | 16: eye | 10: meat | 14: water
-        creature_collisions = self.space.add_collision_handler(2, 2)
-        creature_collisions.pre_solve = process_creatures_collisions
-        creature_collisions.data['dt'] = self.dt
-
-        creature_plant_collisions = self.space.add_collision_handler(2, 6)
-        creature_plant_collisions.pre_solve = process_creature_plant_collisions
-        creature_plant_collisions.data['dt'] = self.dt
-
-        creature_meat_collisions = self.space.add_collision_handler(2, 10)
-        creature_meat_collisions.pre_solve = process_creature_meat_collisions
-        creature_meat_collisions.data['dt'] = self.dt
-
-        creature_water_collisions = self.space.add_collision_handler(2, 14)
-        creature_water_collisions.pre_solve = process_creature_water_collisions
-        creature_water_collisions.data['dt'] = self.dt
-
-        creature_rock_collisions = self.space.add_collision_handler(2, 8)
-        creature_rock_collisions.pre_solve = process_creatures_rock_collisions
-        creature_rock_collisions.data['dt'] = self.dt
-
-        creatures_rock_collisions_end = self.space.add_collision_handler(2, 8)
-        creatures_rock_collisions_end.separate = process_creatures_rock_collisions_end
-
-        creature_water_collisions_end = self.space.add_collision_handler(2, 14)
-        creature_water_collisions_end.separate = process_creature_water_collisions_end
-
-        creature_detection = self.space.add_collision_handler(4, 2)
-        creature_detection.pre_solve = detect_creature
-
-        creature_detection_end = self.space.add_collision_handler(4, 2)
-        creature_detection_end.separate = detect_creature_end
-
-        plant_detection = self.space.add_collision_handler(4, 6)
-        plant_detection.pre_solve = detect_plant
-
-        plant_detection_end = self.space.add_collision_handler(4, 6)
-        plant_detection_end.separate = detect_plant_end
-
-        meat_detection = self.space.add_collision_handler(4, 10)
-        meat_detection.pre_solve = detect_meat
-
-        meat_detection_end = self.space.add_collision_handler(4, 10)
-        meat_detection_end.separate = detect_meat_end
-
-        rock_detection = self.space.add_collision_handler(4, 8)
-        rock_detection.pre_solve = detect_rock
-
-        meat_detection_end = self.space.add_collision_handler(4, 8)
-        meat_detection_end.separate = detect_meat_end
-
-        water_detection = self.space.add_collision_handler(4, 14)
-        water_detection.pre_solve = detect_water
-
-        water_detection_end = self.space.add_collision_handler(4, 14)
-        water_detection_end.separate = detect_water_end
-
     def is_position_free(self, position: Vector2, size: float, categories: int) -> bool:
         f_shapes = ShapeFilter(group=0, categories=categories)
         veryf_pos = self.space.point_query(position, size, f_shapes)
@@ -330,7 +279,6 @@ class Simulation():
             if i > 50:
                 return rnd_pos
         return rnd_pos
-
 
     def add_creature(self, genome: dict=None, pos: Vec2d=None) -> Creature:
         creature: Creature
@@ -366,7 +314,7 @@ class Simulation():
 
     def draw(self):
         self.screen.fill(Color('black'))
-        self.screen.blit(self.terrain, (0, 0))
+        self.screen.blit(self.terrain, (-self.camera.get_offset_tuple()[0], -self.camera.get_offset_tuple()[1]))
         self.draw_creatures()
         self.draw_plants()
         self.draw_meat()
@@ -438,7 +386,7 @@ class Simulation():
         self.update_plants(self.dt)
         self.update_meat(self.dt)
         self.manager.update_gui(self.dt, self.ranking1, self.ranking2)
-        #self.update_statistics()
+        self.update_statistics()
         #self.update_terrain(self.dt)
 
     def update_meat(self, dT: float):
@@ -516,15 +464,16 @@ class Simulation():
         self.map_time = self.map_time-1.0
 
     def update_statistics(self):
-        t = int(self.get_time()/cfg.STAT_PERIOD)
-        if t > self.populations['period']:
+        last = self.statistics.get_last_time('populations')
+        t = int(self.get_time())
+        if t >= int(last+cfg.STAT_PERIOD):
             data = {
                 'plants': round(mean(self.populations['plants'])), 
                 'herbivores': round(mean(self.populations['herbivores'])), 
                 'carnivores': round(mean(self.populations['carnivores']))
             }
-            self.statistics.add_data('populations', data)
-            self.populations = {'period': t, 'plants': [], 'herbivores': [], 'carnivores': []}
+            self.statistics.add_data('populations', last+cfg.STAT_PERIOD, data)
+            self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
         else:
             self.populations['plants'].append(len(self.plant_list))
             self.populations['herbivores'].append(self.herbivores)
@@ -539,16 +488,16 @@ class Simulation():
             else:
                 self.carnivores += 1
 
-        if self.herbivores < cfg.MIN_HERBIVORES:
-            if len(self.ranking1) > 0:
-                genome = choice(self.ranking1)
-                creature = self.add_creature(genome=genome)
-                self.creature_list.append(creature)
-        if self.carnivores < cfg.MIN_CARNIVORES:
-            if len(self.ranking2) > 0:
-                genome = choice(self.ranking2)
-                creature = self.add_creature(genome=genome)
-                self.creature_list.append(creature)
+        #if self.herbivores < cfg.MIN_HERBIVORES:
+            #if len(self.ranking1) > 0:
+            #    genome = choice(self.ranking1)
+            #    creature = self.add_creature(genome=genome)
+            #    self.creature_list.append(creature)
+        #if self.carnivores < cfg.MIN_CARNIVORES:
+            #if len(self.ranking2) > 0:
+            #    genome = choice(self.ranking2)
+            #    creature = self.add_creature(genome=genome)
+            #    self.creature_list.append(creature)
  
     def update_plants(self, dt: float):
         for plant in self.plant_list:
@@ -576,8 +525,8 @@ class Simulation():
             f"{TITLE} [fps: {round(self.clock.get_fps())} | dT: {round(self.dt*1000)}ms]")
 
     def check_populatiom(self):
-        if randint(0, 9) == 0:
-            self.check_creature_types()
+        #if randint(0, 9) == 0:
+        self.check_creature_types()
 
         if len(self.creature_list) < cfg.CREATURE_MIN_NUM:
             creature = self.add_random_creature()
@@ -586,10 +535,11 @@ class Simulation():
     def add_random_creature(self) -> Creature:
         r = randint(0, 1)
         creature: Creature = None
-        if r == 0 or len(self.ranking1) == 0 or len(self.ranking2) == 0:
+        if r == 0 or len(self.ranking1) == 0:
             creature = self.add_creature()
         else:
-            ranking = choice([self.ranking1, self.ranking2])
+            #ranking = choice([self.ranking1, self.ranking2])
+            ranking = self.ranking1
             rank_size = len(ranking)
             rnd = randint(0, rank_size-1)
             genome = ranking[rnd]
@@ -602,11 +552,15 @@ class Simulation():
             self.manager.save_project()
             self.last_save_time = round((self.cycles*6000+self.time), 1)
     
+    def set_icon(self, icon_file: str):
+        img = image.load(icon_file)
+        pygame.display.set_icon(img)
+
     def main(self):
         set_win_pos(20, 20)
         # self.init(cfg.WORLD)
         self.create_enviro()
-        set_icon('planet32.png')
+        self.set_icon('res/images/planet32.png')
         while self.running:
             self.auto_save()
             self.events()
@@ -622,17 +576,6 @@ class Simulation():
                 self.physics_avg_time = mean(self.physics_single_times)
                 self.physics_single_times = []
             self.clock_step()
-
-#    def draw_text(self):
-#        if self.selected != None:
-#            if isinstance(self.selected, Creature):
-#                self.manager.add_text2(f'energy: {round(self.selected.energy)} | life_time: {round(self.selected.life_time)} | run_time: {round(self.selected.run_time)} | size: {round(self.selected.shape.radius)} | rep_time: {round(self.selected.reproduction_time)} | gen: {self.selected.generation} | food: {self.selected.food} | fit: {round(self.selected.fitness)}', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
-#            elif isinstance(self.selected, Plant):
-#                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.shape.radius)} | time: {round(self.selected.life_time)}', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
-#            elif isinstance(self.selected, Meat):
-#                self.manager.add_text2(f'energy: {round(self.selected.energy)} | size: {round(self.selected.radius)} | time: {round(self.selected.time)}', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
-#            else:                
-#                self.manager.add_text2(f'no info', cfg.SCREEN[0]/2-150, cfg.SCREEN[1]-25, Color('yellowgreen'), False, False, True, False)
 
 
 

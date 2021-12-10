@@ -1,4 +1,5 @@
 from copy import copy, deepcopy
+from shutil import rmtree
 import os
 import json
 from random import random, randint
@@ -166,7 +167,8 @@ class Manager:
                 rank_to_save['signature'] = deepcopy(rank['signature'])
                 rank_to_save['genealogy'] = deepcopy(rank['genealogy'])
                 project['ranking2'].append(rank_to_save)
-
+            project['statistics'] = {}
+            project['statistics']['populations'] = self.enviro.statistics.get_collection('populations')
             if self.add_to_save_list(project_name, str(self.enviro.get_time(1))):
                 with open("saves/" + project_name + "/" + str(self.enviro.get_time(1)) + ".json", 'w+') as json_file:
                     json.dump(project, json_file)
@@ -180,6 +182,21 @@ class Manager:
         projects_list = json.loads(proj_list)
         if not project_name in projects_list["projects"]:
             projects_list["projects"].append(project_name)
+            proj_json = json.dumps(projects_list)
+            f = open("saves/projects.json", "w+")
+            f.write(proj_json)
+            f.close()
+            return True
+        else:
+            return False
+
+    def delete_from_projects_list(self, project_name: str):
+        f = open("saves/projects.json", "r+")
+        proj_list = f.read()
+        f.close()
+        projects_list = json.loads(proj_list)
+        if project_name in projects_list["projects"]:
+            projects_list["projects"].remove(project_name)
             proj_json = json.dumps(projects_list)
             f = open("saves/projects.json", "w+")
             f.write(proj_json)
@@ -217,6 +234,7 @@ class Manager:
         self.load_project(project_name, save_name)
 
     def load_project(self, project_name: str, save_num):
+        cfg.load_from_file("saves/" + project_name + "/config.json")
         f = open("saves/" + project_name + "/" + str(save_num) + ".json", "r")
         json_list = f.read()
         obj_list = json.loads(json_list)
@@ -226,6 +244,7 @@ class Manager:
         self.enviro.create_rocks(cfg.ROCK_NUM)
         self.enviro.create_plants(cfg.PLANT_INIT_NUM)
         self.project_name = project_name
+        self.enviro.project_name = project_name
         self.enviro.time = round(obj_list['time'], 1)
         self.enviro.cycles = obj_list['cycles']
         self.enviro.last_save_time = obj_list['last_save_time']
@@ -249,6 +268,8 @@ class Manager:
             neuro.FromJSON(rank['neuro'])
             rank['neuro'] = neuro
             self.enviro.ranking2.append(rank)
+        for stat in obj_list['statistics']:
+            self.enviro.statistics.load_statistics(stat, obj_list['statistics'][stat])
         if not f.closed:
             f.close()
         #log_to_file(project_name+' loaded', 'log.txt')
@@ -262,11 +283,20 @@ class Manager:
         save_name = saves["saves"][total_num - 1]
         self.load_project(project_name, save_name)
 
+    def delete_project(self, sim_name: str) -> bool:
+        if self.delete_from_projects_list(sim_name):
+            try:
+                rmtree('saves/' + sim_name)
+            finally:
+                return True
+        else:
+            return False
+
     def draw_net(self, network: Network):
         if network:
             last_layer_idx: int=len(network.layers)-1
-            h_space = 30
-            v_space = 10
+            h_space = 50
+            v_space = 14
             nodes_to_draw = []
             dists = {}
             max_nodes_num = 0
@@ -282,7 +312,7 @@ class Manager:
             inp_desc = [
                 'crea', 'plnt', 'meat', 'watr',
                 'side', 'xpos', 'ypos', 'engy', 
-                'cre0', 'pln0', 'wat0', 'met0', 'rok0',
+#                'cre0', 'pln0', 'wat0', 'met0', 'rok0',
                 'cre1', 'pln1', 'wat1', 'met1', 'rok1',
                 'cre2', 'pln2', 'wat2', 'met2', 'rok2',
                 'hurt' 

@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+from shutil import copyfile
 from collections import deque
 from statistics import mean
 import pygame
@@ -66,9 +67,9 @@ class MenuWindow(UIWindow):
 
 class DelBtn(UIButton):
 
-    def __init__(self, rect: Rect, text: str, manager: UIManager, container, parent_element, object_id: str, destroy_id: str):
+    def __init__(self, rect: Rect, text: str, manager: UIManager, container, parent_element, object_id: str, sim_to_kill: str):
         super().__init__(rect, text, manager, container, parent_element=parent_element, object_id=object_id)
-        self.destroy_id = destroy_id
+        self.sim_to_kill = sim_to_kill
 
 class LoadWindow(UIWindow):
 
@@ -80,7 +81,7 @@ class LoadWindow(UIWindow):
         i = 1
         for sim in simulations:
             btn = UIButton(Rect((60, (btn_s+btn_h)*i), (btn_w, btn_h)), text=sim, manager=self.manager, container=self, parent_element=self, object_id='#btn_load')
-            del_btn = DelBtn(Rect((220, (btn_s+btn_h)*i), (btn_h, btn_h)), 'X', manager=manager, container=self, parent_element=self, object_id='#btn_del_', destroy_id=sim)
+            del_btn = DelBtn(Rect((220, (btn_s+btn_h)*i), (btn_h, btn_h)), 'X', manager=manager, container=self, parent_element=self, object_id='#btn_del_'+sim, sim_to_kill=sim)
             buttons.append((btn, del_btn))
             i += 1
         btn = UIButton(Rect((75, (btn_s+btn_h)*i), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#load_back')
@@ -100,14 +101,14 @@ class RankWindow(UIWindow):
         self.manager = manager
         self.labels = []
         lbl_w = 305
-        for i in range(cfg.RANK_SIZE*2):
+        for i in range(cfg.RANK_SIZE):
             text = '.'
             num = UILabel(Rect((2, 15*i+5), (13, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position_'+str(i))
             spec = UILabel(Rect((5+10, 15*i+5), (60, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_specie_'+str(i))
-            gen = UILabel(Rect((5+70, 15*i+5), (55, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_generation_'+str(i))
-            pwr = UILabel(Rect((5+125, 15*i+5), (45, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_power_'+str(i))
-            eat = UILabel(Rect((5+170, 15*i+5), (45, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eat_'+str(i))
-            fit = UILabel(Rect((5+215, 15*i+5), (70, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_fitness_'+str(i))
+            gen = UILabel(Rect((5+70, 15*i+5), (35, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_generation_'+str(i))
+            pwr = UILabel(Rect((5+110, 15*i+5), (30, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_power_'+str(i))
+            eat = UILabel(Rect((5+150, 15*i+5), (30, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eat_'+str(i))
+            fit = UILabel(Rect((5+190, 15*i+5), (55, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_fitness_'+str(i))
             self.labels.append([num, spec, gen, pwr, eat, fit])
         #self.btn_close = UIButton(Rect((round((rect.width/2)-(btn_w/2)), (15*i+25)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
 
@@ -116,19 +117,19 @@ class RankWindow(UIWindow):
         for i in range(rank_count1):
             self.labels[i][0].set_text(str(i)+'.')
             self.labels[i][1].set_text(ranking1[i]['name'])
-            self.labels[i][2].set_text('GEN ' + str(ranking1[i]['gen']))
-            self.labels[i][3].set_text('PWR ' + str(ranking1[i]['power']))
-            self.labels[i][4].set_text('EAT ' + str(ranking1[i]['food']))
-            self.labels[i][5].set_text('FIT ' + str(round(ranking1[i]['fitness'])))
-        rank_count2 = len(ranking2)
-        for i in range(rank_count2):
-            j = i + rank_count1
-            self.labels[j][0].set_text(str(i)+'.')
-            self.labels[j][1].set_text(ranking2[i]['name'])
-            self.labels[j][2].set_text('GEN ' + str(ranking2[i]['gen']))
-            self.labels[j][3].set_text('PWR ' + str(ranking2[i]['power']))
-            self.labels[j][4].set_text('EAT ' + str(ranking2[i]['food']))
-            self.labels[j][5].set_text('FIT ' + str(round(ranking2[i]['fitness'])))
+            self.labels[i][2].set_text('G ' + str(ranking1[i]['gen']))
+            self.labels[i][3].set_text('P ' + str(ranking1[i]['power']))
+            self.labels[i][4].set_text('E ' + str(ranking1[i]['food']))
+            self.labels[i][5].set_text('F ' + str(round(ranking1[i]['fitness'])))
+        #rank_count2 = len(ranking2)
+        #for i in range(rank_count2):
+        #    j = i + rank_count1
+        #    self.labels[j][0].set_text(str(i)+'.')
+        #    self.labels[j][1].set_text(ranking2[i]['name'])
+        #    self.labels[j][2].set_text('G ' + str(ranking2[i]['gen']))
+        #    self.labels[j][3].set_text('P ' + str(ranking2[i]['power']))
+        #    self.labels[j][4].set_text('E ' + str(ranking2[i]['food']))
+        #    self.labels[j][5].set_text('F ' + str(round(ranking2[i]['fitness'])))
 
             #text = str(i) + '. ' + ranking[i]['name'] + ' \t GEN: ' + str(ranking[i]['gen']) + ' \t POW: ' + str(ranking[i]['power']) + ' \t MEAT|VEGE: ' + str(ranking[i]['meat']) + '|' + str(ranking[i]['vege']) + ' \t FIT: ' + str(round(ranking[i]['fitness']))
             #lab.set_text(text)
@@ -138,7 +139,7 @@ class InfoWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect, text: str, title: str=''):
         super().__init__(rect, manager=manager, window_display_title=title, object_id="#info_win", visible=True)
         self.manager = manager
-        btn = UIButton(Rect((round((self.rect.width/2)-(btn_w/2)), 60), (btn_w, btn_h)), text='Accept', manager=self.manager, container=self, parent_element=self, object_id='#btn_info')
+        btn = UIButton(Rect((round((self.rect.width/2)-(btn_w/2)), 60), (btn_w, btn_h)), text='OK', manager=self.manager, container=self, parent_element=self, object_id='#btn_info')
         msg = UILabel(Rect((10, 15), (self.rect.width-10, 40)), text=text, manager=manager, container=self, parent_element=self, object_id='txt_msg')
 
 class CreditsWindow(UIWindow):
@@ -146,13 +147,11 @@ class CreditsWindow(UIWindow):
     def __init__(self, owner: object, manager: UIManager, rect: Rect, title: str, subtitle: str, author: str, bar_text: str=''):
         super().__init__(rect, manager=manager, window_display_title=bar_text, object_id="#credits_win", visible=True)
         self.manager = manager
-        btn = UIButton(Rect((round((self.rect.width/2)-(btn_w/2)), 80), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_close')
-        lab_title = UILabel(Rect((10, 5), (self.rect.width-10, 30)), text=title, manager=manager, container=self, parent_element=self, object_id='#txt_title')
-        #lab_title.font = owner.titl_font
-        lab_subtitle = UILabel(Rect((10, 35), (self.rect.width-10, 20)), text=subtitle, manager=manager, container=self, parent_element=self, object_id='#txt_subtitle')
-        #lab_subtitle.font = owner.subtitl_font
-        lab_author = UILabel(Rect((10, 55), (self.rect.width-10, 20)), text=author, manager=manager, container=self, parent_element=self, object_id='#txt_author')
-        #lab_author.font = owner.creature_font
+        btn_w = 60; btn_h = 20
+        btn = UIButton(Rect((round((self.rect.width/2)-(btn_w/2)), 55), (btn_w, btn_h)), text='CLOSE', manager=self.manager, container=self, parent_element=self, object_id='#btn_credits_close')
+        lab_title = UILabel(Rect((10, 5), (self.rect.width-10, 20)), text=title, manager=manager, container=self, parent_element=self, object_id='#txt_title')
+        lab_subtitle = UILabel(Rect((10, 25), (self.rect.width-10, 15)), text=subtitle, manager=manager, container=self, parent_element=self, object_id='#txt_subtitle')
+        lab_author = UILabel(Rect((10, 40), (self.rect.width-10, 15)), text=author, manager=manager, container=self, parent_element=self, object_id='#txt_author')
 
 class EnviroWindow(UIWindow):
 
@@ -182,26 +181,27 @@ class EnviroWindow(UIWindow):
 class CreatureWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, data: dict, dT: float):
-        super().__init__(rect, manager=manager, window_display_title='Creature Info', object_id="#creature_win", visible=True)
+        super().__init__(rect, manager=manager, window_display_title=data['SPECIE']+'  '+data['ENERGY'], object_id="#creature_win", visible=True)
         self.manager = manager
         i=0
         self.labs = {}
         for key, val in data.items():
-            if key != 'states':
+            if key != 'S' or key != 'SPECIE' or key != 'ENERGY':
                 lab1 = UILabel(Rect((5, 15*i+5), (70, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
                 lab2 = UILabel(Rect((85, 15*i+5), (self.rect.width/2-15, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
-            else:
+            elif key == 'S':
                 lab1 = UILabel(Rect((5, 15*i+5), (10, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
                 lab2 = UILabel(Rect((16, 15*i+5), (self.rect.width-21, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
             i+=1
             self.labs[key] = (lab1, lab2)
         btn_w = 80; btn_h = 20
-        self.btn_ancestors = UIButton(Rect((rect.width/2-btn_w/2, (15+15*i)), (btn_w, btn_h)), text='ANCESTORS', manager=self.manager, container=self, parent_element=self, object_id="#btn_ancestors")
+        self.btn_ancestors = UIButton(Rect((rect.width/2-btn_w/2, (5+15*i)), (btn_w, btn_h)), text='ANCESTORS', manager=self.manager, container=self, parent_element=self, object_id="#btn_ancestors")
         self.refresh = 0
         self.Update(data, dT)
 
     def Update(self, data: dict, dT: float):
         self.refresh -= dT
+        self.set_display_title(data['SPECIE']+'  '+data['ENERGY'])
         if self.refresh <= 0:
             self.refresh = 1
             data = data
@@ -266,7 +266,7 @@ class InfoMenuWindow(UIWindow):
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
-            btn = UIButton(Rect((50, (btn_s+btn_h)*i), (btn_w, btn_h)), text=txt, manager=self.manager, container=self, parent_element=self, object_id=ident)
+            btn = UIButton(Rect((50, (btn_s*i+btn_h*(i-1))), (btn_w, btn_h)), text=txt, manager=self.manager, container=self, parent_element=self, object_id=ident)
             buttons.append(btn)
             i += 1
 
@@ -360,7 +360,7 @@ class GUI():
     def create_info_menu(self):
         w = 250
         h = 250
-        pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
+        pos = Rect((self.cx-w/2, self.cy-h), (w, h))
         self.info_menu = InfoMenuWindow(manager=self.ui_mgr, rect=pos)
 
     def save_creature(self, selected: Life):
@@ -375,12 +375,21 @@ class GUI():
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.save_menu = SaveMenuWindow(manager=self.ui_mgr, rect=pos)
 
-    def create_new_sim(self):
+    def create_new_sim_win(self):
         w = 300
         h = 150
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h+25))
         self.main_menu.kill()
         self.new_sim = NewSimWindow(manager=self.ui_mgr, rect=pos)
+
+    def create_new_sim(self):
+        new_name = self.new_sim.edit.get_text()
+        self.owner.enviro.project_name = new_name
+        self.new_project_name(new_name)
+        cfg.load_from_file('saves/' + new_name + '/config.json')
+        self.create_title(cfg.SCREEN)
+        self.owner.enviro.create_enviro()
+        self.create_info_win(text='Project created with name: ' + new_name, title=new_name)
 
     def create_load_menu(self):
         w = 300
@@ -389,21 +398,21 @@ class GUI():
         self.load_menu = LoadWindow(manager=self.ui_mgr, rect=pos)
 
     def create_info_win(self, text: str, title: str):
-        w = 400
-        h = 150
+        w = 300
+        h = 120
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.info_win = InfoWindow(manager=self.ui_mgr, rect=pos, text=text, title=title)
 
     def create_credits_win(self, title: str, subtitle: str, author: str, bar_text: str):
         w = 250
-        h = 140
-        pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
+        h = 100
+        pos = Rect((self.cx-w/2, self.cy), (w, h))
         self.credits_win = CreditsWindow(owner=self.owner, manager=self.ui_mgr, rect=pos, title=title, subtitle=subtitle, author=author, bar_text=bar_text)
 
     def create_rank_win(self):
-        w = 290
-        h = 350
-        pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
+        w = 250
+        h = 460
+        pos = Rect((self.cx*2-(w+10), 25), (w, h))
         self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)
 
     def update_ranking(self, ranking1: list, ranking2: list) -> dict:
@@ -438,7 +447,7 @@ class GUI():
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (220, 300)), data=data, dT=dT)
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (220, 240)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
@@ -466,12 +475,10 @@ class GUI():
             data['GENERATION'] = ''
             data['FOOD'] = ''
             data['ENERGY'] = ''
-            #data['ENERGY'] = ''
             data['POWER'] = ''
             data['SPEED'] = ''
             data['SIZE'] = ''
             data['MUTATIONS'] = ''
-            data['CHILDS'] = ''
             data['FITNESS'] = ''
             data["LIFETIME"] = ''
             data["REP_TIME"] = ''
@@ -486,21 +493,20 @@ class GUI():
         data['SPEED'] = str(self.owner.enviro.selected.speed)
         data['SIZE'] = str(self.owner.enviro.selected.size)
         data['MUTATIONS'] = str(self.owner.enviro.selected.mutations)
-        data['CHILDS'] = str(self.owner.enviro.selected.childs)
         data['BORN|KILL'] = str(self.owner.enviro.selected.childs)+'|'+str(self.owner.enviro.selected.kills)
         data['FITNESS'] = str(round(self.owner.enviro.selected.fitness))
         data["LIFETIME"] = str(round(self.owner.enviro.selected.life_time))
         data["REP_TIME"] = str(round(self.owner.enviro.selected.reproduction_time))
         states = []
-        if self.owner.enviro.selected.hide:
+        if self.owner.enviro.selected.hidding:
             states.append(' [H]')
-        if self.owner.enviro.selected._attack:
+        if self.owner.enviro.selected.attacking:
             states.append(' [A]')
-        if self.owner.enviro.selected.run:
+        if self.owner.enviro.selected.running:
             states.append(' [R]')
         if self.owner.enviro.selected.on_water:
             states.append(' [W]')
-        if self.owner.enviro.selected._eat:
+        if self.owner.enviro.selected.eating:
             states.append(' [E]')
         data['S'] = ''
         for state in states:
@@ -516,6 +522,10 @@ class GUI():
         self.main_menu.kill()
         self.map_sim = MapWindow(manager=self.ui_mgr, rect=pos)
 
+    def delete_project(self, sim_name: str):
+        if sim_name != self.owner.enviro.project_name:
+            self.owner.delete_project(sim_name)
+
     def update_enviroment(self, dT: float) -> dict:
         data = {}
         data['dT'] = str(round(dT, 3)) + 's'
@@ -530,19 +540,40 @@ class GUI():
         self.ui_mgr.process_events(event)
         if event.type == pygame.USEREVENT:
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                
+                #   >>> MAIN MENU <<<
                 if event.ui_object_id == '#btn_menu':
                     self.create_main_menu()
                 elif event.ui_object_id == '#menu_win.#btn_resume':
                     self.main_menu.kill()
                 elif event.ui_object_id == '#menu_win.#btn_sim':
                     self.main_menu.kill()
-                    self.create_new_sim()
+                    self.create_new_sim_win()
                 elif event.ui_object_id == '#menu_win.#btn_map':
                     self.main_menu.kill()
                     self.select_map()
                 elif event.ui_object_id == '#menu_win.#save_menu':
                     self.main_menu.kill()
                     self.create_save_menu()
+                elif event.ui_object_id == '#menu_win.#btn_info':
+                    self.main_menu.kill()
+                    self.create_info_menu()
+                elif event.ui_object_id == '#menu_win.#btn_load':
+                    self.main_menu.kill()
+                    self.create_load_menu()
+                elif event.ui_object_id == '#menu_win.#btn_quit':
+                    pygame.quit()
+                    sys.exit(0)
+                
+                #   >>> NEW SIM <<<
+                elif event.ui_object_id == '#new_win.#btn_cancel':
+                    self.new_sim.kill()
+                    self.create_main_menu()
+                elif event.ui_object_id == '#new_win.#btn_accept':
+                    self.create_new_sim()
+                    self.new_sim.kill()
+                    
+                #   >>> SAVE MENU <<<
                 elif event.ui_object_id == '#save_menu.#save_progress':
                     self.owner.save_project()
                     self.save_menu.kill()
@@ -552,35 +583,22 @@ class GUI():
                 elif event.ui_object_id == '#save_menu.#save_back':
                     self.save_menu.kill()
                     self.create_main_menu()
-                elif event.ui_object_id == '#menu_win.#btn_info':
-                    self.main_menu.kill()
-                    self.create_info_menu()
-                    #self.create_credits_win(title=TITLE, subtitle=SUBTITLE, author=AUTHOR, bar_text=TITLE)
-                elif event.ui_object_id == '#credits_win.#btn_close':
-                    self.credits_win.kill()
-                elif event.ui_object_id == '#menu_win.#btn_load':
-                    self.main_menu.kill()
-                    self.create_load_menu()
-                elif event.ui_object_id == '#new_win.#btn_cancel':
-                    self.new_sim.kill()
-                    self.create_main_menu()
-                elif event.ui_object_id == '#new_win.#btn_accept':
-                    new_name = self.new_sim.edit.get_text()                    
-                    self.owner.enviro.project_name = new_name
-                    self.new_project_name(new_name)
-                    self.new_sim.kill()
-                    self.create_title(cfg.SCREEN)
-                    self.owner.enviro.create_enviro()
-                    self.create_info_win(text='Project created with name: ' + new_name, title=new_name)
+                
+                #   >>> SETTINGS WIN <<<
                 elif event.ui_object_id == '#menu_win.#btn_set':
                     self.main_menu.kill()
                     self.create_settings()
-                elif event.ui_object_id == '#load_win.#btn_del_':
-                    sim_to_del = event.ui_element.destroy_id
-                    if sim_to_del == self.owner.project_name:
-                        pass
-                    else:
-                        pass
+                elif event.ui_object_id == '#set_win.#btn_back':
+                    self.set_win.kill()
+                    self.create_main_menu()
+                elif event.ui_object_id == '#set_win.#btn_rel_set':
+                    self.reload_config()
+
+                #   >>> LOAD MENU <<<
+                elif isinstance(event.ui_element, DelBtn):
+                    self.delete_project(event.ui_element.sim_to_kill)
+                    self.load_menu.kill()
+                    self.create_load_menu()
                 elif event.ui_object_id[0: 15] == '#load_win.#btn_':
                     project_name = event.ui_element.text
                     self.owner.enviro.project_name = project_name
@@ -592,26 +610,23 @@ class GUI():
                 elif event.ui_object_id == '#load_win.#load_back':
                     self.load_menu.kill()
                     self.create_main_menu()
+
+                #   >>> INFO MENU <<<
                 elif event.ui_object_id == '#info_win.#btn_info':
                     self.info_win.kill()
-                elif event.ui_object_id == '#set_win.#btn_back':
-                    self.set_win.kill()
-                    self.create_main_menu()
-                elif event.ui_object_id == '#set_win.#btn_rel_set':
-                    self.reload_config()
                 elif event.ui_object_id == '#info_menu.#enviro':
-                    self.info_menu.kill()
+                    #self.info_menu.kill()
                     self.create_enviro_win(dt)
                 elif event.ui_object_id == '#info_menu.#creature_win':
-                    self.info_menu.kill()
+                    #self.info_menu.kill()
                     self.create_creature_win(dt)
                 elif event.ui_object_id == '#creature_win.#btn_ancestors':
                     self.create_ancestors_win(dt)
                 elif event.ui_object_id == '#info_menu.#rank':
-                    self.info_menu.kill()
+                    #self.info_menu.kill()
                     self.create_rank_win()
                 elif event.ui_object_id == '#info_menu.#credits':
-                    self.info_menu.kill()
+                    #self.info_menu.kill()
                     self.create_credits_win(title=TITLE, subtitle=SUBTITLE, author=AUTHOR, bar_text=TITLE)
                 elif event.ui_object_id == '#info_menu.#info_back':
                     self.info_menu.kill()
@@ -620,16 +635,15 @@ class GUI():
                     self.rank_win.kill()
                 elif event.ui_object_id == '#enviro_win.#btn_quit':
                     self.enviro_win.kill()
-                elif event.ui_object_id == '#menu_win.#btn_quit':
-                    pygame.quit()
-                    sys.exit(0)
+                elif event.ui_object_id == '#credits_win.#btn_credits_close':
+                    self.credits_win.kill()
             return True
         else:
             return False
 
     def reload_config(self):
         self.set_win.kill()
-        cfg.load_from_file('config.json')
+        cfg.load_from_file('saves/' + self.owner.enviro.project_name + '/config.json')
 
     def update(self, dT: float, ranking1: list, ranking2: list):
         data: dict = {}
@@ -652,6 +666,7 @@ class GUI():
     def new_project_name(self, name: str):
         try:
             os.mkdir('saves/' + name)
+            copyfile('config.json', 'saves/' + name + '/config.json')
         except FileExistsError:
             pass
         f = open("saves/projects.json", "r+")

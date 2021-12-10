@@ -267,6 +267,16 @@
            "normal_border": "#19d4e1"
         }
     },
+    "#btn_credits_close":
+    {
+        "colours":
+            {
+                "normal_text":"#ffffff",
+                "normal_bg":"#1af925d4",
+                "hovered_bg":"#88fe71ed",
+                "normal_border": "#22fa1e"
+            }
+    },
     "#lab_title":
     {
       "colours":
@@ -359,17 +369,7 @@
     },
     "#credits_win":
     {
-        "#btn_close":
-        {
-            "colours":
-            {
-               "normal_text":"#16b701",
-               "normal_bg":"#0134b7",
-               "hovered_bg":"#0134b7",
-               "normal_border": "#00b8b5"
-            }
-        },
-        "#credits_win.#txt_title":
+        "#txt_title":
         {
             "colours":
             {
@@ -409,6 +409,25 @@
                 "size": "14",
                 "bold": "0",
                 "italic": "1"
+            }
+        }
+    },
+    "#rank_win":
+    {
+        "label": 
+        {
+            "colours":
+            {
+               "dark_bg": "#3fb7fd00",
+               "normal_text": "#ffffff",
+               "text_shadow": "#787878"
+            },
+            "font":
+            {
+               "name": "fira_code",
+               "size": "9",
+               "bold": "0",
+               "italic": "0"
             }
         }
     }
