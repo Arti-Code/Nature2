@@ -364,10 +364,8 @@ class GUI():
         self.info_menu = InfoMenuWindow(manager=self.ui_mgr, rect=pos)
 
     def save_creature(self, selected: Life):
-        if not isinstance(selected, Creature):
-            return
-        else:
-            pass
+        if isinstance(selected, Creature):
+            self.owner.save_creature(selected)
 
     def create_save_menu(self):
         w = 250

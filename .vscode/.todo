@@ -56,7 +56,7 @@ NATURE: {
         ☐ load single network
         ✔ delete single projects
         ✘ real-time bokeh network display
-        ✘ camera zoom in/out
+        ☐ camera zoom in/out @started
         ✔ terrain: perlin-noise list {cm}
         ✔ terrain: ground Surface {cm}
         ✔ terrain: interactions {cm}
@@ -75,3 +75,5 @@ NATURE: {
         ✔ plant/meat-rocks collisions
         ✔ individual configs for each simulations
         ✔ remove saved simulations
+
+Archive:

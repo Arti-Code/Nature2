@@ -12,7 +12,7 @@ from pygame import Color, Surface, image
 from pygame.constants import *
 from pygame.math import Vector2
 from pygame.time import Clock
-from pygame.transform import scale2x, scale
+from pygame.transform import scale2x, scale, smoothscale
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape, ShapeFilter
 import pymunk.pygame_util
 from lib.creature import Creature
@@ -32,6 +32,7 @@ from lib.terrain import generate_terrain_blue, generate_terrain_red
 class Simulation():
 
     def __init__(self):
+        self.scale = 1
         flags = pygame.OPENGL
         #self.screen = Surface(size=cfg.SCREEN, flags=0)
         self.screen = pygame.display.set_mode(size=cfg.SCREEN, flags=0, vsync=1)
@@ -49,7 +50,7 @@ class Simulation():
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
-        self.create_terrain('res/images/map2700.png', 'res/images/map2700.png')
+        self.create_terrain('res/images/map2.png', 'res/images/map2.png')
 
     def init_vars(self):
         self.neuro_single_times = []
@@ -83,7 +84,7 @@ class Simulation():
         self.rocks_on_screen = deque(range(30))
         self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
         self.map_time = 0.0
-        self.terrain = image.load('res/images/map2700.png').convert()
+        self.terrain = image.load('res/images/map2.png').convert()
 
     def create_terrain(self, rocks_filename: str, water_filename: str):
         rock_img = image.load(rocks_filename).convert()
@@ -227,6 +228,15 @@ class Simulation():
             self.show_specie_name = not self.show_specie_name
         if event.key == pygame.K_s:
             self.statistics.plot('populations')
+        if event.key == pygame.K_z:
+            self.scale = 0.5
+            self.camera.zoom(0.9)
+        if event.key == pygame.K_x:
+            self.scale = 2.0
+            self.camera.zoom(1.1)
+        if event.key == pygame.K_a:
+            self.scale = 1.0
+            self.camera.reset_zoom()
 
     def mouse_events(self, event):
         self.selected = None
@@ -320,6 +330,10 @@ class Simulation():
         self.draw_meat()
         self.draw_rocks()
         self.draw_interface()
+        #img = self.screen.copy()
+        img = smoothscale(self.screen, (self.camera.rect.width, self.camera.rect.height))
+        self.screen.fill(Color('black'))
+        self.screen.blit(img, (-self.camera.get_offset_tuple()[0], -self.camera.get_offset_tuple()[1])) 
     
     def draw_creatures(self):
         for creature in self.creature_list:
