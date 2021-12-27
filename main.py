@@ -39,7 +39,7 @@ class Simulation():
         self.init_vars()
         self.manager = Manager(screen=self.screen, enviro=self)
         self.space.gravity = (0.0, 0.0)
-        set_collision_calls(self.space, self.dt)
+        set_collision_calls(self.space, self.dt, self.creatures_num)
         pymunk.pygame_util.positive_y_is_up = False
         self.options = pymunk.pygame_util.DrawOptions(self.screen)
         self.space.debug_draw(self.options)
@@ -75,6 +75,7 @@ class Simulation():
         self.last_save_time = 0
         self.herbivores = 0
         self.carnivores = 0
+        self.creatures_num = 0
         self.creatures_on_screen = deque(range(30))
         self.plants_on_screen = deque(range(30))
         self.meats_on_screen = deque(range(30))
@@ -305,6 +306,16 @@ class Simulation():
                       size=size, color0=Color((127, 255, 0)), color1=Color('darkgreen'), color3=Color((110, 50, 9)), position=pos)
         return plant
 
+    def add_local_plant(self, position: tuple, radius: int, mature: bool=False) -> Plant:
+        if mature:
+            size = cfg.PLANT_MAX_SIZE
+        else:
+            size = 3
+        pos = self.free_random_position(Vec2d(position[0], position[1]), Vec2d(radius, radius), size, 0b10000010000000)
+        plant = Plant(screen=self.screen, space=self.space, collision_tag=6, world_size=world,
+                      size=size, color0=Color((127, 255, 0)), color1=Color('darkgreen'), color3=Color((110, 50, 9)), position=pos)
+        return plant
+
     def add_wall(self, point0: tuple, point1: tuple, thickness: float) -> Wall:
         wall = Wall(self.screen, self.space, point0, point1,
                     thickness, Color('gray'), Color('navy'))
@@ -400,7 +411,7 @@ class Simulation():
             if creature.energy <= 0:
                 self.add_to_ranking(creature)
                 if not creature.on_water:
-                    meat = Meat(screen=self.screen, space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
+                    meat = Meat(screen=self.screen, space=self.space, position=creature.position, collision_tag=10, energy=creature.max_energy)
                     self.meat_list.append(meat)
                 creature.kill(self.space)
                 self.creature_list.remove(creature)
@@ -421,6 +432,9 @@ class Simulation():
 
         ### REPRODUCE ###
         temp_list = []
+        overpopulation = self.creatures_num-cfg.REP_TIME
+        if overpopulation < 0:
+            overpopulation = 0
         for creature in self.creature_list:
             creature.update(dt=dt, selected=self.selected)
             if creature.check_reproduction(dt):
@@ -485,7 +499,7 @@ class Simulation():
                 self.herbivores += 1
             else:
                 self.carnivores += 1
-
+        self.creatures_num = self.carnivores + self.herbivores
         if self.herbivores < cfg.MIN_HERBIVORES:
             if len(self.ranking1) > 0:
                 genome = choice(self.ranking1)
@@ -508,9 +522,14 @@ class Simulation():
                 self.plant_list.remove(plant)
             else:
                 plant.update(dt, self.selected)
-        if random() <= cfg.PLANT_MULTIPLY:
-            plant = self.add_plant(cfg.WORLD)
+            if plant.check_reproduction():
+                new_plant = self.add_local_plant(plant.position, 100, False)
+                self.plant_list.append(new_plant)
+                plant.energy -= plant.max_energy * cfg.REP_ENERGY
+        if len(self.plant_list) < 5:
+            plant = self.add_plant()
             self.plant_list.append(plant)
+        #if random() <= cfg.PLANT_MULTIPLY:
 
     def physics_step(self, dt: float):
         for _ in range(1):
