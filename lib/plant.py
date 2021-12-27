@@ -53,7 +53,7 @@ class Plant(Life):
         self.color0 = self._color0
         self.color1 = self._color1
 
-    def check_reproduce(self) -> bool:
+    def check_reproduction(self) -> bool:
         if self.energy >= (self.max_energy*(1-cfg.REP_ENERGY)):
             return True
         return False
