@@ -1,4 +1,4 @@
-NATURE: { 
+NATURE: {  {c}
     0.1:    {cm} {c}
         ✔ render loop {cm}
         ✔ pymunk integration {cm}

@@ -53,6 +53,13 @@ class Plant(Life):
         self.color0 = self._color0
         self.color1 = self._color1
 
+    def check_reproduction(self, plants_num: int) -> bool:
+        if self.energy >= self.max_energy:
+            if random() <= cfg.PLANT_MULTIPLY*(50/plants_num):
+                return True
+            return False
+        return False
+
     def kill(self, space: Space):
         space.remove(self.shape)
         space.remove(self)
