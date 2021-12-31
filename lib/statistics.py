@@ -34,7 +34,10 @@ class Statistics():
 
     def plot(self, collection_name: str):
         data = self.data[collection_name]
-        p: Figure=figure(plot_width=1600, plot_height=400)
+        w = 1600
+        if int(data['time'][len(data['time'])-1]/100) > w:
+            w = int(data['time'][len(data['time'])-1]/100)
+        p: Figure=figure(plot_width=w, plot_height=600)
         for data_key in data:
             if data_key != 'time':
                 d = data[data_key]
