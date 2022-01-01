@@ -57,7 +57,7 @@ class Plant(Life):
         if self.energy >= self.max_energy:
             if plants_log == 0:
                 plants_log = 1
-            if random() <= cfg.PLANT_MULTIPLY*log2(200/plants_log):
+            if random() <= cfg.PLANT_MULTIPLY*(plants_log):
                 return True
             return False
         return False

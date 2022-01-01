@@ -1,7 +1,7 @@
 import os
 import sys
 from time import time
-from math import degrees, hypot, sin, cos, pi as PI, floor, ceil, log2, sqrt
+from math import degrees, hypot, sin, cos, pi as PI, floor, ceil, log2, sqrt, log10
 from collections import deque
 from lib.math2 import clamp
 from statistics import mean
@@ -531,7 +531,8 @@ class Simulation():
  
     def update_plants(self, dt: float):
         plants_num = len(self.plant_list)
-        plant_log = log2(len(self.plant_list))
+        p = plants_num/(pow(plants_num, 2))
+        #plants_log = (log10(plants_num))/10
         for plant in self.plant_list:
             if plant.life_time_calc(dt):
                 plant.kill(self.space)
@@ -542,7 +543,7 @@ class Simulation():
                 self.plant_list.remove(plant)
             else:
                 plant.update(dt, self.selected)
-            if plant.check_reproduction(plants_num):
+            if plant.check_reproduction(p):
                 new_plant = self.add_local_plant(plant.position, 100, False)
                 self.plant_list.append(new_plant)
                 plant.energy *= 0.5
