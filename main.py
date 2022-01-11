@@ -139,7 +139,7 @@ class Simulation():
 
     def create_plants(self, plant_num: int):
         for _p in range(plant_num):
-            plant = self.add_plant(True)
+            plant = self.add_plant(mature=False, rnd_growth=True)
             self.plant_list.append(plant)
 
     def create_empty_world(self):
@@ -310,9 +310,11 @@ class Simulation():
         creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=random_position(cfg.WORLD), genome=genome)
         self.creature_list.append(creature)
 
-    def add_plant(self, mature: bool=False) -> Plant:
+    def add_plant(self, mature: bool=False, rnd_growth: bool=False) -> Plant:
         if mature:
             size = cfg.PLANT_MAX_SIZE
+        elif rnd_growth:
+            size = randint(1, cfg.PLANT_MAX_SIZE)
         else:
             size = 3
         pos = self.free_random_position(Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), size, 0b10000010000000)
@@ -544,7 +546,7 @@ class Simulation():
             else:
                 plant.update(dt, self.selected)
             if plant.check_reproduction(p):
-                new_plant = self.add_local_plant(plant.position, 100, False)
+                new_plant = self.add_local_plant(plant.position, cfg.PLANT_RANGE, False)
                 self.plant_list.append(new_plant)
                 plant.energy *= 0.5
         if len(self.plant_list) < 50:

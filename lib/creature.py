@@ -310,7 +310,7 @@ class Creature(Life):
         base_energy = cfg.BASE_ENERGY
         if self.running:
             move_energy *= cfg.RUN_COST
-        rest_energy = 0
+        rest_energy = self.power * cfg.POWER_COST
         if self.eating:
             rest_energy += cfg.EAT_ENG
         if self.attacking:
