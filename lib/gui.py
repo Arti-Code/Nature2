@@ -1,4 +1,5 @@
 import os
+from os import listdir
 import sys
 import json
 from shutil import copyfile
@@ -86,12 +87,31 @@ class LoadWindow(UIWindow):
             i += 1
         btn = UIButton(Rect((75, (btn_s+btn_h)*i), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#load_back')
 
-    def GetAllSim(self):
-            f = open("saves/projects.json", "r")
-            projects_list = f.read()
+class LoadCreatureWindow(UIWindow):
+
+    def __init__(self, manager: UIManager, rect: Rect):
+        super().__init__(rect, manager=manager, window_display_title='Load Creature', object_id="#load_creature_win", visible=True)
+        self.manager = manager
+        creatures = self.GetAllCreatures()
+        buttons = []
+        i = 1
+        for c in creatures:
+            btn = UIButton(Rect((60, (btn_s+btn_h)*i), (btn_w*2, btn_h)), text=f"{c[0]} [G:{c[1]}] [P:{c[2]} [F:{c[3]}]", manager=self.manager, container=self, parent_element=self, object_id='#btn_load_creature_' + c[0])
+            #del_btn = DelBtn(Rect((220, (btn_s+btn_h)*i), (btn_h, btn_h)), 'X', manager=manager, container=self, parent_element=self, object_id='#btn_del_'+c, c_to_kill=c)
+            buttons.append(btn)
+            i += 1
+        btn = UIButton(Rect((75, (btn_s+btn_h)*i), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#load_creature_back')
+
+    def GetAllCreatures(self) -> list:
+        creature_files = listdir("saves/creatures")
+        creatures = []
+        for f_name in creature_files:
+            f = open("saves/creatures/"+f_name, "r")
+            json_creature = f.read()
             f.close()
-            projects = json.loads(projects_list)
-            return projects["projects"]
+            creature = json.loads(json_creature)
+            creatures.append((creature['name'], "[G:" + creature['gen'] + "]", "[P:" + creature['power'] + "]", "[F:" + creature['food'] + "]"))
+        return creatures
 
 class RankWindow(UIWindow):
 

@@ -47,10 +47,11 @@ class Creature(Life):
         self.visual_range = cfg.SENSOR_RANGE
         self.sensors = []
         self.side_angle = 0
-        sensors_angle = ((random()+1)/2)*cfg.SENSOR_MAX_ANGLE
+        self.sensor_angle = (1 - random())*cfg.SENSOR_MAX_ANGLE
+        #self.sensor_angle = ((random()+1)/2)*cfg.SENSOR_MAX_ANGLE
         #self.sensors.append(Sensor(screen, self, 4, 0, cfg.SENSOR_RANGE))
-        self.sensors.append(Sensor(screen, self, 4, sensors_angle, cfg.SENSOR_RANGE))
-        self.sensors.append(Sensor(screen, self, 4, -sensors_angle, cfg.SENSOR_RANGE))
+        self.sensors.append(Sensor(screen, self, 4, self.sensor_angle, cfg.SENSOR_RANGE))
+        self.sensors.append(Sensor(screen, self, 4, -self.sensor_angle, cfg.SENSOR_RANGE))
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
         self.reproduction_time = cfg.REP_TIME
@@ -291,14 +292,14 @@ class Creature(Life):
         turn = self.turning*cfg.TURN*dt
         #sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
         #sensor_angle = (PI*1.5)-(((self.output[2]+1)/2)*(PI*1.5))
-        sensor_angle = (1-((self.output[2]+1)/2))*cfg.SENSOR_MAX_ANGLE
+        self.sensor_angle = (1-((self.output[2]+1)/2))*cfg.SENSOR_MAX_ANGLE
         #sensor_angle = self.output[2]*(PI/2)
         self.angle = (self.angle+(turn))%(2*PI)
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
         #self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
         #self.sensors[2].rotate(-sensor_turn, -PI/1.5, 0)
-        self.sensors[0].rotate_to(sensor_angle, 0, cfg.SENSOR_MAX_ANGLE, dt)
-        self.sensors[1].rotate_to(-sensor_angle, -cfg.SENSOR_MAX_ANGLE, 0, dt)
+        self.sensors[0].rotate_to(self.sensor_angle, 0, cfg.SENSOR_MAX_ANGLE, dt)
+        self.sensors[1].rotate_to(-self.sensor_angle, -cfg.SENSOR_MAX_ANGLE, 0, dt)
         #for sensor in self.sensors:
         #    sensor.update()
         return abs(move)
@@ -322,9 +323,10 @@ class Creature(Life):
 
     def get_input(self):
         input = []
-        side_angle = self.sensors[1].angle/(cfg.SENSOR_MAX_ANGLE*2)
+        #side_angle = self.sensors[1].angle/(cfg.SENSOR_MAX_ANGLE*2)
         #angle = self.angle/(2*PI)
         #input.append(angle)
+        side_angle  = self.output[2]
         x = self.position[0]/cfg.WORLD[0]
         y = self.position[1]/cfg.WORLD[1]
         eng = self.energy/self.max_energy
@@ -368,6 +370,7 @@ class Creature(Life):
                     self.output[o] = clamp(self.output[o], -1, 1)
         self.moving = clamp(self.output[0], 0, 1)
         self.turning = self.output[1]
+        #self.output[2] = (self.output[2]+1)/2
         if self.output[3] > 0:
             self.eating = True
         else:
