@@ -231,10 +231,10 @@ class Simulation():
             self.statistics.plot('populations')
         if event.key == pygame.K_z:
             self.scale = 0.5
-            self.camera.zoom(0.9)
+            self.camera.zoom_in()
         if event.key == pygame.K_x:
             self.scale = 2.0
-            self.camera.zoom(1.1)
+            self.camera.zoom_out()
         if event.key == pygame.K_a:
             self.scale = 1.0
             self.camera.reset_zoom()
@@ -348,7 +348,7 @@ class Simulation():
         #img = self.screen.copy()
         img = smoothscale(self.screen, (self.camera.rect.width, self.camera.rect.height))
         self.screen.fill(Color('black'))
-        self.screen.blit(img, (-self.camera.get_offset_tuple()[0], -self.camera.get_offset_tuple()[1])) 
+        self.screen.blit(img, (self.camera.get_offset_tuple()[0], self.camera.get_offset_tuple()[1])) 
     
     def draw_creatures(self):
         for creature in self.creature_list:
