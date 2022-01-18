@@ -87,6 +87,16 @@ class LoadWindow(UIWindow):
             i += 1
         btn = UIButton(Rect((75, (btn_s+btn_h)*i), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#load_back')
 
+    def GetAllSim(self) -> list:
+        projects = []
+        f = open("saves/projects.json", "r")
+        json_sim = f.read()
+        f.close()
+        sims = json.loads(json_sim)
+        for sim in sims['projects']:
+            projects.append(sim)
+        return projects
+
 class LoadCreatureWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect):

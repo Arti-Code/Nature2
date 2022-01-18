@@ -533,7 +533,7 @@ class Simulation():
  
     def update_plants(self, dt: float):
         plants_num = len(self.plant_list)
-        p = 1/plants_num
+        p = 1/(5*plants_num)
         #plants_log = (log10(plants_num))/10
         for plant in self.plant_list:
             if plant.life_time_calc(dt):
