@@ -292,7 +292,7 @@ class Creature(Life):
         turn = self.turning*cfg.TURN*dt
         #sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
         #sensor_angle = (PI*1.5)-(((self.output[2]+1)/2)*(PI*1.5))
-        self.sensor_angle = (1-((self.output[2]+1)/2))*cfg.SENSOR_MAX_ANGLE
+        self.sensor_angle = (1-((self.output[3]+1)/2))*cfg.SENSOR_MAX_ANGLE
         #sensor_angle = self.output[2]*(PI/2)
         self.angle = (self.angle+(turn))%(2*PI)
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
@@ -327,8 +327,8 @@ class Creature(Life):
         #angle = self.angle/(2*PI)
         #input.append(angle)
         side_angle  = self.output[2]
-        x = self.position[0]/cfg.WORLD[0]
-        y = self.position[1]/cfg.WORLD[1]
+        x = (self.position[0]-(self.position[0]/2))/(cfg.WORLD[0]/2)
+        y = (self.position[1]-(self.position[1]/2))/(cfg.WORLD[1]/2)
         eng = self.energy/self.max_energy
         input.append(self.collide_creature)
         input.append(self.collide_plant)
@@ -368,29 +368,30 @@ class Creature(Life):
             for o in range(len(self.output)):
                 if self.output[o] < -1 or self.output[o] > 1:
                     self.output[o] = clamp(self.output[o], -1, 1)
+        self.output[1] = clamp(self.output[1], 0, 1)
+        self.output[2] = clamp(self.output[2], 0, 1)
         self.moving = clamp(self.output[0], 0, 1)
-        self.turning = self.output[1]
-        #self.output[2] = (self.output[2]+1)/2
-        if self.output[3] > 0:
+        self.turning = self.output[2]-self.output[1]
+        if self.output[4] > 0:
             self.eating = True
         else:
             self.eating = False
-        if self.output[4] > 0:
+        if self.output[5] > 0:
             self.attacking = True
         else:
             self.attacking = False
-        if self.output[5] > 0.5 and not self.on_water:
+        if self.output[6] > 0.5 and not self.on_water:
             if not self.running and self.run_time >= int(cfg.RUN_TIME/2):
                 self.running = True
             if self.running:
                 self.running = True
         else:
             self.running = False
-        if self.output[6] > 0.5 and not self.running:
+        if self.output[7] > 0.5 and not self.running:
             self.hidding = True
         else:
             self.hidding = False
-            self.output[5] = 0
+            self.output[6] = 0
             
     def draw_energy_bar(self, screen: Surface, rx: int, ry: int):
         bar_red = Color(255, 0, 0)

@@ -193,7 +193,7 @@ class Simulation():
             self.manager.user_event(event, 1*self.dt)
             if event.type == pygame.QUIT:
                 self.running = False
-            if event.type == pygame.KEYDOWN and not self.manager.gui.new_sim:
+            if event.type == pygame.KEYDOWN:
                 self.key_events(event)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 3:

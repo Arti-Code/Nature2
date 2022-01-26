@@ -346,7 +346,7 @@ class Manager:
                 'hurt' 
             ]
             out_desc = [
-                "mov", "trn", "sen", 
+                "mov", "lft", "rgt", "sen", 
                 "eat", "atk", "run", "hid"
             ]
 
