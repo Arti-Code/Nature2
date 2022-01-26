@@ -14,6 +14,8 @@ from pygame_gui.elements import UITextBox, UIWindow, UIButton, UILabel, UITextEn
 from lib.config import cfg, TITLE, SUBTITLE, AUTHOR
 from lib.life import Life
 from lib.creature import Creature
+from lib.plant import Plant
+from lib.meat import Meat
 
 
 btn_w = 150
@@ -470,6 +472,7 @@ class GUI():
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         data['NEURO_TIME'] = ''
         data['PHYSIC_TIME'] = ''
+        data['PLANTS INDEX'] = ''
         self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (200, 125)), data=data, dT=dT)
 
     def create_creature_win(self, dT: float):
@@ -507,10 +510,21 @@ class GUI():
             data['SPEED'] = ''
             data['SIZE'] = ''
             data['MUTATIONS'] = ''
+            data['BORN|KILL'] = ''
             data['FITNESS'] = ''
             data["LIFETIME"] = ''
             data["REP_TIME"] = ''
             data['S'] = ''
+            if isinstance(self.owner.enviro.selected, Plant):
+                data['SPECIE'] = 'PLANT'
+                data['LIFETIME'] = str(round(self.owner.enviro.selected.life_time))
+                data['ENERGY'] = str(round(self.owner.enviro.selected.energy))
+                data['SIZE'] = str(round(self.owner.enviro.selected.shape.radius))
+            elif isinstance(self.owner.enviro.selected, Meat):
+                data['LIFETIME'] = str(round(self.owner.enviro.selected.life_time))
+                data['SPECIE'] = 'MEAT'
+                data['ENERGY'] = str(round(self.owner.enviro.selected.energy))
+                data['SIZE'] = str(round(self.owner.enviro.selected.radius))
             return data
         data = {}
         data['SPECIE'] = self.owner.enviro.selected.name
@@ -562,9 +576,10 @@ class GUI():
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         data['NEURO_TIME'] = str(round(self.owner.enviro.neuro_avg_time*1000, 1)) + 'ms'
         data['PHYSIC_TIME'] = str(round(self.owner.enviro.physics_avg_time*1000, 1)) + 'ms'
+        data['PLANTS INDEX'] = str(round(cfg.PLANT_MULTIPLY*(1/(len(self.owner.enviro.plant_list)*10)), 4))
         return data
 
-    def process_event(self, event, dt: float):
+    def process_event(self, event, dt: float)->bool:
         self.ui_mgr.process_events(event)
         if event.type == pygame.USEREVENT:
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:

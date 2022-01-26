@@ -56,8 +56,10 @@ class Manager:
         else:
             return False
 
-    def user_event(self, event, dt: float):
-        self.gui.process_event(event, dt)
+    def user_event(self, event, dt: float)->bool:
+        if self.gui.process_event(event, dt):
+            return True
+        return False
 
     def update_gui(self, dt: float, ranking1: list, ranking2: list):
         self.gui.update(dt, ranking1, ranking2)
@@ -169,6 +171,7 @@ class Manager:
                 project['ranking2'].append(rank_to_save)
             project['statistics'] = {}
             project['statistics']['populations'] = self.enviro.statistics.get_collection('populations')
+            #project['statistics']['creatures'] = self.enviro.statistics.get_collection('creatures')
             if self.add_to_save_list(project_name, str(self.enviro.get_time(1))):
                 with open("saves/" + project_name + "/" + str(self.enviro.get_time(1)) + ".json", 'w+') as json_file:
                     json.dump(project, json_file)

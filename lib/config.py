@@ -14,6 +14,7 @@ class Configuration():
         self.PLANT_MAX_SIZE = None
         self.PLANT_GROWTH = None
         self.PLANT_INIT_NUM = None
+        self.PLANT_MIN_NUM = None
         self.PLANT_LIFE = None
         self.PLANT_MULTIPLY = None
         self.PLANT_RANGE = None
@@ -78,6 +79,7 @@ class Configuration():
         self.PLANT_MAX_SIZE         = cfg['PLANT_MAX_SIZE']
         self.PLANT_GROWTH           = cfg['PLANT_GROWTH']
         self.PLANT_INIT_NUM         = cfg['PLANT_INIT_NUM']
+        self.PLANT_MIN_NUM          = cfg['PLANT_MIN_NUM']
         self.PLANT_LIFE             = cfg['PLANT_LIFE']
         self.PLANT_MULTIPLY         = cfg['PLANT_MULTIPLY']
         self.PLANT_RANGE            = cfg['PLANT_RANGE']
