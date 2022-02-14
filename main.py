@@ -1,7 +1,7 @@
 import os
 import sys
 from time import time
-from math import degrees, hypot, sin, cos, pi as PI, floor, ceil
+from math import degrees, hypot, sin, cos, pi as PI, floor, ceil, log2, sqrt, log10
 from collections import deque
 from lib.math2 import clamp
 from statistics import mean
@@ -12,7 +12,7 @@ from pygame import Color, Surface, image
 from pygame.constants import *
 from pygame.math import Vector2
 from pygame.time import Clock
-from pygame.transform import scale2x, scale
+from pygame.transform import scale2x, scale, smoothscale
 from pymunk import Vec2d, Space, Segment, Body, Circle, Shape, ShapeFilter
 import pymunk.pygame_util
 from lib.creature import Creature
@@ -32,6 +32,7 @@ from lib.terrain import generate_terrain_blue, generate_terrain_red
 class Simulation():
 
     def __init__(self):
+        self.scale = 1
         flags = pygame.OPENGL
         #self.screen = Surface(size=cfg.SCREEN, flags=0)
         self.screen = pygame.display.set_mode(size=cfg.SCREEN, flags=0, vsync=1)
@@ -41,7 +42,7 @@ class Simulation():
         self.init_vars()
         self.manager = Manager(screen=self.screen, enviro=self)
         self.space.gravity = (0.0, 0.0)
-        set_collision_calls(self.space, self.dt)
+        set_collision_calls(self.space, self.dt, self.creatures_num)
         pymunk.pygame_util.positive_y_is_up = False
         self.options = pymunk.pygame_util.DrawOptions(self.screen)
         self.space.debug_draw(self.options)
@@ -49,7 +50,8 @@ class Simulation():
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
-        self.create_terrain('res/images/map2700.png', 'res/images/map2700.png')
+        self.statistics.add_collection('creatures', ['size', 'food', 'power', 'mutations'])
+        self.create_terrain('res/images/map2.png', 'res/images/map2.png')
 
     def init_vars(self):
         self.neuro_single_times = []
@@ -77,13 +79,15 @@ class Simulation():
         self.last_save_time = 0
         self.herbivores = 0
         self.carnivores = 0
+        self.creatures_num = 0
         self.creatures_on_screen = deque(range(30))
         self.plants_on_screen = deque(range(30))
         self.meats_on_screen = deque(range(30))
         self.rocks_on_screen = deque(range(30))
         self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
+        #self.creatures = {'size': [5], 'food': [5], 'power': [5], 'mutations': [5]}
         self.map_time = 0.0
-        self.terrain = image.load('res/images/map2700.png').convert()
+        self.terrain = image.load('res/images/map2.png').convert()
 
     def create_terrain(self, rocks_filename: str, water_filename: str):
         rock_img = image.load(rocks_filename).convert()
@@ -137,7 +141,7 @@ class Simulation():
 
     def create_plants(self, plant_num: int):
         for _p in range(plant_num):
-            plant = self.add_plant(True)
+            plant = self.add_plant(mature=False, rnd_growth=True)
             self.plant_list.append(plant)
 
     def create_empty_world(self):
@@ -227,6 +231,18 @@ class Simulation():
             self.show_specie_name = not self.show_specie_name
         if event.key == pygame.K_s:
             self.statistics.plot('populations')
+        if event.key == pygame.K_w:
+            pass
+            #self.statistics.plot2('creatures', [(0, 255, 0), (0, 0, 255), (0, 255, 255), (255, 0, 0)], ['size', 'food', 'power', 'mutations'])
+        if event.key == pygame.K_z:
+            self.scale = 0.5
+            self.camera.zoom_in()
+        if event.key == pygame.K_x:
+            self.scale = 2.0
+            self.camera.zoom_out()
+        if event.key == pygame.K_a:
+            self.scale = 1.0
+            self.camera.reset_zoom()
 
     def mouse_events(self, event):
         self.selected = None
@@ -273,6 +289,8 @@ class Simulation():
         while not free_pos:
             x = randint(int(pos0[0]), int(pos1[0]))
             y = randint(int(pos0[1]), int(pos1[1]))
+            x = clamp(x, 10, cfg.WORLD[0]-10)
+            y = clamp(y, 10, cfg.WORLD[1]-10)
             rnd_pos = Vec2d(x, y)
             free_pos = self.is_position_free(rnd_pos, size, categories)
             i += 1
@@ -291,18 +309,34 @@ class Simulation():
             creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, color0=Color('white'), color1=Color('skyblue'), color2=Color('blue'), color3=Color('red'))
         else:
             creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, genome=genome)
+        #self.creatures['size'].append(creature.size)
+        #self.creatures['power'].append(creature.power)
+        #self.creatures['food'].append(creature.food)
+        #self.creatures['mutations'].append(creature.mutations)
         return creature
 
     def add_saved_creature(self, genome: dict):
         creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=random_position(cfg.WORLD), genome=genome)
         self.creature_list.append(creature)
 
-    def add_plant(self, mature: bool=False) -> Plant:
+    def add_plant(self, mature: bool=False, rnd_growth: bool=False) -> Plant:
+        if mature:
+            size = cfg.PLANT_MAX_SIZE
+        elif rnd_growth:
+            size = randint(1, cfg.PLANT_MAX_SIZE)
+        else:
+            size = 3
+        pos = self.free_random_position(Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), size, 0b10000010000000)
+        plant = Plant(screen=self.screen, space=self.space, collision_tag=6, world_size=world,
+                      size=size, color0=Color((127, 255, 0)), color1=Color('darkgreen'), color3=Color((110, 50, 9)), position=pos)
+        return plant
+
+    def add_local_plant(self, position: tuple, radius: int, mature: bool=False) -> Plant:
         if mature:
             size = cfg.PLANT_MAX_SIZE
         else:
             size = 3
-        pos = self.free_random_position(Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), size, 0b10000010000000)
+        pos = self.free_random_position(Vec2d(position[0], position[1]), Vec2d(radius, radius), size, 0b10000010000000)
         plant = Plant(screen=self.screen, space=self.space, collision_tag=6, world_size=world,
                       size=size, color0=Color((127, 255, 0)), color1=Color('darkgreen'), color3=Color((110, 50, 9)), position=pos)
         return plant
@@ -320,6 +354,10 @@ class Simulation():
         self.draw_meat()
         self.draw_rocks()
         self.draw_interface()
+        #img = self.screen.copy()
+        #img = smoothscale(self.screen, (self.camera.rect.width, self.camera.rect.height))
+        #self.screen.fill(Color('black'))
+        #self.screen.blit(img, (self.camera.get_offset_tuple()[0], self.camera.get_offset_tuple()[1])) 
     
     def draw_creatures(self):
         for creature in self.creature_list:
@@ -392,7 +430,7 @@ class Simulation():
     def update_meat(self, dT: float):
         for meat in self.meat_list:
             meat.update(dT, self.selected)
-            if meat.time <= 0 or meat.energy <= 0:
+            if meat.life_time <= 0 or meat.energy <= 0:
                 meat.kill(self.space)
                 self.meat_list.remove(meat)
 
@@ -402,7 +440,7 @@ class Simulation():
             if creature.energy <= 0:
                 self.add_to_ranking(creature)
                 if not creature.on_water:
-                    meat = Meat(screen=self.screen, space=self.space, position=creature.position, collision_tag=10, radius=creature.size, energy=creature.max_energy)
+                    meat = Meat(screen=self.screen, space=self.space, position=creature.position, collision_tag=10, energy=creature.max_energy)
                     self.meat_list.append(meat)
                 creature.kill(self.space)
                 self.creature_list.remove(creature)
@@ -423,6 +461,9 @@ class Simulation():
 
         ### REPRODUCE ###
         temp_list = []
+        overpopulation = self.creatures_num-cfg.REP_TIME
+        if overpopulation < 0:
+            overpopulation = 0
         for creature in self.creature_list:
             creature.update(dt=dt, selected=self.selected)
             if creature.check_reproduction(dt):
@@ -430,10 +471,18 @@ class Simulation():
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)
                     new_position = self.free_random_position(position=position, range=Vec2d(100, 100), size=genome['size'], categories=0b10000010000000)
                     new_creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=new_position, genome=genome)
+                    #self.creatures['size'].append(new_creature.size)
+                    #self.creatures['power'].append(new_creature.power)
+                    #self.creatures['food'].append(new_creature.food)
+                    #self.creatures['mutations'].append(new_creature.mutations)
                     temp_list.append(new_creature)
 
         if random() <= cfg.CREATURE_MULTIPLY:
             creature = self.add_random_creature()
+            #self.creatures['size'].append(creature.size)
+            #self.creatures['power'].append(creature.power)
+            #self.creatures['food'].append(creature.food)
+            #self.creatures['mutations'].append(creature.mutations)
             self.creature_list.append(creature)
 
         for new_one in temp_list:
@@ -473,7 +522,16 @@ class Simulation():
                 'carnivores': round(mean(self.populations['carnivores']))
             }
             self.statistics.add_data('populations', last+cfg.STAT_PERIOD, data)
+            #data = {}
+            #data = {
+            #    'size': round(mean(self.creatures['size'])),
+            #    'power': round(mean(self.creatures['power'])),
+            #    'food': round(mean(self.creatures['food'])),
+            #    'mutations': round(mean(self.creatures['mutations']))
+            #}
             self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
+            #self.creatures = {'size': [5], 'food': [5], 'power': [5], 'mutations': [5]}
+            #self.statistics.add_data('creatures', last+cfg.STAT_PERIOD, data)
         else:
             self.populations['plants'].append(len(self.plant_list))
             self.populations['herbivores'].append(self.herbivores)
@@ -500,6 +558,9 @@ class Simulation():
             #    self.creature_list.append(creature)
  
     def update_plants(self, dt: float):
+        plants_num = len(self.plant_list)
+        p = 1/(10*plants_num)
+        #plants_log = (log10(plants_num))/10
         for plant in self.plant_list:
             if plant.life_time_calc(dt):
                 plant.kill(self.space)
@@ -510,9 +571,14 @@ class Simulation():
                 self.plant_list.remove(plant)
             else:
                 plant.update(dt, self.selected)
-        if random() <= cfg.PLANT_MULTIPLY:
-            plant = self.add_plant(cfg.WORLD)
+            if plant.check_reproduction(p):
+                new_plant = self.add_local_plant(plant.position, cfg.PLANT_RANGE, False)
+                self.plant_list.append(new_plant)
+                plant.energy *= 0.5
+        if len(self.plant_list) < cfg.PLANT_MIN_NUM:
+            plant = self.add_plant()
             self.plant_list.append(plant)
+        #if random() <= cfg.PLANT_MULTIPLY:
 
     def physics_step(self, dt: float):
         for _ in range(1):

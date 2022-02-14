@@ -11,15 +11,15 @@ from lib.camera import Camera
 
 class Meat(Life):
 
-    def __init__(self, screen: Surface, space: Space, position: Vec2d, collision_tag: int, radius: int, energy: int, color0: Color=Color('red'), color1: Color=Color('red4')):
+    def __init__(self, screen: Surface, space: Space, position: Vec2d, collision_tag: int, energy: int, color0: Color=Color('red'), color1: Color=Color('red4')):
         super().__init__(screen=screen, space=space, collision_tag=collision_tag, position=position)
-        self.energy = energy
-        self.radius = floor(log2(self.energy))
+        self.energy = int(energy/2)
+        self.radius = int(log2(self.energy))
         self._color0 = color0
         self._color1 = color1
         self.color0 = color0
         self.color1 = color1
-        self.time = cfg.MEAT_TIME
+        self.life_time = cfg.MEAT_TIME
         self.shape = Circle(self, self.radius)
         self.shape.collision_type = collision_tag
         space.add(self.shape)
@@ -43,12 +43,12 @@ class Meat(Life):
 
     def update(self, dT: float, selected: Body):
         super().update(dT, selected)
-        self.time -= dT
-        if self.time < 0:
-            self.time = 0
+        self.life_time -= dT
+        if self.life_time < 0:
+            self.life_time = 0
         if self.energy < 0:
             self.energy = 0
-        alfa = int((255*self.time)/cfg.MEAT_TIME)
+        alfa = int((255*self.life_time)/cfg.MEAT_TIME)
         alfa = clamp(alfa, 0, 255)
         self._color0.a = alfa
         self.color0 = self._color0

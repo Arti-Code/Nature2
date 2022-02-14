@@ -1,4 +1,4 @@
-NATURE: { 
+NATURE: {  {c}
     0.1:    {cm} {c}
         ✔ render loop {cm}
         ✔ pymunk integration {cm}
@@ -56,14 +56,14 @@ NATURE: {
         ☐ load single network
         ✔ delete single projects
         ✘ real-time bokeh network display
-        ✘ camera zoom in/out
+        ☐ camera zoom in/out @started
         ✔ terrain: perlin-noise list {cm}
         ✔ terrain: ground Surface {cm}
         ✔ terrain: interactions {cm}
         ✔ water terrain, slowing, drawing {cm}
         ✔ ancestor trackink {cm}
         ✔ save&load with ancestors {cm}
-        ☐ FIX: compilation
+        ✔ FIX: compilation
         ✔ generate physic geometry: water {cm}
         ✔ generate physic geometry: rocks {cm}
         ☐ complex body physics shapes
@@ -73,4 +73,7 @@ NATURE: {
         ✔ adjust some windows sizes and positions
         ✔ change info button to green "OK"
         ✔ plant/meat-rocks collisions
-        ☐ individual configs for each simulations
+        ✔ individual configs for each simulations
+        ✔ remove saved simulations
+
+Archive:

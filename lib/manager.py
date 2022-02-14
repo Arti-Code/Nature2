@@ -14,6 +14,7 @@ from lib.net import Network, TYPE, ACTIVATION
 from lib.config import cfg
 from lib.gui import GUI
 from lib.utils import log_to_file
+from lib.creature import Creature
 
 
 class Manager:
@@ -56,8 +57,10 @@ class Manager:
         else:
             return False
 
-    def user_event(self, event, dt: float):
-        self.gui.process_event(event, dt)
+    def user_event(self, event, dt: float)->bool:
+        if self.gui.process_event(event, dt):
+            return True
+        return False
 
     def update_gui(self, dt: float, ranking1: list, ranking2: list):
         self.gui.update(dt, ranking1, ranking2)
@@ -169,12 +172,38 @@ class Manager:
                 project['ranking2'].append(rank_to_save)
             project['statistics'] = {}
             project['statistics']['populations'] = self.enviro.statistics.get_collection('populations')
+            #project['statistics']['creatures'] = self.enviro.statistics.get_collection('creatures')
             if self.add_to_save_list(project_name, str(self.enviro.get_time(1))):
                 with open("saves/" + project_name + "/" + str(self.enviro.get_time(1)) + ".json", 'w+') as json_file:
                     json.dump(project, json_file)
                 if not json_file.closed:
                     json_file.close()
     
+    def save_creature(self, creature: Creature) -> bool:
+        if self.enviro.project_name == None:
+            return False
+        project = self.enviro.project_name
+        name = creature.name
+        cr = {}
+        cr['name'] = creature.name
+        cr['gen'] = creature.generation
+        cr['mutations'] = creature.mutations
+        cr['size'] = creature.shape.radius
+        cr['power'] = creature.power
+        cr['food'] = creature.food
+        cr['speed'] = creature.speed
+        cr['color0'] = [creature.color0.r, creature.color0.g, creature.color0.b, creature.color0.a]
+        cr['color1'] = [creature.color1.r, creature.color1.g, creature.color1.b, creature.color1.a]
+        cr['color2'] = [creature.color2.r, creature.color2.g, creature.color2.b, creature.color2.a]
+        cr['color3'] = [creature.color3.r, creature.color3.g, creature.color3.b, creature.color3.a]
+        cr['neuro'] = creature.neuro.ToJSON()
+        cr['signature'] = deepcopy(creature.signature)
+        cr['genealogy'] = deepcopy(creature.genealogy)
+        with open("saves/creatures/" + name + ".json", 'w+') as creature_file:
+            json.dump(cr, creature_file)
+        creature_file.close()
+        return True
+
     def add_to_projects_list(self, project_name: str):
         f = open("saves/projects.json", "r+")
         proj_list = f.read()
@@ -312,13 +341,13 @@ class Manager:
             inp_desc = [
                 'crea', 'plnt', 'meat', 'watr',
                 'side', 'xpos', 'ypos', 'engy', 
-#                'cre0', 'pln0', 'wat0', 'met0', 'rok0',
+                #'cre0', 'pln0', 'wat0', 'met0', 'rok0',
                 'cre1', 'pln1', 'wat1', 'met1', 'rok1',
                 'cre2', 'pln2', 'wat2', 'met2', 'rok2',
                 'hurt' 
             ]
             out_desc = [
-                "mov", "trn", "sen", 
+                "mov", "lft", "rgt", "sen", 
                 "eat", "atk", "run", "hid"
             ]
 

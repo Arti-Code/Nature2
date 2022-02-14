@@ -1,6 +1,6 @@
 from copy import copy, deepcopy
 from random import random, randint
-from math import sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt, log2
+from math import sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt, log2, log10
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
 from pygame.math import Vector2
@@ -52,6 +52,15 @@ class Plant(Life):
         self.energy = clamp(self.energy, 0, self.max_energy)
         self.color0 = self._color0
         self.color1 = self._color1
+
+    def check_reproduction(self, plants_log: float) -> bool:
+        if self.energy >= self.max_energy:
+            if plants_log == 0:
+                plants_log = 1
+            if random() <= cfg.PLANT_MULTIPLY*(plants_log):
+                return True
+            return False
+        return False
 
     def kill(self, space: Space):
         space.remove(self.shape)

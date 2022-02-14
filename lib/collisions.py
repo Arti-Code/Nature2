@@ -8,7 +8,7 @@ from lib.config import *
 def diet(food: int, mod: float) -> float:
     return pow(food, 2) * mod
 
-def set_collision_calls(space: Space, dt: float):
+def set_collision_calls(space: Space, dt: float, creatures_num: int):
     #* 2: body | 8: rock | 4: sensor | 6: plant | 12: new_plant | 16: eye | 10: meat | 14: water
     #COLLISIONS:
     creature_collisions = space.add_collision_handler(2, 2)
@@ -18,10 +18,12 @@ def set_collision_calls(space: Space, dt: float):
     creature_plant_collisions = space.add_collision_handler(2, 6)
     creature_plant_collisions.pre_solve = process_creature_plant_collisions
     creature_plant_collisions.data['dt'] = dt
+    creature_plant_collisions.data['creatures_num'] = creatures_num
 
     creature_meat_collisions = space.add_collision_handler(2, 10)
     creature_meat_collisions.pre_solve = process_creature_meat_collisions
     creature_meat_collisions.data['dt'] = dt
+    creature_meat_collisions.data['creatures_num'] = creatures_num
 
     creature_water_collisions = space.add_collision_handler(2, 14)
     creature_water_collisions.pre_solve = process_creature_water_collisions
@@ -43,6 +45,13 @@ def set_collision_calls(space: Space, dt: float):
 
     meat_rock_collisions_end = space.add_collision_handler(10, 8)
     meat_rock_collisions_end.separate = process_meat_rock_collisions_end
+
+    plant_rock_collisions = space.add_collision_handler(6, 8)
+    plant_rock_collisions.pre_solve = process_plant_rock_collisions
+    plant_rock_collisions.data['dt'] = dt
+
+    plant_rock_collisions_end = space.add_collision_handler(6, 8)
+    plant_rock_collisions_end.separate = process_plant_rock_collisions_end
 
     #DETECTIONS:
     creature_detection = space.add_collision_handler(4, 2)
@@ -92,9 +101,15 @@ def process_creature_plant_collisions(arbiter, space, data):
         target.position += arbiter.normal*0.2
     if hunter.eating:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
+            if data['creatures_num'] > 0:
+                diet_mod = 100/data['creatures_num']
+                if diet_mod > 1:
+                    diet_mod = 1
+            else:
+                diet_mod = 1
             target.color0 = Color('yellow')
             target.energy = target.energy - cfg.EAT*dt*size0
-            vege = diet(11-hunter.food, cfg.DIET_MOD)*size0
+            vege = diet(11-hunter.food, cfg.DIET_MOD*diet_mod)*size0
             vege = ((11-hunter.food)/10)*size0
             #vege = hunter.vege/((hunter.vege+hunter.meat)/2)
             plant_value = cfg.EAT*dt*vege*cfg.VEGE2ENG
@@ -121,10 +136,16 @@ def process_creature_meat_collisions(arbiter, space, data):
         target.position += arbiter.normal*0.2
     if hunter.eating:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
+            if data['creatures_num'] > 0:
+                diet_mod = 100/data['creatures_num']
+                if diet_mod > 1:
+                    diet_mod = 1
+            else:
+                diet_mod = 1
             target.color0 = Color('yellow')
             target.energy = target.energy - cfg.EAT*dt*size0
             meat = (hunter.food/5)*size0
-            meat = diet(hunter.food, cfg.DIET_MOD)*size0
+            meat = diet(hunter.food, cfg.DIET_MOD*diet_mod)*size0
             meat_value = cfg.EAT*dt*meat*cfg.MEAT2ENG
             hunter.eat(meat_value)
             hunter.fitness += meat_value*cfg.MEAT2FIT/size0
@@ -173,6 +194,13 @@ def process_meat_rock_collisions(arbiter, space, data):
     return False
 
 def process_meat_rock_collisions_end(arbiter, space, data):
+    return False
+
+def process_plant_rock_collisions(arbiter, space, data):
+    arbiter.shapes[0].body.position -= arbiter.normal
+    return False
+
+def process_plant_rock_collisions_end(arbiter, space, data):
     return False
 
 def detect_creature(arbiter, space, data):

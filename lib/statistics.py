@@ -1,5 +1,7 @@
+from cProfile import label
 from calendar import c
 from matplotlib.image import FigureImage
+from matplotlib.pyplot import legend
 import numpy as np
 from bokeh.io import show
 from bokeh.plotting import figure, Figure
@@ -34,7 +36,10 @@ class Statistics():
 
     def plot(self, collection_name: str):
         data = self.data[collection_name]
-        p: Figure=figure(plot_width=1600, plot_height=400)
+        w = 1600
+        if int(data['time'][len(data['time'])-1]/100) > w:
+            w = int(data['time'][len(data['time'])-1]/100)
+        p: Figure=figure(plot_width=w, plot_height=600)
         for data_key in data:
             if data_key != 'time':
                 d = data[data_key]
@@ -46,6 +51,23 @@ class Statistics():
                 elif data_key == 'carnivores':
                     color = RGB(255, 0, 0)
                 p.line(data['time'], d, line_width=2, line_color=color)
+        show(p)
+
+    def plot2(self, collection_name: str, colors: list, labels: list):
+        data = self.data[collection_name]
+        w = 1600
+        if int(data['time'][len(data['time'])-1]/100) > w:
+            w = int(data['time'][len(data['time'])-1]/100)
+        p: Figure=figure(plot_width=w, plot_height=600)
+        c = 0
+        for data_key in data:
+            if data_key != 'time':
+                d = data[data_key]
+                label = labels[c]
+                color = colors[c]
+                c += 1
+                p.line(data['time'], d, line_width=2, line_color=color)
+        p.legend = legend
         show(p)
 
     def load_statistics(self, collection_name: str, data: dict):
