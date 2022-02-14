@@ -136,11 +136,11 @@ class RankWindow(UIWindow):
         for i in range(cfg.RANK_SIZE):
             text = '.'
             num = UILabel(Rect((2, 15*i+5), (13, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position_'+str(i))
-            spec = UILabel(Rect((5+10, 15*i+5), (60, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_specie_'+str(i))
-            gen = UILabel(Rect((5+70, 15*i+5), (35, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_generation_'+str(i))
-            pwr = UILabel(Rect((5+110, 15*i+5), (30, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_power_'+str(i))
-            eat = UILabel(Rect((5+150, 15*i+5), (30, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eat_'+str(i))
-            fit = UILabel(Rect((5+190, 15*i+5), (55, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_fitness_'+str(i))
+            spec = UILabel(Rect((15, 15*i+5), (60, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_specie_'+str(i))
+            gen = UILabel(Rect((75, 15*i+5), (25, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_generation_'+str(i))
+            pwr = UILabel(Rect((100, 15*i+5), (25, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_power_'+str(i))
+            eat = UILabel(Rect((125, 15*i+5), (25, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eat_'+str(i))
+            fit = UILabel(Rect((155, 15*i+5), (55, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_fitness_'+str(i))
             self.labels.append([num, spec, gen, pwr, eat, fit])
         #self.btn_close = UIButton(Rect((round((rect.width/2)-(btn_w/2)), (15*i+25)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
 
@@ -193,8 +193,8 @@ class EnviroWindow(UIWindow):
         i=0
         self.labs = {}
         for key, val in data.items():
-            lab1 = UILabel(Rect((10, 15*i+5), (90, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
-            lab2 = UILabel(Rect((120, 15*i+5), (self.rect.width/2-20, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
+            lab1 = UILabel(Rect((5, 15*i+5), (75, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
+            lab2 = UILabel(Rect((80, 15*i+5), (self.rect.width/2-5, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
             i+=1
             self.labs[key] = (lab1, lab2)
         self.btn_close = UIButton(Rect((rect.width/2-btn_w/2, (15+15*i)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
@@ -219,11 +219,11 @@ class CreatureWindow(UIWindow):
         self.labs = {}
         for key, val in data.items():
             if key != 'S' or key != 'SPECIE' or key != 'ENERGY':
-                lab1 = UILabel(Rect((5, 15*i+5), (70, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
-                lab2 = UILabel(Rect((85, 15*i+5), (self.rect.width/2-15, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
+                lab1 = UILabel(Rect((5, 15*i+5), (65, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
+                lab2 = UILabel(Rect((70, 15*i+5), (self.rect.width/2, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
             elif key == 'S':
-                lab1 = UILabel(Rect((5, 15*i+5), (10, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
-                lab2 = UILabel(Rect((16, 15*i+5), (self.rect.width-21, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
+                lab1 = UILabel(Rect((5, 15*i+5), (10, 15)), text=f"{key}: ", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
+                lab2 = UILabel(Rect((15, 15*i+5), (self.rect.width-15, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
             i+=1
             self.labs[key] = (lab1, lab2)
         btn_w = 80; btn_h = 20
@@ -440,8 +440,8 @@ class GUI():
         self.credits_win = CreditsWindow(owner=self.owner, manager=self.ui_mgr, rect=pos, title=title, subtitle=subtitle, author=author, bar_text=bar_text)
 
     def create_rank_win(self):
-        w = 250
-        h = 460
+        w = 215
+        h = 750
         pos = Rect((self.cx*2-(w+10), 25), (w, h))
         self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)
 
@@ -470,15 +470,15 @@ class GUI():
         data['TIME'] = ''
         data['CREATURES'] = 'H:'+str(self.owner.enviro.herbivores)+'|C:'+str(self.owner.enviro.carnivores)
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
-        data['NEURO_TIME'] = ''
-        data['PHYSIC_TIME'] = ''
-        data['PLANTS INDEX'] = ''
-        self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (200, 125)), data=data, dT=dT)
+        data['NEURO'] = ''
+        data['PHYSIC'] = ''
+        data['PLANT RATE'] = ''
+        self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (160, 140)), data=data, dT=dT)
 
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (220, 240)), data=data, dT=dT)
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (150, 220)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
@@ -541,15 +541,23 @@ class GUI():
         data["REP_TIME"] = str(round(self.owner.enviro.selected.reproduction_time))
         states = []
         if self.owner.enviro.selected.hidding:
-            states.append(' [H]')
+            states.append('[H]')
         if self.owner.enviro.selected.attacking:
-            states.append(' [A]')
+            states.append('[A]')
         if self.owner.enviro.selected.running:
-            states.append(' [R]')
+            states.append('[R]')
         if self.owner.enviro.selected.on_water:
-            states.append(' [W]')
+            states.append('[W]')
         if self.owner.enviro.selected.eating:
-            states.append(' [E]')
+            states.append('[E]')
+        if self.owner.enviro.selected.pain:
+            states.append('[T]')
+        if self.owner.enviro.selected.collide_creature:
+            states.append('[C]')
+        if self.owner.enviro.selected.collide_meat:
+            states.append('[M]')
+        if self.owner.enviro.selected.collide_plant:
+            states.append('[P]')
         data['S'] = ''
         for state in states:
             data['S'] += state
@@ -574,9 +582,9 @@ class GUI():
         data['TIME'] = str(self.owner.enviro.cycles*6000 + round(self.owner.enviro.time)) + 's'
         data['CREATURES'] = 'H:'+str(self.owner.enviro.herbivores)+'|C:'+str(self.owner.enviro.carnivores)
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
-        data['NEURO_TIME'] = str(round(self.owner.enviro.neuro_avg_time*1000, 1)) + 'ms'
-        data['PHYSIC_TIME'] = str(round(self.owner.enviro.physics_avg_time*1000, 1)) + 'ms'
-        data['PLANTS INDEX'] = str(round(cfg.PLANT_MULTIPLY*(1/(len(self.owner.enviro.plant_list)*10)), 4))
+        data['NEURO'] = str(round(self.owner.enviro.neuro_avg_time*1000, 1)) + 'ms'
+        data['PHYSIC'] = str(round(self.owner.enviro.physics_avg_time*1000, 1)) + 'ms'
+        data['PLANT RATE'] = str(round(cfg.PLANT_MULTIPLY*(1/(len(self.owner.enviro.plant_list)*10)), 4))
         return data
 
     def process_event(self, event, dt: float)->bool:

@@ -66,7 +66,9 @@ class Creature(Life):
         self.running: bool=False
         self.life_time: float=0.0
         self.run_time = cfg.RUN_TIME
-        self.hidding = False
+        self.hidding: bool=False
+        self.hide_ref_time = 0.0
+        self.run_ref_time = 0.0
         self.on_water = False
 
     def genome_build(self, genome: dict):
@@ -241,10 +243,14 @@ class Creature(Life):
         self.calc_energy(dt, move)
         self.mem_time -= dt
         self.mem_time = clamp(self.mem_time, 0, cfg.MEM_TIME)
-        #if self.hidding:
-        #    if self.running or self.moving >= 0.2:
-        #        self.hidding = False
-        #        self.output[5] = 0
+        if self.run_ref_time != 0.0:
+            self.run_ref_time -= dt
+            if self.run_ref_time < 0.0:
+                self.run_ref_time = 0.0
+        if self.hide_ref_time != 0.0:
+            self.hide_ref_time -= dt
+            if self.hide_ref_time < 0.0:
+                self.hide_ref_time = 0.0
 
     def check_reproduction(self, dt) -> bool:
         self.reproduction_time -= dt
@@ -327,8 +333,8 @@ class Creature(Life):
         #angle = self.angle/(2*PI)
         #input.append(angle)
         side_angle  = self.output[2]
-        x = (self.position[0]-(self.position[0]/2))/(cfg.WORLD[0]/2)
-        y = (self.position[1]-(self.position[1]/2))/(cfg.WORLD[1]/2)
+        x = 1-abs((self.position[0]-(cfg.WORLD[0]/2))/(cfg.WORLD[0]/2))
+        y = 1-abs((self.position[1]-(cfg.WORLD[1]/2))/(cfg.WORLD[1]/2))
         eng = self.energy/self.max_energy
         input.append(self.collide_creature)
         input.append(self.collide_plant)
@@ -382,13 +388,24 @@ class Creature(Life):
             self.attacking = False
         if self.output[6] > 0.5 and not self.on_water:
             if not self.running and self.run_time >= int(cfg.RUN_TIME/2):
-                self.running = True
+                if self.run_ref_time == 0.0:
+                    self.run_ref_time = 1.0
+                    self.running = True
+                else:
+                    self.running = False
             if self.running:
                 self.running = True
         else:
             self.running = False
         if self.output[7] > 0.5 and not self.running:
-            self.hidding = True
+            if not self.hidding:
+                if self.hide_ref_time == 0.0:
+                    self.hide_ref_time = 1.0
+                    self.hidding = True
+                else:
+                    self.hidding = False
+            else:
+                self.hidding = True
         else:
             self.hidding = False
             self.output[6] = 0
