@@ -441,7 +441,7 @@ class GUI():
 
     def create_rank_win(self):
         w = 215
-        h = 750
+        h = 600
         pos = Rect((self.cx*2-(w+10), 25), (w, h))
         self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)
 
@@ -472,13 +472,13 @@ class GUI():
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         data['NEURO'] = ''
         data['PHYSIC'] = ''
-        data['PLANT RATE'] = ''
+        data['H2C'] = ''
         self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (160, 140)), data=data, dT=dT)
 
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (150, 220)), data=data, dT=dT)
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (150, 250)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
@@ -584,7 +584,7 @@ class GUI():
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         data['NEURO'] = str(round(self.owner.enviro.neuro_avg_time*1000, 1)) + 'ms'
         data['PHYSIC'] = str(round(self.owner.enviro.physics_avg_time*1000, 1)) + 'ms'
-        data['PLANT RATE'] = str(round(cfg.PLANT_MULTIPLY*(1/(len(self.owner.enviro.plant_list)*10)), 4))
+        data['H2C'] = str(round(cfg.H2C, 2))
         return data
 
     def process_event(self, event, dt: float)->bool:

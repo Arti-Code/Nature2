@@ -6,6 +6,7 @@
         "cpos",
         "dists",
         "doublebuf",
+        "engy",
         "fira",
         "font",
         "hwsurface",
@@ -13,7 +14,8 @@
         "obstacle",
         "subtitl",
         "titl",
-        "vege"
+        "vege",
+        "watr"
     ],
     "workbench.colorCustomizations": {
         "activityBar.activeBackground": "#0ee4ae",

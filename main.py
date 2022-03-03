@@ -88,6 +88,7 @@ class Simulation():
         #self.creatures = {'size': [5], 'food': [5], 'power': [5], 'mutations': [5]}
         self.map_time = 0.0
         self.terrain = image.load('res/images/map2.png').convert()
+        self.h2c = 1
 
     def create_terrain(self, rocks_filename: str, water_filename: str):
         rock_img = image.load(rocks_filename).convert()
@@ -309,10 +310,6 @@ class Simulation():
             creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, color0=Color('white'), color1=Color('skyblue'), color2=Color('blue'), color3=Color('red'))
         else:
             creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, genome=genome)
-        #self.creatures['size'].append(creature.size)
-        #self.creatures['power'].append(creature.power)
-        #self.creatures['food'].append(creature.food)
-        #self.creatures['mutations'].append(creature.mutations)
         return creature
 
     def add_saved_creature(self, genome: dict):
@@ -354,10 +351,6 @@ class Simulation():
         self.draw_meat()
         self.draw_rocks()
         self.draw_interface()
-        #img = self.screen.copy()
-        #img = smoothscale(self.screen, (self.camera.rect.width, self.camera.rect.height))
-        #self.screen.fill(Color('black'))
-        #self.screen.blit(img, (self.camera.get_offset_tuple()[0], self.camera.get_offset_tuple()[1])) 
     
     def draw_creatures(self):
         for creature in self.creature_list:
@@ -419,6 +412,11 @@ class Simulation():
         self.wall_list = []
 
     def update(self):
+        if self.herbivores != 0 and self.carnivores != 0:
+            self.h2c = self.herbivores/self.carnivores
+        else:
+            self.h2c = 1
+        cfg.update_h2c(self.h2c)
         self.calc_time()
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
@@ -471,18 +469,10 @@ class Simulation():
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)
                     new_position = self.free_random_position(position=position, range=Vec2d(100, 100), size=genome['size'], categories=0b10000010000000)
                     new_creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=new_position, genome=genome)
-                    #self.creatures['size'].append(new_creature.size)
-                    #self.creatures['power'].append(new_creature.power)
-                    #self.creatures['food'].append(new_creature.food)
-                    #self.creatures['mutations'].append(new_creature.mutations)
                     temp_list.append(new_creature)
 
         if random() <= cfg.CREATURE_MULTIPLY:
             creature = self.add_random_creature()
-            #self.creatures['size'].append(creature.size)
-            #self.creatures['power'].append(creature.power)
-            #self.creatures['food'].append(creature.food)
-            #self.creatures['mutations'].append(creature.mutations)
             self.creature_list.append(creature)
 
         for new_one in temp_list:

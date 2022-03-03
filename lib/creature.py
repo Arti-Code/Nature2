@@ -16,6 +16,7 @@ from lib.species import random_name, modify_name
 from lib.config import cfg
 from lib.utils import log_to_file
 from lib.camera import Camera
+#from lib.vision import Vision
 
 class Creature(Life):
 
@@ -48,10 +49,12 @@ class Creature(Life):
         self.sensors = []
         self.side_angle = 0
         self.sensor_angle = (1 - random())*cfg.SENSOR_MAX_ANGLE
-        #self.sensor_angle = ((random()+1)/2)*cfg.SENSOR_MAX_ANGLE
+        self.sensor_angle = ((random()+1)/2)*cfg.SENSOR_MAX_ANGLE
         #self.sensors.append(Sensor(screen, self, 4, 0, cfg.SENSOR_RANGE))
         self.sensors.append(Sensor(screen, self, 4, self.sensor_angle, cfg.SENSOR_RANGE))
         self.sensors.append(Sensor(screen, self, 4, -self.sensor_angle, cfg.SENSOR_RANGE))
+        #self.vision = Vision(self, cfg.SENSOR_RANGE, PI*0.75, (0.0, 0.0), "vision")
+        #space.add(self.vision)
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
         self.reproduction_time = cfg.REP_TIME
@@ -146,6 +149,7 @@ class Creature(Life):
             a = 255
         if selected == self:
             self.draw_detectors(screen=screen, rel_pos=rel_pos)
+            #self.vision.draw(screen=screen, camera=camera, rel_position=rel_pos)
         for detector in self.sensors:
             detector.reset_data()
         gfxdraw.aacircle(screen, int(rx), int(ry), int(r), color2)
@@ -167,11 +171,7 @@ class Creature(Life):
             y2 = round(ry + rot.y*(r/1.6))
             x3 = round(rx + rot.x*(r/1.1))
             y3 = round(ry + rot.y*(r/1.1))
-            #x3 = round(x - rot.x*(r/5))
-            #y3 = round(y - rot.y*(r/5))
             r2 = round(r/2)
-            #r3 = round(r/3)
-            #h: int=self.food*10; s: int=100; l: int=50
             r: int; g: int; b: int
             if self.food >= 6:
                 r = round(25.5*self.food)
@@ -232,14 +232,20 @@ class Creature(Life):
             if self.run_time > cfg.RUN_TIME:
                 self.run_time = cfg.RUN_TIME
         move = self.move(dt)
-        #if self.position.x <= 0:
-        #    self.position.x = 2
-        #elif self.position.x >= cfg.WORLD[0]:
-        #    self.position.x = cfg.WORLD[0]-2
-        #if self.position.y <= 0:
-        #    self.position.y = 2
-        #elif self.position.y >= cfg.WORLD[1]:
-        #    self.position.y = cfg.WORLD[1]-2
+        edge_vec =Vec2d(0, 0)
+        y = self.position.y; x = self.position.x;
+        if self.position.x <= 0:
+            x = 2
+            self.position = Vec2d(x, y)
+        elif self.position.x >= cfg.WORLD[0]:
+            x = cfg.WORLD[0]-2
+            self.position = Vec2d(x, y)
+        if self.position.y <= 0:
+            y = 2
+            self.position = Vec2d(x, y)
+        elif self.position.y >= cfg.WORLD[1]:
+            y = cfg.WORLD[1]-2
+            self.position = Vec2d(x, y)
         self.calc_energy(dt, move)
         self.mem_time -= dt
         self.mem_time = clamp(self.mem_time, 0, cfg.MEM_TIME)
@@ -306,8 +312,8 @@ class Creature(Life):
         #self.sensors[2].rotate(-sensor_turn, -PI/1.5, 0)
         self.sensors[0].rotate_to(self.sensor_angle, 0, cfg.SENSOR_MAX_ANGLE, dt)
         self.sensors[1].rotate_to(-self.sensor_angle, -cfg.SENSOR_MAX_ANGLE, 0, dt)
-        #for sensor in self.sensors:
-        #    sensor.update()
+        for sensor in self.sensors:
+            sensor.update()
         return abs(move)
 
     def calc_energy(self, dt: float, move: float):
@@ -332,6 +338,7 @@ class Creature(Life):
         #side_angle = self.sensors[1].angle/(cfg.SENSOR_MAX_ANGLE*2)
         #angle = self.angle/(2*PI)
         #input.append(angle)
+        #a, d, c = self.vision.get_detection()
         side_angle  = self.output[2]
         x = 1-abs((self.position[0]-(cfg.WORLD[0]/2))/(cfg.WORLD[0]/2))
         y = 1-abs((self.position[1]-(cfg.WORLD[1]/2))/(cfg.WORLD[1]/2))
@@ -344,6 +351,9 @@ class Creature(Life):
         input.append(x)
         input.append(y)
         input.append(eng)
+        #input.append(a)
+        #input.append(d)
+        #input.append(c)
         #^   +8
         for sensor in self.sensors:
             detected = []
