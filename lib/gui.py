@@ -1,7 +1,8 @@
 import os
+from os import listdir
 import sys
 import json
-from shutil import copy
+from shutil import copyfile
 from collections import deque
 from statistics import mean
 import pygame
@@ -13,6 +14,8 @@ from pygame_gui.elements import UITextBox, UIWindow, UIButton, UILabel, UITextEn
 from lib.config import cfg, TITLE, SUBTITLE, AUTHOR
 from lib.life import Life
 from lib.creature import Creature
+from lib.plant import Plant
+from lib.meat import Meat
 
 
 btn_w = 150
@@ -86,12 +89,41 @@ class LoadWindow(UIWindow):
             i += 1
         btn = UIButton(Rect((75, (btn_s+btn_h)*i), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#load_back')
 
-    def GetAllSim(self):
-            f = open("saves/projects.json", "r")
-            projects_list = f.read()
+    def GetAllSim(self) -> list:
+        projects = []
+        f = open("saves/projects.json", "r")
+        json_sim = f.read()
+        f.close()
+        sims = json.loads(json_sim)
+        for sim in sims['projects']:
+            projects.append(sim)
+        return projects
+
+class LoadCreatureWindow(UIWindow):
+
+    def __init__(self, manager: UIManager, rect: Rect):
+        super().__init__(rect, manager=manager, window_display_title='Load Creature', object_id="#load_creature_win", visible=True)
+        self.manager = manager
+        creatures = self.GetAllCreatures()
+        buttons = []
+        i = 1
+        for c in creatures:
+            btn = UIButton(Rect((60, (btn_s+btn_h)*i), (btn_w*2, btn_h)), text=f"{c[0]} [G:{c[1]}] [P:{c[2]} [F:{c[3]}]", manager=self.manager, container=self, parent_element=self, object_id='#btn_load_creature_' + c[0])
+            #del_btn = DelBtn(Rect((220, (btn_s+btn_h)*i), (btn_h, btn_h)), 'X', manager=manager, container=self, parent_element=self, object_id='#btn_del_'+c, c_to_kill=c)
+            buttons.append(btn)
+            i += 1
+        btn = UIButton(Rect((75, (btn_s+btn_h)*i), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#load_creature_back')
+
+    def GetAllCreatures(self) -> list:
+        creature_files = listdir("saves/creatures")
+        creatures = []
+        for f_name in creature_files:
+            f = open("saves/creatures/"+f_name, "r")
+            json_creature = f.read()
             f.close()
-            projects = json.loads(projects_list)
-            return projects["projects"]
+            creature = json.loads(json_creature)
+            creatures.append((creature['name'], "[G:" + creature['gen'] + "]", "[P:" + creature['power'] + "]", "[F:" + creature['food'] + "]"))
+        return creatures
 
 class RankWindow(UIWindow):
 
@@ -101,14 +133,14 @@ class RankWindow(UIWindow):
         self.manager = manager
         self.labels = []
         lbl_w = 305
-        for i in range(cfg.RANK_SIZE*2):
+        for i in range(cfg.RANK_SIZE):
             text = '.'
             num = UILabel(Rect((2, 15*i+5), (13, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position_'+str(i))
-            spec = UILabel(Rect((5+10, 15*i+5), (60, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_specie_'+str(i))
-            gen = UILabel(Rect((5+70, 15*i+5), (35, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_generation_'+str(i))
-            pwr = UILabel(Rect((5+110, 15*i+5), (30, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_power_'+str(i))
-            eat = UILabel(Rect((5+150, 15*i+5), (30, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eat_'+str(i))
-            fit = UILabel(Rect((5+190, 15*i+5), (55, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_fitness_'+str(i))
+            spec = UILabel(Rect((15, 15*i+5), (60, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_specie_'+str(i))
+            gen = UILabel(Rect((75, 15*i+5), (25, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_generation_'+str(i))
+            pwr = UILabel(Rect((100, 15*i+5), (25, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_power_'+str(i))
+            eat = UILabel(Rect((125, 15*i+5), (25, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eat_'+str(i))
+            fit = UILabel(Rect((155, 15*i+5), (55, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_fitness_'+str(i))
             self.labels.append([num, spec, gen, pwr, eat, fit])
         #self.btn_close = UIButton(Rect((round((rect.width/2)-(btn_w/2)), (15*i+25)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
 
@@ -121,15 +153,15 @@ class RankWindow(UIWindow):
             self.labels[i][3].set_text('P ' + str(ranking1[i]['power']))
             self.labels[i][4].set_text('E ' + str(ranking1[i]['food']))
             self.labels[i][5].set_text('F ' + str(round(ranking1[i]['fitness'])))
-        rank_count2 = len(ranking2)
-        for i in range(rank_count2):
-            j = i + rank_count1
-            self.labels[j][0].set_text(str(i)+'.')
-            self.labels[j][1].set_text(ranking2[i]['name'])
-            self.labels[j][2].set_text('G ' + str(ranking2[i]['gen']))
-            self.labels[j][3].set_text('P ' + str(ranking2[i]['power']))
-            self.labels[j][4].set_text('E ' + str(ranking2[i]['food']))
-            self.labels[j][5].set_text('F ' + str(round(ranking2[i]['fitness'])))
+        #rank_count2 = len(ranking2)
+        #for i in range(rank_count2):
+        #    j = i + rank_count1
+        #    self.labels[j][0].set_text(str(i)+'.')
+        #    self.labels[j][1].set_text(ranking2[i]['name'])
+        #    self.labels[j][2].set_text('G ' + str(ranking2[i]['gen']))
+        #    self.labels[j][3].set_text('P ' + str(ranking2[i]['power']))
+        #    self.labels[j][4].set_text('E ' + str(ranking2[i]['food']))
+        #    self.labels[j][5].set_text('F ' + str(round(ranking2[i]['fitness'])))
 
             #text = str(i) + '. ' + ranking[i]['name'] + ' \t GEN: ' + str(ranking[i]['gen']) + ' \t POW: ' + str(ranking[i]['power']) + ' \t MEAT|VEGE: ' + str(ranking[i]['meat']) + '|' + str(ranking[i]['vege']) + ' \t FIT: ' + str(round(ranking[i]['fitness']))
             #lab.set_text(text)
@@ -161,8 +193,8 @@ class EnviroWindow(UIWindow):
         i=0
         self.labs = {}
         for key, val in data.items():
-            lab1 = UILabel(Rect((10, 15*i+5), (90, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
-            lab2 = UILabel(Rect((120, 15*i+5), (self.rect.width/2-20, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
+            lab1 = UILabel(Rect((5, 15*i+5), (75, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
+            lab2 = UILabel(Rect((80, 15*i+5), (self.rect.width/2-5, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
             i+=1
             self.labs[key] = (lab1, lab2)
         self.btn_close = UIButton(Rect((rect.width/2-btn_w/2, (15+15*i)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
@@ -187,11 +219,11 @@ class CreatureWindow(UIWindow):
         self.labs = {}
         for key, val in data.items():
             if key != 'S' or key != 'SPECIE' or key != 'ENERGY':
-                lab1 = UILabel(Rect((5, 15*i+5), (70, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
-                lab2 = UILabel(Rect((85, 15*i+5), (self.rect.width/2-15, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
+                lab1 = UILabel(Rect((5, 15*i+5), (65, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
+                lab2 = UILabel(Rect((70, 15*i+5), (self.rect.width/2, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
             elif key == 'S':
-                lab1 = UILabel(Rect((5, 15*i+5), (10, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
-                lab2 = UILabel(Rect((16, 15*i+5), (self.rect.width-21, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
+                lab1 = UILabel(Rect((5, 15*i+5), (10, 15)), text=f"{key}: ", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
+                lab2 = UILabel(Rect((15, 15*i+5), (self.rect.width-15, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
             i+=1
             self.labs[key] = (lab1, lab2)
         btn_w = 80; btn_h = 20
@@ -364,10 +396,8 @@ class GUI():
         self.info_menu = InfoMenuWindow(manager=self.ui_mgr, rect=pos)
 
     def save_creature(self, selected: Life):
-        if not isinstance(selected, Creature):
-            return
-        else:
-            pass
+        if isinstance(selected, Creature):
+            self.owner.save_creature(selected)
 
     def create_save_menu(self):
         w = 250
@@ -383,9 +413,10 @@ class GUI():
         self.new_sim = NewSimWindow(manager=self.ui_mgr, rect=pos)
 
     def create_new_sim(self):
-        new_name = self.new_sim.edit.get_text()                    
+        new_name = self.new_sim.edit.get_text()
         self.owner.enviro.project_name = new_name
         self.new_project_name(new_name)
+        cfg.load_from_file('saves/' + new_name + '/config.json')
         self.create_title(cfg.SCREEN)
         self.owner.enviro.create_enviro()
         self.create_info_win(text='Project created with name: ' + new_name, title=new_name)
@@ -409,8 +440,8 @@ class GUI():
         self.credits_win = CreditsWindow(owner=self.owner, manager=self.ui_mgr, rect=pos, title=title, subtitle=subtitle, author=author, bar_text=bar_text)
 
     def create_rank_win(self):
-        w = 250
-        h = 630
+        w = 215
+        h = 600
         pos = Rect((self.cx*2-(w+10), 25), (w, h))
         self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)
 
@@ -439,14 +470,15 @@ class GUI():
         data['TIME'] = ''
         data['CREATURES'] = 'H:'+str(self.owner.enviro.herbivores)+'|C:'+str(self.owner.enviro.carnivores)
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
-        data['NEURO_TIME'] = ''
-        data['PHYSIC_TIME'] = ''
-        self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (200, 125)), data=data, dT=dT)
+        data['NEURO'] = ''
+        data['PHYSIC'] = ''
+        data['H2C'] = ''
+        self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (160, 140)), data=data, dT=dT)
 
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (220, 240)), data=data, dT=dT)
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (150, 250)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
@@ -474,16 +506,25 @@ class GUI():
             data['GENERATION'] = ''
             data['FOOD'] = ''
             data['ENERGY'] = ''
-            #data['ENERGY'] = ''
             data['POWER'] = ''
             data['SPEED'] = ''
             data['SIZE'] = ''
             data['MUTATIONS'] = ''
-            #data['CHILDS'] = ''
+            data['BORN|KILL'] = ''
             data['FITNESS'] = ''
             data["LIFETIME"] = ''
             data["REP_TIME"] = ''
             data['S'] = ''
+            if isinstance(self.owner.enviro.selected, Plant):
+                data['SPECIE'] = 'PLANT'
+                data['LIFETIME'] = str(round(self.owner.enviro.selected.life_time))
+                data['ENERGY'] = str(round(self.owner.enviro.selected.energy))
+                data['SIZE'] = str(round(self.owner.enviro.selected.shape.radius))
+            elif isinstance(self.owner.enviro.selected, Meat):
+                data['LIFETIME'] = str(round(self.owner.enviro.selected.life_time))
+                data['SPECIE'] = 'MEAT'
+                data['ENERGY'] = str(round(self.owner.enviro.selected.energy))
+                data['SIZE'] = str(round(self.owner.enviro.selected.radius))
             return data
         data = {}
         data['SPECIE'] = self.owner.enviro.selected.name
@@ -494,22 +535,29 @@ class GUI():
         data['SPEED'] = str(self.owner.enviro.selected.speed)
         data['SIZE'] = str(self.owner.enviro.selected.size)
         data['MUTATIONS'] = str(self.owner.enviro.selected.mutations)
-        #data['CHILDS'] = str(self.owner.enviro.selected.childs)
         data['BORN|KILL'] = str(self.owner.enviro.selected.childs)+'|'+str(self.owner.enviro.selected.kills)
         data['FITNESS'] = str(round(self.owner.enviro.selected.fitness))
         data["LIFETIME"] = str(round(self.owner.enviro.selected.life_time))
         data["REP_TIME"] = str(round(self.owner.enviro.selected.reproduction_time))
         states = []
-        if self.owner.enviro.selected.hide:
-            states.append(' [H]')
-        if self.owner.enviro.selected._attack:
-            states.append(' [A]')
-        if self.owner.enviro.selected.run:
-            states.append(' [R]')
+        if self.owner.enviro.selected.hidding:
+            states.append('[H]')
+        if self.owner.enviro.selected.attacking:
+            states.append('[A]')
+        if self.owner.enviro.selected.running:
+            states.append('[R]')
         if self.owner.enviro.selected.on_water:
-            states.append(' [W]')
-        if self.owner.enviro.selected._eat:
-            states.append(' [E]')
+            states.append('[W]')
+        if self.owner.enviro.selected.eating:
+            states.append('[E]')
+        if self.owner.enviro.selected.pain:
+            states.append('[T]')
+        if self.owner.enviro.selected.collide_creature:
+            states.append('[C]')
+        if self.owner.enviro.selected.collide_meat:
+            states.append('[M]')
+        if self.owner.enviro.selected.collide_plant:
+            states.append('[P]')
         data['S'] = ''
         for state in states:
             data['S'] += state
@@ -534,11 +582,12 @@ class GUI():
         data['TIME'] = str(self.owner.enviro.cycles*6000 + round(self.owner.enviro.time)) + 's'
         data['CREATURES'] = 'H:'+str(self.owner.enviro.herbivores)+'|C:'+str(self.owner.enviro.carnivores)
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
-        data['NEURO_TIME'] = str(round(self.owner.enviro.neuro_avg_time*1000, 1)) + 'ms'
-        data['PHYSIC_TIME'] = str(round(self.owner.enviro.physics_avg_time*1000, 1)) + 'ms'
+        data['NEURO'] = str(round(self.owner.enviro.neuro_avg_time*1000, 1)) + 'ms'
+        data['PHYSIC'] = str(round(self.owner.enviro.physics_avg_time*1000, 1)) + 'ms'
+        data['H2C'] = str(round(cfg.H2C, 2))
         return data
 
-    def process_event(self, event, dt: float):
+    def process_event(self, event, dt: float)->bool:
         self.ui_mgr.process_events(event)
         if event.type == pygame.USEREVENT:
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
@@ -645,7 +694,7 @@ class GUI():
 
     def reload_config(self):
         self.set_win.kill()
-        cfg.load_from_file('config.json')
+        cfg.load_from_file('saves/' + self.owner.enviro.project_name + '/config.json')
 
     def update(self, dT: float, ranking1: list, ranking2: list):
         data: dict = {}
@@ -668,7 +717,7 @@ class GUI():
     def new_project_name(self, name: str):
         try:
             os.mkdir('saves/' + name)
-            #copy('config.json', 'saves/' + name + '/config.json')
+            copyfile('config.json', 'saves/' + name + '/config.json')
         except FileExistsError:
             pass
         f = open("saves/projects.json", "r+")

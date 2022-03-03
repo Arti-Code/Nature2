@@ -2,7 +2,7 @@ from math import pi as PI
 from json import loads, dumps
 
 TITLE = "NATURE"
-SUBTITLE = "v0.5.7"
+SUBTITLE = "v0.7.0" 
 AUTHOR = "2019-2021 Artur Gwoździowski"
 
 class Configuration():
@@ -14,8 +14,10 @@ class Configuration():
         self.PLANT_MAX_SIZE = None
         self.PLANT_GROWTH = None
         self.PLANT_INIT_NUM = None
+        self.PLANT_MIN_NUM = None
         self.PLANT_LIFE = None
         self.PLANT_MULTIPLY = None
+        self.PLANT_RANGE = None
         self.CREATURE_MULTIPLY = None
         self.CREATURE_MIN_NUM = None
         self.EAT = None
@@ -37,6 +39,7 @@ class Configuration():
         self.MEAT_TIME = None
         self.SIZE2ENG = None
         self.SIZE_COST = None
+        self.POWER_COST = None
         self.CHILDS_NUM = None
         self.MEAT2ENG = None
         self.VEGE2ENG = None
@@ -63,7 +66,13 @@ class Configuration():
         self.STAT_PERIOD = None
         self.WATER_MOVE = None
         self.WATER_COST = None
+        self.H2C = None
         self.load_from_file(filename)
+
+    def update_h2c(self, h2c: float):
+        #self.MEAT2ENG = h2c
+        #self.VEGE2ENG = 1/h2c
+        self.H2C *= h2c
 
     def load_from_file(self, filename: str):
         f = open(filename, 'r')
@@ -76,8 +85,10 @@ class Configuration():
         self.PLANT_MAX_SIZE         = cfg['PLANT_MAX_SIZE']
         self.PLANT_GROWTH           = cfg['PLANT_GROWTH']
         self.PLANT_INIT_NUM         = cfg['PLANT_INIT_NUM']
+        self.PLANT_MIN_NUM          = cfg['PLANT_MIN_NUM']
         self.PLANT_LIFE             = cfg['PLANT_LIFE']
         self.PLANT_MULTIPLY         = cfg['PLANT_MULTIPLY']
+        self.PLANT_RANGE            = cfg['PLANT_RANGE']
         self.CREATURE_MULTIPLY      = cfg['CREATURE_MULTIPLY']
         self.CREATURE_MIN_NUM       = cfg['CREATURE_MIN_NUM']
         self.EAT                    = cfg['EAT']
@@ -99,6 +110,7 @@ class Configuration():
         self.MEAT_TIME              = cfg['MEAT_TIME']
         self.SIZE2ENG               = cfg['SIZE2ENG']
         self.SIZE_COST              = cfg['SIZE_COST']
+        self.POWER_COST             = cfg['POWER_COST']
         self.CHILDS_NUM             = cfg['CHILDS_NUM']
         self.MEAT2ENG               = cfg['MEAT2ENG']
         self.VEGE2ENG               = cfg['VEGE2ENG']
@@ -125,5 +137,6 @@ class Configuration():
         self.STAT_PERIOD            = cfg['STAT_PERIOD']
         self.WATER_MOVE             = cfg['WATER_MOVE']
         self.WATER_COST             = cfg['WATER_COST']
+        self.H2C                    = cfg['H2C']
 
 cfg = Configuration('config.json')

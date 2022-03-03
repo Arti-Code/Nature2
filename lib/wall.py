@@ -18,7 +18,7 @@ class Wall(Body):
         self.border_color = border_color
         self.fill_color = fill_color
         self.shape = Segment(self, p1, p2, thickness)
-        self.shape.collision_type = 8
+        self.shape.collision_type = 20
         #self.rect = Rect(min([p1[0], p2[0]]), min([p1[1], p2[1]]), )
         space.add(self, self.shape)
         #self.shape.update()

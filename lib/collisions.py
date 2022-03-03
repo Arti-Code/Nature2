@@ -8,7 +8,7 @@ from lib.config import *
 def diet(food: int, mod: float) -> float:
     return pow(food, 2) * mod
 
-def set_collision_calls(space: Space, dt: float):
+def set_collision_calls(space: Space, dt: float, creatures_num: int):
     #* 2: body | 8: rock | 4: sensor | 6: plant | 12: new_plant | 16: eye | 10: meat | 14: water
     #COLLISIONS:
     creature_collisions = space.add_collision_handler(2, 2)
@@ -18,10 +18,12 @@ def set_collision_calls(space: Space, dt: float):
     creature_plant_collisions = space.add_collision_handler(2, 6)
     creature_plant_collisions.pre_solve = process_creature_plant_collisions
     creature_plant_collisions.data['dt'] = dt
+    creature_plant_collisions.data['creatures_num'] = creatures_num
 
     creature_meat_collisions = space.add_collision_handler(2, 10)
     creature_meat_collisions.pre_solve = process_creature_meat_collisions
     creature_meat_collisions.data['dt'] = dt
+    creature_meat_collisions.data['creatures_num'] = creatures_num
 
     creature_water_collisions = space.add_collision_handler(2, 14)
     creature_water_collisions.pre_solve = process_creature_water_collisions
@@ -44,8 +46,16 @@ def set_collision_calls(space: Space, dt: float):
     meat_rock_collisions_end = space.add_collision_handler(10, 8)
     meat_rock_collisions_end.separate = process_meat_rock_collisions_end
 
+    plant_rock_collisions = space.add_collision_handler(6, 8)
+    plant_rock_collisions.pre_solve = process_plant_rock_collisions
+    plant_rock_collisions.data['dt'] = dt
+
+    plant_rock_collisions_end = space.add_collision_handler(6, 8)
+    plant_rock_collisions_end.separate = process_plant_rock_collisions_end
+
     #DETECTIONS:
     creature_detection = space.add_collision_handler(4, 2)
+    #creature_detection.pre_solve = process_agents_seeing
     creature_detection.pre_solve = detect_creature
 
     creature_detection_end = space.add_collision_handler(4, 2)
@@ -66,8 +76,8 @@ def set_collision_calls(space: Space, dt: float):
     rock_detection = space.add_collision_handler(4, 8)
     rock_detection.pre_solve = detect_rock
 
-    meat_detection_end = space.add_collision_handler(4, 8)
-    meat_detection_end.separate = detect_meat_end
+    rock_detection_end = space.add_collision_handler(4, 8)
+    rock_detection_end.separate = detect_rock_end
 
     water_detection = space.add_collision_handler(4, 14)
     water_detection.pre_solve = detect_water
@@ -90,11 +100,17 @@ def process_creature_plant_collisions(arbiter, space, data):
         target.position += arbiter.normal*(size0/size1)*0.5
     else:
         target.position += arbiter.normal*0.2
-    if hunter._eat:
+    if hunter.eating:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
+            #if data['creatures_num'] > 0:
+            #    diet_mod = 100/data['creatures_num']
+            #    if diet_mod > 1:
+            #        diet_mod = 1
+            #else:
+            diet_mod = 1/cfg.H2C
             target.color0 = Color('yellow')
             target.energy = target.energy - cfg.EAT*dt*size0
-            vege = diet(11-hunter.food, cfg.DIET_MOD)*size0
+            vege = diet(11-hunter.food, cfg.DIET_MOD*diet_mod)*size0
             vege = ((11-hunter.food)/10)*size0
             #vege = hunter.vege/((hunter.vege+hunter.meat)/2)
             plant_value = cfg.EAT*dt*vege*cfg.VEGE2ENG
@@ -119,12 +135,18 @@ def process_creature_meat_collisions(arbiter, space, data):
         target.position += arbiter.normal*(size0/size1)*0.5
     else:
         target.position += arbiter.normal*0.2
-    if hunter._eat:
+    if hunter.eating:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
+            #if data['creatures_num'] > 0:
+            #    diet_mod = 100/data['creatures_num']
+            #    if diet_mod > 1:
+            #        diet_mod = 1
+            #else:
+            diet_mod = cfg.H2C
             target.color0 = Color('yellow')
             target.energy = target.energy - cfg.EAT*dt*size0
             meat = (hunter.food/5)*size0
-            meat = diet(hunter.food, cfg.DIET_MOD)*size0
+            meat = diet(hunter.food, cfg.DIET_MOD*diet_mod)*size0
             meat_value = cfg.EAT*dt*meat*cfg.MEAT2ENG
             hunter.eat(meat_value)
             hunter.fitness += meat_value*cfg.MEAT2FIT/size0
@@ -147,7 +169,7 @@ def process_creatures_collisions(arbiter, space, data):
     size1 = arbiter.shapes[1].radius
     agent.position -= arbiter.normal*(size1/size0)*0.7
     target.position += arbiter.normal*(size0/size1)*0.7
-    if agent._attack:
+    if agent.attacking:
         if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             if (size0+randint(0, 6)) > (size1+randint(0, 6)):
                 dmg = cfg.HIT * dt * (agent.size+agent.power)/2
@@ -175,12 +197,19 @@ def process_meat_rock_collisions(arbiter, space, data):
 def process_meat_rock_collisions_end(arbiter, space, data):
     return False
 
+def process_plant_rock_collisions(arbiter, space, data):
+    arbiter.shapes[0].body.position -= arbiter.normal
+    return False
+
+def process_plant_rock_collisions_end(arbiter, space, data):
+    return False
+
 def detect_creature(arbiter, space, data):
     creature = arbiter.shapes[0].body
     enemy = arbiter.shapes[1].body
     sensor_shape = arbiter.shapes[0]
     for sensor in creature.sensors:
-        if not enemy.hide:
+        if not enemy.hidding:
             if sensor.shape == sensor_shape:
                 sensor.set_color(Color('orange'))
                 pos0 = creature.position
@@ -242,6 +271,18 @@ def detect_water(arbiter, space, data):
             dist = pos0.get_distance(contact)
             sensor.send_data3(detect=True, distance=dist)
             break
+    return False
+
+def process_agents_seeing(arbiter, space, data):
+    agent1 = arbiter.shapes[0].body
+    agent2 = arbiter.shapes[1].body
+    #agent1.vision.set_detection_color(detection=True)
+    v = agent2.position - agent1.position
+    f = agent1.rotation_vector
+    n = v.normalized()
+    angle = f.get_angle_between(n)
+    dist = agent2.position.get_distance(agent1.position)
+    agent1.vision.add_detection(angle=angle, dist=int(dist), target=agent2, type='creature')
     return False
 
 def detect_plant_end(arbiter, space, data):

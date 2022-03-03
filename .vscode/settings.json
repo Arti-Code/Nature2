@@ -6,6 +6,7 @@
         "cpos",
         "dists",
         "doublebuf",
+        "engy",
         "fira",
         "font",
         "hwsurface",
@@ -13,6 +14,27 @@
         "obstacle",
         "subtitl",
         "titl",
-        "vege"
-    ]
+        "vege",
+        "watr"
+    ],
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#0ee4ae",
+        "activityBar.activeBorder": "#c94bf4",
+        "activityBar.background": "#0ee4ae",
+        "activityBar.foreground": "#15202b",
+        "activityBar.inactiveForeground": "#15202b99",
+        "activityBarBadge.background": "#c94bf4",
+        "activityBarBadge.foreground": "#15202b",
+        "sash.hoverBorder": "#0ee4ae",
+        "statusBar.background": "#0bb489",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#0ee4ae",
+        "statusBarItem.remoteBackground": "#0bb489",
+        "statusBarItem.remoteForeground": "#e7e7e7",
+        "titleBar.activeBackground": "#0bb489",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#0bb48999",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "peacock.color": "#0bb489"
 }
