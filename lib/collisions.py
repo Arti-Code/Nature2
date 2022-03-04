@@ -107,7 +107,7 @@ def process_creature_plant_collisions(arbiter, space, data):
             #    if diet_mod > 1:
             #        diet_mod = 1
             #else:
-            diet_mod = 1/cfg.H2C
+            diet_mod = 1/cfg.V2M
             target.color0 = Color('yellow')
             target.energy = target.energy - cfg.EAT*dt*size0
             vege = diet(11-hunter.food, cfg.DIET_MOD*diet_mod)*size0
@@ -142,7 +142,7 @@ def process_creature_meat_collisions(arbiter, space, data):
             #    if diet_mod > 1:
             #        diet_mod = 1
             #else:
-            diet_mod = cfg.H2C
+            diet_mod = cfg.V2M
             target.color0 = Color('yellow')
             target.energy = target.energy - cfg.EAT*dt*size0
             meat = (hunter.food/5)*size0
@@ -215,7 +215,7 @@ def detect_creature(arbiter, space, data):
                 pos0 = creature.position
                 dist = pos0.get_distance(enemy.position)
                 sensor.send_data(detect=True, distance=dist)
-                break
+                #break
     return False
 
 def detect_plant(arbiter, space, data):
@@ -228,21 +228,21 @@ def detect_plant(arbiter, space, data):
             pos0 = creature.position
             dist = pos0.get_distance(plant.position)
             sensor.send_data2(detect=True, distance=dist)
-            break
+            #break
     return False
 
 def detect_meat(arbiter, space, data):
     creature = arbiter.shapes[0].body
     meat = arbiter.shapes[1].body
-    contact = arbiter.contact_point_set.points[0].point_a
+    #contact = arbiter.contact_point_set.points[0].point_a
     sensor_shape = arbiter.shapes[0]
     for sensor in creature.sensors:
         if sensor.shape == sensor_shape:
             sensor.set_color(Color('red'))
             pos0 = creature.position
-            dist = pos0.get_distance(contact)
+            dist = pos0.get_distance(meat.position)
             sensor.send_data4(detect=True, distance=dist)
-            break
+            #break
     return False
 
 def detect_rock(arbiter, space, data):
@@ -256,7 +256,7 @@ def detect_rock(arbiter, space, data):
             pos0 = creature.position
             dist = pos0.get_distance(contact)
             sensor.send_data5(detect=True, distance=dist)
-            break
+            #break
     return False
 
 def detect_water(arbiter, space, data):
@@ -270,7 +270,7 @@ def detect_water(arbiter, space, data):
             pos0 = creature.position
             dist = pos0.get_distance(contact)
             sensor.send_data3(detect=True, distance=dist)
-            break
+            #break
     return False
 
 def process_agents_seeing(arbiter, space, data):

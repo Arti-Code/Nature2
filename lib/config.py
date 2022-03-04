@@ -67,12 +67,13 @@ class Configuration():
         self.WATER_MOVE = None
         self.WATER_COST = None
         self.H2C = None
+        self.V2M = 1
         self.load_from_file(filename)
 
     def update_h2c(self, h2c: float):
         #self.MEAT2ENG = h2c
         #self.VEGE2ENG = 1/h2c
-        self.H2C *= h2c
+        self.V2M = self.H2C * h2c
 
     def load_from_file(self, filename: str):
         f = open(filename, 'r')
