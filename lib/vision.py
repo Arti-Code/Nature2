@@ -1,5 +1,5 @@
 from random import random, randint
-from math import sin, cos, radians, degrees, pi as PI, floor
+from math import sin, cos, radians, degrees, pi as PI, floor, sqrt
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect, draw
 from pygame.math import Vector2
@@ -27,7 +27,7 @@ class Vision(Circle):
     def reset_detection(self):
         self.detection = {
             'ang': 0,
-            'dist': 500,
+            'dist': pow(self.radius, 2),
             'agent': False,
             'meat': False,
             'plant': False,
@@ -62,7 +62,7 @@ class Vision(Circle):
             ang_l = 0
         else:
             ang_l = 1 + ang_l
-        dist = self.detection['dist']/cfg.SENSOR_RANGE
+        dist = 1 - sqrt(self.detection['dist'])/cfg.SENSOR_RANGE
         creature = self.detection['agent']
         plant = self.detection['plant']
         meat = self.detection['meat']

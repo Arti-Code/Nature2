@@ -283,7 +283,7 @@ def process_agents_seeing(arbiter, space, data):
     f = agent1.rotation_vector
     n = v.normalized()
     angle = f.get_angle_between(n)
-    dist = agent2.position.get_distance(agent1.position)
+    dist = agent2.position.get_dist_sqrd(agent1.position)
     agent1.vision.add_detection(angle=angle, dist=int(dist), target=agent2, type='creature')
     return False
 
@@ -295,7 +295,7 @@ def process_plant_seeing(arbiter, space, data):
     f = agent1.rotation_vector
     n = v.normalized()
     angle = f.get_angle_between(n)
-    dist = agent2.position.get_distance(agent1.position)
+    dist = agent2.position.get_dist_sqrd(agent1.position)
     agent1.vision.add_detection(angle=angle, dist=int(dist), target=agent2, type='plant')
     return False
 
@@ -307,7 +307,7 @@ def process_meat_seeing(arbiter, space, data):
     f = agent1.rotation_vector
     n = v.normalized()
     angle = f.get_angle_between(n)
-    dist = agent2.position.get_distance(agent1.position)
+    dist = agent2.position.get_dist_sqrd(agent1.position)
     agent1.vision.add_detection(angle=angle, dist=int(dist), target=agent2, type='meat')
     return False
 

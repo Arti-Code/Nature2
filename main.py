@@ -68,7 +68,7 @@ class Simulation():
         self.lands = []
         self.rocks = []
         self.sel_idx = 0
-        self.FPS = 20
+        self.FPS = 30
         self.dt = 1/self.FPS
         self.running = True
         self.show_network = True
