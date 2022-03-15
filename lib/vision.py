@@ -1,5 +1,5 @@
 from random import random, randint
-from math import sin, cos, radians, degrees, pi as PI
+from math import sin, cos, radians, degrees, pi as PI, floor
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect, draw
 from pygame.math import Vector2
@@ -30,7 +30,7 @@ class Vision(Circle):
             'dist': 500,
             'agent': False,
             'meat': False,
-            'rock': False,
+            'plant': False,
             'target': None
         }
 
@@ -41,19 +41,32 @@ class Vision(Circle):
                 'dist': dist,
                 'agent': False,
                 'meat': False,
-                'rock': False,
+                'plant': False,
                 'target': target
             }
             if type == 'creature':
                 self.detection['agent'] = True
-            elif type == 'rock':
-                self.detection['rock'] = True
+            elif type == 'plant':
+                self.detection['plant'] = True
+            elif type == 'meat':
+                self.detection['meat'] = True
 
     def get_detection(self) -> list:
-        ang = self.detection['ang']/(self.wide/2)
+        ang_l = round((self.detection['ang']/(self.wide/2)), 1)
+        ang_r = round((self.detection['ang']/(self.wide/2)), 1)
+        if ang_r < 0:
+            ang_r = 0
+        else:
+            ang_r = 1 - ang_r
+        if ang_l > 0:
+            ang_l = 0
+        else:
+            ang_l = 1 + ang_l
         dist = self.detection['dist']/cfg.SENSOR_RANGE
-        creat = self.detection['agent']
-        return [ang, dist, int(creat)]
+        creature = self.detection['agent']
+        plant = self.detection['plant']
+        meat = self.detection['meat']
+        return [ang_l, ang_r, dist, int(creature), int(plant), int(meat)]
     
     def set_detection_color(self, detection: bool):
         if detection:

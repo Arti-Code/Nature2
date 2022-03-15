@@ -55,35 +55,37 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
 
     #DETECTIONS:
     creature_detection = space.add_collision_handler(4, 2)
-    #creature_detection.pre_solve = process_agents_seeing
-    creature_detection.pre_solve = detect_creature
+    creature_detection.pre_solve = process_agents_seeing
+    #creature_detection.pre_solve = detect_creature
 
-    creature_detection_end = space.add_collision_handler(4, 2)
-    creature_detection_end.separate = detect_creature_end
+    #creature_detection_end = space.add_collision_handler(4, 2)
+    #creature_detection_end.separate = detect_creature_end
 
     plant_detection = space.add_collision_handler(4, 6)
-    plant_detection.pre_solve = detect_plant
+    plant_detection.pre_solve = process_plant_seeing
+    #plant_detection.pre_solve = detect_plant
 
-    plant_detection_end = space.add_collision_handler(4, 6)
-    plant_detection_end.separate = detect_plant_end
+    #plant_detection_end = space.add_collision_handler(4, 6)
+    #plant_detection_end.separate = detect_plant_end
 
     meat_detection = space.add_collision_handler(4, 10)
-    meat_detection.pre_solve = detect_meat
+    meat_detection.pre_solve = process_meat_seeing
+    #meat_detection.pre_solve = detect_meat
 
-    meat_detection_end = space.add_collision_handler(4, 10)
-    meat_detection_end.separate = detect_meat_end
+    #meat_detection_end = space.add_collision_handler(4, 10)
+    #meat_detection_end.separate = detect_meat_end
 
-    rock_detection = space.add_collision_handler(4, 8)
-    rock_detection.pre_solve = detect_rock
-
-    rock_detection_end = space.add_collision_handler(4, 8)
-    rock_detection_end.separate = detect_rock_end
-
-    water_detection = space.add_collision_handler(4, 14)
-    water_detection.pre_solve = detect_water
-
-    water_detection_end = space.add_collision_handler(4, 14)
-    water_detection_end.separate = detect_water_end
+#    rock_detection = space.add_collision_handler(4, 8)
+#    rock_detection.pre_solve = detect_rock
+#
+#    rock_detection_end = space.add_collision_handler(4, 8)
+#    rock_detection_end.separate = detect_rock_end
+#
+#    water_detection = space.add_collision_handler(4, 14)
+#    water_detection.pre_solve = detect_water
+#
+#    water_detection_end = space.add_collision_handler(4, 14)
+#    water_detection_end.separate = detect_water_end
 
 def process_creature_plant_collisions(arbiter, space, data):
     dt = data['dt']
@@ -283,6 +285,30 @@ def process_agents_seeing(arbiter, space, data):
     angle = f.get_angle_between(n)
     dist = agent2.position.get_distance(agent1.position)
     agent1.vision.add_detection(angle=angle, dist=int(dist), target=agent2, type='creature')
+    return False
+
+def process_plant_seeing(arbiter, space, data):
+    agent1 = arbiter.shapes[0].body
+    agent2 = arbiter.shapes[1].body
+    #agent1.vision.set_detection_color(detection=True)
+    v = agent2.position - agent1.position
+    f = agent1.rotation_vector
+    n = v.normalized()
+    angle = f.get_angle_between(n)
+    dist = agent2.position.get_distance(agent1.position)
+    agent1.vision.add_detection(angle=angle, dist=int(dist), target=agent2, type='plant')
+    return False
+
+def process_meat_seeing(arbiter, space, data):
+    agent1 = arbiter.shapes[0].body
+    agent2 = arbiter.shapes[1].body
+    #agent1.vision.set_detection_color(detection=True)
+    v = agent2.position - agent1.position
+    f = agent1.rotation_vector
+    n = v.normalized()
+    angle = f.get_angle_between(n)
+    dist = agent2.position.get_distance(agent1.position)
+    agent1.vision.add_detection(angle=angle, dist=int(dist), target=agent2, type='meat')
     return False
 
 def detect_plant_end(arbiter, space, data):

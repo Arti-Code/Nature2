@@ -16,7 +16,7 @@ from lib.species import random_name, modify_name
 from lib.config import cfg
 from lib.utils import log_to_file
 from lib.camera import Camera
-#from lib.vision import Vision
+from lib.vision import Vision
 
 class Creature(Life):
 
@@ -51,10 +51,10 @@ class Creature(Life):
         self.sensor_angle = (1 - random())*cfg.SENSOR_MAX_ANGLE
         self.sensor_angle = ((random()+1)/2)*cfg.SENSOR_MAX_ANGLE
         #self.sensors.append(Sensor(screen, self, 4, 0, cfg.SENSOR_RANGE))
-        self.sensors.append(Sensor(screen, self, 4, self.sensor_angle, cfg.SENSOR_RANGE))
-        self.sensors.append(Sensor(screen, self, 4, -self.sensor_angle, cfg.SENSOR_RANGE))
-        #self.vision = Vision(self, cfg.SENSOR_RANGE, PI*0.75, (0.0, 0.0), "vision")
-        #space.add(self.vision)
+        #self.sensors.append(Sensor(screen, self, 4, self.sensor_angle, cfg.SENSOR_RANGE))
+        #self.sensors.append(Sensor(screen, self, 4, -self.sensor_angle, cfg.SENSOR_RANGE))
+        self.vision = Vision(self, cfg.SENSOR_RANGE, PI*0.75, (0.0, 0.0), "vision")
+        space.add(self.vision)
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
         self.reproduction_time = cfg.REP_TIME
@@ -148,10 +148,11 @@ class Creature(Life):
             color2.a = 255
             a = 255
         if selected == self:
-            self.draw_detectors(screen=screen, rel_pos=rel_pos)
-            #self.vision.draw(screen=screen, camera=camera, rel_position=rel_pos)
-        for detector in self.sensors:
-            detector.reset_data()
+            #self.draw_detectors(screen=screen, rel_pos=rel_pos)
+            self.reset_collisions()
+            self.vision.draw(screen=screen, camera=camera, rel_position=rel_pos)
+        #for detector in self.sensors:
+        #    detector.reset_data()
         gfxdraw.aacircle(screen, int(rx), int(ry), int(r), color2)
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), color2)
         gfxdraw.aacircle(screen, int(rx), int(ry), int(r-1), self.color2)
@@ -209,6 +210,12 @@ class Creature(Life):
     def draw_detectors(self, screen, rel_pos: Vector2):
         for detector in self.sensors:
             detector.draw(screen=screen, rel_pos=rel_pos)
+        self.collide_creature = False
+        self.collide_plant = False
+        self.collide_water = False
+        self.collide_meat = False
+
+    def reset_collisions(self):
         self.collide_creature = False
         self.collide_plant = False
         self.collide_water = False
@@ -310,10 +317,10 @@ class Creature(Life):
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
         #self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
         #self.sensors[2].rotate(-sensor_turn, -PI/1.5, 0)
-        self.sensors[0].rotate_to(self.sensor_angle, 0, cfg.SENSOR_MAX_ANGLE, dt)
-        self.sensors[1].rotate_to(-self.sensor_angle, -cfg.SENSOR_MAX_ANGLE, 0, dt)
-        for sensor in self.sensors:
-            sensor.update()
+        #self.sensors[0].rotate_to(self.sensor_angle, 0, cfg.SENSOR_MAX_ANGLE, dt)
+        #self.sensors[1].rotate_to(-self.sensor_angle, -cfg.SENSOR_MAX_ANGLE, 0, dt)
+        #for sensor in self.sensors:
+        #    sensor.update()
         return abs(move)
 
     def calc_energy(self, dt: float, move: float):
@@ -338,8 +345,8 @@ class Creature(Life):
         #side_angle = self.sensors[1].angle/(cfg.SENSOR_MAX_ANGLE*2)
         #angle = self.angle/(2*PI)
         #input.append(angle)
-        #a, d, c = self.vision.get_detection()
-        side_angle  = self.output[2]
+        al, ar, d, c, p, m = self.vision.get_detection()
+        #side_angle  = self.output[2]
         x = 1-abs((self.position[0]-(cfg.WORLD[0]/2))/(cfg.WORLD[0]/2))
         y = 1-abs((self.position[1]-(cfg.WORLD[1]/2))/(cfg.WORLD[1]/2))
         eng = self.energy/self.max_energy
@@ -347,32 +354,31 @@ class Creature(Life):
         input.append(self.collide_plant)
         input.append(self.collide_meat)
         input.append(self.on_water)
-        input.append(side_angle)
+        #input.append(side_angle)
         input.append(x)
         input.append(y)
         input.append(eng)
-        #input.append(a)
-        #input.append(d)
-        #input.append(c)
-        #^   +8
-        for sensor in self.sensors:
-            detected = []
-            detected = sensor.get_input()
-            e = detected[0]
-            p = detected[1]
-            w = detected[2]
-            m = detected[3]
-            r = detected[4]
-            #d = round(detected[4], 2)
-            input.append(e)
-            input.append(p)
-            input.append(w)
-            input.append(m)
-            input.append(r)
-        #^   +3*4
+        input.append(al)
+        input.append(ar)
+        input.append(d)
+        input.append(c)
+        input.append(p)
+        input.append(m)
         input.append(int(self.pain))
-        #^  +1
-        #^  =21
+        #for sensor in self.sensors:
+        #    detected = []
+        #    detected = sensor.get_input()
+        #    e = detected[0]
+        #    p = detected[1]
+        #    w = detected[2]
+        #    m = detected[3]
+        #    r = detected[4]
+        #    #d = round(detected[4], 2)
+        #    input.append(e)
+        #    input.append(p)
+        #    input.append(w)
+        #    input.append(m)
+        #    input.append(r)
         self.pain = False
         return input
 
@@ -388,15 +394,15 @@ class Creature(Life):
         self.output[2] = clamp(self.output[2], 0, 1)
         self.moving = clamp(self.output[0], 0, 1)
         self.turning = self.output[2]-self.output[1]
-        if self.output[4] > 0:
+        if self.output[3] > 0:
             self.eating = True
         else:
             self.eating = False
-        if self.output[5] > 0:
+        if self.output[4] > 0:
             self.attacking = True
         else:
             self.attacking = False
-        if self.output[6] > 0.5 and not self.on_water:
+        if self.output[5] > 0.5 and not self.on_water:
             if not self.running and self.run_time >= int(cfg.RUN_TIME/2):
                 if self.run_ref_time == 0.0:
                     self.run_ref_time = 1.0
@@ -407,7 +413,7 @@ class Creature(Life):
                 self.running = True
         else:
             self.running = False
-        if self.output[7] > 0.5 and not self.running:
+        if self.output[6] > 0.5 and not self.running:
             if not self.hidding:
                 if self.hide_ref_time == 0.0:
                     self.hide_ref_time = 1.0
@@ -418,7 +424,7 @@ class Creature(Life):
                 self.hidding = True
         else:
             self.hidding = False
-            self.output[6] = 0
+            self.output[5] = 0
             
     def draw_energy_bar(self, screen: Surface, rx: int, ry: int):
         bar_red = Color(255, 0, 0)
