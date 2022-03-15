@@ -18,8 +18,8 @@ class Vision(Circle):
         self.wide = wide
         self.collision_type = 4
         self.sensor = True
-        self.base_color = Color(255, 255, 255, 30)
-        self.seeing_color = Color(255, 0, 0, 100)
+        self.base_color = Color(255, 255, 255, 75)
+        self.seeing_color = Color(255, 0, 0, 200)
         self.active_color = self.base_color
         self.reset_detection()
         self.description = description
@@ -97,7 +97,7 @@ class Vision(Circle):
             target = self.detection['target']
             rel_target_pos = camera.rel_pos(target.position)
             xt = int(rel_target_pos.x); yt = int(rel_target_pos.y)
-            gfxdraw.line(screen, x0+int(v2[0]), y0+int(v2[1]), xt, yt, Color(56, 255, 245, 75))
-            gfxdraw.line(screen, x0+int(v3[0]), y0+int(v3[1]), xt, yt, Color(56, 255, 245, 75))
+            gfxdraw.line(screen, x0+int(v2[0]), y0+int(v2[1]), xt, yt, Color(56, 255, 245, 150))
+            gfxdraw.line(screen, x0+int(v3[0]), y0+int(v3[1]), xt, yt, Color(56, 255, 245, 150))
         self.set_detection_color(detection=False)
         self.reset_detection()

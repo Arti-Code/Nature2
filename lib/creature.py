@@ -346,6 +346,19 @@ class Creature(Life):
         #angle = self.angle/(2*PI)
         #input.append(angle)
         al, ar, d, c, p, m = self.vision.get_detection()
+        cl = 0; cr = 0; cd = 0; pl = 0; pr = 0; pd = 0; ml = 0; mr = 0; md = 0
+        if c == 1:
+            cl = al
+            cr = ar
+            cd = d
+        elif p == 1:
+            pl = al
+            pr = ar
+            pd = d
+        elif m == 1:
+            ml = al
+            mr = ar
+            md = d
         #side_angle  = self.output[2]
         x = 1-abs((self.position[0]-(cfg.WORLD[0]/2))/(cfg.WORLD[0]/2))
         y = 1-abs((self.position[1]-(cfg.WORLD[1]/2))/(cfg.WORLD[1]/2))
@@ -358,12 +371,15 @@ class Creature(Life):
         input.append(x)
         input.append(y)
         input.append(eng)
-        input.append(al)
-        input.append(ar)
-        input.append(d)
-        input.append(c)
-        input.append(p)
-        input.append(m)
+        input.append(cl)
+        input.append(cr)
+        input.append(cd)
+        input.append(pl)
+        input.append(pr)
+        input.append(pd)
+        input.append(ml)
+        input.append(mr)
+        input.append(md)
         input.append(int(self.pain))
         #for sensor in self.sensors:
         #    detected = []
@@ -435,8 +451,9 @@ class Creature(Life):
   
     def kill(self, space: Space):
         to_kill = []
-        for sensor in self.sensors:
-            to_kill.append(sensor.shape)
+        to_kill.append(self.vision)
+        #for sensor in self.sensors:
+        #    to_kill.append(sensor.shape)
         for s in to_kill:
             space.remove(s)
         space.remove(self.shape)

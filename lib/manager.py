@@ -341,8 +341,9 @@ class Manager:
             inp_desc = [
                 'ENEMY', 'PLANT', 'MEAT', 'WATER',
                 'XXX', 'YYY', 'ENG', 
-                'ANGL', 'ANGR', 'DIST', 
-                'TARG', 'PLT', 'MET',
+                'AGENT-L', 'AGENT-R', 'AGENT-D', 
+                'PLANT-L', 'PLANT-R', 'PLANT-D',
+                'MEAT-L', 'MEAT-R', 'MEAT-D',  
                 'PAIN' 
             ]
             out_desc = [
