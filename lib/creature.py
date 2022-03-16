@@ -53,7 +53,7 @@ class Creature(Life):
         #self.sensors.append(Sensor(screen, self, 4, 0, cfg.SENSOR_RANGE))
         #self.sensors.append(Sensor(screen, self, 4, self.sensor_angle, cfg.SENSOR_RANGE))
         #self.sensors.append(Sensor(screen, self, 4, -self.sensor_angle, cfg.SENSOR_RANGE))
-        self.vision = Vision(self, cfg.SENSOR_RANGE, PI*0.75, (0.0, 0.0), "vision")
+        self.vision = Vision(self, cfg.SENSOR_RANGE, PI*0.5, (0.0, 0.0), "vision")
         space.add(self.vision)
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
@@ -345,20 +345,8 @@ class Creature(Life):
         #side_angle = self.sensors[1].angle/(cfg.SENSOR_MAX_ANGLE*2)
         #angle = self.angle/(2*PI)
         #input.append(angle)
-        al, ar, d, c, p, m = self.vision.get_detection()
-        cl = 0; cr = 0; cd = 0; pl = 0; pr = 0; pd = 0; ml = 0; mr = 0; md = 0
-        if c == 1:
-            cl = al
-            cr = ar
-            cd = d
-        elif p == 1:
-            pl = al
-            pr = ar
-            pd = d
-        elif m == 1:
-            ml = al
-            mr = ar
-            md = d
+        al = 0; ar = 0; ad = 0; pl = 0; pr = 0; pd = 0; ml = 0; mr = 0; md = 0
+        al, ar, ad, pl, pr, pd, ml, mr, md = self.vision.get_detection()
         #side_angle  = self.output[2]
         x = 1-abs((self.position[0]-(cfg.WORLD[0]/2))/(cfg.WORLD[0]/2))
         y = 1-abs((self.position[1]-(cfg.WORLD[1]/2))/(cfg.WORLD[1]/2))
@@ -371,9 +359,9 @@ class Creature(Life):
         input.append(x)
         input.append(y)
         input.append(eng)
-        input.append(cl)
-        input.append(cr)
-        input.append(cd)
+        input.append(al)
+        input.append(ar)
+        input.append(ad)
         input.append(pl)
         input.append(pr)
         input.append(pd)
