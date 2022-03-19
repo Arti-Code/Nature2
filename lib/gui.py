@@ -68,22 +68,35 @@ class MenuWindow(UIWindow):
             buttons.append(btn)
             i += 1
 
+class LoadWindow(UIWindow):
+
+    def __init__(self, manager: UIManager, rect: Rect):
+        super().__init__(rect, manager=manager, window_display_title='Load Menu', object_id="#load_win", visible=True)
+        self.manager = manager
+        btn_list = [('Load Simulation', '#btn_load_sim'), ('Load Creature', '#btn_load_creature'), ('Back', '#btn_load_back')]
+        buttons = []
+        i = 1
+        for (txt, ident) in btn_list:
+            btn = UIButton(Rect((50, (btn_s*(i)+btn_h*(i-1))), (btn_w, btn_h)), text=txt, manager=self.manager, container=self, parent_element=self, object_id=ident)
+            buttons.append(btn)
+            i += 1
+
 class DelBtn(UIButton):
 
     def __init__(self, rect: Rect, text: str, manager: UIManager, container, parent_element, object_id: str, sim_to_kill: str):
         super().__init__(rect, text, manager, container, parent_element=parent_element, object_id=object_id)
         self.sim_to_kill = sim_to_kill
 
-class LoadWindow(UIWindow):
+class LoadSimWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect):
-        super().__init__(rect, manager=manager, window_display_title='Load Menu', object_id="#load_win", visible=True)
+        super().__init__(rect, manager=manager, window_display_title='Load Simulation', object_id="#load_sim_win", visible=True)
         self.manager = manager
         simulations = self.GetAllSim()
         buttons = []
         i = 1
         for sim in simulations:
-            btn = UIButton(Rect((60, (btn_s+btn_h)*i), (btn_w, btn_h)), text=sim, manager=self.manager, container=self, parent_element=self, object_id='#btn_load')
+            btn = UIButton(Rect((60, (btn_s+btn_h)*i), (btn_w, btn_h)), text=sim, manager=self.manager, container=self, parent_element=self, object_id='#btn_load_sim')
             del_btn = DelBtn(Rect((220, (btn_s+btn_h)*i), (btn_h, btn_h)), 'X', manager=manager, container=self, parent_element=self, object_id='#btn_del_'+sim, sim_to_kill=sim)
             buttons.append((btn, del_btn))
             i += 1
@@ -427,6 +440,12 @@ class GUI():
         pos = Rect((self.cx-w/2, self.cy-h+100), (w, h+200))
         self.load_menu = LoadWindow(manager=self.ui_mgr, rect=pos)
 
+    def create_load_sim_menu(self):
+        w = 300
+        h = 400
+        pos = Rect((self.cx-w/2, self.cy-h+100), (w, h+200))
+        self.load_sim_menu = LoadSimWindow(manager=self.ui_mgr, rect=pos)
+
     def create_info_win(self, text: str, title: str):
         w = 300
         h = 120
@@ -609,9 +628,9 @@ class GUI():
                 elif event.ui_object_id == '#menu_win.#btn_info':
                     self.main_menu.kill()
                     self.create_info_menu()
-                elif event.ui_object_id == '#menu_win.#btn_load':
+                elif event.ui_object_id == '#menu_win.#btn_load_sim':
                     self.main_menu.kill()
-                    self.create_load_menu()
+                    self.create_load_sim_menu()
                 elif event.ui_object_id == '#menu_win.#btn_quit':
                     pygame.quit()
                     sys.exit(0)
@@ -646,21 +665,27 @@ class GUI():
                     self.reload_config()
 
                 #   >>> LOAD MENU <<<
-                elif isinstance(event.ui_element, DelBtn):
-                    self.delete_project(event.ui_element.sim_to_kill)
-                    self.load_menu.kill()
-                    self.create_load_menu()
-                elif event.ui_object_id[0: 15] == '#load_win.#btn_':
-                    project_name = event.ui_element.text
-                    self.owner.enviro.project_name = project_name
-                    self.owner.load_last(project_name)
-                    self.load_menu.kill()   
-                    self.kill_title()
-                    self.create_title(cfg.SCREEN) 
-                    self.create_info_win(text=f"Project {project_name.upper()} has been loaded", title='Load Simulation')
                 elif event.ui_object_id == '#load_win.#load_back':
                     self.load_menu.kill()
                     self.create_main_menu()
+                elif event.ui_object_id == '#load_win.#load_sim':
+                    self.load_menu.kill()
+                    self.create_load_sim_menu()
+                elif isinstance(event.ui_element, DelBtn):
+                    self.delete_project(event.ui_element.sim_to_kill)
+                    self.load_menu.kill()
+                    self.create_load_sim_menu()
+                elif event.ui_object_id[0: 15] == '#load_sim_win.#btn_':
+                    project_name = event.ui_element.text
+                    self.owner.enviro.project_name = project_name
+                    self.owner.load_last(project_name)
+                    self.load_sim_menu.kill()   
+                    self.kill_title()
+                    self.create_title(cfg.SCREEN) 
+                    self.create_info_win(text=f"Project {project_name.upper()} has been loaded", title='Load Simulation')
+                elif event.ui_object_id == '#load_sim_win.#load_back':
+                    self.load_sim_menu.kill()
+                    self.create_load_menu()
 
                 #   >>> INFO MENU <<<
                 elif event.ui_object_id == '#info_win.#btn_info':
