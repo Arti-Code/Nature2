@@ -22,25 +22,38 @@ class Vision(Circle):
         self.base_color = Color(255, 255, 255, 75)
         self.seeing_color = Color(255, 0, 0, 200)
         self.active_color = self.base_color
-        self.reset_detection()
         self.description = description
+        self.max_dist_enemy = 0.0
+        self.max_dist_plant = 0.0
+        self.max_dist_meat = 0.0
+        self.rng = pow(self.radius, 2)
+        self.reset_detection()
+        self.reset_range()
 
     def reset_detection(self):
+        rng = self.rng
         self.enemy = {
             'ang': self.semiwide,
-            'dist': pow(self.radius, 2),
+            'dist': rng,
             'target': None
         }
         self.plant = {
             'ang': self.semiwide,
-            'dist': pow(self.radius, 2),
+            'dist': rng,
             'target': None
         }
         self.meat = {
             'ang': self.semiwide,
-            'dist': pow(self.radius, 2),
+            'dist': rng,
             'target': None
         }
+        #self.reset_range()
+
+    def reset_range(self):
+        rng = self.rng
+        self.max_dist_enemy = rng
+        self.max_dist_plant = rng
+        self.max_dist_meat = rng
 
     def add_detection(self, angle: float, dist: float, target: Body, type: str, close_object: bool=False):
         if self.semiwide < abs(angle):
@@ -61,6 +74,7 @@ class Vision(Circle):
                     'dist': dist,
                     'target': target
                 }
+                self.max_dist_enemy = dist
         elif type == 'plant':
             #dist1 = self.plant['dist']*(abs(self.plant['ang'])/(self.semiwide))
             dist1 = self.plant['dist']
@@ -70,6 +84,7 @@ class Vision(Circle):
                     'dist': dist,
                     'target': target
                 }
+                self.max_dist_plant = dist
         elif type == 'meat':
             #dist1 = self.meat['dist']*(abs(self.meat['ang'])/(self.semiwide))
             dist1 = self.meat['dist']
@@ -79,6 +94,10 @@ class Vision(Circle):
                     'dist': dist,
                     'target': target
                 }
+                self.max_dist_meat = dist
+
+    def update_max_dist(self):
+        self.max_dist = max([self.enemy['dist'], self.plant['dist'], self.meat['dist']])
 
     def get_detection(self) -> list:
         enemy_l = round((self.enemy['ang']/(self.semiwide)), 1)
@@ -161,3 +180,4 @@ class Vision(Circle):
             gfxdraw.line(screen, x0+int(v3[0]), y0+int(v3[1]), xt, yt, Color(0, 0, 255, 150))
         self.set_detection_color(detection=False)
         self.reset_detection()
+        self.reset_range()

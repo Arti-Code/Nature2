@@ -356,6 +356,9 @@ class Simulation():
     
     def draw_creatures(self):
         for creature in self.creature_list:
+            if self.selected == creature:
+                dist, x, y = creature.draw_dist(camera=self.camera)
+                self.manager.add_text2(dist, x, y, Color('orange'))
             if creature.draw(screen=self.screen, camera=self.camera, selected=self.selected):
                 if self.show_specie_name:
                     name, x, y = creature.draw_name(camera=self.camera)

@@ -197,6 +197,7 @@ class Creature(Life):
             gfxdraw.filled_circle(screen, int(x3), int(y3), int(r2*0.67), Color('black'))
         self.color0 = self._color0
         self.draw_energy_bar(screen, rx, ry)
+        #self.vision.reset_range()
         #self.draw_water_bar(screen, rx, ry)
         #self.draw_name(screen)
         #self.draw_normal(screen)
@@ -224,6 +225,10 @@ class Creature(Life):
     def draw_name(self, camera: Camera):
         rpos = camera.rel_pos(Vector2((self.position.x-20), flipy(self.position.y+14)))
         return self.name, rpos.x, rpos.y
+
+    def draw_dist(self, camera: Camera):
+        rpos = camera.rel_pos(Vector2((self.position.x-25), flipy(self.position.y+30)))
+        return f"[{(round(sqrt(self.vision.max_dist_enemy)))} | {(round(sqrt(self.vision.max_dist_plant)))} | {(round(sqrt(self.vision.max_dist_meat)))}]", rpos.x, rpos.y
 
     def update(self, dt: float, selected: Body):
         super().update(dt, selected)
