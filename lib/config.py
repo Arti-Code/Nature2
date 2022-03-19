@@ -2,8 +2,8 @@ from math import pi as PI
 from json import loads, dumps
 
 TITLE = "NATURE"
-SUBTITLE = "v0.7.0" 
-AUTHOR = "2019-2021 Artur Gwoździowski"
+SUBTITLE = "v0.8.0" 
+AUTHOR = "2019-2022 Artur Gwoździowski"
 
 class Configuration():
 

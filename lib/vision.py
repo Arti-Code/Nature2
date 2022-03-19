@@ -16,6 +16,7 @@ class Vision(Circle):
         super().__init__(body, radius)
         self.offset2 = offset
         self.wide = wide
+        self.semiwide = wide/2
         self.collision_type = 4
         self.sensor = True
         self.base_color = Color(255, 255, 255, 75)
@@ -26,28 +27,33 @@ class Vision(Circle):
 
     def reset_detection(self):
         self.enemy = {
-            'ang': self.wide/2,
+            'ang': self.semiwide,
             'dist': pow(self.radius, 2),
             'target': None
         }
         self.plant = {
-            'ang': self.wide/2,
+            'ang': self.semiwide,
             'dist': pow(self.radius, 2),
             'target': None
         }
         self.meat = {
-            'ang': self.wide/2,
+            'ang': self.semiwide,
             'dist': pow(self.radius, 2),
             'target': None
         }
 
-    def add_detection(self, angle: float, dist: float, target: Body, type: str):
-        if self.wide/2 < abs(angle):
-            return
-        #dist2 = dist*(abs(angle)/(self.wide/2))
-        dist2 = dist
+    def add_detection(self, angle: float, dist: float, target: Body, type: str, close_object: bool=False):
+        if self.semiwide < abs(angle):
+            if not close_object:
+                return
+            elif angle < 0:
+                angle = -(self.semiwide)*0.9
+                #angle = (self.semiwide) * (angle/abs(angle))
+            else:
+                angle = (self.semiwide)*0.9
+        dist2 = dist*1.1
         if type == 'creature':
-            #dist1 = self.enemy['dist']*(abs(self.enemy['ang'])/(self.wide/2))
+            #dist1 = self.enemy['dist']*(abs(self.enemy['ang'])/(self.semiwide))
             dist1 = self.enemy['dist']
             if dist1 > dist2:
                 self.enemy = {
@@ -56,7 +62,7 @@ class Vision(Circle):
                     'target': target
                 }
         elif type == 'plant':
-            #dist1 = self.plant['dist']*(abs(self.plant['ang'])/(self.wide/2))
+            #dist1 = self.plant['dist']*(abs(self.plant['ang'])/(self.semiwide))
             dist1 = self.plant['dist']
             if dist1 > dist2:
                 self.plant = {
@@ -65,7 +71,7 @@ class Vision(Circle):
                     'target': target
                 }
         elif type == 'meat':
-            #dist1 = self.meat['dist']*(abs(self.meat['ang'])/(self.wide/2))
+            #dist1 = self.meat['dist']*(abs(self.meat['ang'])/(self.semiwide))
             dist1 = self.meat['dist']
             if dist1 > dist2:
                 self.meat = {
@@ -75,8 +81,8 @@ class Vision(Circle):
                 }
 
     def get_detection(self) -> list:
-        enemy_l = round((self.enemy['ang']/(self.wide/2)), 1)
-        enemy_r = round((self.enemy['ang']/(self.wide/2)), 1)
+        enemy_l = round((self.enemy['ang']/(self.semiwide)), 1)
+        enemy_r = round((self.enemy['ang']/(self.semiwide)), 1)
         if enemy_r < 0:
             enemy_r = 0
         else:
@@ -86,8 +92,8 @@ class Vision(Circle):
         else:
             enemy_l = 1 + enemy_l
         enemy_d = 1 - sqrt(self.enemy['dist'])/cfg.SENSOR_RANGE
-        plant_l = round((self.plant['ang']/(self.wide/2)), 1)
-        plant_r = round((self.plant['ang']/(self.wide/2)), 1)
+        plant_l = round((self.plant['ang']/(self.semiwide)), 1)
+        plant_r = round((self.plant['ang']/(self.semiwide)), 1)
         if plant_r < 0:
             plant_r = 0
         else:
@@ -97,8 +103,8 @@ class Vision(Circle):
         else:
             plant_l = 1 + plant_l
         plant_d = 1 - sqrt(self.plant['dist'])/cfg.SENSOR_RANGE
-        meat_l = round((self.meat['ang']/(self.wide/2)), 1)
-        meat_r = round((self.meat['ang']/(self.wide/2)), 1)
+        meat_l = round((self.meat['ang']/(self.semiwide)), 1)
+        meat_r = round((self.meat['ang']/(self.semiwide)), 1)
         if meat_r < 0:
             meat_r = 0
         else:
@@ -120,15 +126,15 @@ class Vision(Circle):
         #if self.detection['target'] != None:
         #    self.set_detection_color(detection=True)
         r = int(self.radius)
-        w1 = (int(cos(self.body.angle-self.wide/2)*(r+r*self.offset2[0])), int(sin(self.body.angle-self.wide/2)*(r+r*self.offset2[1])))
-        w2 = (int(cos(self.body.angle+self.wide/2)*(r+r*self.offset2[0])), int(sin(self.body.angle+self.wide/2)*(r+r*self.offset2[1])))
+        w1 = (int(cos(self.body.angle-self.semiwide)*(r+r*self.offset2[0])), int(sin(self.body.angle-self.semiwide)*(r+r*self.offset2[1])))
+        w2 = (int(cos(self.body.angle+self.semiwide)*(r+r*self.offset2[0])), int(sin(self.body.angle+self.semiwide)*(r+r*self.offset2[1])))
         x0 = int(rel_position.x); y0 = int(rel_position.y)
         v = self.body.rotation_vector * r
         x = x0 + v.x; y = y0 + v.y
         s = self.body.size
         v2 = (cos(self.body.angle+1)*s, sin(self.body.angle+1)*s)
         v3 = (cos(self.body.angle-1)*s, sin(self.body.angle-1)*s)
-        gfxdraw.arc(screen, x0, y0, r, int(degrees(self.body.angle-self.wide/2)), int(degrees(self.body.angle+self.wide/2)), self.active_color)
+        gfxdraw.arc(screen, x0, y0, r, int(degrees(self.body.angle-self.semiwide)), int(degrees(self.body.angle+self.semiwide)), self.active_color)
         gfxdraw.line(screen, x0, y0, x0+w1[0], y0+w1[1], self.active_color)
         gfxdraw.line(screen, x0, y0, x0+w2[0], y0+w2[1], self.active_color)
         gfxdraw.aacircle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/7+1), Color('blue'))
