@@ -339,16 +339,16 @@ class Manager:
             base_line = []
 
             inp_desc = [
-                'ENEMY', 'PLANT', 'MEAT', 'WATER',
-                'XXX', 'YYY', 'ENG', 
-                'AGENT-L', 'AGENT-R', 'AGENT-D', 
-                'PLANT-L', 'PLANT-R', 'PLANT-D',
-                'MEAT-L', 'MEAT-R', 'MEAT-D',  
-                'PAIN' 
+                'ENEMY', 'PLANT', 'MEAT ', 'WATER',
+                'XXXXX', 'YYYYY', 'ENERG', 
+                'ENE-L', 'ENE-R', 'ENE-D', 
+                'PLA-L', 'PLA-R', 'PLA-D',
+                'MEA-L', 'MEA-R', 'MEA-D',  
+                'INJUR' 
             ]
             out_desc = [
-                "MOVE", "LEFT", "RIGHT", 
-                "EAT", "ATTACK", "RUN", "HIDE"
+                "MOVE ", "LEFT ", "RIGHT", 
+                "EAT  ", "ATACK", "RUN  ", "HIDED"
             ]
 
             input_keys = network.GetNodeKeyList([TYPE.INPUT])
@@ -420,14 +420,17 @@ class Manager:
                     gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 5, c)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
-                    self.add_text(f'{inp_desc[n]} {round(val, 1)}', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
-                    #self.add_text(f'{round(val, 1)}', 50 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    text = "{:<2}  {:2> .1f}".format(inp_desc[n], val)
+                    #self.add_text(f'{inp_desc[n]} {round(val, 1)}', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    self.add_text(text, 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                 elif l == last_layer_idx:
-                    #val = network.nodes[network.layers[l].nodes[n]].value
                     val = self.enviro.selected.output[out]
-                    #self.add_text(f'{inp_desc[n]}: ', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
-                    self.add_text2(f'{out_desc[out]} {round(val, 1)}', 40 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)
+                    text = "{:<2}  {:2> .1f}".format(out_desc[out], val)
+                    #self.add_text2(f'{out_desc[out]} {round(val, 1)}', 40 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)
+                    self.add_text2(text, 40 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)
                     out += 1
                 else:
                     val = network.nodes[network.layers[l].nodes[n]].value
-                    self.add_text(f'{round(val, 1)}', 85 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    text = "{:^1.1f}".format(val)
+                    #self.add_text(f'{round(val, 1)}', 85 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    self.add_text(text, 85 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))

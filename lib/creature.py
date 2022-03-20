@@ -227,8 +227,43 @@ class Creature(Life):
         return self.name, rpos.x, rpos.y
 
     def draw_dist(self, camera: Camera):
-        rpos = camera.rel_pos(Vector2((self.position.x-25), flipy(self.position.y+30)))
-        return f"[{(round(sqrt(self.vision.max_dist_enemy)))} | {(round(sqrt(self.vision.max_dist_plant)))} | {(round(sqrt(self.vision.max_dist_meat)))}]", rpos.x, rpos.y
+        rpos = camera.rel_pos(Vector2((self.position.x-50), flipy(self.position.y+30)))
+        enemy_dir = '-'; plant_dir = '-'; meat_dir = '-';
+        enemy_ang = round(self.vision.enemy['ang'], 1)
+        plant_ang = round(self.vision.plant['ang'], 1)
+        meat_ang = round(self.vision.meat['ang'], 1)
+        if enemy_ang >= 0.1:
+            if enemy_ang > 0.5:
+                enemy_dir = '>>'
+            else:
+                enemy_dir = '>'
+        elif enemy_ang <= -0.1:
+            if enemy_ang < -0.5:
+                enemy_dir = '<<'
+            else:
+                enemy_dir = '<'
+        if plant_ang >= 0.1:
+            if plant_ang > 0.5:
+                plant_dir = '>>'
+            else:
+                plant_dir = '>'
+        elif plant_ang <= -0.1:
+            if plant_ang < -0.5:
+                plant_dir = '<<'
+            else:
+                plant_dir = '<'
+        if meat_ang >= 0.1:
+            if meat_ang > 0.5:
+                meat_dir = '>>'
+            else:
+                meat_dir = '>'
+        elif meat_ang <= -0.1:
+            if meat_ang < -0.5:
+                meat_dir = '<<'
+            else:
+                meat_dir = '<'
+        txt = "{:^}[{:^}] | {:^}[{:^}] | {:^}[{:^}]".format(round(sqrt(self.vision.max_dist_enemy)), enemy_dir, round(sqrt(self.vision.max_dist_plant)), plant_dir, round(sqrt(self.vision.max_dist_meat)), meat_dir)
+        return f"{(round(sqrt(self.vision.max_dist_enemy)))}[{enemy_dir}] | {(round(sqrt(self.vision.max_dist_plant)))}[{plant_dir}] | {(round(sqrt(self.vision.max_dist_meat)))}[{meat_dir}]", rpos.x, rpos.y
 
     def update(self, dt: float, selected: Body):
         super().update(dt, selected)
