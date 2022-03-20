@@ -53,7 +53,7 @@ class Creature(Life):
         #self.sensors.append(Sensor(screen, self, 4, 0, cfg.SENSOR_RANGE))
         #self.sensors.append(Sensor(screen, self, 4, self.sensor_angle, cfg.SENSOR_RANGE))
         #self.sensors.append(Sensor(screen, self, 4, -self.sensor_angle, cfg.SENSOR_RANGE))
-        self.vision = Vision(self, cfg.SENSOR_RANGE, PI*0.5, (0.0, 0.0), "vision")
+        self.vision = Vision(self, cfg.SENSOR_RANGE, cfg.SENSOR_MAX_ANGLE, (0.0, 0.0), "vision")
         space.add(self.vision)
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
