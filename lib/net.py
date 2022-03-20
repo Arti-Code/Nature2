@@ -499,8 +499,8 @@ class Network():
     def MutateNodeType(self, dt=1):
         for n in self.nodes:
             if (random()) < self.MUT_NODE_TYPE+self.node_index*self.mutations_rate:
-                #n_type = choice(['tanh', 'sigmoid', 'binary', 'rev_binary', 'wide_binary', 'relu', 'leaky_relu', 'linear', 'memory'])
-                n_type = choice(['tanh', 'sigmoid', 'binary', 'relu', 'leaky_relu', 'memory'])
+                n_type = choice(['tanh', 'sigmoid', 'binary', 'rev_binary', 'linear', 'memory'])
+                #n_type = choice(['tanh', 'sigmoid', 'binary', 'relu', 'leaky_relu', 'memory'])
                 if n_type == 'memory':
                     self.nodes[n].recurrent = not self.nodes[n].recurrent
                     if self.nodes[n].recurrent:
