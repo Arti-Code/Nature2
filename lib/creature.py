@@ -349,18 +349,9 @@ class Creature(Life):
         if move < 0:
             move = 0
         turn = self.turning*cfg.TURN*dt
-        #sensor_turn = self.output[2]*cfg.SENSOR_SPEED*dt
-        #sensor_angle = (PI*1.5)-(((self.output[2]+1)/2)*(PI*1.5))
         self.sensor_angle = (1-((self.output[3]+1)/2))*cfg.SENSOR_MAX_ANGLE
-        #sensor_angle = self.output[2]*(PI/2)
         self.angle = (self.angle+(turn))%(2*PI)
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
-        #self.sensors[1].rotate(sensor_turn, 0, PI/1.5)
-        #self.sensors[2].rotate(-sensor_turn, -PI/1.5, 0)
-        #self.sensors[0].rotate_to(self.sensor_angle, 0, cfg.SENSOR_MAX_ANGLE, dt)
-        #self.sensors[1].rotate_to(-self.sensor_angle, -cfg.SENSOR_MAX_ANGLE, 0, dt)
-        #for sensor in self.sensors:
-        #    sensor.update()
         return abs(move)
 
     def calc_energy(self, dt: float, move: float):
@@ -382,12 +373,8 @@ class Creature(Life):
 
     def get_input(self):
         input = []
-        #side_angle = self.sensors[1].angle/(cfg.SENSOR_MAX_ANGLE*2)
-        #angle = self.angle/(2*PI)
-        #input.append(angle)
         al = 0; ar = 0; ad = 0; pl = 0; pr = 0; pd = 0; ml = 0; mr = 0; md = 0
         al, ar, ad, pl, pr, pd, ml, mr, md = self.vision.get_detection()
-        #side_angle  = self.output[2]
         x = 1-abs((self.position[0]-(cfg.WORLD[0]/2))/(cfg.WORLD[0]/2))
         y = 1-abs((self.position[1]-(cfg.WORLD[1]/2))/(cfg.WORLD[1]/2))
         eng = self.energy/self.max_energy
@@ -395,7 +382,6 @@ class Creature(Life):
         input.append(self.collide_plant)
         input.append(self.collide_meat)
         input.append(self.on_water)
-        #input.append(side_angle)
         input.append(x)
         input.append(y)
         input.append(eng)
@@ -409,20 +395,6 @@ class Creature(Life):
         input.append(mr)
         input.append(md)
         input.append(int(self.pain))
-        #for sensor in self.sensors:
-        #    detected = []
-        #    detected = sensor.get_input()
-        #    e = detected[0]
-        #    p = detected[1]
-        #    w = detected[2]
-        #    m = detected[3]
-        #    r = detected[4]
-        #    #d = round(detected[4], 2)
-        #    input.append(e)
-        #    input.append(p)
-        #    input.append(w)
-        #    input.append(m)
-        #    input.append(r)
         self.pain = False
         return input
 
@@ -436,17 +408,21 @@ class Creature(Life):
                     self.output[o] = clamp(self.output[o], -1, 1)
         self.output[1] = clamp(self.output[1], 0, 1)
         self.output[2] = clamp(self.output[2], 0, 1)
+        self.output[3] = clamp(self.output[3], 0, 1)
+        self.output[4] = clamp(self.output[4], 0, 1)
+        self.output[5] = clamp(self.output[5], 0, 1)
+        self.output[6] = clamp(self.output[6], 0, 1)
         self.moving = clamp(self.output[0], 0, 1)
         self.turning = self.output[2]-self.output[1]
-        if self.output[3] > 0:
+        if self.output[3] >= 0.5:
             self.eating = True
         else:
             self.eating = False
-        if self.output[4] > 0:
+        if self.output[4] >= 0.5:
             self.attacking = True
         else:
             self.attacking = False
-        if self.output[5] > 0.5 and not self.on_water:
+        if self.output[5] >= 0.8 and not self.on_water:
             if not self.running and self.run_time >= int(cfg.RUN_TIME/2):
                 if self.run_ref_time == 0.0:
                     self.run_ref_time = 1.0
@@ -457,7 +433,7 @@ class Creature(Life):
                 self.running = True
         else:
             self.running = False
-        if self.output[6] > 0.5 and not self.running:
+        if self.output[6] >= 0.8 and not self.running:
             if not self.hidding:
                 if self.hide_ref_time == 0.0:
                     self.hide_ref_time = 1.0
