@@ -372,11 +372,11 @@ class Manager:
                         node_color = Color("#8f8f8f")
                     else:
                         if node.activation == ACTIVATION.TANH:
-                            node_color = Color("#7CFC00")
+                            node_color = Color("#37ff0a")
                         elif node.activation == ACTIVATION.SIGMOID:
                             node_color = Color("#00f5ed")
                         elif node.activation == ACTIVATION.RELU:
-                            node_color = Color("#f50000")
+                            node_color = Color("#cc00f5")
                         elif node.activation == ACTIVATION.LEAKY_RELU:
                             node_color = Color("#ab02e3")
                         elif node.activation == ACTIVATION.BINARY:
@@ -384,9 +384,9 @@ class Manager:
                         elif node.activation == ACTIVATION.REV_BINARY:
                             node_color = Color("#ffaa00")
                         elif node.activation == ACTIVATION.WIDE_BINARY:
-                            node_color = Color("#1a8cff")
+                            node_color = Color("#ff291a")
                         elif node.activation == ACTIVATION.LINEAR:
-                            node_color = Color("#f05800")
+                            node_color = Color("#ffffff")
                     for link_key in node.to_links:
                         link = network.links[link_key]
                         from_node_key = link.from_node

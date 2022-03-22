@@ -414,11 +414,11 @@ class Creature(Life):
         self.output[6] = clamp(self.output[6], 0, 1)
         self.moving = clamp(self.output[0], 0, 1)
         self.turning = self.output[2]-self.output[1]
-        if self.output[3] >= 0.5:
+        if self.output[3] >= 0.3:
             self.eating = True
         else:
             self.eating = False
-        if self.output[4] >= 0.5:
+        if self.output[4] >= 0.4:
             self.attacking = True
         else:
             self.attacking = False
