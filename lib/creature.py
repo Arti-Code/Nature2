@@ -23,7 +23,7 @@ class Creature(Life):
     def __init__(self, screen: Surface, space: Space, time: int, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
         super().__init__(screen=screen, space=space, collision_tag=collision_tag, position=position)
         self.angle = random()*2*PI
-        self.output = [0, 0, 0, 0, 0, 0, 0]
+        self.output = [0, 0, 0, 0, 0]
         self.generation = 0
         self.fitness = 0
         self.neuro = Network()
@@ -373,18 +373,20 @@ class Creature(Life):
 
     def get_input(self):
         input = []
-        al = 0; ar = 0; ad = 0; pl = 0; pr = 0; pd = 0; ml = 0; mr = 0; md = 0
+        #al = 0; ar = 0; ad = 0; pl = 0; pr = 0; pd = 0; ml = 0; mr = 0; md = 0
         al, ar, ad, pl, pr, pd, ml, mr, md = self.vision.get_detection()
-        x = 1-abs((self.position[0]-(cfg.WORLD[0]/2))/(cfg.WORLD[0]/2))
-        y = 1-abs((self.position[1]-(cfg.WORLD[1]/2))/(cfg.WORLD[1]/2))
+        #ea = 0.0; ed = 0.0; pa = 0.0; pd = 0.0; ma = 0.0; md = 0.0;
+        ea,ed,pa,pd,ma,md = self.vision.get_detection2()
+        x = (self.position[0]-(cfg.WORLD[0]/2))/(cfg.WORLD[0]/2)
+        y = (self.position[1]-(cfg.WORLD[1]/2))/(cfg.WORLD[1]/2)
         eng = self.energy/self.max_energy
         input.append(self.collide_creature)
         input.append(self.collide_plant)
         input.append(self.collide_meat)
-        input.append(self.on_water)
         input.append(x)
         input.append(y)
         input.append(eng)
+        input.append(int(self.pain))
         input.append(al)
         input.append(ar)
         input.append(ad)
@@ -394,7 +396,6 @@ class Creature(Life):
         input.append(ml)
         input.append(mr)
         input.append(md)
-        input.append(int(self.pain))
         self.pain = False
         return input
 
@@ -406,23 +407,23 @@ class Creature(Life):
             for o in range(len(self.output)):
                 if self.output[o] < -1 or self.output[o] > 1:
                     self.output[o] = clamp(self.output[o], -1, 1)
-        self.output[1] = clamp(self.output[1], 0, 1)
-        self.output[2] = clamp(self.output[2], 0, 1)
-        self.output[3] = clamp(self.output[3], 0, 1)
-        self.output[4] = clamp(self.output[4], 0, 1)
-        self.output[5] = clamp(self.output[5], 0, 1)
-        self.output[6] = clamp(self.output[6], 0, 1)
+        #self.output[1] = clamp(self.output[1], 0, 1)
+        #self.output[2] = clamp(self.output[2], 0, 1)
+        #self.output[3] = clamp(self.output[3], 0, 1)
+        #self.output[4] = clamp(self.output[4], 0, 1)
+        #self.output[5] = clamp(self.output[5], 0, 1)
+        #self.output[6] = clamp(self.output[6], 0, 1)
         self.moving = clamp(self.output[0], 0, 1)
-        self.turning = self.output[2]-self.output[1]
-        if self.output[3] >= 0.3:
+        self.turning = self.output[1]
+        if self.output[2] > 0.0:
             self.eating = True
         else:
             self.eating = False
-        if self.output[4] >= 0.4:
+        if self.output[3] > 0.0:
             self.attacking = True
         else:
             self.attacking = False
-        if self.output[5] >= 0.8 and not self.on_water:
+        if self.output[4] >= 0.7 and not self.on_water:
             if not self.running and self.run_time >= int(cfg.RUN_TIME/2):
                 if self.run_ref_time == 0.0:
                     self.run_ref_time = 1.0
@@ -433,18 +434,18 @@ class Creature(Life):
                 self.running = True
         else:
             self.running = False
-        if self.output[6] >= 0.8 and not self.running:
-            if not self.hidding:
-                if self.hide_ref_time == 0.0:
-                    self.hide_ref_time = 1.0
-                    self.hidding = True
-                else:
-                    self.hidding = False
-            else:
-                self.hidding = True
-        else:
-            self.hidding = False
-            self.output[5] = 0
+        #if self.output[5] >= 0.7 and not self.running:
+        #    if not self.hidding:
+        #        if self.hide_ref_time == 0.0:
+        #            self.hide_ref_time = 1.0
+        #            self.hidding = True
+        #        else:
+        #            self.hidding = False
+        #    else:
+        #        self.hidding = True
+        #else:
+        #    self.hidding = False
+        #    self.output[5] = 0
             
     def draw_energy_bar(self, screen: Surface, rx: int, ry: int):
         bar_red = Color(255, 0, 0)
@@ -487,7 +488,7 @@ class Creature(Life):
         return genome
 
     def similar(self, parent_genome: dict, treashold: float) -> bool:
-        phisionomy = []
+        physionomy = []
         nodes = []
         links = []
         size_diff = abs(self.size-parent_genome['size'])
@@ -495,7 +496,7 @@ class Creature(Life):
         power_diff = abs(self.power-parent_genome['power'])
         food_diff = abs(self.food-parent_genome['food'])
         speed_diff = abs(self.speed-parent_genome['speed'])
-        phisionomy = mean([size_diff, power_diff,food_diff, speed_diff, mutations_diff])/10
+        physionomy = mean([size_diff, power_diff,food_diff, speed_diff, mutations_diff])/10
         for node_sign in self.neuro.nodes:
             if not node_sign in parent_genome['neuro'].nodes:
                 nodes.append(node_sign)
@@ -510,7 +511,7 @@ class Creature(Life):
                 links.append(link_sign)
         nodes_diff = len(nodes)/(len(self.neuro.nodes) + len(parent_genome['neuro'].nodes))
         links_diff = len(links)/(len(self.neuro.links) + len(parent_genome['neuro'].links))
-        similar = 1 - mean([phisionomy, nodes_diff, links_diff])
+        similar = 1 - mean([physionomy, nodes_diff, links_diff])
         if similar > treashold:
             return False
         else:

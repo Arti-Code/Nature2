@@ -339,16 +339,16 @@ class Manager:
             base_line = []
 
             inp_desc = [
-                'ENEMY', 'PLANT', 'MEAT ', 'WATER',
-                'XXXXX', 'YYYYY', 'ENERG', 
+                'ENEMY', 'PLANT', 'MEAT ',
+                'XXXXX', 'YYYYY', 'ENERG', 'INJUR',
                 'ENE-L', 'ENE-R', 'ENE-D', 
                 'PLA-L', 'PLA-R', 'PLA-D',
-                'MEA-L', 'MEA-R', 'MEA-D',  
-                'INJUR' 
+                'MEA-L', 'MEA-R', 'MEA-D'
             ]
             out_desc = [
-                "MOVE ", "LEFT ", "RIGHT", 
-                "EAT  ", "ATACK", "RUN  ", "HIDED"
+                "MOVE ", "TURN ", 
+                "EAT  ", "ATACK", 
+                "RUN  ", "HIDED"
             ]
 
             input_keys = network.GetNodeKeyList([TYPE.INPUT])
@@ -372,21 +372,21 @@ class Manager:
                         node_color = Color("#8f8f8f")
                     else:
                         if node.activation == ACTIVATION.TANH:
-                            node_color = Color("#37ff0a")
+                            node_color = Color("#55ff2f")
                         elif node.activation == ACTIVATION.SIGMOID:
-                            node_color = Color("#00f5ed")
+                            node_color = Color("#3094ff")
                         elif node.activation == ACTIVATION.RELU:
-                            node_color = Color("#cc00f5")
+                            node_color = Color("#de39ff")
                         elif node.activation == ACTIVATION.LEAKY_RELU:
-                            node_color = Color("#ab02e3")
+                            node_color = Color("#8649ff")
                         elif node.activation == ACTIVATION.BINARY:
-                            node_color = Color("#f0f000")
+                            node_color = Color("#ffff3b")
                         elif node.activation == ACTIVATION.REV_BINARY:
-                            node_color = Color("#ffaa00")
+                            node_color = Color("#ffa42d")
                         elif node.activation == ACTIVATION.WIDE_BINARY:
                             node_color = Color("#ff291a")
                         elif node.activation == ACTIVATION.LINEAR:
-                            node_color = Color("#ffffff")
+                            node_color = Color("#3afdda")
                     for link_key in node.to_links:
                         link = network.links[link_key]
                         from_node_key = link.from_node

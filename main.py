@@ -37,7 +37,7 @@ class Simulation():
         #self.screen = Surface(size=cfg.SCREEN, flags=0)
         self.screen = pygame.display.set_mode(size=cfg.SCREEN, flags=0, vsync=1)
         self.space = Space()
-        self.space.iterations = 6
+        self.space.iterations = 10
         self.sleep_time_treashold = 0.2
         self.clock = Clock()
         pygame.init()

@@ -26,8 +26,8 @@
   "SENSOR_MAX_ANGLE": 2.9,
   "SENSOR_RANGE": 250,
   "POWER_COST": 0.0004,
-  "MUTATIONS": 1.0,
-  "LINKS_RATE": 0.12,
+  "MUTATIONS": 0.8,
+  "LINKS_RATE": 0.3,
   
   "BASE_ENERGY": 0.0025,
   "MOVE_ENERGY": 0.000001,
@@ -36,7 +36,7 @@
   "ATK_ENG": 0.4,
   "EAT_ENG": 0.1,
   "VEGE2ENG": 2,
-  "MEAT2ENG": 3,
+  "MEAT2ENG": 4,
   "RUN_COST": 6,
   "RUN_TIME": 6,
 
@@ -44,7 +44,7 @@
   "REP_ENERGY": 0.3,
   "CHILDS_NUM": 1,
   "MEM_TIME": 0.1,
-  "MEAT_TIME": 120,
+  "MEAT_TIME": 180,
   "DIET_MOD": 0.0035,
   
   "DIFF": 0.4,
@@ -58,8 +58,8 @@
   
   "MIN_CARNIVORES": 2,
   "MIN_HERBIVORES": 4,
-  "RANK_SIZE": 20,
-  "RANK_DECAY": 0.5,
+  "RANK_SIZE": 35,
+  "RANK_DECAY": 0.7,
   "AUTO_SAVE_TIME": 100,
   "STAT_PERIOD": 50,
   "TIME": 1,
@@ -68,5 +68,5 @@
   "WATER_COST": 0.01,
   "WATER_MOVE": 0.1,
   
-  "NET": [17, 0, 0, 0, 0, 0, 0, 0, 7]
+  "NET": [16, 0, 0, 0, 0, 0, 0, 0, 5]
 }
