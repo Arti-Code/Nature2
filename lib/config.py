@@ -2,8 +2,8 @@ from math import pi as PI
 from json import loads, dumps
 
 TITLE = "NATURE"
-SUBTITLE = "v0.7.0" 
-AUTHOR = "2019-2021 Artur Gwoździowski"
+SUBTITLE = "v0.8.1" 
+AUTHOR = "2019-2022 Artur Gwoździowski"
 
 class Configuration():
 
@@ -67,12 +67,13 @@ class Configuration():
         self.WATER_MOVE = None
         self.WATER_COST = None
         self.H2C = None
+        self.V2M = 1
         self.load_from_file(filename)
 
     def update_h2c(self, h2c: float):
         #self.MEAT2ENG = h2c
         #self.VEGE2ENG = 1/h2c
-        self.H2C *= h2c
+        self.V2M = self.H2C * h2c
 
     def load_from_file(self, filename: str):
         f = open(filename, 'r')

@@ -339,17 +339,16 @@ class Manager:
             base_line = []
 
             inp_desc = [
-                'crea', 'plnt', 'meat', 'watr',
-                'side', 'xpos', 'ypos', 'engy', 
-                'cre0', 'pln0', 'wat0', 'met0', 'rok0',
-                'cre1', 'pln1', 'wat1', 'met1', 'rok1',
-                #'cre2', 'pln2', 'wat2', 'met2', 'rok2',
-                #'ang', 'dist', 'crea',
-                'hurt' 
+                'ENEMY', 'PLANT', 'MEAT ',
+                'XXXXX', 'YYYYY', 'ENERG', 'INJUR',
+                'ENE-L', 'ENE-R', 'ENE-D', 
+                'PLA-L', 'PLA-R', 'PLA-D',
+                'MEA-L', 'MEA-R', 'MEA-D'
             ]
             out_desc = [
-                "mov", "lft", "rgt", "sen", 
-                "eat", "atk", "run", "hid"
+                "MOVE ", "TURN ", 
+                "EAT  ", "ATACK", 
+                "RUN  ", "HIDED"
             ]
 
             input_keys = network.GetNodeKeyList([TYPE.INPUT])
@@ -373,21 +372,21 @@ class Manager:
                         node_color = Color("#8f8f8f")
                     else:
                         if node.activation == ACTIVATION.TANH:
-                            node_color = Color("#7CFC00")
+                            node_color = Color("#55ff2f")
                         elif node.activation == ACTIVATION.SIGMOID:
-                            node_color = Color("#00f5ed")
+                            node_color = Color("#3094ff")
                         elif node.activation == ACTIVATION.RELU:
-                            node_color = Color("#f50000")
+                            node_color = Color("#de39ff")
                         elif node.activation == ACTIVATION.LEAKY_RELU:
-                            node_color = Color("#ab02e3")
+                            node_color = Color("#8649ff")
                         elif node.activation == ACTIVATION.BINARY:
-                            node_color = Color("#f0f000")
+                            node_color = Color("#ffff3b")
                         elif node.activation == ACTIVATION.REV_BINARY:
-                            node_color = Color("#ffaa00")
+                            node_color = Color("#ffa42d")
                         elif node.activation == ACTIVATION.WIDE_BINARY:
-                            node_color = Color("#1a8cff")
+                            node_color = Color("#ff291a")
                         elif node.activation == ACTIVATION.LINEAR:
-                            node_color = Color("#f05800")
+                            node_color = Color("#3afdda")
                     for link_key in node.to_links:
                         link = network.links[link_key]
                         from_node_key = link.from_node
@@ -421,14 +420,17 @@ class Manager:
                     gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 5, c)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
-                    self.add_text(f'{inp_desc[n]} {round(val, 1)}', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
-                    #self.add_text(f'{round(val, 1)}', 50 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    text = "{:<2}  {:2> .1f}".format(inp_desc[n], val)
+                    #self.add_text(f'{inp_desc[n]} {round(val, 1)}', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    self.add_text(text, 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                 elif l == last_layer_idx:
-                    #val = network.nodes[network.layers[l].nodes[n]].value
                     val = self.enviro.selected.output[out]
-                    #self.add_text(f'{inp_desc[n]}: ', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
-                    self.add_text2(f'{out_desc[out]} {round(val, 1)}', 40 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)
+                    text = "{:<2}  {:2> .1f}".format(out_desc[out], val)
+                    #self.add_text2(f'{out_desc[out]} {round(val, 1)}', 40 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)
+                    self.add_text2(text, 40 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)
                     out += 1
                 else:
                     val = network.nodes[network.layers[l].nodes[n]].value
-                    self.add_text(f'{round(val, 1)}', 85 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    text = "{:^1.1f}".format(val)
+                    #self.add_text(f'{round(val, 1)}', 85 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    self.add_text(text, 85 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
