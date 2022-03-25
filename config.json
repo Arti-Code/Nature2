@@ -14,16 +14,16 @@
 
   "CREATURE_MIN_NUM": 18,
   "CREATURE_INIT_NUM": 100,
-  "CREATURE_MULTIPLY": 0.001,
+  "CREATURE_MULTIPLY": 0.0003,
   "CREATURE_MIN_SIZE": 3,
   "CREATURE_MAX_SIZE": 10,
 
   "EAT": 20,
   "HIT": 300,
-  "SPEED": 4,
+  "SPEED": 3,
   "TURN": 1.2,
   "SENSOR_SPEED": 0.3,
-  "SENSOR_MAX_ANGLE": 2.9,
+  "SENSOR_MAX_ANGLE": 2.6,
   "SENSOR_RANGE": 250,
   "POWER_COST": 0.0004,
   "MUTATIONS": 0.8,
@@ -35,16 +35,16 @@
   "SIZE_COST": 250,
   "ATK_ENG": 0.4,
   "EAT_ENG": 0.1,
-  "VEGE2ENG": 2,
-  "MEAT2ENG": 4,
-  "RUN_COST": 6,
+  "VEGE2ENG": 1.5,
+  "MEAT2ENG": 3.5,
+  "RUN_COST": 9,
   "RUN_TIME": 6,
 
   "REP_TIME": 120,
   "REP_ENERGY": 0.3,
   "CHILDS_NUM": 1,
   "MEM_TIME": 0.1,
-  "MEAT_TIME": 180,
+  "MEAT_TIME": 240,
   "DIET_MOD": 0.0035,
   
   "DIFF": 0.4,
@@ -59,7 +59,7 @@
   "MIN_CARNIVORES": 2,
   "MIN_HERBIVORES": 4,
   "RANK_SIZE": 35,
-  "RANK_DECAY": 0.7,
+  "RANK_DECAY": 0.6,
   "AUTO_SAVE_TIME": 100,
   "STAT_PERIOD": 50,
   "TIME": 1,
@@ -68,5 +68,5 @@
   "WATER_COST": 0.01,
   "WATER_MOVE": 0.1,
   
-  "NET": [16, 0, 0, 0, 0, 0, 0, 0, 5]
+  "NET": [16, 0, 0, 0, 0, 0, 0, 0, 6]
 }

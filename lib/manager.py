@@ -346,7 +346,7 @@ class Manager:
                 'MEA-L', 'MEA-R', 'MEA-D'
             ]
             out_desc = [
-                "MOVE ", "TURN ", 
+                "MOVE ", "LEFT ", "RIGHT", 
                 "EAT  ", "ATACK", 
                 "RUN  ", "HIDED"
             ]
