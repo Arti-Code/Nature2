@@ -1,6 +1,6 @@
 from enum import Enum, IntEnum
 from random import random, randint, choice, gauss
-from lib.math2 import sigmoid, tanh, relu, leaky_relu, binary, rev_binary, wide_binary, linear,clamp
+from lib.math2 import sigmoid, tanh, relu, leaky_relu, binary, rev_binary, wide_binary, linear, pulse ,clamp
 from copy import deepcopy, copy
 import json
 import numpy as np
@@ -28,6 +28,7 @@ class ACTIVATION(IntEnum):
     REV_BINARY = 5
     WIDE_BINARY = 6
     LINEAR = 7
+    PULSE = 8
 
 class Node():
 
@@ -361,6 +362,8 @@ class Network():
                     func = wide_binary
                 elif self.nodes[node_key].activation == ACTIVATION.LINEAR:
                     func = linear
+                elif self.nodes[node_key].activation == ACTIVATION.PULSE:
+                    func = pulse
 
                 for lin1 in range(len(self.nodes[node_key].to_links)):
                     
@@ -500,7 +503,7 @@ class Network():
         for n in self.nodes:
             if (random()) < self.MUT_NODE_TYPE+self.node_index*self.mutations_rate:
                 #n_type = choice(['tanh', 'sigmoid', 'binary', 'rev_binary', 'linear', 'memory'])
-                n_type = choice(['tanh', 'sigmoid', 'binary', 'relu', 'leaky_relu', 'memory'])
+                n_type = choice(['tanh', 'sigmoid', 'binary', 'relu', 'leaky_relu', 'memory', 'pulse'])
                 if n_type == 'memory':
                     self.nodes[n].recurrent = not self.nodes[n].recurrent
                     if self.nodes[n].recurrent:
@@ -525,6 +528,8 @@ class Network():
                     self.nodes[n].activation = ACTIVATION.WIDE_BINARY
                 elif n_type == 'linear':
                     self.nodes[n].activation = ACTIVATION.LINEAR
+                elif n_type == 'pulse':
+                    self.nodes[n].activation = ACTIVATION.PULSE
 
     def Mutate(self, mutations_rate: int=5, dt=1):
         node_num = len(self.nodes)-(len(self.GetNodeKeyList([TYPE.INPUT]))+len(self.GetNodeKeyList([TYPE.OUTPUT])))
