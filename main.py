@@ -568,6 +568,8 @@ class Simulation():
             else:
                 plant.update(dt, self.selected)
             if plant.check_reproduction(p):
+                if len(self.plant_list) >= cfg.PLANT_MAX_NUM:
+                    continue
                 new_plant = self.add_local_plant(plant.position, cfg.PLANT_RANGE, False)
                 self.plant_list.append(new_plant)
                 plant.energy *= 0.5
