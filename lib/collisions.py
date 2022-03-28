@@ -278,6 +278,8 @@ def process_agents_seeing(arbiter, space, data):
     agent2 = arbiter.shapes[1].body
     #agent1.vision.set_detection_color(detection=True)
     dist = agent2.position.get_dist_sqrd(agent1.position)
+    if dist > agent1.vision.max_dist_enemy:
+        return False
     close_object: bool=False
     if pow((agent1.size*3+3), 2) >= dist:
         close_object = True
@@ -293,6 +295,8 @@ def process_plant_seeing(arbiter, space, data):
     agent2 = arbiter.shapes[1].body
     #agent1.vision.set_detection_color(detection=True)
     dist = agent2.position.get_dist_sqrd(agent1.position)
+    if dist > agent1.vision.max_dist_plant:
+        return False
     close_object: bool=False
     if pow((agent1.size*3+3), 2) >= dist:
         close_object = True
@@ -308,6 +312,8 @@ def process_meat_seeing(arbiter, space, data):
     agent2 = arbiter.shapes[1].body
     #agent1.vision.set_detection_color(detection=True)
     dist = agent2.position.get_dist_sqrd(agent1.position)
+    if dist > agent1.vision.max_dist_meat:
+        return False
     close_object: bool=False
     if pow((agent1.size*3+3), 2) >= dist:
         close_object = True

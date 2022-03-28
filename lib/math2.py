@@ -1,5 +1,6 @@
 from math import sin, cos, radians
 import numpy as np
+from random import random
 
 
 world = (600, 600)
@@ -46,7 +47,7 @@ def binary(x):
         return 0
 
 def rev_binary(x):
-    if x >= 0:
+    if x > 0:
         return 0
     else:
         return 1
@@ -71,3 +72,7 @@ def relu(x):
 
 def leaky_relu(x):
     return np.maximum(0.1*x, x)
+
+def pulse(x):
+    r = (random()*2)-1
+    return linear(x+r)

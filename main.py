@@ -37,7 +37,7 @@ class Simulation():
         #self.screen = Surface(size=cfg.SCREEN, flags=0)
         self.screen = pygame.display.set_mode(size=cfg.SCREEN, flags=0, vsync=1)
         self.space = Space()
-        self.space.iterations = 3
+        self.space.iterations = 10
         self.sleep_time_treashold = 0.2
         self.clock = Clock()
         pygame.init()
@@ -73,6 +73,7 @@ class Simulation():
         self.running = True
         self.show_network = True
         self.show_specie_name = True
+        self.show_dist_and_ang = False
         self.selected = None
         self.time = 0
         self.cycles = 0
@@ -232,6 +233,8 @@ class Simulation():
             self.draw_debug = not self.draw_debug
         if event.key == pygame.K_c:
             self.show_specie_name = not self.show_specie_name
+        if event.key == pygame.K_a:
+            self.show_dist_and_ang = not self.show_dist_and_ang
         if event.key == pygame.K_s:
             self.statistics.plot('populations')
         if event.key == pygame.K_w:
@@ -356,6 +359,10 @@ class Simulation():
     
     def draw_creatures(self):
         for creature in self.creature_list:
+            if self.selected == creature:
+                if self.show_dist_and_ang:
+                    dist, x, y = creature.draw_dist(camera=self.camera)
+                    self.manager.add_text2(dist, x, y, Color('orange'), False, False, False, True)
             if creature.draw(screen=self.screen, camera=self.camera, selected=self.selected):
                 if self.show_specie_name:
                     name, x, y = creature.draw_name(camera=self.camera)
@@ -417,7 +424,7 @@ class Simulation():
         if self.herbivores != 0 and self.carnivores != 0:
             self.h2c = self.herbivores/self.carnivores
         else:
-            self.h2c = 1
+            self.h2c = self.herbivores
         cfg.update_h2c(self.h2c)
         self.calc_time()
         self.update_creatures(self.dt)
@@ -425,7 +432,6 @@ class Simulation():
         self.update_meat(self.dt)
         self.manager.update_gui(self.dt, self.ranking1, self.ranking2)
         self.update_statistics()
-        #self.update_terrain(self.dt)
 
     def update_meat(self, dT: float):
         for meat in self.meat_list:
@@ -530,14 +536,6 @@ class Simulation():
             self.populations['carnivores'].append(self.carnivores)
 
     def check_creature_types(self):
-        self.herbivores = 0
-        self.carnivores = 0
-        for creature in self.creature_list:
-            if creature.food < 6:
-                self.herbivores += 1
-            else:
-                self.carnivores += 1
-
         #if self.herbivores < cfg.MIN_HERBIVORES:
             #if len(self.ranking1) > 0:
             #    genome = choice(self.ranking1)
@@ -548,11 +546,17 @@ class Simulation():
             #    genome = choice(self.ranking2)
             #    creature = self.add_creature(genome=genome)
             #    self.creature_list.append(creature)
+        self.herbivores = 0
+        self.carnivores = 0
+        for creature in self.creature_list:
+            if creature.food < 6:
+                self.herbivores += 1
+            else:
+                self.carnivores += 1
  
     def update_plants(self, dt: float):
         plants_num = len(self.plant_list)
         p = 1/(10*plants_num)
-        #plants_log = (log10(plants_num))/10
         for plant in self.plant_list:
             if plant.life_time_calc(dt):
                 plant.kill(self.space)
@@ -564,13 +568,14 @@ class Simulation():
             else:
                 plant.update(dt, self.selected)
             if plant.check_reproduction(p):
+                if len(self.plant_list) >= cfg.PLANT_MAX_NUM:
+                    continue
                 new_plant = self.add_local_plant(plant.position, cfg.PLANT_RANGE, False)
                 self.plant_list.append(new_plant)
                 plant.energy *= 0.5
         if len(self.plant_list) < cfg.PLANT_MIN_NUM:
             plant = self.add_plant()
             self.plant_list.append(plant)
-        #if random() <= cfg.PLANT_MULTIPLY:
 
     def physics_step(self, dt: float):
         for _ in range(1):
