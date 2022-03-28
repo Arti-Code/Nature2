@@ -5,6 +5,7 @@
 
   
   "PLANT_MIN_NUM": 5,
+  "PLANT_MAX_NUM": 150,
   "PLANT_INIT_NUM": 80,
   "PLANT_MULTIPLY": 0.3,
   "PLANT_MAX_SIZE": 12,
