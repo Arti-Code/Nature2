@@ -346,7 +346,7 @@ class Manager:
                 'MEA-L', 'MEA-R', 'MEA-D'
             ]
             out_desc = [
-                "MOVE ", "TURN ", 
+                "MOVE ", "LEFT ", "RIGHT", 
                 "EAT  ", "ATACK", 
                 "RUN  ", "HIDED"
             ]
@@ -387,6 +387,8 @@ class Manager:
                             node_color = Color("#ff291a")
                         elif node.activation == ACTIVATION.LINEAR:
                             node_color = Color("#3afdda")
+                        elif node.activation == ACTIVATION.PULSE:
+                            node_color = Color("#ffffff")
                     for link_key in node.to_links:
                         link = network.links[link_key]
                         from_node_key = link.from_node

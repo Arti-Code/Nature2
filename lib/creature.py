@@ -279,20 +279,6 @@ class Creature(Life):
             if self.run_time > cfg.RUN_TIME:
                 self.run_time = cfg.RUN_TIME
         move = self.move(dt)
-        edge_vec =Vec2d(0, 0)
-        y = self.position.y; x = self.position.x;
-        if self.position.x <= 0:
-            x = 2
-            self.position = Vec2d(x, y)
-        elif self.position.x >= cfg.WORLD[0]:
-            x = cfg.WORLD[0]-2
-            self.position = Vec2d(x, y)
-        if self.position.y <= 0:
-            y = 2
-            self.position = Vec2d(x, y)
-        elif self.position.y >= cfg.WORLD[1]:
-            y = cfg.WORLD[1]-2
-            self.position = Vec2d(x, y)
         self.calc_energy(dt, move)
         self.mem_time -= dt
         self.mem_time = clamp(self.mem_time, 0, cfg.MEM_TIME)
@@ -407,34 +393,34 @@ class Creature(Life):
             for o in range(len(self.output)):
                 if self.output[o] < -1 or self.output[o] > 1:
                     self.output[o] = clamp(self.output[o], -1, 1)
-        #self.output[1] = clamp(self.output[1], 0, 1)
-        #self.output[2] = clamp(self.output[2], 0, 1)
-        #self.output[3] = clamp(self.output[3], 0, 1)
-        #self.output[4] = clamp(self.output[4], 0, 1)
-        #self.output[5] = clamp(self.output[5], 0, 1)
-        #self.output[6] = clamp(self.output[6], 0, 1)
-        self.moving = clamp(self.output[0], 0, 1)
-        self.turning = self.output[1]
-        if self.output[2] > 0.0:
-            self.eating = True
-        else:
-            self.eating = False
-        if self.output[3] > 0.0:
-            self.attacking = True
-        else:
-            self.attacking = False
-        if self.output[4] >= 0.7 and not self.on_water:
-            if not self.running and self.run_time >= int(cfg.RUN_TIME/2):
-                if self.run_ref_time == 0.0:
-                    self.run_ref_time = 1.0
+            self.output[1] = clamp(self.output[1], 0, 1)
+            self.output[2] = clamp(self.output[2], 0, 1)
+            self.output[3] = clamp(self.output[3], 0, 1)
+            self.output[4] = clamp(self.output[4], 0, 1)
+            self.output[5] = clamp(self.output[5], 0, 1)
+            #self.output[6] = clamp(self.output[6], 0, 1)
+            self.moving = clamp(self.output[0], 0, 1)
+            self.turning = self.output[2] - self.output[1]
+            if self.output[3] > 0.0:
+                self.eating = True
+            else:
+                self.eating = False
+            if self.output[4] > 0.0:
+                self.attacking = True
+            else:
+                self.attacking = False
+            if self.output[5] >= 0.7 and not self.on_water:
+                if not self.running and self.run_time >= int(cfg.RUN_TIME/2):
+                    if self.run_ref_time == 0.0:
+                        self.run_ref_time = 1.0
+                        self.running = True
+                    else:
+                        self.running = False
+                if self.running:
                     self.running = True
-                else:
-                    self.running = False
-            if self.running:
-                self.running = True
-        else:
-            self.running = False
-        #if self.output[5] >= 0.7 and not self.running:
+            else:
+                self.running = False
+        #if self.output[6] >= 0.7 and not self.running:
         #    if not self.hidding:
         #        if self.hide_ref_time == 0.0:
         #            self.hide_ref_time = 1.0
@@ -445,7 +431,7 @@ class Creature(Life):
         #        self.hidding = True
         #else:
         #    self.hidding = False
-        #    self.output[5] = 0
+        #    self.output[6] = 0
             
     def draw_energy_bar(self, screen: Surface, rx: int, ry: int):
         bar_red = Color(255, 0, 0)

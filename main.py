@@ -424,7 +424,7 @@ class Simulation():
         if self.herbivores != 0 and self.carnivores != 0:
             self.h2c = self.herbivores/self.carnivores
         else:
-            self.h2c = 1
+            self.h2c = self.herbivores
         cfg.update_h2c(self.h2c)
         self.calc_time()
         self.update_creatures(self.dt)
@@ -568,6 +568,8 @@ class Simulation():
             else:
                 plant.update(dt, self.selected)
             if plant.check_reproduction(p):
+                if len(self.plant_list) >= cfg.PLANT_MAX_NUM:
+                    continue
                 new_plant = self.add_local_plant(plant.position, cfg.PLANT_RANGE, False)
                 self.plant_list.append(new_plant)
                 plant.energy *= 0.5
