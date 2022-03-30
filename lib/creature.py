@@ -279,20 +279,6 @@ class Creature(Life):
             if self.run_time > cfg.RUN_TIME:
                 self.run_time = cfg.RUN_TIME
         move = self.move(dt)
-        edge_vec =Vec2d(0, 0)
-        y = self.position.y; x = self.position.x;
-        if self.position.x <= 0:
-            x = 2
-            self.position = Vec2d(x, y)
-        elif self.position.x >= cfg.WORLD[0]:
-            x = cfg.WORLD[0]-2
-            self.position = Vec2d(x, y)
-        if self.position.y <= 0:
-            y = 2
-            self.position = Vec2d(x, y)
-        elif self.position.y >= cfg.WORLD[1]:
-            y = cfg.WORLD[1]-2
-            self.position = Vec2d(x, y)
         self.calc_energy(dt, move)
         self.mem_time -= dt
         self.mem_time = clamp(self.mem_time, 0, cfg.MEM_TIME)
