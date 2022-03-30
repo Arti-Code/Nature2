@@ -141,7 +141,7 @@ class Network():
     MUT_WEIGHT      =   0.06 * cfg.MUTATIONS
     MUT_DEL_LINK    =   0.02 * cfg.MUTATIONS
     MUT_ADD_LINK    =   0.02 * cfg.MUTATIONS
-    MUT_DEL_NODE    =   0.02 * cfg.MUTATIONS
+    MUT_DEL_NODE    =   0.018 * cfg.MUTATIONS
     MUT_ADD_NODE    =   0.02 * cfg.MUTATIONS
     MUT_NODE_TYPE   =   0.04 * cfg.MUTATIONS
     MUT_MEM         =   0.04 * cfg.MUTATIONS
@@ -503,7 +503,7 @@ class Network():
         for n in self.nodes:
             if (random()) < self.MUT_NODE_TYPE+self.node_index*self.mutations_rate:
                 #n_type = choice(['tanh', 'sigmoid', 'binary', 'rev_binary', 'linear', 'memory'])
-                n_type = choice(['tanh', 'sigmoid', 'binary', 'relu', 'leaky_relu', 'memory', 'pulse'])
+                n_type = choice(['tanh', 'sigmoid', 'binary', 'relu', 'leaky_relu', 'memory'])
                 if n_type == 'memory':
                     self.nodes[n].recurrent = not self.nodes[n].recurrent
                     if self.nodes[n].recurrent:
