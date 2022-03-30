@@ -2,8 +2,8 @@ from math import pi as PI
 from json import loads, dumps
 
 TITLE = "NATURE"
-SUBTITLE = "v0.7.0" 
-AUTHOR = "2019-2021 Artur Gwoździowski"
+SUBTITLE = "v0.8.3" 
+AUTHOR = "2019-2022 Artur Gwoździowski"
 
 class Configuration():
 
@@ -15,6 +15,7 @@ class Configuration():
         self.PLANT_GROWTH = None
         self.PLANT_INIT_NUM = None
         self.PLANT_MIN_NUM = None
+        self.PLANT_MAX_NUM = None
         self.PLANT_LIFE = None
         self.PLANT_MULTIPLY = None
         self.PLANT_RANGE = None
@@ -87,6 +88,7 @@ class Configuration():
         self.PLANT_GROWTH           = cfg['PLANT_GROWTH']
         self.PLANT_INIT_NUM         = cfg['PLANT_INIT_NUM']
         self.PLANT_MIN_NUM          = cfg['PLANT_MIN_NUM']
+        self.PLANT_MAX_NUM          = cfg['PLANT_MAX_NUM']
         self.PLANT_LIFE             = cfg['PLANT_LIFE']
         self.PLANT_MULTIPLY         = cfg['PLANT_MULTIPLY']
         self.PLANT_RANGE            = cfg['PLANT_RANGE']

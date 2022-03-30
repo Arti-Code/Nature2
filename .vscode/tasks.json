@@ -4,22 +4,22 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "exec",
+            "label": "build exec",
             "type": "shell",
             "command": "auto-py-to-exe",
             "problemMatcher": [],
             "group": {
-                "kind": "build",
+                "kind": "BUILD",
                 "isDefault": true
             }
         },
         {
-            "label": "exec2",
-            "type": "process",
-            "command": "auto-py-to-exe",
+            "label": "run optymized",
+            "type": "shell",
+            "command": "python -O main.py ",
             "problemMatcher": [],
             "group": {
-                "kind": "build",
+                "kind": "RUN",
                 "isDefault": true
             }
         }

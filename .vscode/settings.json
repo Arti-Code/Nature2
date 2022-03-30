@@ -1,6 +1,9 @@
 {
     "python.pythonPath": "D:\\PYTHON\\Nature\\env\\Scripts\\python.exe",
     "cSpell.ignoreWords": [
+        "ATACK",
+        "ENERG",
+        "INJUR",
         "aacircle",
         "aaline",
         "cpos",
@@ -8,10 +11,13 @@
         "doublebuf",
         "engy",
         "fira",
+        "fizjo",
         "font",
         "hwsurface",
         "meat",
         "obstacle",
+        "physionomy",
+        "rpos",
         "subtitl",
         "titl",
         "vege",

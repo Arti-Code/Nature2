@@ -22,6 +22,7 @@ class Meat(Life):
         self.life_time = cfg.MEAT_TIME
         self.shape = Circle(self, self.radius)
         self.shape.collision_type = collision_tag
+        #space.add(self)
         space.add(self.shape)
         r = int(self.radius)
 
