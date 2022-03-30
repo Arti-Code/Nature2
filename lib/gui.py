@@ -60,7 +60,7 @@ class MenuWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect):
         super().__init__(rect, manager=manager, window_display_title='Main Menu', object_id="#menu_win", visible=True)
         self.manager = manager
-        btn_list = [('Resume', '#btn_resume'), ('New Simulation', '#btn_sim'), ('Select Terrain', '#btn_map'), ('Save Simulation', '#save_menu'), ('Load Simulation', '#btn_load'), ('Settings', '#btn_set'), ('Info', '#btn_info'), ('Quit', '#btn_quit')]
+        btn_list = [('Resume', '#btn_resume'), ('New Simulation', '#btn_sim'), ('Select Terrain', '#btn_map'), ('Save Menu', '#save_menu'), ('Load Menu', '#btn_load'), ('Settings', '#btn_set'), ('Info', '#btn_info'), ('Quit', '#btn_quit')]
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
@@ -89,10 +89,9 @@ class DelBtn(UIButton):
 
 class LoadSimWindow(UIWindow):
 
-    def __init__(self, manager: UIManager, rect: Rect):
+    def __init__(self, manager: UIManager, rect: Rect, simulations: list):
         super().__init__(rect, manager=manager, window_display_title='Load Simulation', object_id="#load_sim_win", visible=True)
         self.manager = manager
-        simulations = self.GetAllSim()
         buttons = []
         i = 1
         for sim in simulations:
@@ -102,15 +101,6 @@ class LoadSimWindow(UIWindow):
             i += 1
         btn = UIButton(Rect((75, (btn_s+btn_h)*i), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#load_back')
 
-    def GetAllSim(self) -> list:
-        projects = []
-        f = open("saves/projects.json", "r")
-        json_sim = f.read()
-        f.close()
-        sims = json.loads(json_sim)
-        for sim in sims['projects']:
-            projects.append(sim)
-        return projects
 
 class LoadCreatureWindow(UIWindow):
 
@@ -383,6 +373,16 @@ class GUI():
         self.create_menu_btn(btn_pos)
         #self.create_title(new_size)
 
+    def get_all_simulations(self) -> list:
+        projects = []
+        f = open("saves/projects.json", "r")
+        json_sim = f.read()
+        f.close()
+        sims = json.loads(json_sim)
+        for sim in sims['projects']:
+            projects.append(sim)
+        return projects
+
     def create_menu_btn(self, rect: Rect):
         self.btn_menu = UIButton(rect, 'MENU', self.ui_mgr, object_id='#btn_menu')
 
@@ -442,9 +442,12 @@ class GUI():
 
     def create_load_sim_menu(self):
         w = 300
-        h = 400
+        #h = 400
+        simulations = self.get_all_simulations()
+        sim_num = len(simulations)
+        h = 75 + (25 * sim_num)
         pos = Rect((self.cx-w/2, self.cy-h+100), (w, h+200))
-        self.load_sim_menu = LoadSimWindow(manager=self.ui_mgr, rect=pos)
+        self.load_sim_menu = LoadSimWindow(manager=self.ui_mgr, rect=pos, simulations=simulations)
 
     def create_info_win(self, text: str, title: str):
         w = 300
@@ -628,9 +631,9 @@ class GUI():
                 elif event.ui_object_id == '#menu_win.#btn_info':
                     self.main_menu.kill()
                     self.create_info_menu()
-                elif event.ui_object_id == '#menu_win.#btn_load_sim':
+                elif event.ui_object_id == '#menu_win.#btn_load':
                     self.main_menu.kill()
-                    self.create_load_sim_menu()
+                    self.create_load_menu()
                 elif event.ui_object_id == '#menu_win.#btn_quit':
                     pygame.quit()
                     sys.exit(0)
@@ -665,10 +668,10 @@ class GUI():
                     self.reload_config()
 
                 #   >>> LOAD MENU <<<
-                elif event.ui_object_id == '#load_win.#load_back':
+                elif event.ui_object_id == '#load_win.#btn_load_back':
                     self.load_menu.kill()
                     self.create_main_menu()
-                elif event.ui_object_id == '#load_win.#load_sim':
+                elif event.ui_object_id == '#load_win.#btn_load_sim':
                     self.load_menu.kill()
                     self.create_load_sim_menu()
                 elif isinstance(event.ui_element, DelBtn):
