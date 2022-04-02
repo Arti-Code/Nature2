@@ -61,8 +61,8 @@
   "MIN_HERBIVORES": 4,
   "RANK_SIZE": 20,
   "RANK_DECAY": 0.5,
-  "AUTO_SAVE_TIME": 10,
-  "STAT_PERIOD": 2,
+  "AUTO_SAVE_TIME": 500,
+  "STAT_PERIOD": 50,
   "TIME": 1,
   
   "ROCK_NUM": 0,

@@ -141,8 +141,8 @@ class Network():
     MUT_WEIGHT      =   0.06 * cfg.MUTATIONS
     MUT_DEL_LINK    =   0.02 * cfg.MUTATIONS
     MUT_ADD_LINK    =   0.02 * cfg.MUTATIONS
-    MUT_DEL_NODE    =   0.02 * cfg.MUTATIONS
-    MUT_ADD_NODE    =   0.004 * cfg.MUTATIONS
+    MUT_DEL_NODE    =   0.01 * cfg.MUTATIONS
+    MUT_ADD_NODE    =   0.01 * cfg.MUTATIONS
     MUT_NODE_TYPE   =   0.04 * cfg.MUTATIONS
     MUT_MEM         =   0.04 * cfg.MUTATIONS
 
@@ -405,10 +405,10 @@ class Network():
     def MutateBias(self, dt=1):
 
         for n in self.nodes:
-            if (random()) < self.MUT_BIAS+self.node_index*self.mutations_rate:
+            if (random()) < self.MUT_BIAS:
                 self.nodes[n].RandomBias()
             if self.nodes[n].recurrent:
-                if (random()) < self.MUT_MEM+self.node_index*self.mutations_rate:
+                if (random()) < self.MUT_MEM:
                     self.nodes[n].RandomMem()
 
     def MutateLinks(self, dt=1):
@@ -418,11 +418,11 @@ class Network():
         added = 0; deleted = 0
 
         for l in self.links:
-            if (random()) < self.MUT_DEL_LINK+self.link_index*self.mutations_rate:
+            if (random()) < self.MUT_DEL_LINK:
                 links_to_kill.append(l)
                 deleted += 1
 
-            if (random()) < self.MUT_ADD_LINK+self.link_index*self.mutations_rate:
+            if (random()) < self.MUT_ADD_LINK:
                 link_added = False
                 while not link_added:
                     n1 = choice(list(self.nodes.keys()))
@@ -451,7 +451,7 @@ class Network():
     
     def MutateWeights(self, dt=1):
         for l in self.links:
-            if (random()) < self.MUT_WEIGHT+self.link_index*self.mutations_rate:
+            if (random()) < self.MUT_WEIGHT:
                 self.links[l].RandomWeight()
 
     def MutateNodes(self, dt=1):
@@ -467,9 +467,9 @@ class Network():
         hidden_nodes = self.GetNodeKeyList([TYPE.HIDDEN])
         
         for n in self.nodes.keys():
-            if self.nodes[n].from_links == [] and self.nodes[n].to_links == [] and self.nodes[n].type == TYPE.HIDDEN:
-                nodes_to_kill.append(n)
-            """ if (random()) < self.MUT_DEL_NODE+self.node_index*self.mutations_rate:
+            """ if self.nodes[n].from_links == [] and self.nodes[n].to_links == [] and self.nodes[n].type == TYPE.HIDDEN:
+                nodes_to_kill.append(n) """
+            if (random()) < self.MUT_DEL_NODE:
                 if len(hidden_nodes) > 0:
                     del_node = choice(hidden_nodes)
                     if self.nodes[del_node].from_links != [] or self.nodes[del_node].to_links != []:
@@ -480,10 +480,10 @@ class Network():
                         for l1 in self.nodes[del_node].to_links:
                             links_to_kill.append(l1)
                         nodes_to_kill.append(del_node)
-                        deleted += 1 """
+                        deleted += 1
             
             if hidden_list != []:
-                if (random()) < self.MUT_ADD_NODE+self.node_index*self.mutations_rate:
+                if (random()) < self.MUT_ADD_NODE:
                     layer_key = choice(hidden_list)
                     n1key = choice(input_nodes)
                     n2key = choice(output_nodes)
@@ -505,7 +505,7 @@ class Network():
     
     def MutateNodeType(self, dt=1):
         for n in self.nodes:
-            if (random()) < self.MUT_NODE_TYPE+self.node_index*self.mutations_rate:
+            if (random()) < self.MUT_NODE_TYPE:
                 #n_type = choice(['tanh', 'sigmoid', 'binary', 'rev_binary', 'linear', 'memory'])
                 n_type = choice(['tanh', 'sigmoid', 'binary', 'relu', 'leaky_relu', 'memory'])
                 if n_type == 'memory':

@@ -532,11 +532,11 @@ class Simulation():
             self.statistics.add_data('populations', last+cfg.STAT_PERIOD, data)
             data = {}
             data = {
-                'size': round(mean(self.creatures['size'])),
-                'speed': round(mean(self.creatures['speed'])),
-                'power': round(mean(self.creatures['power'])),
-                'food': round(mean(self.creatures['food'])),
-                'mutations': round(mean(self.creatures['mutations']))
+                'size': mean(self.creatures['size']),
+                'speed': mean(self.creatures['speed']),
+                'power': mean(self.creatures['power']),
+                'food': mean(self.creatures['food']),
+                'mutations': mean(self.creatures['mutations'])
             }
             self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
             self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5]}
