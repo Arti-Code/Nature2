@@ -52,7 +52,7 @@ class Simulation():
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
-        self.statistics.add_collection('creatures', ['size', 'food', 'power', 'mutations'])
+        self.statistics.add_collection('creatures', ['size', 'speed', 'food', 'power', 'mutations'])
         self.create_terrain('res/images/map2.png', 'res/images/map2.png')
 
     def init_vars(self):
@@ -88,7 +88,7 @@ class Simulation():
         self.meats_on_screen = deque(range(30))
         self.rocks_on_screen = deque(range(30))
         self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
-        #self.creatures = {'size': [5], 'food': [5], 'power': [5], 'mutations': [5]}
+        self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5]}
         self.map_time = 0.0
         self.terrain = image.load('res/images/map2.png').convert()
         self.h2c = 1
@@ -238,6 +238,8 @@ class Simulation():
         if event.key == pygame.K_s:
             self.statistics.plot('populations')
         if event.key == pygame.K_w:
+            self.statistics.plot('creatures')
+        if event.key == pygame.K_w:
             pass
             #self.statistics.plot2('creatures', [(0, 255, 0), (0, 0, 255), (0, 255, 255), (255, 0, 0)], ['size', 'food', 'power', 'mutations'])
         if event.key == pygame.K_z:
@@ -315,7 +317,15 @@ class Simulation():
             creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, color0=Color('white'), color1=Color('skyblue'), color2=Color('blue'), color3=Color('red'))
         else:
             creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, genome=genome)
+        self.update_creatures_stats(creature.size, creature.speed, creature.food, creature.power, creature.mutations)
         return creature
+
+    def update_creatures_stats(self, size: int, speed: int, food: int, power: int, mutations: int):
+        self.creatures['size'].append(size)
+        self.creatures['speed'].append(speed)
+        self.creatures['food'].append(food)
+        self.creatures['power'].append(power)
+        self.creatures['mutations'].append(mutations)
 
     def add_saved_creature(self, genome: dict):
         creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=random_position(cfg.WORLD), genome=genome)
@@ -520,16 +530,17 @@ class Simulation():
                 'carnivores': round(mean(self.populations['carnivores']))
             }
             self.statistics.add_data('populations', last+cfg.STAT_PERIOD, data)
-            #data = {}
-            #data = {
-            #    'size': round(mean(self.creatures['size'])),
-            #    'power': round(mean(self.creatures['power'])),
-            #    'food': round(mean(self.creatures['food'])),
-            #    'mutations': round(mean(self.creatures['mutations']))
-            #}
+            data = {}
+            data = {
+                'size': round(mean(self.creatures['size'])),
+                'speed': round(mean(self.creatures['speed'])),
+                'power': round(mean(self.creatures['power'])),
+                'food': round(mean(self.creatures['food'])),
+                'mutations': round(mean(self.creatures['mutations']))
+            }
             self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
-            #self.creatures = {'size': [5], 'food': [5], 'power': [5], 'mutations': [5]}
-            #self.statistics.add_data('creatures', last+cfg.STAT_PERIOD, data)
+            self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5]}
+            self.statistics.add_data('creatures', last+cfg.STAT_PERIOD, data)
         else:
             self.populations['plants'].append(len(self.plant_list))
             self.populations['herbivores'].append(self.herbivores)
