@@ -141,8 +141,8 @@ class Network():
     MUT_WEIGHT      =   0.06 * cfg.MUTATIONS
     MUT_DEL_LINK    =   0.02 * cfg.MUTATIONS
     MUT_ADD_LINK    =   0.02 * cfg.MUTATIONS
-    MUT_DEL_NODE    =   0.018 * cfg.MUTATIONS
-    MUT_ADD_NODE    =   0.02 * cfg.MUTATIONS
+    MUT_DEL_NODE    =   0.02 * cfg.MUTATIONS
+    MUT_ADD_NODE    =   0.004 * cfg.MUTATIONS
     MUT_NODE_TYPE   =   0.04 * cfg.MUTATIONS
     MUT_MEM         =   0.04 * cfg.MUTATIONS
 
@@ -466,17 +466,21 @@ class Network():
         output_nodes = self.GetNodeKeyList([TYPE.OUTPUT])
         hidden_nodes = self.GetNodeKeyList([TYPE.HIDDEN])
         
-        for n in self.nodes:
-            if (random()) < self.MUT_DEL_NODE+self.node_index*self.mutations_rate:
+        for n in self.nodes.keys():
+            if self.nodes[n].from_links == [] and self.nodes[n].to_links == [] and self.nodes[n].type == TYPE.HIDDEN:
+                nodes_to_kill.append(n)
+            """ if (random()) < self.MUT_DEL_NODE+self.node_index*self.mutations_rate:
                 if len(hidden_nodes) > 0:
                     del_node = choice(hidden_nodes)
+                    if self.nodes[del_node].from_links != [] or self.nodes[del_node].to_links != []:
+                        continue;
                     if not del_node in nodes_to_kill:
                         for l0 in self.nodes[del_node].from_links:
                             links_to_kill.append(l0)
                         for l1 in self.nodes[del_node].to_links:
                             links_to_kill.append(l1)
                         nodes_to_kill.append(del_node)
-                        deleted += 1
+                        deleted += 1 """
             
             if hidden_list != []:
                 if (random()) < self.MUT_ADD_NODE+self.node_index*self.mutations_rate:
