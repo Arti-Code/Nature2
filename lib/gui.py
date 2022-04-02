@@ -441,7 +441,7 @@ class GUI():
 
     def create_rank_win(self):
         w = 215
-        h = cfg.RANK_SIZE * 15 + 45
+        h = cfg.RANK_SIZE * 15 + 30
         pos = Rect((self.cx*2-(w+10), 25), (w, h))
         self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)
 

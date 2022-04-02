@@ -56,65 +56,8 @@ class Statistics():
             if data_key != 'time':
                 d = data[data_key]
                 color = self.colors[data_key]
-                p.line(data['time'], d, line_width=2, line_color=color)
+                p.line(data['time'], d, line_width=2, legend_label=data_key, color=color)
         show(p)
-
-    def plot4(self, collection_name: str):
-        data = self.data[collection_name]
-        w = 1600
-        if int(data['time'][len(data['time'])-1]/100) > w:
-            w = int(data['time'][len(data['time'])-1]/100)
-        p: Figure=figure(plot_width=w, plot_height=600)
-        for data_key in data:
-            if data_key != 'time':
-                d = data[data_key]
-                color = RGB(0, 0, 0)
-                if data_key == 'plants':
-                    color = RGB(0, 255, 0)
-                elif data_key == 'herbivores':
-                    color = RGB(0, 0, 255)
-                elif data_key == 'carnivores':
-                    color = RGB(255, 0, 0)
-                p.line(data['time'], d, line_width=2, line_color=color)
-        show(p)
-
-    def plot2(self, collection_name: str, colors: list, labels: list):
-        data = self.data[collection_name]
-        w = 1600
-        if int(data['time'][len(data['time'])-1]/100) > w:
-            w = int(data['time'][len(data['time'])-1]/100)
-        p: Figure=figure(plot_width=w, plot_height=600)
-        c = 0
-        for data_key in data:
-            if data_key != 'time':
-                d = data[data_key]
-                label = labels[c]
-                color = colors[c]
-                c += 1
-                p.line(data['time'], d, line_width=2, line_color=color)
-        p.legend = legend
-        show(p)
-
-    def plot3(self, collection_name: str):
-        data = self.data[collection_name]
-        w = 1600
-        if int(data['time'][len(data['time'])-1]/100) > w:
-            w = int(data['time'][len(data['time'])-1]/100)
-        p1: Figure=figure(plot_width=w, plot_height=600)
-        for data_key in data:
-            if data_key != 'time':
-                d1 = data[data_key]
-                color = RGB(0, 0, 0)
-                if data_key == 'plants':
-                    color = RGB(0, 255, 0)
-                elif data_key == 'herbivores':
-                    color = RGB(0, 0, 255)
-                elif data_key == 'carnivores':
-                    color = RGB(255, 0, 0)
-                p1.line(data['time'], d1, line_width=2, line_color=color)
-        p2: Figure=figure(plot_width=w, plot_height=600)
-        p2.line(data['time'], data['plants'], line_width=2, line_color=RGB(0, 255, 0))
-        show(column(p1, p2))
 
     def load_statistics(self, collection_name: str, data: dict):
         self.data[collection_name] = data
