@@ -57,11 +57,14 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
     #creature_detection.pre_solve = detect_creature
 
     #creature_detection_end = space.add_collision_handler(4, 2)
-    #creature_detection_end.separate = detect_creature_end
+    #creature_detection_end.separate = process_agents_seeing_end
 
     plant_detection = space.add_collision_handler(4, 6)
-    plant_detection.pre_solve = process_plant_seeing
+    plant_detection.pre_solve = process_plants_seeing
     #plant_detection.pre_solve = detect_plant
+
+    #plant_detection_end = space.add_collision_handler(4, 6)
+    #plant_detection_end.separate = process_plants_seeing_end
 
     #plant_detection_end = space.add_collision_handler(4, 6)
     #plant_detection_end.separate = detect_plant_end
@@ -83,7 +86,10 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
     #water_detection_end = space.add_collision_handler(4, 14)
     #water_detection_end.separate = detect_water_end
     meat_detection = space.add_collision_handler(4, 10)
-    meat_detection.pre_solve = process_meat_seeing
+    meat_detection.pre_solve = process_meats_seeing
+
+    #meat_detection_end = space.add_collision_handler(4, 10)
+    #meat_detection_end.separate = process_meats_seeing_end
 
 def process_creature_plant_collisions(arbiter, space, data):
     dt = data['dt']
@@ -278,7 +284,7 @@ def process_agents_seeing(arbiter, space, data):
     agent2 = arbiter.shapes[1].body
     #agent1.vision.set_detection_color(detection=True)
     dist = agent2.position.get_dist_sqrd(agent1.position)
-    if dist > agent1.vision.max_dist_enemy:
+    if dist > agent1.vision.max_dist:
         return False
     close_object: bool=False
     if pow((agent1.size*3+3), 2) >= dist:
@@ -290,12 +296,17 @@ def process_agents_seeing(arbiter, space, data):
     agent1.vision.add_detection(angle=angle, dist=int(dist), target=agent2, type='creature', close_object=close_object)
     return False
 
-def process_plant_seeing(arbiter, space, data):
+def process_agents_seeing_end(arbiter, space, data):
+    agent1 = arbiter.shapes[0].body
+    agent1.vision.reset_detection()
+    return False
+
+def process_plants_seeing(arbiter, space, data):
     agent1 = arbiter.shapes[0].body
     agent2 = arbiter.shapes[1].body
     #agent1.vision.set_detection_color(detection=True)
     dist = agent2.position.get_dist_sqrd(agent1.position)
-    if dist > agent1.vision.max_dist_plant:
+    if dist > agent1.vision.max_dist:
         return False
     close_object: bool=False
     if pow((agent1.size*3+3), 2) >= dist:
@@ -307,12 +318,17 @@ def process_plant_seeing(arbiter, space, data):
     agent1.vision.add_detection(angle=angle, dist=int(dist), target=agent2, type='plant', close_object=close_object)
     return False
 
-def process_meat_seeing(arbiter, space, data):
+def process_plants_seeing_end(arbiter, space, data):
+    agent1 = arbiter.shapes[0].body
+    agent1.vision.reset_detection()
+    return False
+
+def process_meats_seeing(arbiter, space, data):
     agent1 = arbiter.shapes[0].body
     agent2 = arbiter.shapes[1].body
     #agent1.vision.set_detection_color(detection=True)
     dist = agent2.position.get_dist_sqrd(agent1.position)
-    if dist > agent1.vision.max_dist_meat:
+    if dist > agent1.vision.max_dist:
         return False
     close_object: bool=False
     if pow((agent1.size*3+3), 2) >= dist:
@@ -322,6 +338,11 @@ def process_meat_seeing(arbiter, space, data):
     n = v.normalized()
     angle = f.get_angle_between(n)
     agent1.vision.add_detection(angle=angle, dist=int(dist), target=agent2, type='meat', close_object=close_object)
+    return False
+
+def process_meats_seeing_end(arbiter, space, data):
+    agent1 = arbiter.shapes[0].body
+    agent1.vision.reset_detection()
     return False
 
 def detect_plant_end(arbiter, space, data):

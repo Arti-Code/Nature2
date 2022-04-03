@@ -262,8 +262,10 @@ class Creature(Life):
                 meat_dir = '<<'
             else:
                 meat_dir = '<'
-        txt = "{:^}[{:^}] | {:^}[{:^}] | {:^}[{:^}]".format(round(sqrt(self.vision.max_dist_enemy)), enemy_dir, round(sqrt(self.vision.max_dist_plant)), plant_dir, round(sqrt(self.vision.max_dist_meat)), meat_dir)
-        return f"{(round(sqrt(self.vision.max_dist_enemy)))}[{enemy_dir}] | {(round(sqrt(self.vision.max_dist_plant)))}[{plant_dir}] | {(round(sqrt(self.vision.max_dist_meat)))}[{meat_dir}]", rpos.x, rpos.y
+        #txt = "{:^}[{:^}] | {:^}[{:^}] | {:^}[{:^}]".format(round(sqrt(self.vision.max_dist_enemy)), enemy_dir, round(sqrt(self.vision.max_dist_plant)), plant_dir, round(sqrt(self.vision.max_dist_meat)), meat_dir)
+        #return f"{(round(sqrt(self.vision.max_dist_enemy)))}[{enemy_dir}] | {(round(sqrt(self.vision.max_dist_plant)))}[{plant_dir}] | {(round(sqrt(self.vision.max_dist_meat)))}[{meat_dir}]", rpos.x, rpos.y
+        #return f"{(round(sqrt(self.vision.max_dist)))}", rpos.x, rpos.y
+        return f"T:{(round(sqrt(self.vision.max_dist)))} | E:{(round(sqrt(self.vision.max_dist_enemy)))} | P:{(round(sqrt(self.vision.max_dist_plant)))} | M:{(round(sqrt(self.vision.max_dist_meat)))}", rpos.x, rpos.y
 
     def update(self, dt: float, selected: Body):
         super().update(dt, selected)

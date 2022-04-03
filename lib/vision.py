@@ -26,6 +26,7 @@ class Vision(Circle):
         self.max_dist_enemy = 0.0
         self.max_dist_plant = 0.0
         self.max_dist_meat = 0.0
+        self.max_dist = 0.0
         self.rng = pow(self.radius, 2)
         self.reset_detection()
         self.reset_range()
@@ -47,13 +48,14 @@ class Vision(Circle):
             'dist': rng,
             'target': None
         }
-        #self.reset_range()
+        #self.update_max_dist()
 
     def reset_range(self):
         rng = self.rng
         self.max_dist_enemy = rng
         self.max_dist_plant = rng
         self.max_dist_meat = rng
+        self.max_dist = rng
 
     def add_detection(self, angle: float, dist: float, target: Body, type: str, close_object: bool=False):
         if self.semiwide < abs(angle):
@@ -64,40 +66,48 @@ class Vision(Circle):
                 #angle = (self.semiwide) * (angle/abs(angle))
             else:
                 angle = (self.semiwide)*0.9
-        dist2 = dist*1.1
+        dist2 = dist
+
         if type == 'creature':
             #dist1 = self.enemy['dist']*(abs(self.enemy['ang'])/(self.semiwide))
             dist1 = self.enemy['dist']
-            if dist1 > dist2:
+            if self.max_dist > dist2 and dist1 > dist2:
                 self.enemy = {
                     'ang': angle,
                     'dist': dist,
                     'target': target
                 }
                 self.max_dist_enemy = dist
+                if self.max_dist > dist:
+                    self.max_dist = dist
         elif type == 'plant':
             #dist1 = self.plant['dist']*(abs(self.plant['ang'])/(self.semiwide))
             dist1 = self.plant['dist']
-            if dist1 > dist2:
+            if self.max_dist > dist2 and dist1 > dist2:
                 self.plant = {
                     'ang': angle,
                     'dist': dist,
                     'target': target
                 }
                 self.max_dist_plant = dist
+                if self.max_dist > dist:
+                    self.max_dist = dist
         elif type == 'meat':
             #dist1 = self.meat['dist']*(abs(self.meat['ang'])/(self.semiwide))
             dist1 = self.meat['dist']
-            if dist1 > dist2:
+            if self.max_dist > dist2 and dist1 > dist2:
                 self.meat = {
                     'ang': angle,
                     'dist': dist,
                     'target': target
                 }
                 self.max_dist_meat = dist
+                if self.max_dist > dist:
+                    self.max_dist = dist
+        #self.update_max_dist()
 
     def update_max_dist(self):
-        self.max_dist = max([self.enemy['dist'], self.plant['dist'], self.meat['dist']])
+        self.max_dist = min([self.enemy['dist'], self.plant['dist'], self.meat['dist']])
 
     def get_detection(self) -> list:
         enemy_l = -round((self.enemy['ang']/(self.semiwide)), 1)
