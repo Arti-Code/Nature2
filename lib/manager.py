@@ -302,7 +302,6 @@ class Manager:
         if not f.closed:
             f.close()
         #log_to_file(project_name+' loaded', 'log.txt')
-
     def load_last(self, project_name: str):
         f = open("saves/" + project_name + "/saves.json", "r")
         save_list = f.read()
@@ -340,10 +339,9 @@ class Manager:
 
             inp_desc = [
                 'ENEMY', 'PLANT', 'MEAT ',
-                'XXXXX', 'YYYYY', 'ENERG', 'INJUR',
-                'ENE-L', 'ENE-R', 'ENE-D', 
-                'PLA-L', 'PLA-R', 'PLA-D',
-                'MEA-L', 'MEA-R', 'MEA-D'
+                'XXXXX', 'YYYYY', 'ENERG', 'HURT',
+                'ENEMY', 'PLANT', 'MEAT', 
+                'DIST', 'LEFT', 'RIGHT'
             ]
             out_desc = [
                 "MOVE ", "LEFT ", "RIGHT", 
