@@ -147,12 +147,9 @@ class Creature(Life):
             color1.a = 255
             color2.a = 255
             a = 255
+        marked = False
         if selected == self:
-            #self.draw_detectors(screen=screen, rel_pos=rel_pos)
-            self.reset_collisions()
-            self.vision.draw(screen=screen, camera=camera, rel_position=rel_pos)
-        #for detector in self.sensors:
-        #    detector.reset_data()
+            marked = True
         gfxdraw.aacircle(screen, int(rx), int(ry), int(r), color2)
         gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), color2)
         gfxdraw.aacircle(screen, int(rx), int(ry), int(r-1), self.color2)
@@ -195,8 +192,10 @@ class Creature(Life):
             gfxdraw.aacircle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
             gfxdraw.filled_circle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
             gfxdraw.filled_circle(screen, int(x3), int(y3), int(r2*0.67), Color('black'))
+        self.vision.draw(screen=screen, camera=camera, rel_position=rel_pos, selected=marked)
         self.color0 = self._color0
         self.draw_energy_bar(screen, rx, ry)
+        self.reset_collisions()
         #self.vision.reset_range()
         #self.draw_water_bar(screen, rx, ry)
         #self.draw_name(screen)
@@ -232,7 +231,7 @@ class Creature(Life):
         enemy_ang = round(self.vision.enemy['ang'], 1)
         plant_ang = round(self.vision.plant['ang'], 1)
         meat_ang = round(self.vision.meat['ang'], 1)
-        if enemy_ang >= 0.1:
+        """ if enemy_ang >= 0.1:
             if enemy_ang > 0.5:
                 enemy_dir = '>>'
             else:
@@ -261,7 +260,7 @@ class Creature(Life):
             if meat_ang < -0.5:
                 meat_dir = '<<'
             else:
-                meat_dir = '<'
+                meat_dir = '<' """
         #txt = "{:^}[{:^}] | {:^}[{:^}] | {:^}[{:^}]".format(round(sqrt(self.vision.max_dist_enemy)), enemy_dir, round(sqrt(self.vision.max_dist_plant)), plant_dir, round(sqrt(self.vision.max_dist_meat)), meat_dir)
         #return f"{(round(sqrt(self.vision.max_dist_enemy)))}[{enemy_dir}] | {(round(sqrt(self.vision.max_dist_plant)))}[{plant_dir}] | {(round(sqrt(self.vision.max_dist_meat)))}[{meat_dir}]", rpos.x, rpos.y
         #return f"{(round(sqrt(self.vision.max_dist)))}", rpos.x, rpos.y
@@ -361,10 +360,7 @@ class Creature(Life):
 
     def get_input(self):
         input = []
-        #al = 0; ar = 0; ad = 0; pl = 0; pr = 0; pd = 0; ml = 0; mr = 0; md = 0
         al, ar, ad, pl, pr, pd, ml, mr, md = self.vision.get_detection()
-        #ea = 0.0; ed = 0.0; pa = 0.0; pd = 0.0; ma = 0.0; md = 0.0;
-        ea,ed,pa,pd,ma,md = self.vision.get_detection2()
         x = (self.position[0]-(cfg.WORLD[0]/2))/(cfg.WORLD[0]/2)
         y = (self.position[1]-(cfg.WORLD[1]/2))/(cfg.WORLD[1]/2)
         eng = self.energy/self.max_energy
@@ -393,21 +389,14 @@ class Creature(Life):
             self.output = self.neuro.Calc(input)
             self.mem_time = cfg.MEM_TIME
             for o in range(len(self.output)):
-                if self.output[o] < -1 or self.output[o] > 1:
-                    self.output[o] = clamp(self.output[o], -1, 1)
-            self.output[1] = clamp(self.output[1], 0, 1)
-            self.output[2] = clamp(self.output[2], 0, 1)
-            self.output[3] = clamp(self.output[3], 0, 1)
-            self.output[4] = clamp(self.output[4], 0, 1)
-            self.output[5] = clamp(self.output[5], 0, 1)
-            #self.output[6] = clamp(self.output[6], 0, 1)
-            self.moving = clamp(self.output[0], 0, 1)
+                self.output[o] = clamp(self.output[o], 0, 1)
+            self.moving = self.output[0]
             self.turning = self.output[2] - self.output[1]
-            if self.output[3] > 0.0:
+            if self.output[3] >= 0.4:
                 self.eating = True
             else:
                 self.eating = False
-            if self.output[4] > 0.0:
+            if self.output[4] >= 0.5:
                 self.attacking = True
             else:
                 self.attacking = False
@@ -442,11 +431,13 @@ class Creature(Life):
         gfxdraw.box(screen, Rect(rx-round(10), ry+round(size+3), round(19), 1), bar_red)
         gfxdraw.box(screen, Rect(rx-round(10), ry+round(size+3), round(20*(self.energy/self.max_energy)), 1), bar_green)
   
+    def life2fit(self):
+        self.fitness += self.life_time
+        self.fitness = round(self.fitness)
+
     def kill(self, space: Space):
         to_kill = []
         to_kill.append(self.vision)
-        #for sensor in self.sensors:
-        #    to_kill.append(sensor.shape)
         for s in to_kill:
             space.remove(s)
         space.remove(self.shape)

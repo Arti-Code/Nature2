@@ -7,6 +7,7 @@ from bokeh.io import show
 from bokeh.plotting import figure, Figure
 from bokeh.layouts import column
 from bokeh.colors import Color, RGB
+from lib.config import cfg
 
 class Statistics():
 
@@ -48,10 +49,16 @@ class Statistics():
 
     def plot(self, collection_name: str):
         data = self.data[collection_name]
+        y_range1 = (0, 10)
+        y_range2 = (0, cfg.PLANT_MAX_NUM)
         w = 1600
         if int(data['time'][len(data['time'])-1]/100) > w:
             w = int(data['time'][len(data['time'])-1]/100)
-        p: Figure=figure(plot_width=w, plot_height=600)
+        p: None
+        if collection_name == 'creatures':
+            p: Figure=figure(plot_width=w, plot_height=600, y_range=y_range1)
+        else:
+            p: Figure=figure(plot_width=w, plot_height=600, y_range=y_range2)
         for data_key in data:
             if data_key != 'time':
                 d = data[data_key]

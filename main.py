@@ -227,30 +227,27 @@ class Simulation():
                 if self.sel_idx >= 0 and self.sel_idx < (len(self.creature_list)-1):
                     self.sel_idx += 1
                     self.selected = self.creature_list[self.sel_idx]
-        if event.key == pygame.K_n:
+        if event.key == pygame.K_F1:
             self.show_network = not self.show_network
-        if event.key == pygame.K_d:
+        if event.key == pygame.K_F2:
             self.draw_debug = not self.draw_debug
-        if event.key == pygame.K_c:
+        if event.key == pygame.K_F3:
             self.show_specie_name = not self.show_specie_name
-        if event.key == pygame.K_a:
+        if event.key == pygame.K_F6:
             self.show_dist_and_ang = not self.show_dist_and_ang
-        if event.key == pygame.K_s:
+        if event.key == pygame.K_F4:
             self.statistics.plot('populations')
-        if event.key == pygame.K_w:
+        if event.key == pygame.K_F5:
             self.statistics.plot('creatures')
-        if event.key == pygame.K_w:
-            pass
-            #self.statistics.plot2('creatures', [(0, 255, 0), (0, 0, 255), (0, 255, 255), (255, 0, 0)], ['size', 'food', 'power', 'mutations'])
-        if event.key == pygame.K_z:
-            self.scale = 0.5
-            self.camera.zoom_in()
-        if event.key == pygame.K_x:
-            self.scale = 2.0
-            self.camera.zoom_out()
-        if event.key == pygame.K_a:
-            self.scale = 1.0
-            self.camera.reset_zoom()
+        #if event.key == pygame.K_z:
+        #    self.scale = 0.5
+        #    self.camera.zoom_in()
+        #if event.key == pygame.K_x:
+        #    self.scale = 2.0
+        #    self.camera.zoom_out()
+        #if event.key == pygame.K_a:
+        #    self.scale = 1.0
+        #    self.camera.reset_zoom()
 
     def mouse_events(self, event):
         self.selected = None
@@ -454,6 +451,7 @@ class Simulation():
         ### CHECK ENERGY ###
         for creature in self.creature_list:
             if creature.energy <= 0:
+                creature.life2fit()
                 self.add_to_ranking(creature)
                 if not creature.on_water:
                     meat = Meat(screen=self.screen, space=self.space, position=creature.position, collision_tag=10, energy=creature.max_energy)
@@ -532,11 +530,11 @@ class Simulation():
             self.statistics.add_data('populations', last+cfg.STAT_PERIOD, data)
             data = {}
             data = {
-                'size': mean(self.creatures['size']),
-                'speed': mean(self.creatures['speed']),
-                'power': mean(self.creatures['power']),
-                'food': mean(self.creatures['food']),
-                'mutations': mean(self.creatures['mutations'])
+                'size': round(mean(self.creatures['size']), 2),
+                'speed': round(mean(self.creatures['speed']), 2),
+                'power': round(mean(self.creatures['power']), 2),
+                'food': round(mean(self.creatures['food']), 2),
+                'mutations': round(mean(self.creatures['mutations']), 2)
             }
             self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
             self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5]}
