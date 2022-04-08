@@ -239,15 +239,6 @@ class Simulation():
             self.statistics.plot('populations')
         if event.key == pygame.K_F5:
             self.statistics.plot('creatures')
-        #if event.key == pygame.K_z:
-        #    self.scale = 0.5
-        #    self.camera.zoom_in()
-        #if event.key == pygame.K_x:
-        #    self.scale = 2.0
-        #    self.camera.zoom_out()
-        #if event.key == pygame.K_a:
-        #    self.scale = 1.0
-        #    self.camera.reset_zoom()
 
     def mouse_events(self, event):
         self.selected = None
