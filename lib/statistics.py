@@ -49,7 +49,7 @@ class Statistics():
 
     def plot(self, collection_name: str):
         data = self.data[collection_name]
-        y_range1 = (0, 10)
+        y_range1 = (1, cfg.CREATURE_MAX_SIZE)
         y_range2 = (0, cfg.PLANT_MAX_NUM)
         w = 1600
         if int(data['time'][len(data['time'])-1]/100) > w:

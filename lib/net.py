@@ -465,11 +465,11 @@ class Network():
         input_nodes = self.GetNodeKeyList([TYPE.INPUT])
         output_nodes = self.GetNodeKeyList([TYPE.OUTPUT])
         hidden_nodes = self.GetNodeKeyList([TYPE.HIDDEN])
-        
+        h_mod = clamp(cfg.NEURON_MOD/(len(hidden_nodes)+1), 0, 1)
         for n in self.nodes.keys():
             """ if self.nodes[n].from_links == [] and self.nodes[n].to_links == [] and self.nodes[n].type == TYPE.HIDDEN:
                 nodes_to_kill.append(n) """
-            if (random()) < self.MUT_DEL_NODE:
+            if (random()*h_mod) < self.MUT_DEL_NODE:
                 if len(hidden_nodes) > 0:
                     del_node = choice(hidden_nodes)
                     if self.nodes[del_node].from_links != [] or self.nodes[del_node].to_links != []:
@@ -483,7 +483,7 @@ class Network():
                         deleted += 1
             
             if hidden_list != []:
-                if (random()) < self.MUT_ADD_NODE:
+                if (random()/h_mod) < self.MUT_ADD_NODE:
                     layer_key = choice(hidden_list)
                     n1key = choice(input_nodes)
                     n2key = choice(output_nodes)
