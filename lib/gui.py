@@ -204,7 +204,7 @@ class EnviroWindow(UIWindow):
     def Update(self, data: dict, dT: float):
         self.refresh -= dT
         if self.refresh <= 0:
-            self.refresh = 1
+            self.refresh = 0.1
             data = data
             for key, val in data.items():
                 self.labs[key][0].set_text(f"{key}:")
@@ -478,7 +478,7 @@ class GUI():
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (150, 250)), data=data, dT=dT)
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (170, 290)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
@@ -514,6 +514,8 @@ class GUI():
             data['FITNESS'] = ''
             data["LIFETIME"] = ''
             data["REP_TIME"] = ''
+            data["ADD_NODES"] = ''
+            data["DEL_NODES"] = ''
             data['S'] = ''
             if isinstance(self.owner.enviro.selected, Plant):
                 data['SPECIE'] = 'PLANT'
@@ -534,11 +536,13 @@ class GUI():
         data['POWER'] = str(self.owner.enviro.selected.power)
         data['SPEED'] = str(self.owner.enviro.selected.speed)
         data['SIZE'] = str(self.owner.enviro.selected.size)
-        data['MUTATIONS'] = str(self.owner.enviro.selected.mutations)
+        data['MUTATIONS'] = f"{self.owner.enviro.selected.mutations}"
         data['BORN|KILL'] = str(self.owner.enviro.selected.childs)+'|'+str(self.owner.enviro.selected.kills)
         data['FITNESS'] = str(round(self.owner.enviro.selected.fitness))
         data["LIFETIME"] = str(round(self.owner.enviro.selected.life_time))
         data["REP_TIME"] = str(round(self.owner.enviro.selected.reproduction_time))
+        data["ADD_NODES"] = f"A:{round(self.owner.enviro.selected.neuro.node_add_mod, 6)}"
+        data["DEL_NODES"] = f"D:{round(self.owner.enviro.selected.neuro.node_del_mod, 6)}"
         states = []
         if self.owner.enviro.selected.hidding:
             states.append('[H]')

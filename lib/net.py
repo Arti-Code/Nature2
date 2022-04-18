@@ -5,6 +5,7 @@ from copy import deepcopy, copy
 import json
 import numpy as np
 from lib.config import cfg
+from math import sin, cos
 
 class TYPE(IntEnum):
 
@@ -141,8 +142,8 @@ class Network():
     MUT_WEIGHT      =   0.06 * cfg.MUTATIONS
     MUT_DEL_LINK    =   0.02 * cfg.MUTATIONS
     MUT_ADD_LINK    =   0.02 * cfg.MUTATIONS
-    MUT_DEL_NODE    =   0.01 * cfg.MUTATIONS
-    MUT_ADD_NODE    =   0.01 * cfg.MUTATIONS
+    MUT_DEL_NODE    =   0.03 * cfg.MUTATIONS
+    MUT_ADD_NODE    =   0.03 * cfg.MUTATIONS
     MUT_NODE_TYPE   =   0.04 * cfg.MUTATIONS
     MUT_MEM         =   0.04 * cfg.MUTATIONS
 
@@ -157,6 +158,8 @@ class Network():
         self.nodes = dict()
         self.links = dict()
         self.log = []
+        self.node_del_mod = 1
+        self.node_add_mod = 1
 
     def BuildFromGenome(self, genome):
         self.node_num = genome.node_num
@@ -186,7 +189,13 @@ class Network():
                     for nod0 in range(len(self.layers[lay0].nodes)):
                         if random() < link_rate:
                             from_node_key = self.layers[lay0].nodes[nod0]
-                            self.AddNewLink(from_node_key, node_key)   
+                            self.AddNewLink(from_node_key, node_key)
+    
+    def CalcNodeMutMod(self):
+        h = self.GetNodeKeyList([TYPE.HIDDEN])
+        x = len(h)
+        self.node_del_mod = clamp((sigmoid(x/cfg.NEURON_MOD)*2)-1, 0, 1)
+        self.node_add_mod = 1 - self.node_del_mod
 
     def RandomWeight(self):
         """Function returns randomly generated float value from -1.0 to 1.0"""
@@ -403,7 +412,6 @@ class Network():
         return output
 
     def MutateBias(self, dt=1):
-
         for n in self.nodes:
             if (random()) < self.MUT_BIAS:
                 self.nodes[n].RandomBias()
@@ -411,8 +419,7 @@ class Network():
                 if (random()) < self.MUT_MEM:
                     self.nodes[n].RandomMem()
 
-    def MutateLinks(self, dt=1):
-
+    def MutateLinks(self):
         links_to_kill = []
         links_to_add = []
         added = 0; deleted = 0
@@ -454,7 +461,7 @@ class Network():
             if (random()) < self.MUT_WEIGHT:
                 self.links[l].RandomWeight()
 
-    def MutateNodes(self, dt=1):
+    def MutateNodes(self, mutate_rate: int):
         nodes_to_kill = []
         nodes_to_add = []
         links_to_kill = []
@@ -465,11 +472,11 @@ class Network():
         input_nodes = self.GetNodeKeyList([TYPE.INPUT])
         output_nodes = self.GetNodeKeyList([TYPE.OUTPUT])
         hidden_nodes = self.GetNodeKeyList([TYPE.HIDDEN])
-        h_mod = clamp(cfg.NEURON_MOD/(len(hidden_nodes)+1), 0, 1)
-        for n in self.nodes.keys():
+        #for n in self.nodes.keys():
+        for _ in range(mutate_rate):
             """ if self.nodes[n].from_links == [] and self.nodes[n].to_links == [] and self.nodes[n].type == TYPE.HIDDEN:
                 nodes_to_kill.append(n) """
-            if (random()*h_mod) < self.MUT_DEL_NODE:
+            if random() < (self.MUT_DEL_NODE):
                 if len(hidden_nodes) > 0:
                     del_node = choice(hidden_nodes)
                     if self.nodes[del_node].from_links != [] or self.nodes[del_node].to_links != []:
@@ -483,7 +490,7 @@ class Network():
                         deleted += 1
             
             if hidden_list != []:
-                if (random()/h_mod) < self.MUT_ADD_NODE:
+                if random() < (self.MUT_ADD_NODE):
                     layer_key = choice(hidden_list)
                     n1key = choice(input_nodes)
                     n2key = choice(output_nodes)
@@ -535,7 +542,8 @@ class Network():
                 elif n_type == 'pulse':
                     self.nodes[n].activation = ACTIVATION.PULSE
 
-    def Mutate(self, mutations_rate: int=5, dt=1):
+    def Mutate(self, mutations_rate: int=5, dt=1) -> list[tuple]:
+        #self.CalcNodeMutMod()
         node_num = len(self.nodes)-(len(self.GetNodeKeyList([TYPE.INPUT]))+len(self.GetNodeKeyList([TYPE.OUTPUT])))
         link_num = len(self.links)
         if node_num != 0:
@@ -548,10 +556,11 @@ class Network():
             self.link_index = 0.05
         self.mutations_rate = mutations_rate/10
         self.MutateBias(dt)
-        added_l, deleted_l = self.MutateLinks(dt)
+        added_l, deleted_l = self.MutateLinks()
         self.MutateWeights(dt)
-        added_n, deleted_n = self.MutateNodes(dt)
+        added_n, deleted_n = self.MutateNodes(mutate_rate=mutations_rate)
         self.MutateNodeType(dt)
+        return [(added_n, deleted_n), (added_l, deleted_l)]
 
     def Replicate(self):
 
@@ -587,8 +596,10 @@ class Network():
         return nodes_num
 
     def GetLinksNum(self):
-    
         return len(self.links)
+
+    def GetAllNodesNum(self):
+        return len(self.nodes)
 
     def CleanRecombinated(self):
 

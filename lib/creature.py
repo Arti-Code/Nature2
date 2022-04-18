@@ -32,11 +32,12 @@ class Creature(Life):
         self.childs = 0
         self.kills = 0
         self.genealogy = []
+        self.mutations_num = [(0, 0), (0, 0)]
         if genome == None:
             self.random_build(color0, color1, color2, color3, time)
             self.signature = self.get_signature()
         else:
-            self.genome_build(genome)
+            self.mutations_num = self.genome_build(genome)
             if not self.compare_signature(self.get_signature(), genome['signature'], cfg.DIFF):
                 self.signature = self.get_signature()
                 self.name = modify_name(genome['name'])
@@ -50,9 +51,6 @@ class Creature(Life):
         self.side_angle = 0
         self.sensor_angle = (1 - random())*cfg.SENSOR_MAX_ANGLE
         self.sensor_angle = ((random()+1)/2)*cfg.SENSOR_MAX_ANGLE
-        #self.sensors.append(Sensor(screen, self, 4, 0, cfg.SENSOR_RANGE))
-        #self.sensors.append(Sensor(screen, self, 4, self.sensor_angle, cfg.SENSOR_RANGE))
-        #self.sensors.append(Sensor(screen, self, 4, -self.sensor_angle, cfg.SENSOR_RANGE))
         self.vision = Vision(self, cfg.SENSOR_RANGE, cfg.SENSOR_MAX_ANGLE, (0.0, 0.0), "vision")
         space.add(self.vision)
         self.mem_time = 0
@@ -73,8 +71,9 @@ class Creature(Life):
         self.hide_ref_time = 0.0
         self.run_ref_time = 0.0
         self.on_water = False
+        self.neuro.CalcNodeMutMod()
 
-    def genome_build(self, genome: dict):
+    def genome_build(self, genome: dict) -> list[tuple]:
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
         self.color1 = Color(genome['color1'][0], genome['color1'][1], genome['color1'][2], genome['color1'][3])
         self.color2 = Color(genome['color2'][0], genome['color2'][1], genome['color2'][2], genome['color2'][3])
@@ -97,8 +96,9 @@ class Creature(Life):
         self.generation = genome['gen']+1
         self.genealogy = genome['genealogy']
         self.name = genome['name']
-        self.neuro.Mutate(mutations_rate=self.mutations)
+        mutations = self.neuro.Mutate(mutations_rate=self.mutations)
         self.signature = genome['signature']
+        return mutations
 
     def random_build(self, color0: Color, color1: Color, color2: Color, color3: Color, time: int):
         #self.color0 = color0
@@ -195,7 +195,7 @@ class Creature(Life):
         self.vision.draw(screen=screen, camera=camera, rel_position=rel_pos, selected=marked)
         self.color0 = self._color0
         self.draw_energy_bar(screen, rx, ry)
-        self.reset_collisions()
+        #self.reset_collisions()
         #self.vision.reset_range()
         #self.draw_water_bar(screen, rx, ry)
         #self.draw_name(screen)
@@ -220,7 +220,7 @@ class Creature(Life):
         self.collide_plant = False
         self.collide_water = False
         self.collide_meat = False
-
+        
     def draw_name(self, camera: Camera):
         rpos = camera.rel_pos(Vector2((self.position.x-20), flipy(self.position.y+14)))
         return self.name, rpos.x, rpos.y
@@ -361,14 +361,14 @@ class Creature(Life):
     def get_input(self):
         input = []
         al, ar, ad, pl, pr, pd, ml, mr, md = self.vision.get_detection()
-        x = (self.position[0]-(cfg.WORLD[0]/2))/(cfg.WORLD[0]/2)
-        y = (self.position[1]-(cfg.WORLD[1]/2))/(cfg.WORLD[1]/2)
+        #x = (self.position[0]-(cfg.WORLD[0]/2))/(cfg.WORLD[0]/2)
+        #y = (self.position[1]-(cfg.WORLD[1]/2))/(cfg.WORLD[1]/2)
         eng = self.energy/self.max_energy
         input.append(self.collide_creature)
         input.append(self.collide_plant)
         input.append(self.collide_meat)
-        input.append(x)
-        input.append(y)
+        #input.append(x)
+        #input.append(y)
         input.append(eng)
         input.append(int(self.pain))
         input.append(al)
@@ -381,6 +381,7 @@ class Creature(Life):
         input.append(mr)
         input.append(md)
         self.pain = False
+        #self.reset_collisions()
         return input
 
     def analize(self):

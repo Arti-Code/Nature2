@@ -53,6 +53,7 @@ class Simulation():
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
         self.statistics.add_collection('creatures', ['size', 'speed', 'food', 'power', 'mutations'])
+        self.statistics.add_collection('neuros', ['nodes', 'links'])
         self.create_terrain('res/images/map2.png', 'res/images/map2.png')
 
     def init_vars(self):
@@ -88,7 +89,9 @@ class Simulation():
         self.meats_on_screen = deque(range(30))
         self.rocks_on_screen = deque(range(30))
         self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
+        self.mutations = {'added_nodes': [0], 'deleted_nodes': [0], 'added_links': [0], 'deleted_links': [0]}
         self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5]}
+        self.neuros = {'nodes': [], 'links': []}
         self.map_time = 0.0
         self.terrain = image.load('res/images/map2.png').convert()
         self.h2c = 1
@@ -233,12 +236,14 @@ class Simulation():
             self.draw_debug = not self.draw_debug
         if event.key == pygame.K_F3:
             self.show_specie_name = not self.show_specie_name
-        if event.key == pygame.K_F6:
+        if event.key == pygame.K_F7:
             self.show_dist_and_ang = not self.show_dist_and_ang
         if event.key == pygame.K_F4:
             self.statistics.plot('populations')
         if event.key == pygame.K_F5:
             self.statistics.plot('creatures')
+        if event.key == pygame.K_F6:
+            self.statistics.plot('neuros')
 
     def mouse_events(self, event):
         self.selected = None
@@ -305,8 +310,14 @@ class Simulation():
             creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, color0=Color('white'), color1=Color('skyblue'), color2=Color('blue'), color3=Color('red'))
         else:
             creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, genome=genome)
+            [(an, dn), (al, dl)] = creature.mutations_num
+            self.update_mutation_stats(an, dn, al, dl)
         self.update_creatures_stats(creature.size, creature.speed, creature.food, creature.power, creature.mutations)
+        self.update_neuro_stats(creature.neuro.GetAllNodesNum(), creature.neuro.GetLinksNum())
         return creature
+    def update_neuro_stats(self, node_num: int, link_num: int):
+        self.neuros['nodes'].append(node_num)
+        self.neuros['links'].append(link_num)
 
     def update_creatures_stats(self, size: int, speed: int, food: int, power: int, mutations: int):
         self.creatures['size'].append(size)
@@ -314,6 +325,12 @@ class Simulation():
         self.creatures['food'].append(food)
         self.creatures['power'].append(power)
         self.creatures['mutations'].append(mutations)
+
+    def update_mutation_stats(self, added_nodes: int, deleted_nodes: int, added_links: int, deleted_links: int):
+        self.mutations['added_nodes'].append(added_nodes)
+        self.mutations['deleted_nodes'].append(deleted_nodes)
+        self.mutations['added_links'].append(added_links)
+        self.mutations['deleted_links'].append(deleted_links)
 
     def add_saved_creature(self, genome: dict):
         creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=random_position(cfg.WORLD), genome=genome)
@@ -528,8 +545,16 @@ class Simulation():
                 'mutations': round(mean(self.creatures['mutations']), 2)
             }
             self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
+            self.mutations = {'added_nodes': [], 'deleted_nodes': [], 'added_links': [], 'deleted_links': []}
             self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5]}
             self.statistics.add_data('creatures', last+cfg.STAT_PERIOD, data)
+            data = {}
+            data = {
+                'nodes': round(mean(self.neuros['nodes']), 2),
+                'links': round(mean(self.neuros['links']), 2)
+            }
+            self.statistics.add_data('neuros', last+cfg.STAT_PERIOD, data)
+            self.neuros = {'nodes': [14], 'links': [10]}
         else:
             self.populations['plants'].append(len(self.plant_list))
             self.populations['herbivores'].append(self.herbivores)
@@ -623,7 +648,7 @@ class Simulation():
         set_win_pos(20, 20)
         # self.init(cfg.WORLD)
         self.create_enviro()
-        self.set_icon('res/images/planet32.png')
+        self.set_icon('res/images/planet3-32.png')
         while self.running:
             self.auto_save()
             self.events()
