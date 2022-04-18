@@ -204,7 +204,7 @@ class EnviroWindow(UIWindow):
     def Update(self, data: dict, dT: float):
         self.refresh -= dT
         if self.refresh <= 0:
-            self.refresh = 1
+            self.refresh = 0.1
             data = data
             for key, val in data.items():
                 self.labs[key][0].set_text(f"{key}:")
@@ -478,7 +478,7 @@ class GUI():
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (150, 250)), data=data, dT=dT)
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (170, 290)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
@@ -514,6 +514,8 @@ class GUI():
             data['FITNESS'] = ''
             data["LIFETIME"] = ''
             data["REP_TIME"] = ''
+            data["ADD_NODES"] = ''
+            data["DEL_NODES"] = ''
             data['S'] = ''
             if isinstance(self.owner.enviro.selected, Plant):
                 data['SPECIE'] = 'PLANT'
@@ -534,11 +536,13 @@ class GUI():
         data['POWER'] = str(self.owner.enviro.selected.power)
         data['SPEED'] = str(self.owner.enviro.selected.speed)
         data['SIZE'] = str(self.owner.enviro.selected.size)
-        data['MUTATIONS'] = str(self.owner.enviro.selected.mutations)
+        data['MUTATIONS'] = f"{self.owner.enviro.selected.mutations}"
         data['BORN|KILL'] = str(self.owner.enviro.selected.childs)+'|'+str(self.owner.enviro.selected.kills)
         data['FITNESS'] = str(round(self.owner.enviro.selected.fitness))
         data["LIFETIME"] = str(round(self.owner.enviro.selected.life_time))
         data["REP_TIME"] = str(round(self.owner.enviro.selected.reproduction_time))
+        data["ADD_NODES"] = f"A:{round(self.owner.enviro.selected.neuro.node_add_mod, 6)}"
+        data["DEL_NODES"] = f"D:{round(self.owner.enviro.selected.neuro.node_del_mod, 6)}"
         states = []
         if self.owner.enviro.selected.hidding:
             states.append('[H]')
@@ -733,55 +737,3 @@ class GUI():
             return True
         else:
             return False
-
-class NeuroGUI():
-
-    def __init__(self, owner: object, view: tuple):
-        self.view = view
-        self.owner = owner
-        self.ui_mgr = UIManager(window_resolution=(self.view[0], self.view[1]), theme_path='res/themes/blue.json')
-        #self.ui_mgr.preload_fonts([
-        #    {'name': 'fira_code', 'point_size': 10, 'style': 'bold'},
-        #    {'name': 'fira_code', 'point_size': 10, 'style': 'regular'},
-        #    {'name': 'fira_code', 'point_size': 9, 'style': 'regular'},
-        #    {'name': 'fira_code', 'point_size': 12, 'style': 'regular'},
-        #    {'name': 'fira_code', 'point_size': 14, 'style': 'regular'},
-        #    {'name': 'fira_code', 'point_size': 14, 'style': 'bold'}
-        #])
-        self.btn_names = [('Select Neural Network', '#btn_select_net')]
-        self.rebuild_viewer((self.view[0], self.view[1]))
-        self.buttons = []
-
-    def create_custom_btn(self, rect: Rect, title: str, obj_id: str):
-        btn = UIButton(relative_rect=rect, text=title, manager=self.ui_mgr, object_id=obj_id)
-        return btn
-
-    def rebuild_viewer(self, size: tuple):
-        self.ui_mgr.set_window_resolution(size)
-        self.ui_mgr.clear_and_reset()
-        self.size = size
-        for n, i in self.btn_names:
-            btn_pos =  Rect(40, 40, 40, 40)
-            btn = self.create_custom_btn(rect=btn_pos, title=n, obj_id=i)
-            self.buttons.append(btn)
-
-    def process_event(self, event):
-        self.ui_mgr.process_events(event)
-        if event.type == pygame.USEREVENT:
-            if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                if event.ui_object_id == '#btn_select_net':
-                    self.create_select_net()
-                elif event.ui_object_id == '#win_sel_net.#btn_cancel':
-                    self.select_net.kill()
-                elif event.ui_object_id == '#win_sel_net.#btn_accept':
-                    new_name = self.select_net.edit.get_text()                    
-                    self.select_net.kill()
-                    self.owner.select_net(new_name)
-
-    def create_select_net(self):
-        w = 300
-        h = 100
-        scr_w = self.owner.w
-        scr_h = self.owner.h
-        pos = Rect((scr_w/2-w/2, scr_h/2-h/2), (w, h))
-        self.select_net = SelectNet(manager=self.ui_mgr, rect=pos)

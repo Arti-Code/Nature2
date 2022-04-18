@@ -19,7 +19,7 @@
   },
   {
    "optionDest": "icon_file",
-   "value": "D:/PYTHON/Nature/res/icons/planet03.ico"
+   "value": "D:/PYTHON/Nature/res/icons/planet2-128.ico"
   },
   {
    "optionDest": "name",
@@ -76,10 +76,6 @@
   {
    "optionDest": "datas",
    "value": "D:/PYTHON/Nature/saves;saves/"
-  },
-  {
-   "optionDest": "datas",
-   "value": "D:/PYTHON/Nature/planet32.png;."
   },
   {
    "optionDest": "datas",

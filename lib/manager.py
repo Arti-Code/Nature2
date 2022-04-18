@@ -173,6 +173,7 @@ class Manager:
             project['statistics'] = {}
             project['statistics']['populations'] = self.enviro.statistics.get_collection('populations')
             project['statistics']['creatures'] = self.enviro.statistics.get_collection('creatures')
+            project['statistics']['neuros'] = self.enviro.statistics.get_collection('neuros')
             if self.add_to_save_list(project_name, str(self.enviro.get_time(1))):
                 with open("saves/" + project_name + "/" + str(self.enviro.get_time(1)) + ".json", 'w+') as json_file:
                     json.dump(project, json_file)
@@ -340,15 +341,14 @@ class Manager:
 
             inp_desc = [
                 'ENEMY', 'PLANT', 'MEAT ',
-                'XXXXX', 'YYYYY', 'ENERG', 'INJUR',
+                'ENERG', 'INJUR',
                 'ENE-L', 'ENE-R', 'ENE-D', 
                 'PLA-L', 'PLA-R', 'PLA-D',
                 'MEA-L', 'MEA-R', 'MEA-D'
             ]
             out_desc = [
                 "MOVE ", "LEFT ", "RIGHT", 
-                "EAT  ", "ATACK", 
-                "RUN  ", "HIDED"
+                "EAT  ", "ATACK", "RUN  "
             ]
 
             input_keys = network.GetNodeKeyList([TYPE.INPUT])
