@@ -135,7 +135,7 @@ class Vision(Circle):
         else:
             self.active_color = self.base_color
 
-    def draw(self, screen: Surface, camera: Camera, rel_position: Vector2, selected: bool=False):
+    def draw(self, screen: Surface, camera: Camera, rel_position: Vector2, selected: bool=False, eye_color: Color=Color('skyblue')):
         r = int(self.radius)
         s = self.body.size
         x0 = int(rel_position.x); y0 = int(rel_position.y)
@@ -165,10 +165,10 @@ class Vision(Circle):
                 xt = int(rel_target_pos.x); yt = int(rel_target_pos.y)
                 gfxdraw.line(screen, x0+int(v2[0]), y0+int(v2[1]), xt, yt, Color(0, 0, 255, 150))
                 gfxdraw.line(screen, x0+int(v3[0]), y0+int(v3[1]), xt, yt, Color(0, 0, 255, 150))
-        gfxdraw.aacircle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/9+1), Color('skyblue'))
-        gfxdraw.filled_circle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/9+1), Color('skyblue'))
-        gfxdraw.aacircle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/9+1), Color('skyblue'))
-        gfxdraw.filled_circle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/9+1), Color('skyblue'))
+        gfxdraw.aacircle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/9+1), eye_color)
+        gfxdraw.filled_circle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/9+1), eye_color)
+        gfxdraw.aacircle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/9+1), eye_color)
+        gfxdraw.filled_circle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/9+1), eye_color)
         self.set_detection_color(detection=False)
         self.reset_detection()
         self.reset_range()

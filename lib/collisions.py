@@ -204,15 +204,15 @@ def process_creatures_rock_collisions(arbiter, space, data):
     return False
 
 def process_creatures_collisions_end(arbiter, space, data):
-    arbiter.shapes[0].body.collide_creature = False
+    #arbiter.shapes[0].body.collide_creature = False
     return True
 
 def process_creatures_plant_collisions_end(arbiter, space, data):
-    arbiter.shapes[0].body.collide_plant = False
+    #arbiter.shapes[0].body.collide_plant = False
     return False
 
 def process_creatures_meat_collisions_end(arbiter, space, data):
-    arbiter.shapes[0].body.collide_meat = False
+    #arbiter.shapes[0].body.collide_meat = False
     return False        
 
 def process_creatures_rock_collisions_end(arbiter, space, data):

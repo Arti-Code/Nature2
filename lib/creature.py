@@ -1,4 +1,5 @@
 from copy import copy, deepcopy
+#from nis import match
 from random import random, randint
 from math import log, sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt
 from statistics import mean
@@ -19,6 +20,10 @@ from lib.camera import Camera
 from lib.vision import Vision
 
 class Creature(Life):
+
+    ATTACK_EYES: Color=Color('red')
+    EAT_EYES: Color=Color('yellow')
+    NORMAL_EYES: Color=Color('skyblue')
 
     def __init__(self, screen: Surface, space: Space, time: int, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
         super().__init__(screen=screen, space=space, collision_tag=collision_tag, position=position)
@@ -192,7 +197,12 @@ class Creature(Life):
             gfxdraw.aacircle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
             gfxdraw.filled_circle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
             gfxdraw.filled_circle(screen, int(x3), int(y3), int(r2*0.67), Color('black'))
-        self.vision.draw(screen=screen, camera=camera, rel_position=rel_pos, selected=marked)
+        eyes_color: Color=self.NORMAL_EYES
+        if self.attacking:
+            eyes_color=self.ATTACK_EYES
+        elif self.eating:
+            eyes_color=self.EAT_EYES
+        self.vision.draw(screen=screen, camera=camera, rel_position=rel_pos, selected=marked, eye_color=eyes_color)
         self.color0 = self._color0
         self.draw_energy_bar(screen, rx, ry)
         #self.reset_collisions()
@@ -381,7 +391,7 @@ class Creature(Life):
         input.append(mr)
         input.append(md)
         self.pain = False
-        #self.reset_collisions()
+        self.reset_collisions()
         return input
 
     def analize(self):
@@ -401,7 +411,7 @@ class Creature(Life):
                 self.attacking = True
             else:
                 self.attacking = False
-            if self.output[5] >= 0.7 and not self.on_water:
+            if self.output[0] >= 0.9 and not self.on_water:
                 if not self.running and self.run_time >= int(cfg.RUN_TIME/2):
                     if self.run_ref_time == 0.0:
                         self.run_ref_time = 1.0
