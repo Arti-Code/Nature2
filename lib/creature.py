@@ -381,7 +381,7 @@ class Creature(Life):
         input.append(mr)
         input.append(md)
         self.pain = False
-        #self.reset_collisions()
+        self.reset_collisions()
         return input
 
     def analize(self):
@@ -401,7 +401,7 @@ class Creature(Life):
                 self.attacking = True
             else:
                 self.attacking = False
-            if self.output[5] >= 0.7 and not self.on_water:
+            if self.output[0] >= 0.9 and not self.on_water:
                 if not self.running and self.run_time >= int(cfg.RUN_TIME/2):
                     if self.run_ref_time == 0.0:
                         self.run_ref_time = 1.0
