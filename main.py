@@ -609,7 +609,7 @@ class Simulation():
     def clock_step(self):
         pygame.display.flip()
         self.dt = self.clock.tick(self.FPS)/1000*cfg.TIME
-        time = self.owner.enviro.cycles*6000 + round(self.owner.enviro.time)
+        time = self.cycles*6000 + round(self.time)
         pygame.display.set_caption(
             f"{TITLE}     [TIME: {time}s]     [fps: {round(self.clock.get_fps())}]    [dT: {round(self.dt*1000)}ms]     [herbivores: {self.herbivores}]     [hunters: {self.carnivores}]     [plants: {len(self.plant_list)}]     [neuro: {round(self.neuro_avg_time*1000, 1)}ms]     [physics: {round(self.physics_avg_time*1000, 1)}ms]"
         )
