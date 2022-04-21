@@ -174,6 +174,7 @@ class Manager:
             project['statistics']['populations'] = self.enviro.statistics.get_collection('populations')
             project['statistics']['creatures'] = self.enviro.statistics.get_collection('creatures')
             project['statistics']['neuros'] = self.enviro.statistics.get_collection('neuros')
+            project['statistics']['fitness'] = self.enviro.statistics.get_collection('fitness')
             if self.add_to_save_list(project_name, str(self.enviro.get_time(1))):
                 with open("saves/" + project_name + "/" + str(self.enviro.get_time(1)) + ".json", 'w+') as json_file:
                     json.dump(project, json_file)

@@ -51,9 +51,10 @@ class Simulation():
         self.draw_debug: bool=False
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.statistics = Statistics()
-        self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
+        self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores', 'all'])
         self.statistics.add_collection('creatures', ['size', 'speed', 'food', 'power', 'mutations'])
         self.statistics.add_collection('neuros', ['nodes', 'links'])
+        self.statistics.add_collection('fitness', ['points', 'lifetime'])
         self.create_terrain('res/images/map2.png', 'res/images/map2.png')
 
     def init_vars(self):
@@ -92,6 +93,7 @@ class Simulation():
         self.mutations = {'added_nodes': [0], 'deleted_nodes': [0], 'added_links': [0], 'deleted_links': [0]}
         self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5]}
         self.neuros = {'nodes': [], 'links': []}
+        self.fitness = {'points': [], 'lifetime': []}
         self.map_time = 0.0
         self.terrain = image.load('res/images/map2.png').convert()
         self.h2c = 1
@@ -162,7 +164,7 @@ class Simulation():
         self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
         self.map_time = 0.0
         self.statistics = Statistics()
-        self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores'])
+        self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores', 'all creatures'])
 
     def add_to_ranking(self, creature: Creature):
         #if creature.food >= 6:
@@ -236,7 +238,7 @@ class Simulation():
             self.draw_debug = not self.draw_debug
         if event.key == pygame.K_F3:
             self.show_specie_name = not self.show_specie_name
-        if event.key == pygame.K_F7:
+        if event.key == pygame.K_F8:
             self.show_dist_and_ang = not self.show_dist_and_ang
         if event.key == pygame.K_F4:
             self.statistics.plot('populations')
@@ -244,6 +246,8 @@ class Simulation():
             self.statistics.plot('creatures')
         if event.key == pygame.K_F6:
             self.statistics.plot('neuros')
+        if event.key == pygame.K_F7:
+            self.statistics.plot('fitness')
 
     def mouse_events(self, event):
         self.selected = None
@@ -460,6 +464,8 @@ class Simulation():
         for creature in self.creature_list:
             if creature.energy <= 0:
                 creature.life2fit()
+                self.fitness['points'].append(creature.fitness)
+                self.fitness['lifetime'].append(creature.life_time)
                 self.add_to_ranking(creature)
                 if not creature.on_water:
                     meat = Meat(screen=self.screen, space=self.space, position=creature.position, collision_tag=10, energy=creature.max_energy)
@@ -530,10 +536,14 @@ class Simulation():
         last = self.statistics.get_last_time('populations')
         t = int(self.get_time())
         if t >= int(last+cfg.STAT_PERIOD):
+            p = round(mean(self.populations['plants']))
+            h = round(mean(self.populations['herbivores']))
+            c = round(mean(self.populations['carnivores']))
             data = {
-                'plants': round(mean(self.populations['plants'])), 
-                'herbivores': round(mean(self.populations['herbivores'])), 
-                'carnivores': round(mean(self.populations['carnivores']))
+                'plants': p, 
+                'herbivores': h, 
+                'carnivores': c,
+                'all': h+c
             }
             self.statistics.add_data('populations', last+cfg.STAT_PERIOD, data)
             data = {}
@@ -544,7 +554,7 @@ class Simulation():
                 'food': round(mean(self.creatures['food']), 2),
                 'mutations': round(mean(self.creatures['mutations']), 2)
             }
-            self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
+            self.populations = {'plants': [], 'herbivores': [], 'carnivores': [], 'all': []}
             self.mutations = {'added_nodes': [], 'deleted_nodes': [], 'added_links': [], 'deleted_links': []}
             self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5]}
             self.statistics.add_data('creatures', last+cfg.STAT_PERIOD, data)
@@ -555,6 +565,17 @@ class Simulation():
             }
             self.statistics.add_data('neuros', last+cfg.STAT_PERIOD, data)
             self.neuros = {'nodes': [14], 'links': [10]}
+            data = {}
+            if len(self.fitness['points']) == 0:
+                self.fitness['points'].append(0)
+            if len(self.fitness['lifetime']) == 0:
+                self.fitness['lifetime'].append(0)
+            data = {
+                'points': round(mean(self.fitness['points']), 2),
+                'lifetime': round(mean(self.fitness['lifetime']), 2)
+            }
+            self.statistics.add_data('fitness', last+cfg.STAT_PERIOD, data)
+            self.fitness = {'points': [], 'lifetime': []}
         else:
             self.populations['plants'].append(len(self.plant_list))
             self.populations['herbivores'].append(self.herbivores)
