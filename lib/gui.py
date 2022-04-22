@@ -416,7 +416,7 @@ class GUI():
         new_name = self.new_sim.edit.get_text()
         self.owner.enviro.project_name = new_name
         self.new_project_name(new_name)
-        cfg.load_from_file('saves/' + new_name + '/config.json')
+        cfg.load_from_file2('saves/' + new_name + '/config.json')
         self.create_title(cfg.SCREEN)
         self.owner.enviro.create_enviro()
         self.create_info_win(text='Project created with name: ' + new_name, title=new_name)
@@ -702,7 +702,7 @@ class GUI():
 
     def reload_config(self):
         self.set_win.kill()
-        cfg.load_from_file('saves/' + self.owner.enviro.project_name + '/config.json')
+        cfg.load_from_file2('saves/' + self.owner.enviro.project_name + '/config.json')
 
     def update(self, dT: float, ranking1: list, ranking2: list):
         data: dict = {}

@@ -70,12 +70,21 @@ class Configuration():
         self.H2C = None
         self.V2M = 1
         self.NEURON_MOD = None
-        self.load_from_file(filename)
+        self.NET_BASE = None
+        self.load_from_file2(filename)
 
     def update_h2c(self, h2c: float):
         #self.MEAT2ENG = h2c
         #self.VEGE2ENG = 1/h2c
         self.V2M = self.H2C * h2c
+
+    def load_from_file2(self, filename: str):
+        f = open(filename, 'r')
+        json_cfg = f.read()
+        f.close()
+        cfg = loads(json_cfg)
+        for param in cfg:
+            self.__setattr__(param, cfg[param])
 
     def load_from_file(self, filename: str):
         f = open(filename, 'r')
@@ -143,5 +152,6 @@ class Configuration():
         self.WATER_COST             = cfg['WATER_COST']
         self.H2C                    = cfg['H2C']
         self.NEURON_MOD             = cfg['NEURON_MOD']
+        self.NET_BASE               = cfg['NET_BASE']
 
 cfg = Configuration('config.json')

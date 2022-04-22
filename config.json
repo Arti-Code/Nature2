@@ -19,7 +19,7 @@
   "CREATURE_MIN_SIZE": 4,
   "CREATURE_MAX_SIZE": 12,
 
-  "EAT": 20,
+  "EAT": 25,
   "HIT": 300,
   "SPEED": 2,
   "TURN": 1,
@@ -28,10 +28,10 @@
   "SENSOR_RANGE": 350,
   "POWER_COST": 0.0004,
   "MUTATIONS": 1,
-  "LINKS_RATE": 0.12,
+  "LINKS_RATE": 0.2,
   
-  "BASE_ENERGY": 0.005,
-  "MOVE_ENERGY": 0.0000009,
+  "BASE_ENERGY": 0.0025,
+  "MOVE_ENERGY": 0.0000004,
   "SIZE2ENG": 200,
   "SIZE_COST": 300,
   "ATK_ENG": 0.06,
@@ -46,7 +46,7 @@
   "CHILDS_NUM": 1,
   "MEM_TIME": 0.5,
   "MEAT_TIME": 180,
-  "DIET_MOD": 0.003,
+  "DIET_MOD": 0.0035,
   
   "DIFF": 0.4,
   "H2C": 1,
@@ -62,13 +62,14 @@
   "RANK_SIZE": 20,
   "RANK_DECAY": 0.5,
   "AUTO_SAVE_TIME": 100,
-  "STAT_PERIOD": 10,
+  "STAT_PERIOD": 50,
   "TIME": 1,
   
   "ROCK_NUM": 0,
   "WATER_COST": 0.01,
   "WATER_MOVE": 0.1,
   "NEURON_MOD": 50,
+  "NET_BASE": 375,
   
   "NET": [14, 0, 0, 0, 0, 0, 0, 0, 5]
 }

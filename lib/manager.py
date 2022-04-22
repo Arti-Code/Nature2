@@ -265,7 +265,7 @@ class Manager:
         self.load_project(project_name, save_name)
 
     def load_project(self, project_name: str, save_num):
-        cfg.load_from_file("saves/" + project_name + "/config.json")
+        cfg.load_from_file2("saves/" + project_name + "/config.json")
         f = open("saves/" + project_name + "/" + str(save_num) + ".json", "r")
         json_list = f.read()
         obj_list = json.loads(json_list)
@@ -366,7 +366,7 @@ class Manager:
                 dists[layer] = dist_nn
                 n = 0
                 desc_idx = 0
-                base_line.append(round((375 + max_nodes_num * v_space)/2))
+                base_line.append(round((cfg.NET_BASE + max_nodes_num * v_space)/2))
                 for node_key in network.layers[layer].nodes:
                     node = network.nodes[node_key]
                     if node.recombined:
