@@ -77,7 +77,7 @@ class LoadWindow(UIWindow):
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
-            btn = UIButton(Rect((50, (btn_s*(i)+btn_h*(i-1))), (btn_w, btn_h)), text=txt, manager=self.manager, container=self, parent_element=self, object_id=ident)
+            btn = UIButton(Rect((50, (btn_s*(i)+btn_h*(i-1))+btn_h), (btn_w, btn_h)), text=txt, manager=self.manager, container=self, parent_element=self, object_id=ident)
             buttons.append(btn)
             i += 1
 
@@ -95,11 +95,11 @@ class LoadSimWindow(UIWindow):
         buttons = []
         i = 1
         for sim in simulations:
-            btn = UIButton(Rect((60, (btn_s+btn_h)*i), (btn_w, btn_h)), text=sim, manager=self.manager, container=self, parent_element=self, object_id='#btn_load_sim')
-            del_btn = DelBtn(Rect((220, (btn_s+btn_h)*i), (btn_h, btn_h)), 'X', manager=manager, container=self, parent_element=self, object_id='#btn_del_'+sim, sim_to_kill=sim)
+            btn = UIButton(Rect((40, (btn_s+btn_h)*i), (btn_w, btn_h)), text=sim, manager=self.manager, container=self, parent_element=self, object_id='#btn_load_sim')
+            del_btn = DelBtn(Rect((200, (btn_s+btn_h)*i), (btn_h, btn_h)), 'X', manager=manager, container=self, parent_element=self, object_id='#btn_del', sim_to_kill=sim)
             buttons.append((btn, del_btn))
             i += 1
-        btn = UIButton(Rect((75, (btn_s+btn_h)*i), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#load_back')
+        btn = UIButton(Rect((40, (btn_s+btn_h)*i), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#btn_load_sim_back')
 
 
 class LoadCreatureWindow(UIWindow):
@@ -435,13 +435,13 @@ class GUI():
         self.create_info_win(text='Project created with name: ' + new_name, title=new_name)
 
     def create_load_menu(self):
-        w = 300
-        h = 400
-        pos = Rect((self.cx-w/2, self.cy-h+100), (w, h+200))
+        w = 250
+        h = 200
+        pos = Rect((self.cx-w/2, self.cy-h+100), (w, h))
         self.load_menu = LoadWindow(manager=self.ui_mgr, rect=pos)
 
     def create_load_sim_menu(self):
-        w = 300
+        w = 250
         #h = 400
         simulations = self.get_all_simulations()
         sim_num = len(simulations)
@@ -684,9 +684,9 @@ class GUI():
                     self.create_load_sim_menu()
                 elif isinstance(event.ui_element, DelBtn):
                     self.delete_project(event.ui_element.sim_to_kill)
-                    self.load_menu.kill()
+                    self.load_sim_menu.kill()
                     self.create_load_sim_menu()
-                elif event.ui_object_id[0: 15] == '#load_sim_win.#btn_':
+                elif event.ui_object_id[0: 27] == '#load_sim_win.#btn_load_sim':
                     project_name = event.ui_element.text
                     self.owner.enviro.project_name = project_name
                     self.owner.load_last(project_name)
@@ -694,7 +694,7 @@ class GUI():
                     self.kill_title()
                     self.create_title(cfg.SCREEN) 
                     self.create_info_win(text=f"Project {project_name.upper()} has been loaded", title='Load Simulation')
-                elif event.ui_object_id == '#load_sim_win.#load_back':
+                elif event.ui_object_id == '#load_sim_win.#btn_load_back':
                     self.load_sim_menu.kill()
                     self.create_load_menu()
 
