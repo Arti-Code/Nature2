@@ -2,7 +2,7 @@ from math import pi as PI
 from json import loads, dumps
 
 TITLE = "NATURE"
-SUBTITLE = "v0.8.2" 
+SUBTITLE = "v0.8.53" 
 AUTHOR = "2019-2022 Artur Gwoździowski"
 
 class Configuration():
@@ -69,12 +69,22 @@ class Configuration():
         self.WATER_COST = None
         self.H2C = None
         self.V2M = 1
-        self.load_from_file(filename)
+        self.NEURON_MOD = None
+        self.NET_BASE = None
+        self.load_from_file2(filename)
 
     def update_h2c(self, h2c: float):
         #self.MEAT2ENG = h2c
         #self.VEGE2ENG = 1/h2c
         self.V2M = self.H2C * h2c
+
+    def load_from_file2(self, filename: str):
+        f = open(filename, 'r')
+        json_cfg = f.read()
+        f.close()
+        cfg = loads(json_cfg)
+        for param in cfg:
+            self.__setattr__(param, cfg[param])
 
     def load_from_file(self, filename: str):
         f = open(filename, 'r')
@@ -141,5 +151,7 @@ class Configuration():
         self.WATER_MOVE             = cfg['WATER_MOVE']
         self.WATER_COST             = cfg['WATER_COST']
         self.H2C                    = cfg['H2C']
+        self.NEURON_MOD             = cfg['NEURON_MOD']
+        self.NET_BASE               = cfg['NET_BASE']
 
 cfg = Configuration('config.json')

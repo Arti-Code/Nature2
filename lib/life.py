@@ -47,6 +47,22 @@ class Life(Body):
             self.selection_time = self.selection_time%(PI)
         else:
             self.selection_time = 0
+        self.check_edges()
+
+    def check_edges(self):
+        y = self.position.y; x = self.position.x;
+        if self.position.x <= 0:
+            x = 2
+            self.position = Vec2d(x, y)
+        elif self.position.x >= cfg.WORLD[0]:
+            x = cfg.WORLD[0]-2
+            self.position = Vec2d(x, y)
+        if self.position.y <= 0:
+            y = 2
+            self.position = Vec2d(x, y)
+        elif self.position.y >= cfg.WORLD[1]:
+            y = cfg.WORLD[1]-2
+            self.position = Vec2d(x, y)
 
     def get_tile_coord(self) -> tuple:
         x = self.position.x; y = flipy(self.position.y)

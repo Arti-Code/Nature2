@@ -31,6 +31,15 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
     creature_rock_collisions.pre_solve = process_creatures_rock_collisions
     creature_rock_collisions.data['dt'] = dt
 
+    creature_collisions_end = space.add_collision_handler(2, 2)
+    creature_collisions_end.separate = process_creatures_collisions_end
+
+    creature_plant_collisions_end = space.add_collision_handler(2, 6)
+    creature_plant_collisions_end.separate = process_creatures_plant_collisions_end
+
+    creature_meat_collisions_end = space.add_collision_handler(2, 10)
+    creature_meat_collisions_end.separate = process_creatures_meat_collisions_end
+
     creatures_rock_collisions_end = space.add_collision_handler(2, 8)
     creatures_rock_collisions_end.separate = process_creatures_rock_collisions_end
 
@@ -57,11 +66,14 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
     #creature_detection.pre_solve = detect_creature
 
     #creature_detection_end = space.add_collision_handler(4, 2)
-    #creature_detection_end.separate = detect_creature_end
+    #creature_detection_end.separate = process_agents_seeing_end
 
     plant_detection = space.add_collision_handler(4, 6)
-    plant_detection.pre_solve = process_plant_seeing
+    plant_detection.pre_solve = process_plants_seeing
     #plant_detection.pre_solve = detect_plant
+
+    #plant_detection_end = space.add_collision_handler(4, 6)
+    #plant_detection_end.separate = process_plants_seeing_end
 
     #plant_detection_end = space.add_collision_handler(4, 6)
     #plant_detection_end.separate = detect_plant_end
@@ -83,7 +95,12 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
     #water_detection_end = space.add_collision_handler(4, 14)
     #water_detection_end.separate = detect_water_end
     meat_detection = space.add_collision_handler(4, 10)
-    meat_detection.pre_solve = process_meat_seeing
+    meat_detection.pre_solve = process_meats_seeing
+
+    #meat_detection_end = space.add_collision_handler(4, 10)
+    #meat_detection_end.separate = process_meats_seeing_end
+
+
 
 def process_creature_plant_collisions(arbiter, space, data):
     dt = data['dt']
@@ -117,7 +134,7 @@ def process_creature_plant_collisions(arbiter, space, data):
             hunter.eat(plant_value)
             hunter.fitness += plant_value*cfg.VEGE2FIT/size0
     hunter.collide_plant = True
-    return False
+    return True
 
 def process_creature_meat_collisions(arbiter, space, data):
     dt = data['dt']
@@ -151,7 +168,7 @@ def process_creature_meat_collisions(arbiter, space, data):
             hunter.eat(meat_value)
             hunter.fitness += meat_value*cfg.MEAT2FIT/size0
     hunter.collide_meat = True
-    return False
+    return True
 
 def process_creature_water_collisions(arbiter, space, data):
     agent = arbiter.shapes[0].body.on_water = True
@@ -179,12 +196,24 @@ def process_creatures_collisions(arbiter, space, data):
                 else:
                     agent.fitness += dmg*cfg.HIT2FIT
     agent.collide_creature = True
-    return False
+    return True
 
 def process_creatures_rock_collisions(arbiter, space, data):
     arbiter.shapes[0].body.position -= arbiter.normal * 2.5
     arbiter.shapes[0].body.collide_something = True
     return False
+
+def process_creatures_collisions_end(arbiter, space, data):
+    #arbiter.shapes[0].body.collide_creature = False
+    return True
+
+def process_creatures_plant_collisions_end(arbiter, space, data):
+    #arbiter.shapes[0].body.collide_plant = False
+    return False
+
+def process_creatures_meat_collisions_end(arbiter, space, data):
+    #arbiter.shapes[0].body.collide_meat = False
+    return False        
 
 def process_creatures_rock_collisions_end(arbiter, space, data):
     arbiter.shapes[0].body.collide_something = False
@@ -290,7 +319,10 @@ def process_agents_seeing(arbiter, space, data):
     agent1.vision.add_detection(angle=angle, dist=int(dist), target=agent2, type='creature', close_object=close_object)
     return False
 
-def process_plant_seeing(arbiter, space, data):
+def process_agents_seeing_end(arbiter, space, data):
+    return False
+
+def process_plants_seeing(arbiter, space, data):
     agent1 = arbiter.shapes[0].body
     agent2 = arbiter.shapes[1].body
     #agent1.vision.set_detection_color(detection=True)
@@ -307,7 +339,10 @@ def process_plant_seeing(arbiter, space, data):
     agent1.vision.add_detection(angle=angle, dist=int(dist), target=agent2, type='plant', close_object=close_object)
     return False
 
-def process_meat_seeing(arbiter, space, data):
+def process_plants_seeing_end(arbiter, space, data):
+    return False
+
+def process_meats_seeing(arbiter, space, data):
     agent1 = arbiter.shapes[0].body
     agent2 = arbiter.shapes[1].body
     #agent1.vision.set_detection_color(detection=True)
@@ -322,6 +357,9 @@ def process_meat_seeing(arbiter, space, data):
     n = v.normalized()
     angle = f.get_angle_between(n)
     agent1.vision.add_detection(angle=angle, dist=int(dist), target=agent2, type='meat', close_object=close_object)
+    return False
+
+def process_meats_seeing_end(arbiter, space, data):
     return False
 
 def detect_plant_end(arbiter, space, data):
