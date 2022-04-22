@@ -201,7 +201,7 @@ class Manager:
         cr['neuro'] = creature.neuro.ToJSON()
         cr['signature'] = deepcopy(creature.signature)
         cr['genealogy'] = deepcopy(creature.genealogy)
-        with open("saves/creatures/" + name + ".json", 'w+') as creature_file:
+        with open("saves/creatures/creature.json", 'w+') as creature_file:
             json.dump(cr, creature_file)
         creature_file.close()
         return True
@@ -254,6 +254,16 @@ class Manager:
             return True
         else:
             return False
+
+    def load_creature(self, name: str="creature"):
+        f = open("saves/creatures/" + name + ".json", "r")
+        json_cr = f.read()
+        obj_cr = json.loads(json_cr)
+        #genome['neuro'] = json.loads(genome['neuro'])
+        neuro = Network()
+        neuro.FromJSON(obj_cr['neuro'])
+        obj_cr['neuro'] = neuro
+        self.enviro.add_saved_creature(obj_cr)
 
     def load_last_state(self, project_name: str):
         f = open("saves/" + project_name + "/saves.json", "r")

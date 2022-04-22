@@ -369,7 +369,7 @@ class GUI():
         self.size = new_size
         self.create_title(new_size)
         #self.create_enviro_win()
-        btn_pos = Rect((round(cfg.SCREEN[0]-50), 10), (40, 40))
+        btn_pos = Rect((round(cfg.SCREEN[0]-60), 10), (55, 55))
         self.create_menu_btn(btn_pos)
         #self.create_title(new_size)
 
@@ -389,6 +389,9 @@ class GUI():
     def create_custom_btn(self, rect: Rect, title: str, obj_id: str):
         btn = UIButton(relative_rect=rect, text=title, manager=self.ui_mgr, object_id=obj_id)
         return btn
+
+    def load_creature(self):
+        self.owner.load_creature()
 
     def create_main_menu(self):
         w = 250
@@ -682,10 +685,16 @@ class GUI():
                 elif event.ui_object_id == '#load_win.#btn_load_sim':
                     self.load_menu.kill()
                     self.create_load_sim_menu()
+                elif event.ui_object_id == '#load_win.#btn_load_creature':
+                    self.load_menu.kill()
+                    self.load_creature()
                 elif isinstance(event.ui_element, DelBtn):
                     self.delete_project(event.ui_element.sim_to_kill)
                     self.load_sim_menu.kill()
                     self.create_load_sim_menu()
+                elif event.ui_object_id == '#load_sim_win.#btn_load_sim_back':
+                    self.load_sim_menu.kill()
+                    self.create_load_menu()
                 elif event.ui_object_id[0: 27] == '#load_sim_win.#btn_load_sim':
                     project_name = event.ui_element.text
                     self.owner.enviro.project_name = project_name
@@ -694,10 +703,6 @@ class GUI():
                     self.kill_title()
                     self.create_title(cfg.SCREEN) 
                     self.create_info_win(text=f"Project {project_name.upper()} has been loaded", title='Load Simulation')
-                elif event.ui_object_id == '#load_sim_win.#btn_load_back':
-                    self.load_sim_menu.kill()
-                    self.create_load_menu()
-
                 #   >>> INFO MENU <<<
                 elif event.ui_object_id == '#info_win.#btn_info':
                     self.info_win.kill()

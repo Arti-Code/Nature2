@@ -400,6 +400,23 @@
            "normal_bg":"#ec0404f7",
            "hovered_bg":"#fdfda0f7",
            "normal_border": "#ecfa1e"
+        },
+        "font":
+        {
+           "name": "fira_code",
+           "size": "8",
+           "bold": "1",
+           "italic": "0"
+        }
+    },
+    "#load_win.#btn_load_back":
+    {
+        "colours":
+        {
+           "normal_text":"#ffffff",
+           "normal_bg":"#ec9304f7",
+           "hovered_bg":"#fdfda0f7",
+           "normal_border": "#fa1e1e"
         }
     }
  }
