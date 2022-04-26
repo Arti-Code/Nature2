@@ -1,5 +1,5 @@
 import os
-from os import listdir
+from os import listdir, scandir
 import sys
 import json
 from shutil import copyfile
@@ -104,10 +104,10 @@ class LoadSimWindow(UIWindow):
 
 class LoadCreatureWindow(UIWindow):
 
-    def __init__(self, manager: UIManager, rect: Rect):
+    def __init__(self, manager: UIManager, rect: Rect, creature_names: list):
         super().__init__(rect, manager=manager, window_display_title='Load Creature', object_id="#load_creature_win", visible=True)
         self.manager = manager
-        creatures = self.GetAllCreatures()
+        creatures = self.read_creature_list(creature_names=creature_names)
         buttons = []
         i = 1
         for c in creatures:
@@ -117,15 +117,14 @@ class LoadCreatureWindow(UIWindow):
             i += 1
         btn = UIButton(Rect((75, (btn_s+btn_h)*i), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#load_creature_back')
 
-    def GetAllCreatures(self) -> list:
-        creature_files = listdir("saves/creatures")
+    def read_creature_list(self, creature_names: list) -> list:
         creatures = []
-        for f_name in creature_files:
+        for f_name in creature_names:
             f = open("saves/creatures/"+f_name, "r")
             json_creature = f.read()
             f.close()
             creature = json.loads(json_creature)
-            creatures.append((creature['name'], "[G:" + creature['gen'] + "]", "[P:" + creature['power'] + "]", "[F:" + creature['food'] + "]"))
+            creatures.append((creature['name'], creature['gen'], creature['power'], creature['food']))
         return creatures
 
 class RankWindow(UIWindow):
@@ -373,7 +372,27 @@ class GUI():
         self.create_menu_btn(btn_pos)
         #self.create_title(new_size)
 
+    def get_saved_creatures(self) -> list:
+        creatures = []
+        crs = scandir("saves/creatures")
+        for c in crs:
+            if c.is_file():
+                creatures.append(c.name)
+        crs.close()
+        return creatures
+
     def get_all_simulations(self) -> list:
+        projects = []
+        dirs = scandir("saves")
+        for d in dirs:
+            if d.is_dir():
+                if d.name == "creatures":
+                    continue
+                projects.append(d.name)
+        dirs.close()
+        return projects
+
+    def get_all_simulations2(self) -> list:
         projects = []
         f = open("saves/projects.json", "r")
         json_sim = f.read()
@@ -451,6 +470,14 @@ class GUI():
         h = 75 + (25 * sim_num)
         pos = Rect((self.cx-w/2, self.cy-h+100), (w, h+200))
         self.load_sim_menu = LoadSimWindow(manager=self.ui_mgr, rect=pos, simulations=simulations)
+
+    def create_load_creature_win(self):
+        w = 250
+        creatures = self.get_saved_creatures()
+        cr_num = len(creatures)
+        h = 75 + (25 * cr_num)
+        pos = Rect((self.cx-w/2, self.cy-h+100), (w, h+200))
+        self.load_creature_win = LoadCreatureWindow(manager=self.ui_mgr, rect=pos, creature_names=creatures)
 
     def create_info_win(self, text: str, title: str):
         w = 300
@@ -687,7 +714,7 @@ class GUI():
                     self.create_load_sim_menu()
                 elif event.ui_object_id == '#load_win.#btn_load_creature':
                     self.load_menu.kill()
-                    self.load_creature()
+                    self.create_load_creature_win()
                 elif isinstance(event.ui_element, DelBtn):
                     self.delete_project(event.ui_element.sim_to_kill)
                     self.load_sim_menu.kill()
