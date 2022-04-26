@@ -87,6 +87,11 @@ class DelBtn(UIButton):
         super().__init__(rect, text, manager, container, parent_element=parent_element, object_id=object_id)
         self.sim_to_kill = sim_to_kill
 
+class LoadBtn(UIButton):
+
+    def __init__(self, rect: Rect, text: str, manager: UIManager, container, parent_element, object_id: str, obj_to_load: str):
+        super().__init__(rect, text, manager, container, parent_element=parent_element, object_id=object_id)
+        self.obj_to_load = obj_to_load
 class LoadSimWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, simulations: list):
@@ -101,7 +106,6 @@ class LoadSimWindow(UIWindow):
             i += 1
         btn = UIButton(Rect((40, (btn_s+btn_h)*i), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#btn_load_sim_back')
 
-
 class LoadCreatureWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, creature_names: list):
@@ -111,9 +115,10 @@ class LoadCreatureWindow(UIWindow):
         buttons = []
         i = 1
         for c in creatures:
-            btn = UIButton(Rect((60, (btn_s+btn_h)*i), (btn_w*2, btn_h)), text=f"{c[0]} [G:{c[1]}] [P:{c[2]} [F:{c[3]}]", manager=self.manager, container=self, parent_element=self, object_id='#btn_load_creature_' + c[0])
-            #del_btn = DelBtn(Rect((220, (btn_s+btn_h)*i), (btn_h, btn_h)), 'X', manager=manager, container=self, parent_element=self, object_id='#btn_del_'+c, c_to_kill=c)
-            buttons.append(btn)
+            text = f"{c[0]} [G:{c[1]}] [P:{c[2]} [F:{c[3]}]"
+            lab = UILabel(Rect((10, (btn_s+btn_h)*i), (btn_w, btn_h)), text=text, manager=self.manager, container=self, parent_element=self, object_id='lab_creature_to_load_'+str(i))
+            btn = LoadBtn(Rect((180, (btn_s+btn_h)*i), (60, btn_h)), text="==>", manager=self.manager, container=self, parent_element=self, object_id='#btn_load_creature_'+str(i), obj_to_load=c[0])
+            buttons.append((lab, btn))
             i += 1
         btn = UIButton(Rect((75, (btn_s+btn_h)*i), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#load_creature_back')
 
@@ -155,19 +160,7 @@ class RankWindow(UIWindow):
             self.labels[i][3].set_text('P:' + str(ranking1[i]['power']))
             self.labels[i][4].set_text('E:' + str(ranking1[i]['food']))
             self.labels[i][5].set_text('F:' + str(round(ranking1[i]['fitness'])))
-        #rank_count2 = len(ranking2)
-        #for i in range(rank_count2):
-        #    j = i + rank_count1
-        #    self.labels[j][0].set_text(str(i)+'.')
-        #    self.labels[j][1].set_text(ranking2[i]['name'])
-        #    self.labels[j][2].set_text('G ' + str(ranking2[i]['gen']))
-        #    self.labels[j][3].set_text('P ' + str(ranking2[i]['power']))
-        #    self.labels[j][4].set_text('E ' + str(ranking2[i]['food']))
-        #    self.labels[j][5].set_text('F ' + str(round(ranking2[i]['fitness'])))
-
-            #text = str(i) + '. ' + ranking[i]['name'] + ' \t GEN: ' + str(ranking[i]['gen']) + ' \t POW: ' + str(ranking[i]['power']) + ' \t MEAT|VEGE: ' + str(ranking[i]['meat']) + '|' + str(ranking[i]['vege']) + ' \t FIT: ' + str(round(ranking[i]['fitness']))
-            #lab.set_text(text)
-
+        
 class InfoWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, text: str, title: str=''):
@@ -409,8 +402,8 @@ class GUI():
         btn = UIButton(relative_rect=rect, text=title, manager=self.ui_mgr, object_id=obj_id)
         return btn
 
-    def load_creature(self):
-        self.owner.load_creature()
+    def load_creature(self, creature_name: str):
+        self.owner.load_creature(name=creature_name)
 
     def create_main_menu(self):
         w = 250
@@ -756,6 +749,11 @@ class GUI():
                     self.enviro_win.kill()
                 elif event.ui_object_id == '#credits_win.#btn_credits_close':
                     self.credits_win.kill()
+                #   >>> LOAD CREATURE WINDOW <<<
+                elif event.ui_object_id[0: 38] == '#load_creature_win.#btn_load_creature_':
+                    creature_name = event.ui_element.obj_to_load
+                    self.load_creature_win.kill()
+                    self.load_creature(creature_name=creature_name)
             return True
         else:
             return False

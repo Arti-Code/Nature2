@@ -175,8 +175,8 @@ class Manager:
             project['statistics']['creatures'] = self.enviro.statistics.get_collection('creatures')
             project['statistics']['neuros'] = self.enviro.statistics.get_collection('neuros')
             project['statistics']['fitness'] = self.enviro.statistics.get_collection('fitness')
-            if self.add_to_save_list(project_name, str(self.enviro.get_time(1))):
-                with open("saves/" + project_name + "/" + str(self.enviro.get_time(1)) + ".json", 'w+') as json_file:
+            if self.add_to_save_list(project_name, str(round(self.enviro.get_time(0)))):
+                with open("saves/" + project_name + "/" + str(round(self.enviro.get_time(0))) + ".json", 'w+') as json_file:
                     json.dump(project, json_file)
                 if not json_file.closed:
                     json_file.close()
@@ -184,8 +184,6 @@ class Manager:
     def save_creature(self, creature: Creature) -> bool:
         if self.enviro.project_name == None:
             return False
-        project = self.enviro.project_name
-        name = creature.name
         cr = {}
         cr['name'] = creature.name
         cr['gen'] = creature.generation
@@ -201,7 +199,7 @@ class Manager:
         cr['neuro'] = creature.neuro.ToJSON()
         cr['signature'] = deepcopy(creature.signature)
         cr['genealogy'] = deepcopy(creature.genealogy)
-        with open("saves/creatures/creature.json", 'w+') as creature_file:
+        with open("saves/creatures/"+creature.name+".json", 'w+') as creature_file:
             json.dump(cr, creature_file)
         creature_file.close()
         return True
@@ -258,6 +256,7 @@ class Manager:
     def load_creature(self, name: str="creature"):
         f = open("saves/creatures/" + name + ".json", "r")
         json_cr = f.read()
+        f.close()
         obj_cr = json.loads(json_cr)
         #genome['neuro'] = json.loads(genome['neuro'])
         neuro = Network()
@@ -274,9 +273,9 @@ class Manager:
         save_name = saves["saves"][total_num - 1]
         self.load_project(project_name, save_name)
 
-    def load_project(self, project_name: str, save_num):
+    def load_project(self, project_name: str, save_name: str):
         cfg.load_from_file2("saves/" + project_name + "/config.json")
-        f = open("saves/" + project_name + "/" + str(save_num) + ".json", "r")
+        f = open("saves/" + project_name + "/" + save_name + ".json", "r")
         json_list = f.read()
         obj_list = json.loads(json_list)
         #self.enviro.creature_list.clear()
@@ -316,13 +315,21 @@ class Manager:
         #log_to_file(project_name+' loaded', 'log.txt')
 
     def load_last(self, project_name: str):
-        f = open("saves/" + project_name + "/saves.json", "r")
-        save_list = f.read()
-        f.close()
-        saves = json.loads(save_list)
-        total_num = len(saves["saves"])
-        save_name = saves["saves"][total_num - 1]
-        self.load_project(project_name, save_name)
+        path = f"saves/{project_name}"
+        saves_iter = os.scandir(path)
+        saves = []
+        for s in saves_iter:
+            if s.is_file() and s.name != "config.json":
+                try:
+                    save_name = int(s.name.split('.', 1)[0])
+                    saves.append(save_name)
+                except:
+                    continue
+        if len(saves) == 0:
+            return
+        last_save = str(max(saves))
+        saves_iter.close()
+        self.load_project(project_name, last_save)
 
     def delete_project(self, sim_name: str) -> bool:
         if self.delete_from_projects_list(sim_name):
