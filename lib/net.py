@@ -467,7 +467,9 @@ class Network():
         links_to_kill = []
         hidden_list = []
         added = 0; deleted = 0
-
+        mutate_rate = round(mutate_rate * cfg.MUTATIONS_RATE)
+        if mutate_rate < 0:
+            mutate_rate = 0
         hidden_list = self.GetLayerKeyList([TYPE.HIDDEN])
         input_nodes = self.GetNodeKeyList([TYPE.INPUT])
         output_nodes = self.GetNodeKeyList([TYPE.OUTPUT])

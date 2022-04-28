@@ -1,5 +1,5 @@
 import os
-from os import listdir
+from os import listdir, scandir
 import sys
 import json
 from shutil import copyfile
@@ -87,6 +87,11 @@ class DelBtn(UIButton):
         super().__init__(rect, text, manager, container, parent_element=parent_element, object_id=object_id)
         self.sim_to_kill = sim_to_kill
 
+class LoadBtn(UIButton):
+
+    def __init__(self, rect: Rect, text: str, manager: UIManager, container, parent_element, object_id: str, obj_to_load: str):
+        super().__init__(rect, text, manager, container, parent_element=parent_element, object_id=object_id)
+        self.obj_to_load = obj_to_load
 class LoadSimWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, simulations: list):
@@ -101,31 +106,30 @@ class LoadSimWindow(UIWindow):
             i += 1
         btn = UIButton(Rect((40, (btn_s+btn_h)*i), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#btn_load_sim_back')
 
-
 class LoadCreatureWindow(UIWindow):
 
-    def __init__(self, manager: UIManager, rect: Rect):
+    def __init__(self, manager: UIManager, rect: Rect, creature_names: list):
         super().__init__(rect, manager=manager, window_display_title='Load Creature', object_id="#load_creature_win", visible=True)
         self.manager = manager
-        creatures = self.GetAllCreatures()
+        creatures = self.read_creature_list(creature_names=creature_names)
         buttons = []
         i = 1
         for c in creatures:
-            btn = UIButton(Rect((60, (btn_s+btn_h)*i), (btn_w*2, btn_h)), text=f"{c[0]} [G:{c[1]}] [P:{c[2]} [F:{c[3]}]", manager=self.manager, container=self, parent_element=self, object_id='#btn_load_creature_' + c[0])
-            #del_btn = DelBtn(Rect((220, (btn_s+btn_h)*i), (btn_h, btn_h)), 'X', manager=manager, container=self, parent_element=self, object_id='#btn_del_'+c, c_to_kill=c)
-            buttons.append(btn)
+            text = f"{c[0]} [G:{c[1]}] [P:{c[2]} [F:{c[3]}]"
+            lab = UILabel(Rect((10, (btn_s+btn_h)*i), (btn_w, btn_h)), text=text, manager=self.manager, container=self, parent_element=self, object_id='lab_creature_to_load_'+str(i))
+            btn = LoadBtn(Rect((180, (btn_s+btn_h)*i), (60, btn_h)), text="==>", manager=self.manager, container=self, parent_element=self, object_id='#btn_load_creature_'+str(i), obj_to_load=c[0])
+            buttons.append((lab, btn))
             i += 1
         btn = UIButton(Rect((75, (btn_s+btn_h)*i), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#load_creature_back')
 
-    def GetAllCreatures(self) -> list:
-        creature_files = listdir("saves/creatures")
+    def read_creature_list(self, creature_names: list) -> list:
         creatures = []
-        for f_name in creature_files:
+        for f_name in creature_names:
             f = open("saves/creatures/"+f_name, "r")
             json_creature = f.read()
             f.close()
             creature = json.loads(json_creature)
-            creatures.append((creature['name'], "[G:" + creature['gen'] + "]", "[P:" + creature['power'] + "]", "[F:" + creature['food'] + "]"))
+            creatures.append((creature['name'], creature['gen'], creature['power'], creature['food']))
         return creatures
 
 class RankWindow(UIWindow):
@@ -156,19 +160,7 @@ class RankWindow(UIWindow):
             self.labels[i][3].set_text('P:' + str(ranking1[i]['power']))
             self.labels[i][4].set_text('E:' + str(ranking1[i]['food']))
             self.labels[i][5].set_text('F:' + str(round(ranking1[i]['fitness'])))
-        #rank_count2 = len(ranking2)
-        #for i in range(rank_count2):
-        #    j = i + rank_count1
-        #    self.labels[j][0].set_text(str(i)+'.')
-        #    self.labels[j][1].set_text(ranking2[i]['name'])
-        #    self.labels[j][2].set_text('G ' + str(ranking2[i]['gen']))
-        #    self.labels[j][3].set_text('P ' + str(ranking2[i]['power']))
-        #    self.labels[j][4].set_text('E ' + str(ranking2[i]['food']))
-        #    self.labels[j][5].set_text('F ' + str(round(ranking2[i]['fitness'])))
-
-            #text = str(i) + '. ' + ranking[i]['name'] + ' \t GEN: ' + str(ranking[i]['gen']) + ' \t POW: ' + str(ranking[i]['power']) + ' \t MEAT|VEGE: ' + str(ranking[i]['meat']) + '|' + str(ranking[i]['vege']) + ' \t FIT: ' + str(round(ranking[i]['fitness']))
-            #lab.set_text(text)
-
+        
 class InfoWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, text: str, title: str=''):
@@ -373,7 +365,27 @@ class GUI():
         self.create_menu_btn(btn_pos)
         #self.create_title(new_size)
 
+    def get_saved_creatures(self) -> list:
+        creatures = []
+        crs = scandir("saves/creatures")
+        for c in crs:
+            if c.is_file():
+                creatures.append(c.name)
+        crs.close()
+        return creatures
+
     def get_all_simulations(self) -> list:
+        projects = []
+        dirs = scandir("saves")
+        for d in dirs:
+            if d.is_dir():
+                if d.name == "creatures":
+                    continue
+                projects.append(d.name)
+        dirs.close()
+        return projects
+
+    def get_all_simulations2(self) -> list:
         projects = []
         f = open("saves/projects.json", "r")
         json_sim = f.read()
@@ -390,8 +402,8 @@ class GUI():
         btn = UIButton(relative_rect=rect, text=title, manager=self.ui_mgr, object_id=obj_id)
         return btn
 
-    def load_creature(self):
-        self.owner.load_creature()
+    def load_creature(self, creature_name: str):
+        self.owner.load_creature(name=creature_name)
 
     def create_main_menu(self):
         w = 250
@@ -451,6 +463,14 @@ class GUI():
         h = 75 + (25 * sim_num)
         pos = Rect((self.cx-w/2, self.cy-h+100), (w, h+200))
         self.load_sim_menu = LoadSimWindow(manager=self.ui_mgr, rect=pos, simulations=simulations)
+
+    def create_load_creature_win(self):
+        w = 250
+        creatures = self.get_saved_creatures()
+        cr_num = len(creatures)
+        h = 75 + (25 * cr_num)
+        pos = Rect((self.cx-w/2, self.cy-h+100), (w, h+200))
+        self.load_creature_win = LoadCreatureWindow(manager=self.ui_mgr, rect=pos, creature_names=creatures)
 
     def create_info_win(self, text: str, title: str):
         w = 300
@@ -687,7 +707,7 @@ class GUI():
                     self.create_load_sim_menu()
                 elif event.ui_object_id == '#load_win.#btn_load_creature':
                     self.load_menu.kill()
-                    self.load_creature()
+                    self.create_load_creature_win()
                 elif isinstance(event.ui_element, DelBtn):
                     self.delete_project(event.ui_element.sim_to_kill)
                     self.load_sim_menu.kill()
@@ -729,6 +749,11 @@ class GUI():
                     self.enviro_win.kill()
                 elif event.ui_object_id == '#credits_win.#btn_credits_close':
                     self.credits_win.kill()
+                #   >>> LOAD CREATURE WINDOW <<<
+                elif event.ui_object_id[0: 38] == '#load_creature_win.#btn_load_creature_':
+                    creature_name = event.ui_element.obj_to_load
+                    self.load_creature_win.kill()
+                    self.load_creature(creature_name=creature_name)
             return True
         else:
             return False

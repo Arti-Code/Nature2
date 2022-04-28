@@ -1,0 +1,247 @@
+{
+  "name": "KUQTLP",
+  "gen": 0,
+  "mutations": 8,
+  "size": 12.0,
+  "power": 10,
+  "food": 3,
+  "speed": 5,
+  "color0": [0, 0, 0, 255],
+  "color1": [135, 206, 235, 255],
+  "color2": [0, 0, 255, 255],
+  "color3": [255, 0, 0, 255],
+  "neuro": {
+    "layer_num": 9,
+    "node_num": 0,
+    "link_num": 0,
+    "layers": {
+      "0": {
+        "type": 0,
+        "nodes": "[8772, 3114, 6979, 3493, 7449, 7652, 3627, 1234, 6059, 3042, 7193, 1140, 2725, 5267]"
+      },
+      "1": { "type": 1, "nodes": "[]" },
+      "2": { "type": 1, "nodes": "[]" },
+      "3": { "type": 1, "nodes": "[]" },
+      "4": { "type": 1, "nodes": "[]" },
+      "5": { "type": 1, "nodes": "[]" },
+      "6": { "type": 1, "nodes": "[]" },
+      "7": { "type": 1, "nodes": "[]" },
+      "8": { "type": 2, "nodes": "[2185, 8743, 1370, 6789, 8981]" }
+    },
+    "nodes": {
+      "8772": {
+        "type": 0,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": 0.24633763267062556,
+        "from_links": "[]",
+        "to_links": "[]",
+        "activation": 0
+      },
+      "3114": {
+        "type": 0,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": -0.07985373178228561,
+        "from_links": "[9254]",
+        "to_links": "[]",
+        "activation": 0
+      },
+      "6979": {
+        "type": 0,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": -0.186316122308678,
+        "from_links": "[]",
+        "to_links": "[]",
+        "activation": 0
+      },
+      "3493": {
+        "type": 0,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": 0.2092868675109114,
+        "from_links": "[]",
+        "to_links": "[]",
+        "activation": 0
+      },
+      "7449": {
+        "type": 0,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": 0.3496208144479431,
+        "from_links": "[]",
+        "to_links": "[]",
+        "activation": 0
+      },
+      "7652": {
+        "type": 0,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": 0.3962081038674565,
+        "from_links": "[]",
+        "to_links": "[]",
+        "activation": 0
+      },
+      "3627": {
+        "type": 0,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": 0.6307978248514284,
+        "from_links": "[9788]",
+        "to_links": "[]",
+        "activation": 0
+      },
+      "1234": {
+        "type": 0,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": 0.4969415137418596,
+        "from_links": "[8779]",
+        "to_links": "[]",
+        "activation": 0
+      },
+      "6059": {
+        "type": 0,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": -0.6027702258741512,
+        "from_links": "[]",
+        "to_links": "[]",
+        "activation": 0
+      },
+      "3042": {
+        "type": 0,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": 0.3544481877984011,
+        "from_links": "[5939, 9162]",
+        "to_links": "[]",
+        "activation": 0
+      },
+      "7193": {
+        "type": 0,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": 0.1776069023719135,
+        "from_links": "[8346]",
+        "to_links": "[]",
+        "activation": 0
+      },
+      "1140": {
+        "type": 0,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": -0.02066199286777088,
+        "from_links": "[9334]",
+        "to_links": "[]",
+        "activation": 0
+      },
+      "2725": {
+        "type": 0,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": -0.502703900456847,
+        "from_links": "[]",
+        "to_links": "[]",
+        "activation": 0
+      },
+      "5267": {
+        "type": 0,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": 0.3572265924069038,
+        "from_links": "[]",
+        "to_links": "[]",
+        "activation": 0
+      },
+      "2185": {
+        "type": 2,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": 0.761139501844307,
+        "from_links": "[]",
+        "to_links": "[9254]",
+        "activation": 0
+      },
+      "8743": {
+        "type": 2,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": 0.8112994527493896,
+        "from_links": "[]",
+        "to_links": "[]",
+        "activation": 0
+      },
+      "1370": {
+        "type": 2,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": 0.3205964749989571,
+        "from_links": "[]",
+        "to_links": "[8779, 5939]",
+        "activation": 0
+      },
+      "6789": {
+        "type": 2,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": 0.9280783833481124,
+        "from_links": "[]",
+        "to_links": "[9162, 8346, 9334]",
+        "activation": 0
+      },
+      "8981": {
+        "type": 2,
+        "recurrent": "0",
+        "mem_weight": null,
+        "bias": 0.3537293774995929,
+        "from_links": "[]",
+        "to_links": "[9788]",
+        "activation": 0
+      }
+    },
+    "links": {
+      "9254": {
+        "weight": -0.8134582492857854,
+        "from_node": 3114,
+        "to_node": 2185
+      },
+      "8779": {
+        "weight": 0.584750271445519,
+        "from_node": 1234,
+        "to_node": 1370
+      },
+      "5939": {
+        "weight": 0.14492143774557714,
+        "from_node": 3042,
+        "to_node": 1370
+      },
+      "9162": {
+        "weight": 0.010605368819071105,
+        "from_node": 3042,
+        "to_node": 6789
+      },
+      "8346": {
+        "weight": 0.14964889177089005,
+        "from_node": 7193,
+        "to_node": 6789
+      },
+      "9334": {
+        "weight": -0.23464316339211305,
+        "from_node": 1140,
+        "to_node": 6789
+      },
+      "9788": {
+        "weight": 0.5761837442866822,
+        "from_node": 3627,
+        "to_node": 8981
+      }
+    }
+  },
+  "signature": [
+    [12, 10, 3],
+    [9254, 8779, 5939, 9162, 8346, 9334, 9788]
+  ],
+  "genealogy": [["KUQTLP", 0, 0]]
+}

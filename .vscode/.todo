@@ -48,10 +48,10 @@ NATURE: {  {c}
         ✔ save ranking also {cm}
         ✔ fix: dt {cm}
     0.5:    
-        ☐ health and energy
+        ✔ health and energy
         ✘ water needs
-        ☐ save single creature
-        ☐ load single creature
+        ✔ save single creature
+        ✔ load single creature
         ☐ save single network
         ☐ load single network
         ✔ delete single projects
