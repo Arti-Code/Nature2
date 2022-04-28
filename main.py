@@ -174,7 +174,7 @@ class Simulation():
         ranking = self.ranking1
         ranking.sort(key=sort_by_fitness, reverse=True)
         for rank in reversed(ranking):
-            if rank['name'] == creature.name:
+            if rank['name'] == creature.name or rank['genealogy'][0][0] == creature.genealogy[0][0]:
                 if creature.fitness >= rank['fitness']:
                     ranking.remove(rank)
                     ranking.append(creature.get_genome())
