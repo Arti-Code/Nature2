@@ -3,7 +3,6 @@
   "SCREEN": [1800, 950],
   "FONT_SIZE": 14,
 
-  
   "PLANT_MIN_NUM": 5,
   "PLANT_MAX_NUM": 70,
   "PLANT_INIT_NUM": 30,
