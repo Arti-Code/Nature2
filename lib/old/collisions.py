@@ -1,5 +1,5 @@
-from random import randint
-from pymunk import Space
+from random import random, randint
+from pymunk import Vec2d, Space, Segment, Body, Circle, Shape
 from pygame import Color
 from lib.config import *
 
@@ -23,6 +23,10 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
     creature_meat_collisions.data['dt'] = dt
     creature_meat_collisions.data['creatures_num'] = creatures_num
 
+    #creature_water_collisions = space.add_collision_handler(2, 14)
+    #creature_water_collisions.pre_solve = process_creature_water_collisions
+    #creature_water_collisions.data['dt'] = dt
+
     creature_rock_collisions = space.add_collision_handler(2, 8)
     creature_rock_collisions.pre_solve = process_creatures_rock_collisions
     creature_rock_collisions.data['dt'] = dt
@@ -35,6 +39,12 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
 
     creature_meat_collisions_end = space.add_collision_handler(2, 10)
     creature_meat_collisions_end.separate = process_creatures_meat_collisions_end
+
+    #creatures_rock_collisions_end = space.add_collision_handler(2, 8)
+    #creatures_rock_collisions_end.separate = process_creatures_rock_collisions_end
+
+    #creature_water_collisions_end = space.add_collision_handler(2, 14)
+    #creature_water_collisions_end.separate = process_creature_water_collisions_end
 
     meat_rock_collisions = space.add_collision_handler(10, 8)
     meat_rock_collisions.pre_solve = process_meat_rock_collisions
@@ -59,31 +69,6 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
   
     meat_detection = space.add_collision_handler(4, 10)
     meat_detection.pre_solve = process_meats_seeing
-
-
-def process_creatures_collisions(arbiter, space, data):
-    dt = data['dt']
-    agent = arbiter.shapes[0].body
-    target = arbiter.shapes[1].body
-    size0 = arbiter.shapes[0].radius
-    size1 = arbiter.shapes[1].radius
-    agent.position -= arbiter.normal*(size1/size0)*0.7
-    target.position += arbiter.normal*(size0/size1)*0.7
-    if agent.attacking:
-        if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
-            if (size0+randint(0, 6)) > (size1+randint(0, 6)):
-                dmg = cfg.HIT * dt * (agent.size+agent.power)/2
-                if target.hit(dmg):
-                    agent.fitness += cfg.KILL2FIT
-                    agent.kills += 1
-                else:
-                    agent.fitness += dmg*cfg.HIT2FIT
-    agent.collide_creature = True
-    return False
-
-def process_creatures_collisions_end(arbiter, space, data):
-    #arbiter.shapes[0].body.collide_creature = False
-    return False
 
 
 def process_creature_plant_collisions(arbiter, space, data):
@@ -123,11 +108,6 @@ def process_creature_plant_collisions(arbiter, space, data):
     hunter.collide_plant = True
     return False
 
-def process_creatures_plant_collisions_end(arbiter, space, data):
-    #arbiter.shapes[0].body.collide_plant = False
-    return False
-
-
 def process_creature_meat_collisions(arbiter, space, data):
     dt = data['dt']
     hunter = arbiter.shapes[0].body
@@ -165,11 +145,6 @@ def process_creature_meat_collisions(arbiter, space, data):
     hunter.collide_meat = True
     return False
 
-def process_creatures_meat_collisions_end(arbiter, space, data):
-    #arbiter.shapes[0].body.collide_meat = False
-    return False        
-
-
 def process_creature_water_collisions(arbiter, space, data):
     agent = arbiter.shapes[0].body.on_water = True
     return False
@@ -178,16 +153,46 @@ def process_creature_water_collisions_end(arbiter, space, data):
     agent = arbiter.shapes[0].body.on_water = False
     return False
 
+def process_creatures_collisions(arbiter, space, data):
+    dt = data['dt']
+    agent = arbiter.shapes[0].body
+    target = arbiter.shapes[1].body
+    size0 = arbiter.shapes[0].radius
+    size1 = arbiter.shapes[1].radius
+    agent.position -= arbiter.normal*(size1/size0)*0.7
+    target.position += arbiter.normal*(size0/size1)*0.7
+    if agent.attacking:
+        if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
+            if (size0+randint(0, 6)) > (size1+randint(0, 6)):
+                dmg = cfg.HIT * dt * (agent.size+agent.power)/2
+                if target.hit(dmg):
+                    agent.fitness += cfg.KILL2FIT
+                    agent.kills += 1
+                else:
+                    agent.fitness += dmg*cfg.HIT2FIT
+    agent.collide_creature = True
+    return False
 
 def process_creatures_rock_collisions(arbiter, space, data):
     arbiter.shapes[0].body.position -= arbiter.normal * 2.5
     arbiter.shapes[0].body.collide_something = True
     return False
 
+def process_creatures_collisions_end(arbiter, space, data):
+    #arbiter.shapes[0].body.collide_creature = False
+    return False
+
+def process_creatures_plant_collisions_end(arbiter, space, data):
+    #arbiter.shapes[0].body.collide_plant = False
+    return False
+
+def process_creatures_meat_collisions_end(arbiter, space, data):
+    #arbiter.shapes[0].body.collide_meat = False
+    return False        
+
 def process_creatures_rock_collisions_end(arbiter, space, data):
     arbiter.shapes[0].body.collide_something = False
     return False
-
 
 def process_meat_rock_collisions(arbiter, space, data):
     arbiter.shapes[0].body.position -= arbiter.normal
@@ -196,7 +201,6 @@ def process_meat_rock_collisions(arbiter, space, data):
 def process_meat_rock_collisions_end(arbiter, space, data):
     return False
 
-
 def process_plant_rock_collisions(arbiter, space, data):
     arbiter.shapes[0].body.position -= arbiter.normal
     return False
@@ -204,7 +208,74 @@ def process_plant_rock_collisions(arbiter, space, data):
 def process_plant_rock_collisions_end(arbiter, space, data):
     return False
 
+def detect_creature(arbiter, space, data):
+    creature = arbiter.shapes[0].body
+    enemy = arbiter.shapes[1].body
+    sensor_shape = arbiter.shapes[0]
+    for sensor in creature.sensors:
+        if not enemy.hidding:
+            if sensor.shape == sensor_shape:
+                sensor.set_color(Color('orange'))
+                pos0 = creature.position
+                dist = pos0.get_distance(enemy.position)
+                sensor.send_data(detect=True, distance=dist)
+                #break
+    return False
 
+def detect_plant(arbiter, space, data):
+    creature = arbiter.shapes[0].body
+    plant = arbiter.shapes[1].body
+    sensor_shape = arbiter.shapes[0]
+    for sensor in creature.sensors:
+        if sensor.shape == sensor_shape:
+            sensor.set_color(Color('limegreen'))
+            pos0 = creature.position
+            dist = pos0.get_distance(plant.position)
+            sensor.send_data2(detect=True, distance=dist)
+            #break
+    return False
+
+def detect_meat(arbiter, space, data):
+    creature = arbiter.shapes[0].body
+    meat = arbiter.shapes[1].body
+    #contact = arbiter.contact_point_set.points[0].point_a
+    sensor_shape = arbiter.shapes[0]
+    for sensor in creature.sensors:
+        if sensor.shape == sensor_shape:
+            sensor.set_color(Color('red'))
+            pos0 = creature.position
+            dist = pos0.get_distance(meat.position)
+            sensor.send_data4(detect=True, distance=dist)
+            #break
+    return False
+
+def detect_rock(arbiter, space, data):
+    creature = arbiter.shapes[0].body
+    rock = arbiter.shapes[1].body
+    contact = arbiter.contact_point_set.points[0].point_a
+    sensor_shape = arbiter.shapes[0]
+    for sensor in creature.sensors:
+        if sensor.shape == sensor_shape:
+            sensor.set_color(Color('gray'))
+            pos0 = creature.position
+            dist = pos0.get_distance(contact)
+            sensor.send_data5(detect=True, distance=dist)
+            #break
+    return False
+
+def detect_water(arbiter, space, data):
+    creature = arbiter.shapes[0].body
+    water = arbiter.shapes[1].body
+    contact = arbiter.contact_point_set.points[0].point_a
+    sensor_shape = arbiter.shapes[0]
+    for sensor in creature.sensors:
+        if sensor.shape == sensor_shape:
+            sensor.set_color(Color('blue'))
+            pos0 = creature.position
+            dist = pos0.get_distance(contact)
+            sensor.send_data3(detect=True, distance=dist)
+            #break
+    return False
 
 def process_agents_seeing(arbiter, space, data):
     agent1 = arbiter.shapes[0].body
@@ -226,7 +297,6 @@ def process_agents_seeing(arbiter, space, data):
 def process_agents_seeing_end(arbiter, space, data):
     return False
 
-
 def process_plants_seeing(arbiter, space, data):
     agent1 = arbiter.shapes[0].body
     agent2 = arbiter.shapes[1].body
@@ -247,7 +317,6 @@ def process_plants_seeing(arbiter, space, data):
 def process_plants_seeing_end(arbiter, space, data):
     return False
 
-
 def process_meats_seeing(arbiter, space, data):
     agent1 = arbiter.shapes[0].body
     agent2 = arbiter.shapes[1].body
@@ -266,4 +335,19 @@ def process_meats_seeing(arbiter, space, data):
     return False
 
 def process_meats_seeing_end(arbiter, space, data):
+    return False
+
+def detect_plant_end(arbiter, space, data):
+    return False
+
+def detect_creature_end(arbiter, space, data):
+    return False
+
+def detect_meat_end(arbiter, space, data):
+    return False
+
+def detect_rock_end(arbiter, space, data):
+    return False
+
+def detect_water_end(arbiter, space, data):
     return False
