@@ -52,7 +52,7 @@ class Simulation():
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores', 'all'])
-        self.statistics.add_collection('creatures', ['size', 'speed', 'food', 'power', 'mutations'])
+        self.statistics.add_collection('creatures', ['size', 'speed', 'food', 'power', 'mutations', 'vision'])
         self.statistics.add_collection('neuros', ['nodes', 'links'])
         self.statistics.add_collection('fitness', ['points', 'lifetime'])
         self.create_terrain('res/images/map2.png', 'res/images/map2.png')
@@ -91,7 +91,7 @@ class Simulation():
         self.rocks_on_screen = deque(range(30))
         self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
         self.mutations = {'added_nodes': [0], 'deleted_nodes': [0], 'added_links': [0], 'deleted_links': [0]}
-        self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5]}
+        self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5], 'vision': [5]}
         self.neuros = {'nodes': [], 'links': []}
         self.fitness = {'points': [], 'lifetime': []}
         self.map_time = 0.0
@@ -316,19 +316,20 @@ class Simulation():
             creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, genome=genome)
             [(an, dn), (al, dl)] = creature.mutations_num
             self.update_mutation_stats(an, dn, al, dl)
-        self.update_creatures_stats(creature.size, creature.speed, creature.food, creature.power, creature.mutations)
+        self.update_creatures_stats(creature.size, creature.speed, creature.food, creature.power, creature.mutations, creature.eyes)
         self.update_neuro_stats(creature.neuro.GetAllNodesNum(), creature.neuro.GetLinksNum())
         return creature
     def update_neuro_stats(self, node_num: int, link_num: int):
         self.neuros['nodes'].append(node_num)
         self.neuros['links'].append(link_num)
 
-    def update_creatures_stats(self, size: int, speed: int, food: int, power: int, mutations: int):
+    def update_creatures_stats(self, size: int, speed: int, food: int, power: int, mutations: int, vision: int):
         self.creatures['size'].append(size)
         self.creatures['speed'].append(speed)
         self.creatures['food'].append(food)
         self.creatures['power'].append(power)
         self.creatures['mutations'].append(mutations)
+        self.creatures['vision'].append(vision)
 
     def update_mutation_stats(self, added_nodes: int, deleted_nodes: int, added_links: int, deleted_links: int):
         self.mutations['added_nodes'].append(added_nodes)
@@ -552,11 +553,12 @@ class Simulation():
                 'speed': round(mean(self.creatures['speed']), 2),
                 'power': round(mean(self.creatures['power']), 2),
                 'food': round(mean(self.creatures['food']), 2),
-                'mutations': round(mean(self.creatures['mutations']), 2)
+                'mutations': round(mean(self.creatures['mutations']), 2),
+                'vision': round(mean(self.creatures['vision']), 2)
             }
             self.populations = {'plants': [], 'herbivores': [], 'carnivores': [], 'all': []}
             self.mutations = {'added_nodes': [], 'deleted_nodes': [], 'added_links': [], 'deleted_links': []}
-            self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5]}
+            self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5], 'vision': [5]}
             self.statistics.add_data('creatures', last+cfg.STAT_PERIOD, data)
             data = {}
             data = {

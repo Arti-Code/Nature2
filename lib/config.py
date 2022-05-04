@@ -2,7 +2,7 @@ from math import pi as PI
 from json import loads, dumps
 
 TITLE = "NATURE"
-SUBTITLE = "v0.8.7" 
+SUBTITLE = "v0.8.8" 
 AUTHOR = "2019-2022 Artur Gwoździowski"
 
 class Configuration():
@@ -72,6 +72,7 @@ class Configuration():
         self.V2M = 1
         self.NEURON_MOD = None
         self.NET_BASE = None
+        self.GENERATIONS_NUMBER = None
         self.load_from_file2(filename)
 
     def update_h2c(self, h2c: float):
@@ -155,5 +156,6 @@ class Configuration():
         self.H2C                    = cfg['H2C']
         self.NEURON_MOD             = cfg['NEURON_MOD']
         self.NET_BASE               = cfg['NET_BASE']
+        self.GENERATIONS_NUMBER     = cfg['GENERATIONS_NUMBER']
 
 cfg = Configuration('config.json')

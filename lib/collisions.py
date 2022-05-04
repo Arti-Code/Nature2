@@ -83,7 +83,7 @@ def process_creature_plant_collisions(arbiter, space, data):
         hunter.position -= arbiter.normal*0.2
     size1 = arbiter.shapes[1].radius
     if size1 != 0:
-        target.position += arbiter.normal*(size0/size1)*0.5
+        target.position += arbiter.normal*(size0/size1)*0.2
     else:
         target.position += arbiter.normal*0.2
     if hunter.eating:
@@ -118,7 +118,7 @@ def process_creature_meat_collisions(arbiter, space, data):
         hunter.position -= arbiter.normal*0.2
     size1 = arbiter.shapes[1].radius
     if size1 != 0:
-        target.position += arbiter.normal*(size0/size1)*0.5
+        target.position += arbiter.normal*(size0/size1)*0.2
     else:
         target.position += arbiter.normal*0.2
     if hunter.eating:

@@ -103,10 +103,10 @@ class Manager:
     def save_project(self):
         project_name = self.enviro.project_name
         if project_name != '' and isinstance(project_name, str):
-            self.add_to_projects_list(project_name)
+            #self.add_to_projects_list(project_name)
             i = 0
             project = {}
-            creatures = []
+            #creatures = []
             project['name'] = project_name
             project['time'] = round(self.enviro.time, 1)
             project['cycles'] = self.enviro.cycles
@@ -121,7 +121,7 @@ class Manager:
                 creature_to_save['power'] = creature.power
                 creature_to_save['food'] = creature.food
                 creature_to_save['speed'] = creature.speed
-                #creature_to_save['vege'] = creature.vege
+                creature_to_save['eyes'] = creature.eyes
                 creature_to_save['x'] = round(creature.position.x)
                 creature_to_save['y'] = round(creature.position.y)
                 creature_to_save['color0'] = [creature.color0.r, creature.color0.g, creature.color0.b, creature.color0.a]
@@ -139,6 +139,7 @@ class Manager:
                 rank_to_save['gen'] = rank['gen']
                 rank_to_save['food'] = rank['food']
                 rank_to_save['speed'] = rank['speed']
+                rank_to_save['eyes'] = rank['eyes']
                 rank_to_save['mutations'] = rank['mutations']
                 rank_to_save['size'] = rank['size']
                 rank_to_save['fitness'] = rank['fitness']
@@ -158,6 +159,7 @@ class Manager:
                 rank_to_save['gen'] = rank['gen']
                 rank_to_save['food'] = rank['food']
                 rank_to_save['speed'] = rank['speed']
+                rank_to_save['eyes'] = rank['eyes']
                 rank_to_save['mutations'] = rank['mutations']
                 rank_to_save['size'] = rank['size']
                 rank_to_save['fitness'] = rank['fitness']
@@ -192,6 +194,7 @@ class Manager:
         cr['power'] = creature.power
         cr['food'] = creature.food
         cr['speed'] = creature.speed
+        cr['eyes'] = creature.eyes
         cr['color0'] = [creature.color0.r, creature.color0.g, creature.color0.b, creature.color0.a]
         cr['color1'] = [creature.color1.r, creature.color1.g, creature.color1.b, creature.color1.a]
         cr['color2'] = [creature.color2.r, creature.color2.g, creature.color2.b, creature.color2.a]
@@ -332,13 +335,14 @@ class Manager:
         self.load_project(project_name, last_save)
 
     def delete_project(self, sim_name: str) -> bool:
-        if self.delete_from_projects_list(sim_name):
-            try:
-                rmtree('saves/' + sim_name)
-            finally:
-                return True
-        else:
-            return False
+        #if self.delete_from_projects_list(sim_name):
+        res = True
+        try:
+            rmtree('saves/' + sim_name)
+        except:
+            res = False
+        finally:
+            return res
 
     def draw_net(self, network: Network):
         if network:

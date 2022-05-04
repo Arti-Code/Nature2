@@ -34,7 +34,6 @@ class ACTIVATION(IntEnum):
 class Node():
 
     def __init__(self, node_type, activation=ACTIVATION.TANH, bias = 0, recurrent=False, mem_weight=None):
-        
         self.bias = bias
         self.value = 0
         self.to_links = []
@@ -46,7 +45,7 @@ class Node():
             if mem_weight:
                 self.mem_weight = mem_weight
             else:
-                self.mem_weight = self.RandomNormal()
+                self.mem_weight = self.RandomGauss(0.7, 0.2)
         else:
             self.mem = None
             self.mem_weight = None
@@ -90,6 +89,10 @@ class Node():
     def RandomNormal(self) -> float:
         n = clamp(gauss(0, 0.5), -1, 1)
         return n 
+
+    def RandomGauss(m: float, s: float) -> float:
+        n = clamp(gauss(m, s), -1, 1)
+        return n
 
     def ToJSON(self):
         node = {}
@@ -146,7 +149,6 @@ class Network():
     MUT_ADD_NODE    =   0.03 * cfg.MUTATIONS
     MUT_NODE_TYPE   =   0.04 * cfg.MUTATIONS
     MUT_MEM         =   0.04 * cfg.MUTATIONS
-
     ADD_NODE_NUM = 0
     DEL_NODE_NUM = 0
 
@@ -375,13 +377,11 @@ class Network():
                     func = pulse
 
                 for lin1 in range(len(self.nodes[node_key].to_links)):
-                    
                     link_key = self.nodes[node_key].to_links[lin1]
                     from_node_key = self.links[link_key].from_node
                     v = self.nodes[from_node_key].value
                     w = self.links[link_key].weight
                     dot = dot + (v * w)
-
                 dot = dot + bias
 
                 recurrent = self.nodes[node_key].recurrent
@@ -389,26 +389,17 @@ class Network():
                     mem = self.nodes[node_key].mem
                     mem_weight = self.nodes[node_key].mem_weight
                     dot = dot + mem
-                    dot = func(dot) #* experimental activation
-                    #dot = tanh(dot) #! new activation function test
-                    #dot = math.tanh(dot)
+                    dot = func(dot)
                     self.nodes[node_key].mem = dot * mem_weight
                 else:
-                    dot = func(dot) #* experimental activation
-                    #dot = tanh(dot) #! new activation function test
-                    #dot = math.tanh(dot) 
-                    #dot = sigmoid(dot) #? new alternative activation function
-                
+                    dot = func(dot)   
                 self.nodes[node_key].value = dot
-
 
         out_layer = len(self.layers) - 1
         output = []
-        for out in range(len(self.layers[out_layer].nodes)):
-            
+        for out in range(len(self.layers[out_layer].nodes)):      
             out_node_key = self.layers[out_layer].nodes[out]
             output.append(self.nodes[out_node_key].value)
-
         return output
 
     def MutateBias(self, dt=1):
@@ -474,7 +465,6 @@ class Network():
         input_nodes = self.GetNodeKeyList([TYPE.INPUT])
         output_nodes = self.GetNodeKeyList([TYPE.OUTPUT])
         hidden_nodes = self.GetNodeKeyList([TYPE.HIDDEN])
-        #for n in self.nodes.keys():
         for _ in range(mutate_rate):
             """ if self.nodes[n].from_links == [] and self.nodes[n].to_links == [] and self.nodes[n].type == TYPE.HIDDEN:
                 nodes_to_kill.append(n) """
@@ -490,7 +480,6 @@ class Network():
                             links_to_kill.append(l1)
                         nodes_to_kill.append(del_node)
                         deleted += 1
-            
             if hidden_list != []:
                 if random() < (self.MUT_ADD_NODE):
                     layer_key = choice(hidden_list)
@@ -515,7 +504,6 @@ class Network():
     def MutateNodeType(self, dt=1):
         for n in self.nodes:
             if (random()) < self.MUT_NODE_TYPE:
-                #n_type = choice(['tanh', 'sigmoid', 'binary', 'rev_binary', 'linear', 'memory'])
                 n_type = choice(['tanh', 'sigmoid', 'binary', 'relu', 'leaky_relu', 'memory'])
                 if n_type == 'memory':
                     self.nodes[n].recurrent = not self.nodes[n].recurrent
@@ -545,7 +533,6 @@ class Network():
                     self.nodes[n].activation = ACTIVATION.PULSE
 
     def Mutate(self, mutations_rate: int=5, dt=1) -> list[tuple]:
-        #self.CalcNodeMutMod()
         node_num = len(self.nodes)-(len(self.GetNodeKeyList([TYPE.INPUT]))+len(self.GetNodeKeyList([TYPE.OUTPUT])))
         link_num = len(self.links)
         if node_num != 0:
@@ -565,7 +552,6 @@ class Network():
         return [(added_n, deleted_n), (added_l, deleted_l)]
 
     def Replicate(self):
-
         clone = Network()
         clone.node_num = self.node_num
         clone.layer_num = self.layer_num
@@ -582,7 +568,6 @@ class Network():
         return clone
        
     def FindNode(self, node_key):
-
         for layer_key in self.layers:
             n = 0
             for node_key2 in self.layers[layer_key].nodes:
@@ -604,14 +589,12 @@ class Network():
         return len(self.nodes)
 
     def CleanRecombinated(self):
-
         for node_key in self.nodes:
             self.nodes[node_key].recombined = False
         for link_key in self.links:
             self.links[link_key].recombined = False
 
     def ToJSON(self):
-
         net = {}
         net['layer_num'] = self.layer_num
         net['node_num'] = self.node_num
@@ -632,7 +615,6 @@ class Network():
         return net
 
     def FromJSON(self, neuro):
-
         self.layer_num = neuro['layer_num']
         self.node_num = neuro['node_num']
         self.link_num = neuro['link_num']
@@ -653,7 +635,6 @@ class Network():
             self.nodes[node_key] = node
             self.nodes[node_key].from_links = json.loads(nodes0[n]['from_links'])
             self.nodes[node_key].to_links = json.loads(nodes0[n]['to_links'])
-            #self.nodes[node_key].activation = json.loads(nodes0[n]['activation'])
                 
         links0 = neuro['links']
         self.links.clear()

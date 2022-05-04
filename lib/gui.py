@@ -147,9 +147,9 @@ class RankWindow(UIWindow):
             gen = UILabel(Rect((70, 15*i+5), (29, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_generation_'+str(i))
             pwr = UILabel(Rect((100, 15*i+5), (24, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_power_'+str(i))
             eat = UILabel(Rect((125, 15*i+5), (24, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eat_'+str(i))
-            fit = UILabel(Rect((150, 15*i+5), (45, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_fitness_'+str(i))
-            self.labels.append([num, spec, gen, pwr, eat, fit])
-        #self.btn_close = UIButton(Rect((round((rect.width/2)-(btn_w/2)), (15*i+25)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
+            eye = UILabel(Rect((150, 15*i+5), (24, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eye_'+str(i))
+            fit = UILabel(Rect((175, 15*i+5), (45, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_fitness_'+str(i))
+            self.labels.append([num, spec, gen, pwr, eat, eye, fit])
 
     def Update(self, ranking1: list, ranking2: list):
         rank_count1 = len(ranking1)
@@ -159,7 +159,8 @@ class RankWindow(UIWindow):
             self.labels[i][2].set_text('G:' + str(ranking1[i]['gen']))
             self.labels[i][3].set_text('P:' + str(ranking1[i]['power']))
             self.labels[i][4].set_text('E:' + str(ranking1[i]['food']))
-            self.labels[i][5].set_text('F:' + str(round(ranking1[i]['fitness'])))
+            self.labels[i][5].set_text('V:' + str(ranking1[i]['eyes']))
+            self.labels[i][6].set_text('F:' + str(round(ranking1[i]['fitness'])))
         
 class InfoWindow(UIWindow):
 
@@ -443,7 +444,8 @@ class GUI():
     def create_new_sim(self):
         new_name = self.new_sim.edit.get_text()
         self.owner.enviro.project_name = new_name
-        self.new_project_name(new_name)
+        if not self.new_project_name(new_name):
+            return
         cfg.load_from_file2('saves/' + new_name + '/config.json')
         self.create_title(cfg.SCREEN)
         self.owner.enviro.create_enviro()
@@ -485,8 +487,8 @@ class GUI():
         self.credits_win = CreditsWindow(owner=self.owner, manager=self.ui_mgr, rect=pos, title=title, subtitle=subtitle, author=author, bar_text=bar_text)
 
     def create_rank_win(self):
-        w = 200
-        h = cfg.RANK_SIZE * 15 + 30
+        w = 225
+        h = cfg.RANK_SIZE * 15 + 35
         pos = Rect((self.cx*2-(w+10), 25), (w, h))
         self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)
 
@@ -523,7 +525,7 @@ class GUI():
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (140, 250)), data=data, dT=dT)
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (140, 275)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
@@ -553,14 +555,13 @@ class GUI():
             data['ENERGY'] = ''
             data['POWER'] = ''
             data['SPEED'] = ''
+            data['EYES'] = ''
             data['SIZE'] = ''
             data['MUT'] = ''
             data['BORN|KILL'] = ''
             data['FIT'] = ''
             data["LIFE"] = ''
             data["REPRO"] = ''
-            #data["ADD_NODES"] = ''
-            #data["DEL_NODES"] = ''
             data['S'] = ''
             if isinstance(self.owner.enviro.selected, Plant):
                 data['SPECIE'] = 'PLANT'
@@ -580,14 +581,13 @@ class GUI():
         data['ENERGY'] = str(round(self.owner.enviro.selected.energy))+'/'+str(round(self.owner.enviro.selected.max_energy))
         data['POWER'] = str(self.owner.enviro.selected.power)
         data['SPEED'] = str(self.owner.enviro.selected.speed)
+        data['EYES'] = str(self.owner.enviro.selected.eyes)
         data['SIZE'] = str(self.owner.enviro.selected.size)
         data['MUT'] = f"{self.owner.enviro.selected.mutations}"
         data['BORN|KILL'] = str(self.owner.enviro.selected.childs)+'|'+str(self.owner.enviro.selected.kills)
         data['FIT'] = str(round(self.owner.enviro.selected.fitness))
         data["LIFE"] = str(round(self.owner.enviro.selected.life_time))
         data["REPRO"] = str(round(self.owner.enviro.selected.reproduction_time))
-        #data["ADD_NODES"] = f"A:{round(self.owner.enviro.selected.neuro.node_add_mod, 6)}"
-        #data["DEL_NODES"] = f"D:{round(self.owner.enviro.selected.neuro.node_del_mod, 6)}"
         states = []
         if self.owner.enviro.selected.hidding:
             states.append('H')
@@ -781,21 +781,13 @@ class GUI():
         self.ui_mgr.draw_ui(screen)
 
     def new_project_name(self, name: str):
+        projects_list = self.get_all_simulations()
+        if name in projects_list:
+            return False
         try:
             os.mkdir('saves/' + name)
             copyfile('config.json', 'saves/' + name + '/config.json')
         except FileExistsError:
             pass
-        f = open("saves/projects.json", "r+")
-        proj_list = f.read()
-        f.close()
-        projects_list = json.loads(proj_list)
-        if not name in projects_list["projects"]:
-            projects_list["projects"].append(name)
-            proj_json = json.dumps(projects_list)
-            f = open("saves/projects.json", "w+")
-            f.write(proj_json)
-            f.close()
+        finally:
             return True
-        else:
-            return False
