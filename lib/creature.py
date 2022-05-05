@@ -104,6 +104,8 @@ class Creature(Life):
         self.genealogy = genome['genealogy']
         self.name = genome['name']
         mutations = self.neuro.Mutate(mutations_rate=self.mutations)
+        self.nodes_num = self.neuro.GetNodesNum()
+        self.links_num = self.neuro.GetLinksNum()
         self.signature = genome['signature']
         return mutations
 
@@ -119,13 +121,14 @@ class Creature(Life):
         self._color2 = color2
         self._color3 = color3
         self.food = randint(1, 10)
-        #self.meat = randint(1, 10)
         self.mutations = randint(1, 10)
         self.power = randint(1, 10)
         self.eyes = randint(1, 10)
         self.speed = randint(1, 10)
         self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
         self.neuro.BuildRandom(cfg.NET, cfg.LINKS_RATE)
+        self.nodes_num = self.neuro.GetNodesNum()
+        self.links_num = self.neuro.GetLinksNum()
         self.name = random_name(3, True)
         self.add_specie(self.name, self.generation, time)
 
@@ -240,43 +243,6 @@ class Creature(Life):
 
     def draw_dist(self, camera: Camera):
         rpos = camera.rel_pos(Vector2((self.position.x-50), flipy(self.position.y+30)))
-        enemy_dir = '-'; plant_dir = '-'; meat_dir = '-';
-        enemy_ang = round(self.vision.enemy['ang'], 1)
-        plant_ang = round(self.vision.plant['ang'], 1)
-        meat_ang = round(self.vision.meat['ang'], 1)
-        """ if enemy_ang >= 0.1:
-            if enemy_ang > 0.5:
-                enemy_dir = '>>'
-            else:
-                enemy_dir = '>'
-        elif enemy_ang <= -0.1:
-            if enemy_ang < -0.5:
-                enemy_dir = '<<'
-            else:
-                enemy_dir = '<'
-        if plant_ang >= 0.1:
-            if plant_ang > 0.5:
-                plant_dir = '>>'
-            else:
-                plant_dir = '>'
-        elif plant_ang <= -0.1:
-            if plant_ang < -0.5:
-                plant_dir = '<<'
-            else:
-                plant_dir = '<'
-        if meat_ang >= 0.1:
-            if meat_ang > 0.5:
-                meat_dir = '>>'
-            else:
-                meat_dir = '>'
-        elif meat_ang <= -0.1:
-            if meat_ang < -0.5:
-                meat_dir = '<<'
-            else:
-                meat_dir = '<' """
-        #txt = "{:^}[{:^}] | {:^}[{:^}] | {:^}[{:^}]".format(round(sqrt(self.vision.max_dist_enemy)), enemy_dir, round(sqrt(self.vision.max_dist_plant)), plant_dir, round(sqrt(self.vision.max_dist_meat)), meat_dir)
-        #return f"{(round(sqrt(self.vision.max_dist_enemy)))}[{enemy_dir}] | {(round(sqrt(self.vision.max_dist_plant)))}[{plant_dir}] | {(round(sqrt(self.vision.max_dist_meat)))}[{meat_dir}]", rpos.x, rpos.y
-        #return f"{(round(sqrt(self.vision.max_dist)))}", rpos.x, rpos.y
         return f"T:{(round(sqrt(self.vision.max_dist)))} | E:{(round(sqrt(self.vision.max_dist_enemy)))} | P:{(round(sqrt(self.vision.max_dist_plant)))} | M:{(round(sqrt(self.vision.max_dist_meat)))}", rpos.x, rpos.y
 
     def update(self, dt: float, selected: Body):
@@ -351,6 +317,7 @@ class Creature(Life):
         size_cost = self.size * cfg.SIZE_COST
         move_energy = move * cfg.MOVE_ENERGY * size_cost
         base_energy = cfg.BASE_ENERGY
+        neuro_energy = (self.nodes_num+self.links_num)*cfg.NEURO_COST
         if self.running:
             move_energy *= cfg.RUN_COST
         rest_energy = self.power * cfg.POWER_COST
@@ -361,7 +328,7 @@ class Creature(Life):
         if self.on_water:
             base_energy += cfg.WATER_COST
         base_energy *= size_cost
-        self.energy -= (base_energy + move_energy + rest_energy) * dt
+        self.energy -= (base_energy + move_energy + rest_energy + neuro_energy) * dt
         self.energy = clamp(self.energy, 0, self.max_energy)
 
     def get_input(self):

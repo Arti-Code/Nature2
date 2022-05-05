@@ -316,9 +316,10 @@ class Simulation():
             creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, genome=genome)
             [(an, dn), (al, dl)] = creature.mutations_num
             self.update_mutation_stats(an, dn, al, dl)
-        self.update_creatures_stats(creature.size, creature.speed, creature.food, creature.power, creature.mutations, creature.eyes)
-        self.update_neuro_stats(creature.neuro.GetAllNodesNum(), creature.neuro.GetLinksNum())
+            self.update_creatures_stats(creature.size, creature.speed, creature.food, creature.power, creature.mutations, creature.eyes)
+            self.update_neuro_stats(creature.neuro.GetAllNodesNum(), creature.neuro.GetLinksNum())
         return creature
+
     def update_neuro_stats(self, node_num: int, link_num: int):
         self.neuros['nodes'].append(node_num)
         self.neuros['links'].append(link_num)
@@ -548,6 +549,8 @@ class Simulation():
             }
             self.statistics.add_data('populations', last+cfg.STAT_PERIOD, data)
             data = {}
+            if self.creatures['size'] == []:
+                self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5], 'vision': [5]}
             data = {
                 'size': round(mean(self.creatures['size']), 2),
                 'speed': round(mean(self.creatures['speed']), 2),
@@ -558,15 +561,17 @@ class Simulation():
             }
             self.populations = {'plants': [], 'herbivores': [], 'carnivores': [], 'all': []}
             self.mutations = {'added_nodes': [], 'deleted_nodes': [], 'added_links': [], 'deleted_links': []}
-            self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5], 'vision': [5]}
+            self.creatures = {'size': [], 'speed': [], 'food': [], 'power': [], 'mutations': [], 'vision': []}
             self.statistics.add_data('creatures', last+cfg.STAT_PERIOD, data)
+            if self.neuros['nodes'] == []:
+                self.neuros = {'nodes': [14], 'links': [8]}
             data = {}
             data = {
                 'nodes': round(mean(self.neuros['nodes']), 2),
                 'links': round(mean(self.neuros['links']), 2)
             }
             self.statistics.add_data('neuros', last+cfg.STAT_PERIOD, data)
-            self.neuros = {'nodes': [14], 'links': [10]}
+            self.neuros = {'nodes': [], 'links': []}
             data = {}
             if len(self.fitness['points']) == 0:
                 self.fitness['points'].append(0)

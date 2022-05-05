@@ -73,6 +73,7 @@ class Configuration():
         self.NEURON_MOD = None
         self.NET_BASE = None
         self.GENERATIONS_NUMBER = None
+        self.NEURO_COST = None
         self.load_from_file2(filename)
 
     def update_h2c(self, h2c: float):
@@ -157,5 +158,6 @@ class Configuration():
         self.NEURON_MOD             = cfg['NEURON_MOD']
         self.NET_BASE               = cfg['NET_BASE']
         self.GENERATIONS_NUMBER     = cfg['GENERATIONS_NUMBER']
+        self.NEURO_COST             = cfg['NEURO_COST']
 
 cfg = Configuration('config.json')

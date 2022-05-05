@@ -145,8 +145,8 @@ class Network():
     MUT_WEIGHT      =   0.06 * cfg.MUTATIONS
     MUT_DEL_LINK    =   0.02 * cfg.MUTATIONS
     MUT_ADD_LINK    =   0.02 * cfg.MUTATIONS
-    MUT_DEL_NODE    =   0.03 * cfg.MUTATIONS
-    MUT_ADD_NODE    =   0.03 * cfg.MUTATIONS
+    MUT_DEL_NODE    =   0.015 * cfg.MUTATIONS
+    MUT_ADD_NODE    =   0.015 * cfg.MUTATIONS
     MUT_NODE_TYPE   =   0.04 * cfg.MUTATIONS
     MUT_MEM         =   0.04 * cfg.MUTATIONS
     ADD_NODE_NUM = 0
@@ -549,6 +549,8 @@ class Network():
         self.MutateWeights(dt)
         added_n, deleted_n = self.MutateNodes(mutate_rate=mutations_rate)
         self.MutateNodeType(dt)
+        self.node_num = self.GetNodesNum()
+        self.link_num = self.GetLinksNum()
         return [(added_n, deleted_n), (added_l, deleted_l)]
 
     def Replicate(self):
