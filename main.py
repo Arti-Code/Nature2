@@ -55,7 +55,7 @@ class Simulation():
         self.statistics.add_collection('creatures', ['size', 'speed', 'food', 'power', 'mutations', 'vision'])
         self.statistics.add_collection('neuros', ['nodes', 'links'])
         self.statistics.add_collection('fitness', ['points', 'lifetime'])
-        self.create_terrain('res/images/map2.png', 'res/images/map2.png')
+        #self.create_terrain('res/images/map2.png', 'res/images/map2.png')
 
     def init_vars(self):
         self.neuro_single_times = []
@@ -470,8 +470,13 @@ class Simulation():
                 self.fitness['lifetime'].append(creature.life_time)
                 self.add_to_ranking(creature)
                 if not creature.on_water:
-                    meat = Meat(screen=self.screen, space=self.space, position=creature.position, collision_tag=10, energy=creature.max_energy)
-                    self.meat_list.append(meat)
+                    pos = creature.position
+                    size = ceil(creature.size/2)
+                    eng = round(creature.max_energy/3)
+                    for _ in range(3):
+                        new_pos = self.free_random_position(pos, Vec2d(12, 12), size, 0b10000010000000)
+                        meat = Meat(screen=self.screen, space=self.space, position=new_pos, collision_tag=10, energy=int((eng/4)+(eng/2)*random()))
+                        self.meat_list.append(meat)
                 creature.kill(self.space)
                 self.creature_list.remove(creature)
 

@@ -752,7 +752,7 @@ class GUI():
                 #   >>> LOAD CREATURE WINDOW <<<
                 elif event.ui_object_id[0: 38] == '#load_creature_win.#btn_load_creature_':
                     creature_name = event.ui_element.obj_to_load
-                    self.load_creature_win.kill()
+                    #self.load_creature_win.kill()
                     self.load_creature(creature_name=creature_name)
             return True
         else:
