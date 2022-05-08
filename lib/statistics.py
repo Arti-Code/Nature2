@@ -23,6 +23,7 @@ class Statistics():
             'food': RGB(255, 0, 255),
             'power': RGB(255, 0, 0),
             'mutations': RGB(255, 255, 0),
+            'vision': (135, 206, 250),
             'nodes': RGB(0, 255, 0),
             'links': RGB(0, 0, 255),
             'points': RGB(255, 0, 0, 255),

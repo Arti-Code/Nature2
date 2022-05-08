@@ -1,5 +1,5 @@
 import os
-from os import listdir
+from os import listdir, scandir
 import sys
 import json
 from shutil import copyfile
@@ -60,11 +60,24 @@ class MenuWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect):
         super().__init__(rect, manager=manager, window_display_title='Main Menu', object_id="#menu_win", visible=True)
         self.manager = manager
-        btn_list = [('Resume', '#btn_resume'), ('New Simulation', '#btn_sim'), ('Select Terrain', '#btn_map'), ('Save Simulation', '#save_menu'), ('Load Simulation', '#btn_load'), ('Settings', '#btn_set'), ('Info', '#btn_info'), ('Quit', '#btn_quit')]
+        btn_list = [('Resume', '#btn_resume'), ('New Simulation', '#btn_sim'), ('Select Terrain', '#btn_map'), ('Save Menu', '#save_menu'), ('Load Menu', '#btn_load'), ('Settings', '#btn_set'), ('Info', '#btn_info'), ('Quit', '#btn_quit')]
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
             btn = UIButton(Rect((50, (btn_s*(i)+btn_h*(i-1))), (btn_w, btn_h)), text=txt, manager=self.manager, container=self, parent_element=self, object_id=ident)
+            buttons.append(btn)
+            i += 1
+
+class LoadWindow(UIWindow):
+
+    def __init__(self, manager: UIManager, rect: Rect):
+        super().__init__(rect, manager=manager, window_display_title='Load Menu', object_id="#load_win", visible=True)
+        self.manager = manager
+        btn_list = [('Load Simulation', '#btn_load_sim'), ('Load Creature', '#btn_load_creature'), ('Back', '#btn_load_back')]
+        buttons = []
+        i = 1
+        for (txt, ident) in btn_list:
+            btn = UIButton(Rect((50, (btn_s*(i)+btn_h*(i-1))+btn_h), (btn_w, btn_h)), text=txt, manager=self.manager, container=self, parent_element=self, object_id=ident)
             buttons.append(btn)
             i += 1
 
@@ -74,55 +87,49 @@ class DelBtn(UIButton):
         super().__init__(rect, text, manager, container, parent_element=parent_element, object_id=object_id)
         self.sim_to_kill = sim_to_kill
 
-class LoadWindow(UIWindow):
+class LoadBtn(UIButton):
 
-    def __init__(self, manager: UIManager, rect: Rect):
-        super().__init__(rect, manager=manager, window_display_title='Load Menu', object_id="#load_win", visible=True)
+    def __init__(self, rect: Rect, text: str, manager: UIManager, container, parent_element, object_id: str, obj_to_load: str):
+        super().__init__(rect, text, manager, container, parent_element=parent_element, object_id=object_id)
+        self.obj_to_load = obj_to_load
+class LoadSimWindow(UIWindow):
+
+    def __init__(self, manager: UIManager, rect: Rect, simulations: list):
+        super().__init__(rect, manager=manager, window_display_title='Load Simulation', object_id="#load_sim_win", visible=True)
         self.manager = manager
-        simulations = self.GetAllSim()
         buttons = []
         i = 1
         for sim in simulations:
-            btn = UIButton(Rect((60, (btn_s+btn_h)*i), (btn_w, btn_h)), text=sim, manager=self.manager, container=self, parent_element=self, object_id='#btn_load')
-            del_btn = DelBtn(Rect((220, (btn_s+btn_h)*i), (btn_h, btn_h)), 'X', manager=manager, container=self, parent_element=self, object_id='#btn_del_'+sim, sim_to_kill=sim)
+            btn = UIButton(Rect((40, (btn_s+btn_h)*i), (btn_w, btn_h)), text=sim, manager=self.manager, container=self, parent_element=self, object_id='#btn_load_sim')
+            del_btn = DelBtn(Rect((200, (btn_s+btn_h)*i), (btn_h, btn_h)), 'X', manager=manager, container=self, parent_element=self, object_id='#btn_del', sim_to_kill=sim)
             buttons.append((btn, del_btn))
             i += 1
-        btn = UIButton(Rect((75, (btn_s+btn_h)*i), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#load_back')
-
-    def GetAllSim(self) -> list:
-        projects = []
-        f = open("saves/projects.json", "r")
-        json_sim = f.read()
-        f.close()
-        sims = json.loads(json_sim)
-        for sim in sims['projects']:
-            projects.append(sim)
-        return projects
+        btn = UIButton(Rect((40, (btn_s+btn_h)*i), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#btn_load_sim_back')
 
 class LoadCreatureWindow(UIWindow):
 
-    def __init__(self, manager: UIManager, rect: Rect):
+    def __init__(self, manager: UIManager, rect: Rect, creature_names: list):
         super().__init__(rect, manager=manager, window_display_title='Load Creature', object_id="#load_creature_win", visible=True)
         self.manager = manager
-        creatures = self.GetAllCreatures()
+        creatures = self.read_creature_list(creature_names=creature_names)
         buttons = []
         i = 1
         for c in creatures:
-            btn = UIButton(Rect((60, (btn_s+btn_h)*i), (btn_w*2, btn_h)), text=f"{c[0]} [G:{c[1]}] [P:{c[2]} [F:{c[3]}]", manager=self.manager, container=self, parent_element=self, object_id='#btn_load_creature_' + c[0])
-            #del_btn = DelBtn(Rect((220, (btn_s+btn_h)*i), (btn_h, btn_h)), 'X', manager=manager, container=self, parent_element=self, object_id='#btn_del_'+c, c_to_kill=c)
-            buttons.append(btn)
+            text = f"{c[0]} [G:{c[1]}] [P:{c[2]} [F:{c[3]}]"
+            lab = UILabel(Rect((10, (btn_s+btn_h)*i), (btn_w, btn_h)), text=text, manager=self.manager, container=self, parent_element=self, object_id='lab_creature_to_load_'+str(i))
+            btn = LoadBtn(Rect((180, (btn_s+btn_h)*i), (60, btn_h)), text="==>", manager=self.manager, container=self, parent_element=self, object_id='#btn_load_creature_'+str(i), obj_to_load=c[0])
+            buttons.append((lab, btn))
             i += 1
         btn = UIButton(Rect((75, (btn_s+btn_h)*i), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#load_creature_back')
 
-    def GetAllCreatures(self) -> list:
-        creature_files = listdir("saves/creatures")
+    def read_creature_list(self, creature_names: list) -> list:
         creatures = []
-        for f_name in creature_files:
+        for f_name in creature_names:
             f = open("saves/creatures/"+f_name, "r")
             json_creature = f.read()
             f.close()
             creature = json.loads(json_creature)
-            creatures.append((creature['name'], "[G:" + creature['gen'] + "]", "[P:" + creature['power'] + "]", "[F:" + creature['food'] + "]"))
+            creatures.append((creature['name'], creature['gen'], creature['power'], creature['food']))
         return creatures
 
 class RankWindow(UIWindow):
@@ -140,9 +147,9 @@ class RankWindow(UIWindow):
             gen = UILabel(Rect((70, 15*i+5), (29, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_generation_'+str(i))
             pwr = UILabel(Rect((100, 15*i+5), (24, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_power_'+str(i))
             eat = UILabel(Rect((125, 15*i+5), (24, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eat_'+str(i))
-            fit = UILabel(Rect((150, 15*i+5), (45, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_fitness_'+str(i))
-            self.labels.append([num, spec, gen, pwr, eat, fit])
-        #self.btn_close = UIButton(Rect((round((rect.width/2)-(btn_w/2)), (15*i+25)), (btn_w, btn_h)), text='Close', manager=self.manager, container=self, parent_element=self, object_id='#btn_quit')
+            eye = UILabel(Rect((150, 15*i+5), (24, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eye_'+str(i))
+            fit = UILabel(Rect((175, 15*i+5), (45, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_fitness_'+str(i))
+            self.labels.append([num, spec, gen, pwr, eat, eye, fit])
 
     def Update(self, ranking1: list, ranking2: list):
         rank_count1 = len(ranking1)
@@ -152,20 +159,9 @@ class RankWindow(UIWindow):
             self.labels[i][2].set_text('G:' + str(ranking1[i]['gen']))
             self.labels[i][3].set_text('P:' + str(ranking1[i]['power']))
             self.labels[i][4].set_text('E:' + str(ranking1[i]['food']))
-            self.labels[i][5].set_text('F:' + str(round(ranking1[i]['fitness'])))
-        #rank_count2 = len(ranking2)
-        #for i in range(rank_count2):
-        #    j = i + rank_count1
-        #    self.labels[j][0].set_text(str(i)+'.')
-        #    self.labels[j][1].set_text(ranking2[i]['name'])
-        #    self.labels[j][2].set_text('G ' + str(ranking2[i]['gen']))
-        #    self.labels[j][3].set_text('P ' + str(ranking2[i]['power']))
-        #    self.labels[j][4].set_text('E ' + str(ranking2[i]['food']))
-        #    self.labels[j][5].set_text('F ' + str(round(ranking2[i]['fitness'])))
-
-            #text = str(i) + '. ' + ranking[i]['name'] + ' \t GEN: ' + str(ranking[i]['gen']) + ' \t POW: ' + str(ranking[i]['power']) + ' \t MEAT|VEGE: ' + str(ranking[i]['meat']) + '|' + str(ranking[i]['vege']) + ' \t FIT: ' + str(round(ranking[i]['fitness']))
-            #lab.set_text(text)
-
+            self.labels[i][5].set_text('V:' + str(ranking1[i]['eyes']))
+            self.labels[i][6].set_text('F:' + str(round(ranking1[i]['fitness'])))
+        
 class InfoWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, text: str, title: str=''):
@@ -366,9 +362,39 @@ class GUI():
         self.size = new_size
         self.create_title(new_size)
         #self.create_enviro_win()
-        btn_pos = Rect((round(cfg.SCREEN[0]-50), 10), (40, 40))
+        btn_pos = Rect((round(cfg.SCREEN[0]-60), 10), (55, 55))
         self.create_menu_btn(btn_pos)
         #self.create_title(new_size)
+
+    def get_saved_creatures(self) -> list:
+        creatures = []
+        crs = scandir("saves/creatures")
+        for c in crs:
+            if c.is_file():
+                creatures.append(c.name)
+        crs.close()
+        return creatures
+
+    def get_all_simulations(self) -> list:
+        projects = []
+        dirs = scandir("saves")
+        for d in dirs:
+            if d.is_dir():
+                if d.name == "creatures":
+                    continue
+                projects.append(d.name)
+        dirs.close()
+        return projects
+
+    def get_all_simulations2(self) -> list:
+        projects = []
+        f = open("saves/projects.json", "r")
+        json_sim = f.read()
+        f.close()
+        sims = json.loads(json_sim)
+        for sim in sims['projects']:
+            projects.append(sim)
+        return projects
 
     def create_menu_btn(self, rect: Rect):
         self.btn_menu = UIButton(rect, 'MENU', self.ui_mgr, object_id='#btn_menu')
@@ -376,6 +402,9 @@ class GUI():
     def create_custom_btn(self, rect: Rect, title: str, obj_id: str):
         btn = UIButton(relative_rect=rect, text=title, manager=self.ui_mgr, object_id=obj_id)
         return btn
+
+    def load_creature(self, creature_name: str):
+        self.owner.load_creature(name=creature_name)
 
     def create_main_menu(self):
         w = 250
@@ -415,17 +444,35 @@ class GUI():
     def create_new_sim(self):
         new_name = self.new_sim.edit.get_text()
         self.owner.enviro.project_name = new_name
-        self.new_project_name(new_name)
+        if not self.new_project_name(new_name):
+            return
         cfg.load_from_file2('saves/' + new_name + '/config.json')
         self.create_title(cfg.SCREEN)
         self.owner.enviro.create_enviro()
         self.create_info_win(text='Project created with name: ' + new_name, title=new_name)
 
     def create_load_menu(self):
-        w = 300
-        h = 400
-        pos = Rect((self.cx-w/2, self.cy-h+100), (w, h+200))
+        w = 250
+        h = 200
+        pos = Rect((self.cx-w/2, self.cy-h+100), (w, h))
         self.load_menu = LoadWindow(manager=self.ui_mgr, rect=pos)
+
+    def create_load_sim_menu(self):
+        w = 250
+        #h = 400
+        simulations = self.get_all_simulations()
+        sim_num = len(simulations)
+        h = 75 + (25 * sim_num)
+        pos = Rect((self.cx-w/2, self.cy-h+100), (w, h+200))
+        self.load_sim_menu = LoadSimWindow(manager=self.ui_mgr, rect=pos, simulations=simulations)
+
+    def create_load_creature_win(self):
+        w = 250
+        creatures = self.get_saved_creatures()
+        cr_num = len(creatures)
+        h = 75 + (25 * cr_num)
+        pos = Rect((self.cx-w/2, self.cy-h+100), (w, h+200))
+        self.load_creature_win = LoadCreatureWindow(manager=self.ui_mgr, rect=pos, creature_names=creatures)
 
     def create_info_win(self, text: str, title: str):
         w = 300
@@ -440,8 +487,8 @@ class GUI():
         self.credits_win = CreditsWindow(owner=self.owner, manager=self.ui_mgr, rect=pos, title=title, subtitle=subtitle, author=author, bar_text=bar_text)
 
     def create_rank_win(self):
-        w = 200
-        h = cfg.RANK_SIZE * 15 + 30
+        w = 225
+        h = cfg.RANK_SIZE * 15 + 35
         pos = Rect((self.cx*2-(w+10), 25), (w, h))
         self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)
 
@@ -478,7 +525,7 @@ class GUI():
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (140, 250)), data=data, dT=dT)
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (140, 275)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
@@ -508,14 +555,13 @@ class GUI():
             data['ENERGY'] = ''
             data['POWER'] = ''
             data['SPEED'] = ''
+            data['EYES'] = ''
             data['SIZE'] = ''
             data['MUT'] = ''
             data['BORN|KILL'] = ''
             data['FIT'] = ''
             data["LIFE"] = ''
             data["REPRO"] = ''
-            #data["ADD_NODES"] = ''
-            #data["DEL_NODES"] = ''
             data['S'] = ''
             if isinstance(self.owner.enviro.selected, Plant):
                 data['SPECIE'] = 'PLANT'
@@ -535,14 +581,13 @@ class GUI():
         data['ENERGY'] = str(round(self.owner.enviro.selected.energy))+'/'+str(round(self.owner.enviro.selected.max_energy))
         data['POWER'] = str(self.owner.enviro.selected.power)
         data['SPEED'] = str(self.owner.enviro.selected.speed)
+        data['EYES'] = str(self.owner.enviro.selected.eyes)
         data['SIZE'] = str(self.owner.enviro.selected.size)
         data['MUT'] = f"{self.owner.enviro.selected.mutations}"
         data['BORN|KILL'] = str(self.owner.enviro.selected.childs)+'|'+str(self.owner.enviro.selected.kills)
         data['FIT'] = str(round(self.owner.enviro.selected.fitness))
         data["LIFE"] = str(round(self.owner.enviro.selected.life_time))
         data["REPRO"] = str(round(self.owner.enviro.selected.reproduction_time))
-        #data["ADD_NODES"] = f"A:{round(self.owner.enviro.selected.neuro.node_add_mod, 6)}"
-        #data["DEL_NODES"] = f"D:{round(self.owner.enviro.selected.neuro.node_del_mod, 6)}"
         states = []
         if self.owner.enviro.selected.hidding:
             states.append('H')
@@ -654,22 +699,30 @@ class GUI():
                     self.reload_config()
 
                 #   >>> LOAD MENU <<<
+                elif event.ui_object_id == '#load_win.#btn_load_back':
+                    self.load_menu.kill()
+                    self.create_main_menu()
+                elif event.ui_object_id == '#load_win.#btn_load_sim':
+                    self.load_menu.kill()
+                    self.create_load_sim_menu()
+                elif event.ui_object_id == '#load_win.#btn_load_creature':
+                    self.load_menu.kill()
+                    self.create_load_creature_win()
                 elif isinstance(event.ui_element, DelBtn):
                     self.delete_project(event.ui_element.sim_to_kill)
-                    self.load_menu.kill()
+                    self.load_sim_menu.kill()
+                    self.create_load_sim_menu()
+                elif event.ui_object_id == '#load_sim_win.#btn_load_sim_back':
+                    self.load_sim_menu.kill()
                     self.create_load_menu()
-                elif event.ui_object_id[0: 15] == '#load_win.#btn_':
+                elif event.ui_object_id[0: 27] == '#load_sim_win.#btn_load_sim':
                     project_name = event.ui_element.text
                     self.owner.enviro.project_name = project_name
                     self.owner.load_last(project_name)
-                    self.load_menu.kill()   
+                    self.load_sim_menu.kill()   
                     self.kill_title()
                     self.create_title(cfg.SCREEN) 
                     self.create_info_win(text=f"Project {project_name.upper()} has been loaded", title='Load Simulation')
-                elif event.ui_object_id == '#load_win.#load_back':
-                    self.load_menu.kill()
-                    self.create_main_menu()
-
                 #   >>> INFO MENU <<<
                 elif event.ui_object_id == '#info_win.#btn_info':
                     self.info_win.kill()
@@ -696,6 +749,11 @@ class GUI():
                     self.enviro_win.kill()
                 elif event.ui_object_id == '#credits_win.#btn_credits_close':
                     self.credits_win.kill()
+                #   >>> LOAD CREATURE WINDOW <<<
+                elif event.ui_object_id[0: 38] == '#load_creature_win.#btn_load_creature_':
+                    creature_name = event.ui_element.obj_to_load
+                    #self.load_creature_win.kill()
+                    self.load_creature(creature_name=creature_name)
             return True
         else:
             return False
@@ -723,21 +781,13 @@ class GUI():
         self.ui_mgr.draw_ui(screen)
 
     def new_project_name(self, name: str):
+        projects_list = self.get_all_simulations()
+        if name in projects_list:
+            return False
         try:
             os.mkdir('saves/' + name)
             copyfile('config.json', 'saves/' + name + '/config.json')
         except FileExistsError:
             pass
-        f = open("saves/projects.json", "r+")
-        proj_list = f.read()
-        f.close()
-        projects_list = json.loads(proj_list)
-        if not name in projects_list["projects"]:
-            projects_list["projects"].append(name)
-            proj_json = json.dumps(projects_list)
-            f = open("saves/projects.json", "w+")
-            f.write(proj_json)
-            f.close()
+        finally:
             return True
-        else:
-            return False

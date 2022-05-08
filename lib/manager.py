@@ -103,10 +103,10 @@ class Manager:
     def save_project(self):
         project_name = self.enviro.project_name
         if project_name != '' and isinstance(project_name, str):
-            self.add_to_projects_list(project_name)
+            #self.add_to_projects_list(project_name)
             i = 0
             project = {}
-            creatures = []
+            #creatures = []
             project['name'] = project_name
             project['time'] = round(self.enviro.time, 1)
             project['cycles'] = self.enviro.cycles
@@ -121,7 +121,7 @@ class Manager:
                 creature_to_save['power'] = creature.power
                 creature_to_save['food'] = creature.food
                 creature_to_save['speed'] = creature.speed
-                #creature_to_save['vege'] = creature.vege
+                creature_to_save['eyes'] = creature.eyes
                 creature_to_save['x'] = round(creature.position.x)
                 creature_to_save['y'] = round(creature.position.y)
                 creature_to_save['color0'] = [creature.color0.r, creature.color0.g, creature.color0.b, creature.color0.a]
@@ -139,6 +139,7 @@ class Manager:
                 rank_to_save['gen'] = rank['gen']
                 rank_to_save['food'] = rank['food']
                 rank_to_save['speed'] = rank['speed']
+                rank_to_save['eyes'] = rank['eyes']
                 rank_to_save['mutations'] = rank['mutations']
                 rank_to_save['size'] = rank['size']
                 rank_to_save['fitness'] = rank['fitness']
@@ -158,6 +159,7 @@ class Manager:
                 rank_to_save['gen'] = rank['gen']
                 rank_to_save['food'] = rank['food']
                 rank_to_save['speed'] = rank['speed']
+                rank_to_save['eyes'] = rank['eyes']
                 rank_to_save['mutations'] = rank['mutations']
                 rank_to_save['size'] = rank['size']
                 rank_to_save['fitness'] = rank['fitness']
@@ -175,8 +177,8 @@ class Manager:
             project['statistics']['creatures'] = self.enviro.statistics.get_collection('creatures')
             project['statistics']['neuros'] = self.enviro.statistics.get_collection('neuros')
             project['statistics']['fitness'] = self.enviro.statistics.get_collection('fitness')
-            if self.add_to_save_list(project_name, str(self.enviro.get_time(1))):
-                with open("saves/" + project_name + "/" + str(self.enviro.get_time(1)) + ".json", 'w+') as json_file:
+            if self.add_to_save_list(project_name, str(round(self.enviro.get_time(0)))):
+                with open("saves/" + project_name + "/" + str(round(self.enviro.get_time(0))) + ".json", 'w+') as json_file:
                     json.dump(project, json_file)
                 if not json_file.closed:
                     json_file.close()
@@ -184,8 +186,6 @@ class Manager:
     def save_creature(self, creature: Creature) -> bool:
         if self.enviro.project_name == None:
             return False
-        project = self.enviro.project_name
-        name = creature.name
         cr = {}
         cr['name'] = creature.name
         cr['gen'] = creature.generation
@@ -194,6 +194,7 @@ class Manager:
         cr['power'] = creature.power
         cr['food'] = creature.food
         cr['speed'] = creature.speed
+        cr['eyes'] = creature.eyes
         cr['color0'] = [creature.color0.r, creature.color0.g, creature.color0.b, creature.color0.a]
         cr['color1'] = [creature.color1.r, creature.color1.g, creature.color1.b, creature.color1.a]
         cr['color2'] = [creature.color2.r, creature.color2.g, creature.color2.b, creature.color2.a]
@@ -201,7 +202,7 @@ class Manager:
         cr['neuro'] = creature.neuro.ToJSON()
         cr['signature'] = deepcopy(creature.signature)
         cr['genealogy'] = deepcopy(creature.genealogy)
-        with open("saves/creatures/" + name + ".json", 'w+') as creature_file:
+        with open("saves/creatures/"+creature.name+".json", 'w+') as creature_file:
             json.dump(cr, creature_file)
         creature_file.close()
         return True
@@ -255,6 +256,17 @@ class Manager:
         else:
             return False
 
+    def load_creature(self, name: str="creature"):
+        f = open("saves/creatures/" + name + ".json", "r")
+        json_cr = f.read()
+        f.close()
+        obj_cr = json.loads(json_cr)
+        #genome['neuro'] = json.loads(genome['neuro'])
+        neuro = Network()
+        neuro.FromJSON(obj_cr['neuro'])
+        obj_cr['neuro'] = neuro
+        self.enviro.add_saved_creature(obj_cr)
+
     def load_last_state(self, project_name: str):
         f = open("saves/" + project_name + "/saves.json", "r")
         save_list = f.read()
@@ -264,9 +276,9 @@ class Manager:
         save_name = saves["saves"][total_num - 1]
         self.load_project(project_name, save_name)
 
-    def load_project(self, project_name: str, save_num):
+    def load_project(self, project_name: str, save_name: str):
         cfg.load_from_file2("saves/" + project_name + "/config.json")
-        f = open("saves/" + project_name + "/" + str(save_num) + ".json", "r")
+        f = open("saves/" + project_name + "/" + save_name + ".json", "r")
         json_list = f.read()
         obj_list = json.loads(json_list)
         #self.enviro.creature_list.clear()
@@ -306,22 +318,31 @@ class Manager:
         #log_to_file(project_name+' loaded', 'log.txt')
 
     def load_last(self, project_name: str):
-        f = open("saves/" + project_name + "/saves.json", "r")
-        save_list = f.read()
-        f.close()
-        saves = json.loads(save_list)
-        total_num = len(saves["saves"])
-        save_name = saves["saves"][total_num - 1]
-        self.load_project(project_name, save_name)
+        path = f"saves/{project_name}"
+        saves_iter = os.scandir(path)
+        saves = []
+        for s in saves_iter:
+            if s.is_file() and s.name != "config.json":
+                try:
+                    save_name = int(s.name.split('.', 1)[0])
+                    saves.append(save_name)
+                except:
+                    continue
+        if len(saves) == 0:
+            return
+        last_save = str(max(saves))
+        saves_iter.close()
+        self.load_project(project_name, last_save)
 
     def delete_project(self, sim_name: str) -> bool:
-        if self.delete_from_projects_list(sim_name):
-            try:
-                rmtree('saves/' + sim_name)
-            finally:
-                return True
-        else:
-            return False
+        #if self.delete_from_projects_list(sim_name):
+        res = True
+        try:
+            rmtree('saves/' + sim_name)
+        except:
+            res = False
+        finally:
+            return res
 
     def draw_net(self, network: Network):
         if network:

@@ -119,15 +119,6 @@ class Vision(Circle):
         meat_l = clamp(meat_l, 0, 1)
         meat_r = clamp(meat_r, 0, 1)
         return [enemy_l, enemy_r, enemy_d, plant_l, plant_r, plant_d, meat_l, meat_r, meat_d]
-    
-    """def get_detection2(self) -> list:
-        enemy_ang = round((self.enemy['ang']/(self.semiwide)), 1)
-        enemy_d = 1 - sqrt(self.enemy['dist'])/cfg.SENSOR_RANGE
-        plant_ang = round((self.plant['ang']/(self.semiwide)), 1)
-        plant_d = 1 - sqrt(self.plant['dist'])/cfg.SENSOR_RANGE
-        meat_ang = round((self.meat['ang']/(self.semiwide)), 1)
-        meat_d = 1 - sqrt(self.meat['dist'])/cfg.SENSOR_RANGE
-        return [enemy_ang, enemy_d, plant_ang, plant_d, meat_ang, meat_d] """
 
     def set_detection_color(self, detection: bool):
         if detection:
