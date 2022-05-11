@@ -471,11 +471,11 @@ class Simulation():
                 self.add_to_ranking(creature)
                 if not creature.on_water:
                     pos = creature.position
-                    size = ceil(creature.size/2)
-                    eng = round(creature.max_energy/3)
-                    for _ in range(3):
-                        new_pos = self.free_random_position(pos, Vec2d(12, 12), size, 0b10000010000000)
-                        meat = Meat(screen=self.screen, space=self.space, position=new_pos, collision_tag=10, energy=int((eng/4)+(eng/2)*random()))
+                    size = ceil(creature.size)
+                    eng = round(creature.max_energy)
+                    for _ in range(1):
+                        new_pos = self.free_random_position(pos, Vec2d(0, 0), size, 0b10000010000000)
+                        meat = Meat(screen=self.screen, space=self.space, position=new_pos, collision_tag=10, energy=int(eng))
                         self.meat_list.append(meat)
                 creature.kill(self.space)
                 self.creature_list.remove(creature)
