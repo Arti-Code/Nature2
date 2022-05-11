@@ -54,9 +54,9 @@ class Creature(Life):
         self.visual_range = cfg.SENSOR_RANGE
         self.sensors = []
         self.side_angle = 0
-        self.sensor_angle = (1 - random())*cfg.SENSOR_MAX_ANGLE
-        self.sensor_angle = ((random()+1)/2)*cfg.SENSOR_MAX_ANGLE
-        self.vision = Vision(self, cfg.SENSOR_RANGE, cfg.SENSOR_MAX_ANGLE, (0.0, 0.0), "vision")
+        #self.sensor_angle = (1 - random())*cfg.SENSOR_MAX_ANGLE
+        #self.sensor_angle = ((random()+1)/2)*cfg.SENSOR_MAX_ANGLE
+        self.vision = Vision(self, cfg.SENSOR_RANGE, cfg.SENSOR_MAX_ANGLE*(self.eyes/10), (0.0, 0.0), "vision")
         space.add(self.vision)
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
@@ -92,16 +92,20 @@ class Creature(Life):
         self.mutations = genome['mutations'] + randint(-1, 1)
         self.power = genome['power'] + randint(-1, 1)
         self.food = genome['food'] + randint(-1, 1)
+        self.eyes = genome['eyes'] + randint(-1, 1)
         self.speed = genome['speed'] + randint(-1, 1)
         self.size = clamp(self.size, cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
         self.mutations = clamp(self.mutations, 1, 10)
         self.power = clamp(self.power, 1, 10)
         self.food = clamp(self.food, 1, 10)
+        self.eyes = clamp(self.eyes, 1, 10)
         self.speed = clamp(self.speed, 1, 10)
         self.generation = genome['gen']+1
         self.genealogy = genome['genealogy']
         self.name = genome['name']
         mutations = self.neuro.Mutate(mutations_rate=self.mutations)
+        self.nodes_num = self.neuro.GetNodesNum()
+        self.links_num = self.neuro.GetLinksNum()
         self.signature = genome['signature']
         return mutations
 
@@ -117,12 +121,14 @@ class Creature(Life):
         self._color2 = color2
         self._color3 = color3
         self.food = randint(1, 10)
-        #self.meat = randint(1, 10)
         self.mutations = randint(1, 10)
         self.power = randint(1, 10)
+        self.eyes = randint(1, 10)
         self.speed = randint(1, 10)
         self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
         self.neuro.BuildRandom(cfg.NET, cfg.LINKS_RATE)
+        self.nodes_num = self.neuro.GetNodesNum()
+        self.links_num = self.neuro.GetLinksNum()
         self.name = random_name(3, True)
         self.add_specie(self.name, self.generation, time)
 
@@ -237,43 +243,6 @@ class Creature(Life):
 
     def draw_dist(self, camera: Camera):
         rpos = camera.rel_pos(Vector2((self.position.x-50), flipy(self.position.y+30)))
-        enemy_dir = '-'; plant_dir = '-'; meat_dir = '-';
-        enemy_ang = round(self.vision.enemy['ang'], 1)
-        plant_ang = round(self.vision.plant['ang'], 1)
-        meat_ang = round(self.vision.meat['ang'], 1)
-        """ if enemy_ang >= 0.1:
-            if enemy_ang > 0.5:
-                enemy_dir = '>>'
-            else:
-                enemy_dir = '>'
-        elif enemy_ang <= -0.1:
-            if enemy_ang < -0.5:
-                enemy_dir = '<<'
-            else:
-                enemy_dir = '<'
-        if plant_ang >= 0.1:
-            if plant_ang > 0.5:
-                plant_dir = '>>'
-            else:
-                plant_dir = '>'
-        elif plant_ang <= -0.1:
-            if plant_ang < -0.5:
-                plant_dir = '<<'
-            else:
-                plant_dir = '<'
-        if meat_ang >= 0.1:
-            if meat_ang > 0.5:
-                meat_dir = '>>'
-            else:
-                meat_dir = '>'
-        elif meat_ang <= -0.1:
-            if meat_ang < -0.5:
-                meat_dir = '<<'
-            else:
-                meat_dir = '<' """
-        #txt = "{:^}[{:^}] | {:^}[{:^}] | {:^}[{:^}]".format(round(sqrt(self.vision.max_dist_enemy)), enemy_dir, round(sqrt(self.vision.max_dist_plant)), plant_dir, round(sqrt(self.vision.max_dist_meat)), meat_dir)
-        #return f"{(round(sqrt(self.vision.max_dist_enemy)))}[{enemy_dir}] | {(round(sqrt(self.vision.max_dist_plant)))}[{plant_dir}] | {(round(sqrt(self.vision.max_dist_meat)))}[{meat_dir}]", rpos.x, rpos.y
-        #return f"{(round(sqrt(self.vision.max_dist)))}", rpos.x, rpos.y
         return f"T:{(round(sqrt(self.vision.max_dist)))} | E:{(round(sqrt(self.vision.max_dist_enemy)))} | P:{(round(sqrt(self.vision.max_dist_plant)))} | M:{(round(sqrt(self.vision.max_dist_meat)))}", rpos.x, rpos.y
 
     def update(self, dt: float, selected: Body):
@@ -310,13 +279,6 @@ class Creature(Life):
                 return True
         return False
 
-    def update_detections(self, detections: list): 
-        for detector in self.sensors:
-            if detector.shape in detections:
-                detector.set_color(Color('red'))
-            else:
-                detector.set_color(Color('white'))
-
     def reproduce(self, screen: Surface, space: Space):
         self.childs += 1
         x2: float=self.position.x+randint(-100, 100)
@@ -346,7 +308,7 @@ class Creature(Life):
         if move < 0:
             move = 0
         turn = self.turning*cfg.TURN*dt
-        self.sensor_angle = (1-((self.output[3]+1)/2))*cfg.SENSOR_MAX_ANGLE
+        #self.sensor_angle = (1-((self.output[3]+1)/2))*cfg.SENSOR_MAX_ANGLE
         self.angle = (self.angle+(turn))%(2*PI)
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
         return abs(move)
@@ -355,6 +317,7 @@ class Creature(Life):
         size_cost = self.size * cfg.SIZE_COST
         move_energy = move * cfg.MOVE_ENERGY * size_cost
         base_energy = cfg.BASE_ENERGY
+        neuro_energy = (self.nodes_num+self.links_num)*cfg.NEURO_COST
         if self.running:
             move_energy *= cfg.RUN_COST
         rest_energy = self.power * cfg.POWER_COST
@@ -365,7 +328,7 @@ class Creature(Life):
         if self.on_water:
             base_energy += cfg.WATER_COST
         base_energy *= size_cost
-        self.energy -= (base_energy + move_energy + rest_energy) * dt
+        self.energy -= (base_energy + move_energy + rest_energy + neuro_energy) * dt
         self.energy = clamp(self.energy, 0, self.max_energy)
 
     def get_input(self):
@@ -403,15 +366,13 @@ class Creature(Life):
                 self.output[o] = clamp(self.output[o], 0, 1)
             self.moving = self.output[0]
             self.turning = self.output[2] - self.output[1]
-            if self.output[3] >= 0.4:
+            self.eating = False
+            self.attacking = False
+            if self.output[3] > self.output[4] and self.output[3] >= 0.2:
                 self.eating = True
-            else:
-                self.eating = False
-            if self.output[4] >= 0.5:
+            elif self.output[4] > self.output[3] and self.output[4] >= 0.2:
                 self.attacking = True
-            else:
-                self.attacking = False
-            if self.output[0] >= 0.9 and not self.on_water:
+            if self.output[0] >= 0.9 and not self.on_water and not self.attacking and not self.eating:
                 if not self.running and self.run_time >= int(cfg.RUN_TIME/2):
                     if self.run_ref_time == 0.0:
                         self.run_ref_time = 1.0
@@ -422,6 +383,7 @@ class Creature(Life):
                     self.running = True
             else:
                 self.running = False
+
         #if self.output[6] >= 0.7 and not self.running:
         #    if not self.hidding:
         #        if self.hide_ref_time == 0.0:
@@ -457,6 +419,8 @@ class Creature(Life):
     def add_specie(self, name: str, generation: int, time: int):
         data = (name, generation, time)
         self.genealogy.append(data)
+        if len(self.genealogy) > cfg.GENERATIONS_NUMBER:
+            self.genealogy.pop(0)
 
     def get_genome(self) -> dict:
         genome: dict = {}
@@ -467,6 +431,7 @@ class Creature(Life):
         genome['mutations'] = self.mutations
         genome['fitness'] = self.fitness
         genome['power'] = self.power
+        genome['eyes'] = self.eyes
         genome['speed'] = self.speed
         genome['color0'] = self._color0
         genome['color1'] = self._color1
@@ -486,7 +451,8 @@ class Creature(Life):
         power_diff = abs(self.power-parent_genome['power'])
         food_diff = abs(self.food-parent_genome['food'])
         speed_diff = abs(self.speed-parent_genome['speed'])
-        physionomy = mean([size_diff, power_diff,food_diff, speed_diff, mutations_diff])/10
+        eyes_diff = abs(self.eyes-parent_genome['eyes'])
+        physionomy = mean([size_diff, power_diff,food_diff, speed_diff, mutations_diff, eyes_diff])/10
         for node_sign in self.neuro.nodes:
             if not node_sign in parent_genome['neuro'].nodes:
                 nodes.append(node_sign)
@@ -523,8 +489,7 @@ class Creature(Life):
 
     def get_signature(self) -> list:
         signature: list=[]
-        #signature.append([self.size, self.power, self.vege, self.meat])
-        signature.append([self.size, self.power, self.food])
+        signature.append([self.size, self.power, self.food, self.eyes])
         links_keys: list=[]
         for link_key in self.neuro.links:
             links_keys.append(link_key)
@@ -550,7 +515,6 @@ class Creature(Life):
         mean_fizjo_diff = (mean(fizjo_diff))/10
         mean_neuro_diff = neuro_diff / ((len(neuro1) + len(neuro2))/2)
         diff = mean([mean_fizjo_diff, mean_neuro_diff])
-        #log_to_file(f'diff: [{round(mean_fizjo_diff, 2)}] [{round(mean_neuro_diff, 2)}] [{round(diff, 2)}]', 'log.txt')
         if diff <= treashold:
             return True
         else:
