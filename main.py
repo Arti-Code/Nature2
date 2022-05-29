@@ -38,7 +38,7 @@ class Simulation():
         self.screen = pygame.display.set_mode(size=cfg.SCREEN, flags=0, vsync=1)
         self.space = Space()
         self.space.iterations = 10
-        self.sleep_time_treashold = 0.2
+        self.sleep_time_treashold = 0.1
         self.clock = Clock()
         pygame.init()
         self.init_vars()
@@ -95,7 +95,7 @@ class Simulation():
         self.neuros = {'nodes': [], 'links': []}
         self.fitness = {'points': [], 'lifetime': []}
         self.map_time = 0.0
-        self.terrain = image.load('res/images/map2.png').convert()
+        #self.terrain = image.load('res/images/map2.png').convert()
         self.h2c = 1
 
     def create_terrain(self, rocks_filename: str, water_filename: str):
@@ -371,7 +371,7 @@ class Simulation():
 
     def draw(self):
         self.screen.fill(Color('black'))
-        self.screen.blit(self.terrain, (-self.camera.get_offset_tuple()[0], -self.camera.get_offset_tuple()[1]))
+        #self.screen.blit(self.terrain, (-self.camera.get_offset_tuple()[0], -self.camera.get_offset_tuple()[1]))
         self.draw_creatures()
         self.draw_plants()
         self.draw_meat()
