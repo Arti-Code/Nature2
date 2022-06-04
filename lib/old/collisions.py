@@ -88,15 +88,7 @@ def process_creature_plant_collisions(arbiter, space, data):
         target.position += arbiter.normal*0.2
     if hunter.eating:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
-            #if data['creatures_num'] > 0:
-            #    diet_mod = 100/data['creatures_num']
-            #    if diet_mod > 1:
-            #        diet_mod = 1
-            #else:
-            if cfg.V2M != 0:
-                diet_mod = 1/cfg.V2M
-            else:
-                diet_mod = 1
+            diet_mod = 1
             target.color0 = Color('yellow')
             target.energy = target.energy - cfg.EAT*dt*size0
             vege = diet(11-hunter.food, cfg.DIET_MOD*diet_mod)*size0
@@ -126,15 +118,7 @@ def process_creature_meat_collisions(arbiter, space, data):
         target.position += arbiter.normal*0.2
     if hunter.eating:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
-            #if data['creatures_num'] > 0:
-            #    diet_mod = 100/data['creatures_num']
-            #    if diet_mod > 1:
-            #        diet_mod = 1
-            #else:
-            if cfg.V2M != 0:
-                diet_mod = cfg.V2M
-            else:
-                diet_mod = 1
+            diet_mod = 1
             target.color0 = Color('yellow')
             target.energy = target.energy - cfg.EAT*dt*size0
             meat = (hunter.food/5)*size0
@@ -146,11 +130,11 @@ def process_creature_meat_collisions(arbiter, space, data):
     return False
 
 def process_creature_water_collisions(arbiter, space, data):
-    agent = arbiter.shapes[0].body.on_water = True
+    arbiter.shapes[0].body.on_water = True
     return False
 
 def process_creature_water_collisions_end(arbiter, space, data):
-    agent = arbiter.shapes[0].body.on_water = False
+    arbiter.shapes[0].body.on_water = False
     return False
 
 def process_creatures_collisions(arbiter, space, data):

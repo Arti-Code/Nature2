@@ -2,7 +2,7 @@ from math import pi as PI
 from json import loads, dumps
 
 TITLE = "NATURE"
-SUBTITLE = "v0.8.8" 
+SUBTITLE = "v0.9.0" 
 AUTHOR = "2019-2022 Artur Gwoździowski"
 
 class Configuration():
@@ -10,7 +10,7 @@ class Configuration():
     def __init__(self, filename: str):
         self.WORLD = None
         self.SCREEN = None
-        self.FONT_SIZE = None
+        self.ITER = None
         self.PLANT_MAX_SIZE = None
         self.PLANT_GROWTH = None
         self.PLANT_INIT_NUM = None
@@ -35,6 +35,7 @@ class Configuration():
         self.HIT = None
         self.MEM_TIME = None
         self.SENSOR_MAX_ANGLE = None
+        self.CLOSE_VISION = None
         self.ROCK_NUM = None
         self.RANK_SIZE = None
         self.MEAT_TIME = None
@@ -68,18 +69,11 @@ class Configuration():
         self.STAT_PERIOD = None
         self.WATER_MOVE = None
         self.WATER_COST = None
-        self.H2C = None
-        self.V2M = 1
         self.NEURON_MOD = None
         self.NET_BASE = None
         self.GENERATIONS_NUMBER = None
         self.NEURO_COST = None
         self.load_from_file2(filename)
-
-    def update_h2c(self, h2c: float):
-        #self.MEAT2ENG = h2c
-        #self.VEGE2ENG = 1/h2c
-        self.V2M = self.H2C * h2c
 
     def load_from_file2(self, filename: str):
         f = open(filename, 'r')
@@ -96,14 +90,13 @@ class Configuration():
         cfg = loads(json_cfg)
         self.WORLD                  = cfg['WORLD']
         self.SCREEN                 = cfg['SCREEN']
-        self.FONT_SIZE              = cfg['FONT_SIZE']
+        self.ITER                   = cfg['ITER']
         self.PLANT_MAX_SIZE         = cfg['PLANT_MAX_SIZE']
         self.PLANT_GROWTH           = cfg['PLANT_GROWTH']
         self.PLANT_INIT_NUM         = cfg['PLANT_INIT_NUM']
         self.PLANT_MIN_NUM          = cfg['PLANT_MIN_NUM']
         self.PLANT_MAX_NUM          = cfg['PLANT_MAX_NUM']
         self.PLANT_LIFE             = cfg['PLANT_LIFE']
-        self.PLANT_MULTIPLY         = cfg['PLANT_MULTIPLY']
         self.PLANT_RANGE            = cfg['PLANT_RANGE']
         self.CREATURE_MULTIPLY      = cfg['CREATURE_MULTIPLY']
         self.CREATURE_MIN_NUM       = cfg['CREATURE_MIN_NUM']
@@ -121,6 +114,7 @@ class Configuration():
         self.HIT                    = cfg['HIT']
         self.MEM_TIME               = cfg['MEM_TIME']
         self.SENSOR_MAX_ANGLE       = cfg['SENSOR_MAX_ANGLE']
+        self.CLOSE_VISION           = cfg['CLOSE_VISION']
         self.ROCK_NUM               = cfg['ROCK_NUM']
         self.RANK_SIZE              = cfg['RANK_SIZE']
         self.MEAT_TIME              = cfg['MEAT_TIME']
@@ -154,7 +148,6 @@ class Configuration():
         self.STAT_PERIOD            = cfg['STAT_PERIOD']
         self.WATER_MOVE             = cfg['WATER_MOVE']
         self.WATER_COST             = cfg['WATER_COST']
-        self.H2C                    = cfg['H2C']
         self.NEURON_MOD             = cfg['NEURON_MOD']
         self.NET_BASE               = cfg['NET_BASE']
         self.GENERATIONS_NUMBER     = cfg['GENERATIONS_NUMBER']
