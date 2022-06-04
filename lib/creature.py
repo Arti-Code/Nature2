@@ -334,6 +334,7 @@ class Creature(Life):
     def get_input(self):
         input = []
         al, ar, ad, pl, pr, pd, ml, mr, md = self.vision.get_detection()
+        self.vision.new_observation()
         #x = (self.position[0]-(cfg.WORLD[0]/2))/(cfg.WORLD[0]/2)
         #y = (self.position[1]-(cfg.WORLD[1]/2))/(cfg.WORLD[1]/2)
         eng = self.energy/self.max_energy

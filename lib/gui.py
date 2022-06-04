@@ -519,7 +519,6 @@ class GUI():
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         data['NEURO'] = ''
         data['PHYSIC'] = ''
-        data['V2M'] = ''
         self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (160, 140)), data=data, dT=dT)
 
     def create_creature_win(self, dT: float):
@@ -637,7 +636,6 @@ class GUI():
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         data['NEURO'] = str(round(self.owner.enviro.neuro_avg_time*1000, 1)) + 'ms'
         data['PHYSIC'] = str(round(self.owner.enviro.physics_avg_time*1000, 1)) + 'ms'
-        data['V2M'] = str(round(cfg.V2M, 2))
         return data
 
     def process_event(self, event, dt: float)->bool:

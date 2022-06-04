@@ -37,8 +37,8 @@ class Simulation():
         #self.screen = Surface(size=cfg.SCREEN, flags=0)
         self.screen = pygame.display.set_mode(size=cfg.SCREEN, flags=0, vsync=1)
         self.space = Space()
-        self.space.iterations = 10
-        self.sleep_time_treashold = 0.2
+        self.space.iterations = cfg.ITER
+        self.sleep_time_treashold = 0.1
         self.clock = Clock()
         pygame.init()
         self.init_vars()
@@ -50,12 +50,12 @@ class Simulation():
         self.space.debug_draw(self.options)
         self.draw_debug: bool=False
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
+        #self.create_terrain('res/images/map2.png', 'res/images/map2.png')
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores', 'all'])
         self.statistics.add_collection('creatures', ['size', 'speed', 'food', 'power', 'mutations', 'vision'])
         self.statistics.add_collection('neuros', ['nodes', 'links'])
         self.statistics.add_collection('fitness', ['points', 'lifetime'])
-        #self.create_terrain('res/images/map2.png', 'res/images/map2.png')
 
     def init_vars(self):
         self.neuro_single_times = []
@@ -94,9 +94,8 @@ class Simulation():
         self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5], 'vision': [5]}
         self.neuros = {'nodes': [], 'links': []}
         self.fitness = {'points': [], 'lifetime': []}
+        #self.terrain = image.load('res/images/map2.png').convert()
         self.map_time = 0.0
-        self.terrain = image.load('res/images/map2.png').convert()
-        self.h2c = 1
 
     def create_terrain(self, rocks_filename: str, water_filename: str):
         rock_img = image.load(rocks_filename).convert()
@@ -371,7 +370,7 @@ class Simulation():
 
     def draw(self):
         self.screen.fill(Color('black'))
-        self.screen.blit(self.terrain, (-self.camera.get_offset_tuple()[0], -self.camera.get_offset_tuple()[1]))
+        #self.screen.blit(self.terrain, (-self.camera.get_offset_tuple()[0], -self.camera.get_offset_tuple()[1]))
         self.draw_creatures()
         self.draw_plants()
         self.draw_meat()
@@ -442,11 +441,6 @@ class Simulation():
         self.wall_list = []
 
     def update(self):
-        if self.herbivores != 0 and self.carnivores != 0:
-            self.h2c = self.herbivores/self.carnivores
-        else:
-            self.h2c = self.herbivores
-        cfg.update_h2c(self.h2c)
         self.calc_time()
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
@@ -613,8 +607,6 @@ class Simulation():
                 self.carnivores += 1
  
     def update_plants(self, dt: float):
-        plants_num = len(self.plant_list)
-        p = 1/(10*plants_num)
         for plant in self.plant_list:
             if plant.life_time_calc(dt):
                 plant.kill(self.space)
@@ -625,7 +617,7 @@ class Simulation():
                 self.plant_list.remove(plant)
             else:
                 plant.update(dt, self.selected)
-            if plant.check_reproduction(p):
+            if plant.check_reproduction():
                 if len(self.plant_list) >= cfg.PLANT_MAX_NUM:
                     continue
                 new_plant = self.add_local_plant(plant.position, cfg.PLANT_RANGE, False)
