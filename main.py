@@ -386,7 +386,7 @@ class Simulation():
             if creature.draw(screen=self.screen, camera=self.camera, selected=self.selected):
                 if self.show_specie_name:
                     name, x, y = creature.draw_name(camera=self.camera)
-                    self.manager.add_text2(name, x, y, Color('skyblue'))
+                    self.manager.add_text2(name, x, y, Color('skyblue'), False, False, True, False)
 
     def draw_plants(self):
         for plant in self.plant_list:

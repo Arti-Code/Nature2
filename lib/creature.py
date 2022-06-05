@@ -235,7 +235,7 @@ class Creature(Life):
         self.collide_meat = False
         
     def draw_name(self, camera: Camera):
-        rpos = camera.rel_pos(Vector2((self.position.x-20), flipy(self.position.y+14)))
+        rpos = camera.rel_pos(Vector2((self.position.x), flipy(self.position.y+20)))
         return self.name, rpos.x, rpos.y
 
     def draw_dist(self, camera: Camera):
