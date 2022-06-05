@@ -1,17 +1,14 @@
 from copy import copy, deepcopy
-#from nis import match
 from random import random, randint
-from math import log, sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt
+from math import pi as PI, sqrt
 from statistics import mean
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
-from pygame.font import Font
 from pygame.math import Vector2
 import pymunk as pm
 from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
 from lib.life import Life
 from lib.math2 import flipy, clamp
-from lib.sensor import Sensor
 from lib.net import Network
 from lib.species import random_name, modify_name
 from lib.config import cfg
@@ -103,7 +100,7 @@ class Creature(Life):
         self.generation = genome['gen']+1
         self.genealogy = genome['genealogy']
         self.name = genome['name']
-        mutations = self.neuro.Mutate(mutations_rate=self.mutations)
+        mutations = self.neuro.Mutate()
         self.nodes_num = self.neuro.GetNodesNum()
         self.links_num = self.neuro.GetLinksNum()
         self.signature = genome['signature']
