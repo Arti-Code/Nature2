@@ -388,9 +388,9 @@ class Network():
                 if recurrent:
                     mem = self.nodes[node_key].mem
                     mem_weight = self.nodes[node_key].mem_weight
-                    dot = dot + mem
+                    dot = dot * mem_weight + mem
                     dot = func(dot)
-                    self.nodes[node_key].mem = dot * mem_weight
+                    self.nodes[node_key].mem = dot
                 else:
                     dot = func(dot)   
                 self.nodes[node_key].value = dot
