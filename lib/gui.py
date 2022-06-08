@@ -567,6 +567,7 @@ class GUI():
                 data['LIFE'] = str(round(self.owner.enviro.selected.life_time))
                 data['ENERGY'] = str(round(self.owner.enviro.selected.energy))
                 data['SIZE'] = str(round(self.owner.enviro.selected.shape.radius))
+                data['S'] = str(len(self.owner.enviro.selected.plants_in_area))
             elif isinstance(self.owner.enviro.selected, Meat):
                 data['LIFE'] = str(round(self.owner.enviro.selected.life_time))
                 data['SPECIE'] = 'MEAT'

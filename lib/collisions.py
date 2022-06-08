@@ -7,7 +7,7 @@ def diet(food: int, mod: float) -> float:
     return pow(food, 2) * mod
 
 def set_collision_calls(space: Space, dt: float, creatures_num: int):
-    #* 2: body | 8: rock | 4: sensor | 6: plant | 12: new_plant | 16: eye | 10: meat | 14: water
+    #* 2: body | 8: rock | 4: sensor | 6: plant | 12: new_plant | 16: eye | 10: meat | 14: water | 18: area
     #COLLISIONS:
     creature_collisions = space.add_collision_handler(2, 2)
     creature_collisions.pre_solve = process_creatures_collisions
@@ -49,6 +49,13 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
 
     plant_rock_collisions_end = space.add_collision_handler(6, 8)
     plant_rock_collisions_end.separate = process_plant_rock_collisions_end
+
+    area_plant_collisions = space.add_collision_handler(18, 6)
+    area_plant_collisions.begin = process_area_plant_collisions
+    area_plant_collisions.data['dt'] = dt
+
+    area_plant_collisions_end = space.add_collision_handler(18, 6)
+    area_plant_collisions_end.separate = process_area_plant_collisions_end
 
     #DETECTIONS:
     creature_detection = space.add_collision_handler(4, 2)
@@ -254,4 +261,23 @@ def process_meats_seeing(arbiter, space, data):
     return False
 
 def process_meats_seeing_end(arbiter, space, data):
+    return False
+
+
+def process_area_plant_collisions(arbiter, space, data):
+    plant = arbiter.shapes[0].body
+    if not plant.check_area:
+        return False
+    other_plant = arbiter.shapes[1].body
+    if not other_plant in plant.plants_in_area:
+        plant.plants_in_area.append(other_plant)
+    return False
+
+def process_area_plant_collisions_end(arbiter, space, data):
+    plant = arbiter.shapes[0].body
+    if not plant.check_area:
+        return False
+    other_plant = arbiter.shapes[1].body
+    if other_plant in plant.plants_in_area:
+        plant.plants_in_area.remove(other_plant)
     return False
