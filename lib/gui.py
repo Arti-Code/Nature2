@@ -362,7 +362,7 @@ class GUI():
         self.size = new_size
         self.create_title(new_size)
         #self.create_enviro_win()
-        btn_pos = Rect((round(cfg.SCREEN[0]-60), 10), (55, 55))
+        btn_pos = Rect((round(cfg.SCREEN[0]-57), 2), (55, 55))
         self.create_menu_btn(btn_pos)
         #self.create_title(new_size)
 

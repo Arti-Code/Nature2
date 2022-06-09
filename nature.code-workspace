@@ -6,10 +6,12 @@
 	],
 	"settings": {
 		"cSpell.ignoreWords": [
+			"bottomright",
 			"engy",
 			"fizjo",
 			"horiz",
 			"phisionomy",
+			"topright",
 			"watr"
 		],
 		"cSpell.words": [
