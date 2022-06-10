@@ -172,7 +172,10 @@ class Vision(Circle):
                 self.observe = False
 
     def new_observation(self):
+        if self.observe_done:
+            return True
         self.set_detection_color(detection=False)
         self.reset_detection()
         self.reset_range()
         self.allow_observe(True)
+        return False

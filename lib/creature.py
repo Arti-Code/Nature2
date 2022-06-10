@@ -25,7 +25,7 @@ class Creature(Life):
     def __init__(self, screen: Surface, space: Space, time: int, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
         super().__init__(screen=screen, space=space, collision_tag=collision_tag, position=position)
         self.angle = random()*2*PI
-        self.output = [0, 0, 0, 0, 0]
+        self.output: list[float] = [0, 0, 0, 0, 0]
         self.generation = 0
         self.fitness = 0
         self.neuro = Network()
@@ -53,7 +53,7 @@ class Creature(Life):
         self.side_angle = 0
         #self.sensor_angle = (1 - random())*cfg.SENSOR_MAX_ANGLE
         #self.sensor_angle = ((random()+1)/2)*cfg.SENSOR_MAX_ANGLE
-        self.vision = Vision(self, cfg.SENSOR_RANGE, cfg.SENSOR_MAX_ANGLE*(self.eyes/10), (0.0, 0.0), "vision")
+        self.vision: Vision = Vision(self, cfg.SENSOR_RANGE, cfg.SENSOR_MAX_ANGLE*(self.eyes/10), (0.0, 0.0), "vision")
         space.add(self.vision)
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
@@ -331,7 +331,7 @@ class Creature(Life):
     def get_input(self):
         input = []
         al, ar, ad, pl, pr, pd, ml, mr, md = self.vision.get_detection()
-        self.vision.new_observation()
+        #self.vision.new_observation()
         #x = (self.position[0]-(cfg.WORLD[0]/2))/(cfg.WORLD[0]/2)
         #y = (self.position[1]-(cfg.WORLD[1]/2))/(cfg.WORLD[1]/2)
         eng = self.energy/self.max_energy
@@ -357,6 +357,8 @@ class Creature(Life):
 
     def analize(self):
         if self.mem_time <= 0:
+            if not self.vision.new_observation():
+                return
             input = self.get_input()
             self.output = self.neuro.Calc(input)
             self.mem_time = cfg.MEM_TIME

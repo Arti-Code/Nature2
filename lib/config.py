@@ -17,7 +17,6 @@ class Configuration():
         self.PLANT_MIN_NUM = None
         self.PLANT_MAX_NUM = None
         self.PLANT_LIFE = None
-        self.PLANT_MULTIPLY = None
         self.PLANT_RANGE = None
         self.CREATURE_MULTIPLY = None
         self.CREATURE_MIN_NUM = None
