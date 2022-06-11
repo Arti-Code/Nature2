@@ -219,7 +219,6 @@ class Creature(Life):
         if self.normal != None:
             gfxdraw.line(screen, int(self.position.x), int(flipy(self.position.y)), int(self.position.x+self.normal.x*50), int(flipy(self.position.y+self.normal.y*50)), Color('yellow'))
             #self.normal = None
-
     def draw_detectors(self, screen, rel_pos: Vector2):
         for detector in self.sensors:
             detector.draw(screen=screen, rel_pos=rel_pos)
@@ -331,7 +330,6 @@ class Creature(Life):
     def get_input(self):
         input = []
         al, ar, ad, pl, pr, pd, ml, mr, md = self.vision.get_detection()
-        #self.vision.new_observation()
         #x = (self.position[0]-(cfg.WORLD[0]/2))/(cfg.WORLD[0]/2)
         #y = (self.position[1]-(cfg.WORLD[1]/2))/(cfg.WORLD[1]/2)
         eng = self.energy/self.max_energy
@@ -385,19 +383,6 @@ class Creature(Life):
             else:
                 self.running = False
 
-        #if self.output[6] >= 0.7 and not self.running:
-        #    if not self.hidding:
-        #        if self.hide_ref_time == 0.0:
-        #            self.hide_ref_time = 1.0
-        #            self.hidding = True
-        #        else:
-        #            self.hidding = False
-        #    else:
-        #        self.hidding = True
-        #else:
-        #    self.hidding = False
-        #    self.output[6] = 0
-            
     def draw_energy_bar(self, screen: Surface, rx: int, ry: int):
         bar_red = Color(255, 0, 0)
         bar_green = Color(0, 255, 0)
