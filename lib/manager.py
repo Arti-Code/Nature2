@@ -358,6 +358,7 @@ class Manager:
                 if max_nodes_num < node_num:
                     max_nodes_num = node_num
             max_layer_size = max_nodes_num * v_space
+            max_net_length = len(network.layers)*h_space
             l = 0
             base_line = []
 
@@ -388,6 +389,10 @@ class Manager:
                 n = 0
                 desc_idx = 0
                 base_line.append(round((cfg.NET_BASE + max_nodes_num * v_space)/2))
+                back_box = Rect(4, cfg.SCREEN[1] - (max(base_line))-4, max_net_length+110, max_layer_size+6)
+                gfxdraw.aapolygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color("orange"))
+                pygame.draw.polygon(self.screen, Color("orange"), [(back_box.left+1, back_box.top+1), (back_box.right-2, back_box.top+1), (back_box.right-2, back_box.bottom-2), (back_box.left+1, back_box.bottom-2)], 2)
+                gfxdraw.filled_polygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0, 0, 0, 35))
                 for node_key in network.layers[layer].nodes:
                     node = network.nodes[node_key]
                     if node.recombined:

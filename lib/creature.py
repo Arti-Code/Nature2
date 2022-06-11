@@ -1,17 +1,14 @@
 from copy import copy, deepcopy
-#from nis import match
 from random import random, randint
-from math import log, sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt
+from math import pi as PI, sqrt
 from statistics import mean
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
-from pygame.font import Font
 from pygame.math import Vector2
 import pymunk as pm
 from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
 from lib.life import Life
 from lib.math2 import flipy, clamp
-from lib.sensor import Sensor
 from lib.net import Network
 from lib.species import random_name, modify_name
 from lib.config import cfg
@@ -28,7 +25,7 @@ class Creature(Life):
     def __init__(self, screen: Surface, space: Space, time: int, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
         super().__init__(screen=screen, space=space, collision_tag=collision_tag, position=position)
         self.angle = random()*2*PI
-        self.output = [0, 0, 0, 0, 0]
+        self.output: list[float] = [0, 0, 0, 0, 0]
         self.generation = 0
         self.fitness = 0
         self.neuro = Network()
@@ -56,7 +53,7 @@ class Creature(Life):
         self.side_angle = 0
         #self.sensor_angle = (1 - random())*cfg.SENSOR_MAX_ANGLE
         #self.sensor_angle = ((random()+1)/2)*cfg.SENSOR_MAX_ANGLE
-        self.vision = Vision(self, cfg.SENSOR_RANGE, cfg.SENSOR_MAX_ANGLE*(self.eyes/10), (0.0, 0.0), "vision")
+        self.vision: Vision = Vision(self, cfg.SENSOR_RANGE, cfg.SENSOR_MAX_ANGLE*(self.eyes/10), (0.0, 0.0), "vision")
         space.add(self.vision)
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
@@ -103,7 +100,7 @@ class Creature(Life):
         self.generation = genome['gen']+1
         self.genealogy = genome['genealogy']
         self.name = genome['name']
-        mutations = self.neuro.Mutate(mutations_rate=self.mutations)
+        mutations = self.neuro.Mutate()
         self.nodes_num = self.neuro.GetNodesNum()
         self.links_num = self.neuro.GetLinksNum()
         self.signature = genome['signature']
@@ -222,7 +219,6 @@ class Creature(Life):
         if self.normal != None:
             gfxdraw.line(screen, int(self.position.x), int(flipy(self.position.y)), int(self.position.x+self.normal.x*50), int(flipy(self.position.y+self.normal.y*50)), Color('yellow'))
             #self.normal = None
-
     def draw_detectors(self, screen, rel_pos: Vector2):
         for detector in self.sensors:
             detector.draw(screen=screen, rel_pos=rel_pos)
@@ -238,7 +234,7 @@ class Creature(Life):
         self.collide_meat = False
         
     def draw_name(self, camera: Camera):
-        rpos = camera.rel_pos(Vector2((self.position.x-20), flipy(self.position.y+14)))
+        rpos = camera.rel_pos(Vector2((self.position.x), flipy(self.position.y+20)))
         return self.name, rpos.x, rpos.y
 
     def draw_dist(self, camera: Camera):
@@ -359,7 +355,10 @@ class Creature(Life):
 
     def analize(self):
         if self.mem_time <= 0:
+            if not self.vision.new_observation():
+                return
             input = self.get_input()
+            self.vision.reset_observation()
             self.output = self.neuro.Calc(input)
             self.mem_time = cfg.MEM_TIME
             for o in range(len(self.output)):
@@ -384,19 +383,6 @@ class Creature(Life):
             else:
                 self.running = False
 
-        #if self.output[6] >= 0.7 and not self.running:
-        #    if not self.hidding:
-        #        if self.hide_ref_time == 0.0:
-        #            self.hide_ref_time = 1.0
-        #            self.hidding = True
-        #        else:
-        #            self.hidding = False
-        #    else:
-        #        self.hidding = True
-        #else:
-        #    self.hidding = False
-        #    self.output[6] = 0
-            
     def draw_energy_bar(self, screen: Surface, rx: int, ry: int):
         bar_red = Color(255, 0, 0)
         bar_green = Color(0, 255, 0)

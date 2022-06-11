@@ -362,7 +362,7 @@ class GUI():
         self.size = new_size
         self.create_title(new_size)
         #self.create_enviro_win()
-        btn_pos = Rect((round(cfg.SCREEN[0]-60), 10), (55, 55))
+        btn_pos = Rect((round(cfg.SCREEN[0]-57), 2), (55, 55))
         self.create_menu_btn(btn_pos)
         #self.create_title(new_size)
 
@@ -519,13 +519,12 @@ class GUI():
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         data['NEURO'] = ''
         data['PHYSIC'] = ''
-        data['V2M'] = ''
         self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (160, 140)), data=data, dT=dT)
 
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((200, 0), (140, 275)), data=data, dT=dT)
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((0, 0), (140, 275)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
@@ -568,6 +567,7 @@ class GUI():
                 data['LIFE'] = str(round(self.owner.enviro.selected.life_time))
                 data['ENERGY'] = str(round(self.owner.enviro.selected.energy))
                 data['SIZE'] = str(round(self.owner.enviro.selected.shape.radius))
+                data['S'] = str(len(self.owner.enviro.selected.plants_in_area))
             elif isinstance(self.owner.enviro.selected, Meat):
                 data['LIFE'] = str(round(self.owner.enviro.selected.life_time))
                 data['SPECIE'] = 'MEAT'
@@ -637,7 +637,6 @@ class GUI():
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         data['NEURO'] = str(round(self.owner.enviro.neuro_avg_time*1000, 1)) + 'ms'
         data['PHYSIC'] = str(round(self.owner.enviro.physics_avg_time*1000, 1)) + 'ms'
-        data['V2M'] = str(round(cfg.V2M, 2))
         return data
 
     def process_event(self, event, dt: float)->bool:

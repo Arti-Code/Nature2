@@ -30,6 +30,8 @@ class Vision(Circle):
         self.rng = pow(self.radius, 2)
         self.reset_detection()
         self.reset_range()
+        self.observe: bool=True
+        self.observe_done: int=-1
 
     def reset_detection(self):
         rng = self.rng
@@ -48,7 +50,11 @@ class Vision(Circle):
             'dist': rng,
             'target': None
         }
+        self.observe_done = -1
         #self.update_max_dist()
+
+    def allow_observe(self, allow: bool):
+        self.observe = allow
 
     def reset_range(self):
         rng = self.rng
@@ -160,6 +166,17 @@ class Vision(Circle):
         gfxdraw.filled_circle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/9+1), eye_color)
         gfxdraw.aacircle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/9+1), eye_color)
         gfxdraw.filled_circle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/9+1), eye_color)
-        self.set_detection_color(detection=False)
-        self.reset_detection()
-        self.reset_range()
+
+    def new_observation(self) -> bool:
+        if not self.observe:
+            self.set_detection_color(detection=False)
+            self.reset_detection()
+            self.reset_range()
+            self.allow_observe(True)
+            return False
+        elif self.observe_done:
+            self.allow_observe(False)
+            return True
+
+    def reset_observation(self):
+        self.observe_done = False
