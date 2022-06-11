@@ -360,6 +360,7 @@ class Creature(Life):
             if not self.vision.new_observation():
                 return
             input = self.get_input()
+            self.vision.reset_observation()
             self.output = self.neuro.Calc(input)
             self.mem_time = cfg.MEM_TIME
             for o in range(len(self.output)):
