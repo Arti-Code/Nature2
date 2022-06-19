@@ -418,5 +418,36 @@
            "hovered_bg":"#fdfda0f7",
            "normal_border": "#fa1e1e"
         }
+    },
+    "#load_creature_win.#btn_load_creature":
+    {
+        "colours":
+        {
+           "normal_text":"#ffffff",
+           "normal_bg":"#04ff00",
+           "hovered_bg":"#59ff00",
+           "normal_border": "#00bd06"
+        }
+    },
+    "#load_creature_win.#lab_creature_to_load":
+    {
+        "colours":
+        {
+           "normal_text":"#ffffff",
+           "normal_bg":"#04ff00",
+           "hovered_bg":"#59ff00",
+           "normal_border": "#00bd06"
+        },
+        "misc":
+        {
+           "text_horiz_alignment": "left"
+        },
+        "font":
+        {
+           "name": "fira_code",
+           "size": "8",
+           "bold": "0",
+           "italic": "0"
+        }
     }
  }
