@@ -20,6 +20,8 @@ from lib.meat import Meat
 
 btn_w = 150
 btn_h = 30
+btn_h_xs = 15
+space = 5
 btn_s = 10
 
 class NewSimWindow(UIWindow):
@@ -113,14 +115,14 @@ class LoadCreatureWindow(UIWindow):
         self.manager = manager
         creatures = self.read_creature_list(creature_names=creature_names)
         buttons = []
-        i = 1
+        i = 0
         for c in creatures:
-            text = f"{c[0]} [G:{c[1]}] [P:{c[2]} [F:{c[3]}]"
-            lab = UILabel(Rect((10, (btn_s+btn_h)*i), (btn_w, btn_h)), text=text, manager=self.manager, container=self, parent_element=self, object_id='lab_creature_to_load_'+str(i))
-            btn = LoadBtn(Rect((180, (btn_s+btn_h)*i), (60, btn_h)), text="==>", manager=self.manager, container=self, parent_element=self, object_id='#btn_load_creature_'+str(i), obj_to_load=c[0])
+            text = f"{c[0]}   [G:{c[1]}]  [P:{c[2]}]  [F:{c[3]}]  [M:{c[4]}]  [S:{c[5]}]"
+            lab = UILabel(Rect((25, (space+btn_h_xs)*i+5), (btn_w+100, btn_h_xs)), text=text, manager=self.manager, container=self, parent_element=self, object_id='#lab_creature_to_load')
+            btn = LoadBtn(Rect((5, (space+btn_h_xs)*i+5), (btn_h_xs, btn_h_xs)), text="", manager=self.manager, container=self, parent_element=self, object_id='#btn_load_creature', obj_to_load=c[0])
             buttons.append((lab, btn))
             i += 1
-        btn = UIButton(Rect((75, (btn_s+btn_h)*i), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#load_creature_back')
+        #btn = UIButton(Rect((50, (space+btn_h_xs)*i+10), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#load_creature_back')
 
     def read_creature_list(self, creature_names: list) -> list:
         creatures = []
@@ -129,7 +131,7 @@ class LoadCreatureWindow(UIWindow):
             json_creature = f.read()
             f.close()
             creature = json.loads(json_creature)
-            creatures.append((creature['name'], creature['gen'], creature['power'], creature['food']))
+            creatures.append((creature['name'], creature['gen'], creature['power'], creature['food'], creature['speed'], int(creature['size'])))
         return creatures
 
 class RankWindow(UIWindow):
@@ -467,11 +469,11 @@ class GUI():
         self.load_sim_menu = LoadSimWindow(manager=self.ui_mgr, rect=pos, simulations=simulations)
 
     def create_load_creature_win(self):
-        w = 250
+        w = 300
         creatures = self.get_saved_creatures()
         cr_num = len(creatures)
-        h = 75 + (25 * cr_num)
-        pos = Rect((self.cx-w/2, self.cy-h+100), (w, h+200))
+        h = 10 + (20 * cr_num)
+        pos = Rect((10+self.cx-w/2, self.cy-h+50), (w, h+10))
         self.load_creature_win = LoadCreatureWindow(manager=self.ui_mgr, rect=pos, creature_names=creatures)
 
     def create_info_win(self, text: str, title: str):
@@ -749,7 +751,7 @@ class GUI():
                 elif event.ui_object_id == '#credits_win.#btn_credits_close':
                     self.credits_win.kill()
                 #   >>> LOAD CREATURE WINDOW <<<
-                elif event.ui_object_id[0: 38] == '#load_creature_win.#btn_load_creature_':
+                elif event.ui_object_id == '#load_creature_win.#btn_load_creature':
                     creature_name = event.ui_element.obj_to_load
                     #self.load_creature_win.kill()
                     self.load_creature(creature_name=creature_name)
