@@ -28,10 +28,10 @@ class Plant(Life):
         self.shape = Circle(self, self.size)
         self.shape.collision_type = collision_tag
         space.add(self.shape)
-        self.area = Circle(self, cfg.PLANT_RANGE)
-        self.area.collision_type = 18
-        self.area.sensor = True
-        space.add(self.area)
+        #self.area = Circle(self, cfg.PLANT_RANGE)
+        #self.area.collision_type = 18
+        #self.area.sensor = True
+        #space.add(self.area)
         self.new_plant = 2
         self.plants_in_area = []
         self.area_timer = 5.0
@@ -45,7 +45,7 @@ class Plant(Life):
 
     def update(self, dt: float, selected: Body):
         super().update(dt, selected)
-        self.update_area_timer(dt=dt)
+        #self.update_area_timer(dt=dt)
         if self.energy < self.max_energy and self.energy > 0:
             self.energy += cfg.PLANT_GROWTH*dt
             new_size = floor(log2(self.energy))
@@ -64,11 +64,11 @@ class Plant(Life):
     def update_area_timer(self, dt: float, restart_time: float=5.0):
         self.area_timer -= dt
         if self.area_timer <= 0:
-            if not self.check_area:
-                self.check_area = True
-            else:
-                self.check_area = False
-                self.area_timer = restart_time
+           # if not self.check_area:
+            self.check_area = True
+            #else:
+                #self.check_area = False
+                #self.area_timer = restart_time
 
 
     def check_reproduction(self) -> bool:
@@ -79,7 +79,7 @@ class Plant(Life):
 
     def kill(self, space: Space):
         space.remove(self.shape)
-        space.remove(self.area)
+        #space.remove(self.area)
         space.remove(self)
 
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:

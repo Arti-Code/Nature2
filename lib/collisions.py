@@ -50,12 +50,12 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
     plant_rock_collisions_end = space.add_collision_handler(6, 8)
     plant_rock_collisions_end.separate = process_plant_rock_collisions_end
 
-    area_plant_collisions = space.add_collision_handler(18, 6)
-    area_plant_collisions.begin = process_area_plant_collisions
-    area_plant_collisions.data['dt'] = dt
-
-    area_plant_collisions_end = space.add_collision_handler(18, 6)
-    area_plant_collisions_end.separate = process_area_plant_collisions_end
+#    area_plant_collisions = space.add_collision_handler(18, 6)
+#    area_plant_collisions.begin = process_area_plant_collisions
+#    area_plant_collisions.data['dt'] = dt
+#
+#    area_plant_collisions_end = space.add_collision_handler(18, 6)
+#    area_plant_collisions_end.separate = process_area_plant_collisions_end
 
     #DETECTIONS:
     creature_detection = space.add_collision_handler(4, 2)
