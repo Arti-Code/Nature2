@@ -30,8 +30,8 @@ class NewSimWindow(UIWindow):
 
         super().__init__(rect, manager=manager, window_display_title='New Simulation', object_id="#new_win", visible=True)
         self.manager = manager
-        self.label = UILabel(Rect((50, 15), (200, 15)), text='Enter New Project Name', manager=manager, container=self, parent_element=self)
-        self.edit = UITextEntryLine(Rect((50, 50), (200, 20)), manager=manager, container=self, parent_element=self)
+        self.label = UILabel(Rect((50, 15), (200, 30)), text='Enter New Project Name', manager=manager, container=self, parent_element=self)
+        self.edit = UITextEntryLine(Rect((50, 50), (200, 30)), manager=manager, container=self, parent_element=self)
         self.cancel = UIButton(Rect((50, 100), (75, 30)), text='Cancel', manager=manager, container=self, parent_element=self, object_id='#btn_cancel')
         self.accept = UIButton(Rect((175, 100), (75, 30)), text='Accept', manager=manager, container=self, parent_element=self, object_id='#btn_accept')
 
