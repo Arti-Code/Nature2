@@ -232,6 +232,7 @@ class Creature(Life):
         self.collide_plant = False
         self.collide_water = False
         self.collide_meat = False
+        self.border = False
         
     def draw_name(self, camera: Camera):
         rpos = camera.rel_pos(Vector2((self.position.x), flipy(self.position.y+20)))
@@ -349,6 +350,7 @@ class Creature(Life):
         input.append(ml)
         input.append(mr)
         input.append(md)
+        input.append(int(self.border))
         self.pain = False
         self.reset_collisions()
         return input

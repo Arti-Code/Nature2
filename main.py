@@ -63,8 +63,8 @@ class Simulation():
         self.physics_single_times = []
         self.physics_avg_time = 1
         self.project_name = None
-        self.creature_list = []
-        self.plant_list = []
+        self.creature_list: list[Creature] = []
+        self.plant_list: list[Plant] = []
         self.wall_list = []
         self.meat_list = []
         self.lands = []
