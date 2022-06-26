@@ -63,12 +63,12 @@ class Simulation():
         self.physics_single_times = []
         self.physics_avg_time = 1
         self.project_name = None
-        self.creature_list: list[Creature] = []
-        self.plant_list: list[Plant] = []
+        self.creature_list:     list[Creature] = []
+        self.plant_list:        list[Plant] = []
+        self.meat_list:         list[Meat] = []
+        self.rocks_list:        list[Rock] = []
         self.wall_list = []
-        self.meat_list = []
         self.lands = []
-        self.rocks = []
         self.sel_idx = 0
         self.FPS = 30
         self.dt = 1/self.FPS
@@ -105,7 +105,7 @@ class Simulation():
         water = generate_terrain_blue(water_img, self.space, 2, 0.392, 0, 14, Color((0, 0, 255, 255)))
         self.lands.append(water)
         
-    def create_rock(self, vert_num: int, size: int, position: Vec2d):
+    def create_rock2(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
         vertices = []
         for v in range(vert_num):
@@ -115,6 +115,10 @@ class Simulation():
             vertices.append(Vec2d(x, y)+position)
         rock = Rock(self.screen, self.space, vertices, 3, Color('grey40'), Color('grey'))
         self.wall_list.append(rock)
+
+    def create_rock(self, vert_num: int, size: int, position: Vec2d):
+        rock: Rock=Rock(self.space, vert_num, size, position, 2)
+        self.rocks_list.append(rock)
         
     def create_enviro(self):
         self.time = 0
@@ -144,8 +148,8 @@ class Simulation():
             self.wall_list.append(wall)
 
     def create_rocks(self, rock_num: int):
-        for _r in range(rock_num):
-            self.create_rock(5, 110, random_position(cfg.WORLD))
+        for _ in range(rock_num):
+            self.create_rock(randint(6, 10), randint(10, 50), random_position(cfg.WORLD))
 
     def create_plants(self, plant_num: int):
         for _p in range(plant_num):
@@ -399,6 +403,9 @@ class Simulation():
     def draw_rocks(self):
         for wall in self.wall_list:
             wall.draw(screen=self.screen, camera=self.camera)
+
+        for rock in self.rocks_list:
+            rock.draw(screen=self.screen, camera=self.camera)
 
     def draw_interface(self):
         self.draw_network()

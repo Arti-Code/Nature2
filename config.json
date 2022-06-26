@@ -65,7 +65,7 @@
   "STAT_PERIOD": 50,
   "TIME": 1,
   
-  "ROCK_NUM": 0,
+  "ROCK_NUM": 25,
   "WATER_COST": 0.01,
   "WATER_MOVE": 0.1,
   "NEURON_MOD": 50,
