@@ -52,11 +52,6 @@ class Rock(Body):
         return Rect(x_min, y_min, x_max-x_min, y_max-y_min)
 
     def draw(self, screen: Surface, camera: Camera) -> bool:
-        #p1 = self.shape.a
-        #p2 = self.shape.b
-        #x1 = int(p1[0]); y1 = int(p1[1])
-        #x2 = int(p2[0]); y2 = int(p2[1])
-        #line(screen, self.border_color, (x1, flipy(y1)), (x2, flipy(y2)), t)
         if not camera.rect_on_screen(self.rect):
             return False
         t = int(self.shape.radius)

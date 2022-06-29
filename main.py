@@ -149,7 +149,7 @@ class Simulation():
 
     def create_rocks(self, rock_num: int):
         for _ in range(rock_num):
-            self.create_rock(randint(6, 10), randint(10, 50), random_position(cfg.WORLD))
+            self.create_rock(randint(cfg.ROCK_VERT_MIN, cfg.ROCK_VERT_MAX), randint(cfg.ROCK_SIZE_MIN, cfg.ROCK_SIZE_MAX), random_position(cfg.WORLD))
 
     def create_plants(self, plant_num: int):
         for _p in range(plant_num):
@@ -446,6 +446,9 @@ class Simulation():
         for wall in self.wall_list:
             wall.kill(self.space)
         self.wall_list = []
+        for rock in self.rocks_list:
+            rock.kill(self.space)
+        self.rocks_list = []
 
     def update(self):
         self.calc_time()

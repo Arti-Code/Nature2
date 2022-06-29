@@ -1,7 +1,9 @@
 from random import randint
-from pymunk import Space
+from turtle import Vec2D
+from pymunk import Space, Arbiter, Vec2d
 from pygame import Color
 from lib.config import *
+from lib.vision import Target, TARGET_TYPE
 
 def diet(food: int, mod: float) -> float:
     return pow(food, 2) * mod
@@ -66,6 +68,9 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
   
     meat_detection = space.add_collision_handler(4, 10)
     meat_detection.pre_solve = process_meats_seeing
+
+    rock_detection = space.add_collision_handler(4, 8)
+    rock_detection.pre_solve = process_rocks_seeing
 
 
 def process_creatures_collisions(arbiter, space, data):
@@ -280,4 +285,29 @@ def process_area_plant_collisions_end(arbiter, space, data):
     other_plant = arbiter.shapes[1].body
     if other_plant in plant.plants_in_area:
         plant.plants_in_area.remove(other_plant)
+    return False
+
+def process_rocks_seeing(arbiter: Arbiter, space, data):
+    agent1 = arbiter.shapes[0].body
+    if not agent1.vision.observe:
+        return False
+    rock = arbiter.shapes[1].body
+    collisions = arbiter.contact_point_set
+    rock_pos: Vec2d=None
+    for col_point in collisions.points:
+        if not rock_pos:
+            rock_pos = col_point.point_b
+        else:
+            rock_pos += col_point.point_b
+    if len(collisions.points) > 1:
+        rock_pos = rock_pos/(len(collisions.points))
+    dist = rock_pos.get_dist_sqrd(agent1.position)
+    if dist > agent1.vision.max_dist_rock:
+        return False
+    v = rock_pos - agent1.position
+    f = agent1.rotation_vector
+    n = v.normalized()
+    angle = f.get_angle_between(n)
+    tg: Target=Target(TARGET_TYPE.ROCK, rock_pos, dist, angle)
+    agent1.vision.add_detection(angle=angle, dist=int(dist), target=tg, type='rock', close_object=False)
     return False

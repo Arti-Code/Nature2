@@ -1,7 +1,7 @@
 {
   "WORLD": [1800, 950],
   "SCREEN": [1800, 950],
-  "ITER": 4,
+  "ITER": 2,
   
   "PLANT_MIN_NUM": 5,
   "PLANT_MAX_NUM": 80,
@@ -11,7 +11,7 @@
   "PLANT_LIFE": 500,
   "PLANT_RANGE": 400,
 
-  "CREATURE_MIN_NUM": 20,
+  "CREATURE_MIN_NUM": 5,
   "CREATURE_INIT_NUM": 50,
   "CREATURE_MULTIPLY": 0.001,
   "CREATURE_MIN_SIZE": 4,
@@ -66,12 +66,16 @@
   "TIME": 1,
   
   "ROCK_NUM": 25,
+  "ROCK_SIZE_MIN": 20,
+  "ROCK_SIZE_MAX": 100,
+  "ROCK_VERT_MIN": 5,
+  "ROCK_VERT_MAX": 10,
   "WATER_COST": 0.01,
   "WATER_MOVE": 0.1,
   "NEURON_MOD": 50,
   "NEURO_COST": 0.01,
-  "NET_BASE": 208,
+  "NET_BASE": 300,
   "GENERATIONS_NUMBER": 2,
   
-  "NET": [15, 0, 0, 0, 0, 0, 0, 0, 5]
+  "NET": [18, 0, 0, 0, 0, 0, 0, 0, 5]
 }
