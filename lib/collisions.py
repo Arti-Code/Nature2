@@ -90,6 +90,9 @@ def process_creatures_collisions(arbiter, space, data):
                     agent.kills += 1
                 else:
                     agent.fitness += dmg*cfg.HIT2FIT
+                meat = diet(agent.food, cfg.DIET_MOD)
+                meat_value = (dmg/(agent.max_energy*100)) * meat * cfg.MEAT2ENG
+                agent.eat(meat_value)
     agent.collide_creature = True
     return False
 
