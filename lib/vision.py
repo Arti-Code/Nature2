@@ -5,7 +5,7 @@ import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect, draw
 from pygame.math import Vector2
 import pymunk as pm
-from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
+from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform, SegmentQueryInfo as RayCast
 from lib.math2 import flipy, ang2vec, ang2vec2, clamp
 from lib.config import cfg
 from lib.camera import Camera
@@ -95,6 +95,7 @@ class Vision(Circle):
 
         if type == 'creature':
             if self.enemy['dist'] > dist:
+                
                 self.enemy = {
                     'ang': angle,
                     'dist': dist,
