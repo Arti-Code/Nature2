@@ -3,7 +3,7 @@
   "SCREEN": [1900, 1000],
   "ITER": 2,
   
-  "PLANT_MIN_NUM": 5,
+  "PLANT_MIN_NUM": 20,
   "PLANT_MAX_NUM": 70,
   "PLANT_INIT_NUM": 50,
   "PLANT_MAX_SIZE": 11,
@@ -28,7 +28,7 @@
   "CLOSE_VISION": 10,
   
   "POWER_COST": 0.0004,
-  "MUTATIONS": 2,
+  "MUTATIONS": 1,
   "LINKS_RATE": 0.2,
   
   "BASE_ENERGY": 0.0035,
