@@ -102,7 +102,7 @@ class Creature(Life):
         self.generation = genome['gen']+1
         self.genealogy = genome['genealogy']
         self.name = genome['name']
-        mutations = self.neuro.Mutate()
+        mutations = self.neuro.Mutate(self.mutations)
         self.nodes_num = self.neuro.GetNodesNum()
         self.links_num = self.neuro.GetLinksNum()
         self.signature = genome['signature']

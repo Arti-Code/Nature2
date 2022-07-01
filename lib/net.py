@@ -402,25 +402,25 @@ class Network():
             output.append(self.nodes[out_node_key].value)
         return output
 
-    def MutateBias(self, dt=1):
+    def MutateBias(self, m=0):
         for n in self.nodes:
-            if (random()) < self.MUT_BIAS:
+            if (random()) < self.MUT_BIAS+self.MUT_BIAS*m:
                 self.nodes[n].RandomBias()
             if self.nodes[n].recurrent:
-                if (random()) < self.MUT_MEM:
+                if (random()) < self.MUT_MEM+self.MUT_MEM*m:
                     self.nodes[n].RandomMem()
 
-    def MutateLinks(self):
+    def MutateLinks(self, m=0):
         links_to_kill = []
         links_to_add = []
         added = 0; deleted = 0
 
         for l in self.links:
-            if (random()) < self.MUT_DEL_LINK:
+            if (random()) < self.MUT_DEL_LINK+self.MUT_DEL_LINK*m:
                 links_to_kill.append(l)
                 deleted += 1
 
-            if (random()) < self.MUT_ADD_LINK:
+            if (random()) < self.MUT_ADD_LINK+self.MUT_ADD_LINK*m:
                 link_added = False
                 while not link_added:
                     n1 = choice(list(self.nodes.keys()))
@@ -447,12 +447,12 @@ class Network():
         links_to_add.clear()
         return (added, deleted)
     
-    def MutateWeights(self, dt=1):
+    def MutateWeights(self, m=0):
         for l in self.links:
-            if (random()) < self.MUT_WEIGHT:
+            if (random()) < self.MUT_WEIGHT+self.MUT_WEIGHT*m:
                 self.links[l].RandomWeight()
 
-    def MutateNodes(self):
+    def MutateNodes(self, m=0):
         nodes_to_kill = []
         nodes_to_add = []
         links_to_kill = []
@@ -463,7 +463,7 @@ class Network():
         output_nodes = self.GetNodeKeyList([TYPE.OUTPUT])
         node_keys = self.GetNodeKeyList([TYPE.INPUT, TYPE.HIDDEN, TYPE.OUTPUT])
         for n in node_keys:
-            if random() < (self.MUT_DEL_NODE):
+            if random() < (self.MUT_DEL_NODE+self.MUT_DEL_NODE*m):
                 if self.nodes[n].type == TYPE.HIDDEN:
                     if not n in nodes_to_kill:
                         nodes_to_kill.append(n)
@@ -474,7 +474,7 @@ class Network():
                         nodes_to_kill.append(h)
                         deleted += 1
         for n in node_keys:
-            if random() < (self.MUT_ADD_NODE):
+            if random() < (self.MUT_ADD_NODE+self.MUT_ADD_NODE*m):
                 layer_key = choice(hidden_list)
                 n1key = choice(input_nodes)
                 n2key = choice(output_nodes)
@@ -494,9 +494,9 @@ class Network():
         
         return (added, deleted)
     
-    def MutateNodeType(self, dt=1):
+    def MutateNodeType(self, m=0):
         for n in self.nodes:
-            if (random()) < self.MUT_NODE_TYPE:
+            if (random()) < self.MUT_NODE_TYPE+self.MUT_NODE_TYPE*m:
                 n_type = choice(['tanh', 'sigmoid', 'binary', 'relu', 'leaky_relu', 'memory'])
                 if n_type == 'memory':
                     self.nodes[n].recurrent = not self.nodes[n].recurrent
@@ -525,9 +525,10 @@ class Network():
                 elif n_type == 'pulse':
                     self.nodes[n].activation = ACTIVATION.PULSE
 
-    def Mutate(self, dt=1) -> list[tuple]:
+    def Mutate(self, modificator=5) -> list[tuple]:
         node_num = len(self.nodes)-(len(self.GetNodeKeyList([TYPE.INPUT]))+len(self.GetNodeKeyList([TYPE.OUTPUT])))
         link_num = len(self.links)
+        modificator = (-5+modificator)/10
         if node_num != 0:
             self.node_index = 0.05/node_num
         else:
@@ -536,11 +537,11 @@ class Network():
             self.link_index = 0.05/link_num
         else:
             self.link_index = 0.05
-        self.MutateBias(dt)
-        added_l, deleted_l = self.MutateLinks()
-        self.MutateWeights(dt)
-        added_n, deleted_n = self.MutateNodes()
-        self.MutateNodeType(dt)
+        self.MutateBias(modificator)
+        added_l, deleted_l = self.MutateLinks(modificator)
+        self.MutateWeights(modificator)
+        added_n, deleted_n = self.MutateNodes(modificator)
+        self.MutateNodeType(modificator)
         self.node_num = self.GetNodesNum()
         self.link_num = self.GetLinksNum()
         return [(added_n, deleted_n), (added_l, deleted_l)]

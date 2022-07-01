@@ -218,12 +218,12 @@ def process_agents_seeing(arbiter: Arbiter, space: Space, data):
     if not agent1.vision.observe:
         return False
     agent2 = arbiter.shapes[1].body
-    #agent1.vision.set_detection_color(detection=True)
     dist = agent2.position.get_dist_sqrd(agent1.position)
     if dist > agent1.vision.max_dist_enemy:
         return False
     close_object: bool=False
     filter: ShapeFilter=ShapeFilter()
+    #***  [[[FIX: add rot_vec*20]]] !!!
     if not line_of_sight(space, agent1.position+agent1.rotation_vector*20, agent2.position, filter):
         return False
     if pow((agent1.size*3+cfg.CLOSE_VISION), 2) >= dist:
@@ -244,7 +244,6 @@ def process_plants_seeing(arbiter, space, data):
     if not agent1.vision.observe:
         return False
     agent2 = arbiter.shapes[1].body
-    #agent1.vision.set_detection_color(detection=True)
     dist = agent2.position.get_dist_sqrd(agent1.position)
     if dist > agent1.vision.max_dist_plant:
         return False
@@ -270,7 +269,6 @@ def process_meats_seeing(arbiter, space, data):
     if not agent1.vision.observe:
         return False
     agent2 = arbiter.shapes[1].body
-    #agent1.vision.set_detection_color(detection=True)
     dist = agent2.position.get_dist_sqrd(agent1.position)
     if dist > agent1.vision.max_dist_meat:
         return False
