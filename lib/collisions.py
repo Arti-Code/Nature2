@@ -1,10 +1,19 @@
 from random import randint
 from turtle import Vec2D
-from pymunk import Space, Arbiter, Vec2d, ShapeFilter
+from pymunk import SegmentQueryInfo, Space, Arbiter, Vec2d, ShapeFilter
 from pygame import Color
 from lib.config import *
 from lib.vision import Target, TARGET_TYPE
 from lib.rock import Rock
+
+def line_of_sight(space: Space, start_vec: Vec2d, end_vec: Vec2d, filter: ShapeFilter) -> bool:
+    query: SegmentQueryInfo=space.segment_query_first(start_vec, end_vec, 1.0, filter)
+    if query == None:
+        return True
+    elif not isinstance(query.shape.body, Rock):
+        return True
+    else:
+        return False
 
 def diet(food: int, mod: float) -> float:
     return pow(food, 2) * mod
@@ -214,10 +223,8 @@ def process_agents_seeing(arbiter: Arbiter, space: Space, data):
     if dist > agent1.vision.max_dist_enemy:
         return False
     close_object: bool=False
-    #filter: ShapeFilter=ShapeFilter(mask=0b101010101000101010)
     filter: ShapeFilter=ShapeFilter()
-    on_sight_line = space.segment_query_first(agent1.position+agent1.rotation_vector*20, agent2.position, 1.0, shape_filter=filter)
-    if isinstance(on_sight_line.shape.body, Rock):
+    if not line_of_sight(space, agent1.position+agent1.rotation_vector*20, agent2.position, filter):
         return False
     if pow((agent1.size*3+cfg.CLOSE_VISION), 2) >= dist:
         close_object = True
@@ -242,6 +249,9 @@ def process_plants_seeing(arbiter, space, data):
     if dist > agent1.vision.max_dist_plant:
         return False
     close_object: bool=False
+    filter: ShapeFilter=ShapeFilter()
+    if not line_of_sight(space, agent1.position+agent1.rotation_vector*20, agent2.position, filter):
+        return False
     if pow((agent1.size*3+cfg.CLOSE_VISION), 2) >= dist:
         close_object = True
     v = agent2.position - agent1.position
@@ -265,6 +275,9 @@ def process_meats_seeing(arbiter, space, data):
     if dist > agent1.vision.max_dist_meat:
         return False
     close_object: bool=False
+    filter: ShapeFilter=ShapeFilter()
+    if not line_of_sight(space, agent1.position+agent1.rotation_vector*20, agent2.position, filter):
+        return False
     if pow((agent1.size*3+cfg.CLOSE_VISION), 2) >= dist:
         close_object = True
     v = agent2.position - agent1.position
