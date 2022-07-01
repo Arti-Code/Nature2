@@ -19,8 +19,8 @@ def diet(food: int, mod: float) -> float:
     return pow(food, 2) * mod
 
 def set_collision_calls(space: Space, dt: float, creatures_num: int):
-    #* 2: body | 8: rock | 4: sensor | 6: plant | 12: new_plant | 16: eye | 10: meat | 14: water | 18: area
-    #COLLISIONS:
+# 2: body | 8: rock | 4: sensor | 6: plant | 12: new_plant | 16: eye | 10: meat | 14: water | 18: area
+    
     creature_collisions = space.add_collision_handler(2, 2)
     creature_collisions.pre_solve = process_creatures_collisions
     creature_collisions.data['dt'] = dt
@@ -62,13 +62,6 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
     plant_rock_collisions_end = space.add_collision_handler(6, 8)
     plant_rock_collisions_end.separate = process_plant_rock_collisions_end
 
-#    area_plant_collisions = space.add_collision_handler(18, 6)
-#    area_plant_collisions.begin = process_area_plant_collisions
-#    area_plant_collisions.data['dt'] = dt
-#
-#    area_plant_collisions_end = space.add_collision_handler(18, 6)
-#    area_plant_collisions_end.separate = process_area_plant_collisions_end
-
     #DETECTIONS:
     creature_detection = space.add_collision_handler(4, 2)
     creature_detection.pre_solve = process_agents_seeing
@@ -83,6 +76,9 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
     rock_detection.pre_solve = process_rocks_seeing
 
 
+#^      [[[====DIRECT CONTACTS====]]]
+
+#?  [[[ENEMYS CONTACT]]]
 def process_creatures_collisions(arbiter, space, data):
     dt = data['dt']
     agent = arbiter.shapes[0].body
@@ -110,7 +106,7 @@ def process_creatures_collisions_end(arbiter, space, data):
     #arbiter.shapes[0].body.collide_creature = False
     return False
 
-
+#?  [[[PLANT CONTACT]]]
 def process_creature_plant_collisions(arbiter, space, data):
     dt = data['dt']
     hunter = arbiter.shapes[0].body
@@ -143,7 +139,7 @@ def process_creatures_plant_collisions_end(arbiter, space, data):
     #arbiter.shapes[0].body.collide_plant = False
     return False
 
-
+#?  [[[MEAT CONTACT]]]
 def process_creature_meat_collisions(arbiter, space, data):
     dt = data['dt']
     hunter = arbiter.shapes[0].body
@@ -176,7 +172,7 @@ def process_creatures_meat_collisions_end(arbiter, space, data):
     #arbiter.shapes[0].body.collide_meat = False
     return False        
 
-
+#?  [[[WATER CONTACT]]]
 def process_creature_water_collisions(arbiter, space, data):
     arbiter.shapes[0].body.on_water = True
     return False
@@ -185,7 +181,7 @@ def process_creature_water_collisions_end(arbiter, space, data):
     arbiter.shapes[0].body.on_water = False
     return False
 
-
+#?  [[[ROCK CONTACT]]]
 def process_creatures_rock_collisions(arbiter, space, data):
     arbiter.shapes[0].body.position -= arbiter.normal * 2.5
     arbiter.shapes[0].body.collide_something = True
@@ -195,7 +191,7 @@ def process_creatures_rock_collisions_end(arbiter, space, data):
     arbiter.shapes[0].body.collide_something = False
     return False
 
-
+#?  [[[ROCK-MEAT CONTACT]]]
 def process_meat_rock_collisions(arbiter, space, data):
     arbiter.shapes[0].body.position -= arbiter.normal
     return False
@@ -203,7 +199,7 @@ def process_meat_rock_collisions(arbiter, space, data):
 def process_meat_rock_collisions_end(arbiter, space, data):
     return False
 
-
+#?  [[[ROCK-PLANT CONTACT]]]
 def process_plant_rock_collisions(arbiter, space, data):
     arbiter.shapes[0].body.position -= arbiter.normal
     return False
@@ -212,7 +208,9 @@ def process_plant_rock_collisions_end(arbiter, space, data):
     return False
 
 
+#^      [[[====SEEING DETECTION====]]]
 
+#?  [[[SEEING ENEMY]]]
 def process_agents_seeing(arbiter: Arbiter, space: Space, data):
     agent1 = arbiter.shapes[0].body
     if not agent1.vision.observe:
@@ -239,7 +237,8 @@ def process_agents_seeing_end(arbiter, space, data):
     return False
 
 
-def process_plants_seeing(arbiter, space, data):
+#?  [[[SEEING PLANT]]
+def process_plants_seeing(arbiter: Arbiter, space: Space, data):
     agent1 = arbiter.shapes[0].body
     if not agent1.vision.observe:
         return False
@@ -264,7 +263,8 @@ def process_plants_seeing_end(arbiter, space, data):
     return False
 
 
-def process_meats_seeing(arbiter, space, data):
+#?  [[[SEEING MEAT]]]
+def process_meats_seeing(arbiter: Arbiter, space: Space, data):
     agent1 = arbiter.shapes[0].body
     if not agent1.vision.observe:
         return False
@@ -289,25 +289,8 @@ def process_meats_seeing_end(arbiter, space, data):
     return False
 
 
-def process_area_plant_collisions(arbiter, space, data):
-    plant = arbiter.shapes[0].body
-    if not plant.check_area:
-        return False
-    other_plant = arbiter.shapes[1].body
-    if not other_plant in plant.plants_in_area:
-        plant.plants_in_area.append(other_plant)
-    return False
-
-def process_area_plant_collisions_end(arbiter, space, data):
-    plant = arbiter.shapes[0].body
-    if not plant.check_area:
-        return False
-    other_plant = arbiter.shapes[1].body
-    if other_plant in plant.plants_in_area:
-        plant.plants_in_area.remove(other_plant)
-    return False
-
-def process_rocks_seeing(arbiter: Arbiter, space, data):
+#?  [[[SEEING ROCK]]]
+def process_rocks_seeing(arbiter: Arbiter, space: Space, data):
     agent1 = arbiter.shapes[0].body
     if not agent1.vision.observe:
         return False
