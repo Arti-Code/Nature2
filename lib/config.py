@@ -2,7 +2,7 @@ from math import pi as PI
 from json import loads, dumps
 
 TITLE = "NATURE"
-SUBTITLE = "v0.9.10" 
+SUBTITLE = "v0.9.11" 
 AUTHOR = "2019-2022 Artur Gwoździowski"
 
 class Configuration():
@@ -47,6 +47,7 @@ class Configuration():
         self.CHILDS_NUM = None
         self.MEAT2ENG = None
         self.VEGE2ENG = None
+        self.DMG2ENG = None
         self.HIT2FIT = None
         self.KILL2FIT = None
         self.VEGE2FIT = None
@@ -129,6 +130,7 @@ class Configuration():
         self.CHILDS_NUM             = cfg['CHILDS_NUM']
         self.MEAT2ENG               = cfg['MEAT2ENG']
         self.VEGE2ENG               = cfg['VEGE2ENG']
+        self.DMG2ENG                = cfg['DMG2ENG']
         self.HIT2FIT                = cfg['HIT2FIT']
         self.KILL2FIT               = cfg['KILL2FIT']
         self.DIFF                   = cfg['DIFF']

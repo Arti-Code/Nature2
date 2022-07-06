@@ -470,7 +470,6 @@ class Creature(Life):
             return True
 
     def eat(self, energy: float):
-        #energy *= self.meat/10
         self.energy += energy
         self.energy = clamp(self.energy, 0, self.max_energy)
 
