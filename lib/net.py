@@ -1,4 +1,5 @@
 from enum import Enum, IntEnum
+from platform import node
 from random import random, randint, choice, gauss
 from lib.math2 import sigmoid, tanh, relu, leaky_relu, binary, rev_binary, wide_binary, linear, pulse ,clamp
 from copy import deepcopy, copy
@@ -141,14 +142,14 @@ class Layer():
 class Network():
     """Neural Network created for Genetics Algorithms"""
 
-    MUT_BIAS        =   0.06 * cfg.MUTATIONS
-    MUT_WEIGHT      =   0.06 * cfg.MUTATIONS
-    MUT_DEL_LINK    =   0.02 * cfg.MUTATIONS
-    MUT_ADD_LINK    =   0.02 * cfg.MUTATIONS
-    MUT_DEL_NODE    =   0.015 * cfg.MUTATIONS
-    MUT_ADD_NODE    =   0.015 * cfg.MUTATIONS
-    MUT_NODE_TYPE   =   0.04 * cfg.MUTATIONS
-    MUT_MEM         =   0.04 * cfg.MUTATIONS
+    MUT_BIAS        =   0.12 * cfg.MUTATIONS
+    MUT_WEIGHT      =   0.12 * cfg.MUTATIONS
+    MUT_DEL_LINK    =   0.04 * cfg.MUTATIONS
+    MUT_ADD_LINK    =   0.04 * cfg.MUTATIONS
+    MUT_DEL_NODE    =   0.03 * cfg.MUTATIONS
+    MUT_ADD_NODE    =   0.03 * cfg.MUTATIONS
+    MUT_NODE_TYPE   =   0.08 * cfg.MUTATIONS
+    MUT_MEM         =   0.08 * cfg.MUTATIONS
     ADD_NODE_NUM = 0
     DEL_NODE_NUM = 0
 
@@ -156,9 +157,9 @@ class Network():
         self.node_num = 0
         self.layer_num = 0
         self.link_num = 0
-        self.layers = dict()
-        self.nodes = dict()
-        self.links = dict()
+        self.layers: dict[Layer] = {}
+        self.nodes: dict[Node] = {}
+        self.links: dict[Link] = {}
         self.log = []
         self.node_del_mod = 1
         self.node_add_mod = 1
@@ -402,43 +403,46 @@ class Network():
             output.append(self.nodes[out_node_key].value)
         return output
 
-    def MutateBias(self, dt=1):
-        for n in self.nodes:
-            if (random()) < self.MUT_BIAS:
-                self.nodes[n].RandomBias()
-            if self.nodes[n].recurrent:
-                if (random()) < self.MUT_MEM:
-                    self.nodes[n].RandomMem()
+    def MutateBias(self, m=0):
+#        for n in self.nodes:
+        node_keys = self.GetNodeKeyList([TYPE.INPUT, TYPE.HIDDEN, TYPE.OUTPUT])
+        n = choice(node_keys)
+        if (random()) < self.MUT_BIAS+self.MUT_BIAS*m:
+            self.nodes[n].RandomBias()
+        if self.nodes[n].recurrent:
+            if (random()) < self.MUT_MEM+self.MUT_MEM*m:
+                self.nodes[n].RandomMem()
 
-    def MutateLinks(self):
+    def MutateLinks(self, m=0):
         links_to_kill = []
         links_to_add = []
         added = 0; deleted = 0
+        link_keys = self.links.keys()
+        l = choice([*link_keys])
+        #for l in self.links:
+        if (random()) < self.MUT_DEL_LINK+self.MUT_DEL_LINK*m:
+            links_to_kill.append(l)
+            deleted += 1
 
-        for l in self.links:
-            if (random()) < self.MUT_DEL_LINK:
-                links_to_kill.append(l)
-                deleted += 1
-
-            if (random()) < self.MUT_ADD_LINK:
-                link_added = False
-                while not link_added:
-                    n1 = choice(list(self.nodes.keys()))
-                    n2 = choice(list(self.nodes.keys()))
-                    if n1 != n2:
-                        (l1, i1) = self.FindNode(n1)
-                        (l2, i2) = self.FindNode(n2)
-                        if l1 != l2:
-                            if l1 < l2:
-                                if not self.ConnectionExist(n1, n2, both_dirs=False):
-                                    links_to_add.append((n1, n2))
-                                    added += 1
-                                    link_added = True
-                            elif l2 < l1:
-                                if not self.ConnectionExist(n2, n1, both_dirs=False):
-                                    links_to_add.append((n2, n1))
-                                    link_added = True
-                                    added += 1
+        if (random()) < self.MUT_ADD_LINK+self.MUT_ADD_LINK*m:
+            link_added = False
+            while not link_added:
+                n1 = choice(list(self.nodes.keys()))
+                n2 = choice(list(self.nodes.keys()))
+                if n1 != n2:
+                    (l1, i1) = self.FindNode(n1)
+                    (l2, i2) = self.FindNode(n2)
+                    if l1 != l2:
+                        if l1 < l2:
+                            if not self.ConnectionExist(n1, n2, both_dirs=False):
+                                links_to_add.append((n1, n2))
+                                added += 1
+                                link_added = True
+                        elif l2 < l1:
+                            if not self.ConnectionExist(n2, n1, both_dirs=False):
+                                links_to_add.append((n2, n1))
+                                link_added = True
+                                added += 1
         for l in links_to_kill:
             self.DeleteLink(l)
         links_to_kill.clear()
@@ -447,12 +451,50 @@ class Network():
         links_to_add.clear()
         return (added, deleted)
     
-    def MutateWeights(self, dt=1):
-        for l in self.links:
-            if (random()) < self.MUT_WEIGHT:
-                self.links[l].RandomWeight()
+    def MutateWeights(self, m=0):
+        #for l in self.links:
+        l = choice([*self.links.keys()])
+        if (random()) < self.MUT_WEIGHT+self.MUT_WEIGHT*m:
+            self.links[l].RandomWeight()
 
-    def MutateNodes(self):
+    def MutateNodes(self, m=0):
+        nodes_to_kill = []
+        nodes_to_add = []
+        links_to_kill = []
+        hidden_list = []
+        added = 0; deleted = 0
+        hidden_list = self.GetLayerKeyList([TYPE.HIDDEN])
+        input_nodes = self.GetNodeKeyList([TYPE.INPUT])
+        output_nodes = self.GetNodeKeyList([TYPE.OUTPUT])
+        #node_keys = self.GetNodeKeyList([TYPE.HIDDEN])
+        n = choice([*self.nodes.keys()])
+        if self.nodes[n].type == TYPE.HIDDEN:
+            if random() < (self.MUT_DEL_NODE+self.MUT_DEL_NODE*m):
+                if not n in nodes_to_kill:
+                    nodes_to_kill.append(n)
+                    deleted += 1
+
+        if random() < (self.MUT_ADD_NODE+self.MUT_ADD_NODE*m):
+            layer_key = choice(hidden_list)
+            n1key = choice(input_nodes)
+            n2key = choice(output_nodes)
+            nodes_to_add.append((layer_key, n1key, n2key))
+            added += 1
+
+        for l in links_to_kill:
+            self.DeleteLink(l)
+        
+        for n in nodes_to_kill:
+            self.DeleteNode(n)
+
+        for layer, n_from, n_to in nodes_to_add:
+            node_key = self.AddNewNode(layer)
+            self.AddNewLink(n_from, node_key)
+            self.AddNewLink(node_key, n_to)
+        
+        return (added, deleted)
+
+    def MutateNodes_old(self, m=0):
         nodes_to_kill = []
         nodes_to_add = []
         links_to_kill = []
@@ -463,7 +505,7 @@ class Network():
         output_nodes = self.GetNodeKeyList([TYPE.OUTPUT])
         node_keys = self.GetNodeKeyList([TYPE.INPUT, TYPE.HIDDEN, TYPE.OUTPUT])
         for n in node_keys:
-            if random() < (self.MUT_DEL_NODE):
+            if random() < (self.MUT_DEL_NODE+self.MUT_DEL_NODE*m):
                 if self.nodes[n].type == TYPE.HIDDEN:
                     if not n in nodes_to_kill:
                         nodes_to_kill.append(n)
@@ -474,7 +516,7 @@ class Network():
                         nodes_to_kill.append(h)
                         deleted += 1
         for n in node_keys:
-            if random() < (self.MUT_ADD_NODE):
+            if random() < (self.MUT_ADD_NODE+self.MUT_ADD_NODE*m):
                 layer_key = choice(hidden_list)
                 n1key = choice(input_nodes)
                 n2key = choice(output_nodes)
@@ -494,40 +536,43 @@ class Network():
         
         return (added, deleted)
     
-    def MutateNodeType(self, dt=1):
-        for n in self.nodes:
-            if (random()) < self.MUT_NODE_TYPE:
-                n_type = choice(['tanh', 'sigmoid', 'binary', 'relu', 'leaky_relu', 'memory'])
-                if n_type == 'memory':
-                    self.nodes[n].recurrent = not self.nodes[n].recurrent
-                    if self.nodes[n].recurrent:
-                        self.nodes[n].mem = 0
-                        self.nodes[n].mem_weight = self.nodes[n].RandomNormal()
-                    else:
-                        self.nodes[n].mem = None
-                        self.nodes[n].mem_weight = None
-                elif n_type == 'tanh':
-                    self.nodes[n].activation = ACTIVATION.TANH
-                elif n_type == 'sigmoid':
-                    self.nodes[n].activation = ACTIVATION.SIGMOID
-                elif n_type == 'relu':
-                    self.nodes[n].activation = ACTIVATION.RELU
-                elif n_type == 'leaky_relu':
-                    self.nodes[n].activation = ACTIVATION.LEAKY_RELU
-                elif n_type == 'binary':
-                    self.nodes[n].activation = ACTIVATION.BINARY
-                elif n_type == 'rev_binary':
-                    self.nodes[n].activation = ACTIVATION.REV_BINARY
-                elif n_type == 'wide_binary':
-                    self.nodes[n].activation = ACTIVATION.WIDE_BINARY
-                elif n_type == 'linear':
-                    self.nodes[n].activation = ACTIVATION.LINEAR
-                elif n_type == 'pulse':
-                    self.nodes[n].activation = ACTIVATION.PULSE
+    def MutateNodeType(self, m=0):
+        #for n in self.nodes:
+        if (random()) < self.MUT_NODE_TYPE+self.MUT_NODE_TYPE*m:
+            node_keys = self.GetNodeKeyList([TYPE.INPUT, TYPE.HIDDEN, TYPE.OUTPUT])
+            n = choice(node_keys)
+            n_type = choice(['tanh', 'sigmoid', 'binary', 'relu', 'leaky_relu', 'memory'])
+            if n_type == 'memory':
+                self.nodes[n].recurrent = not self.nodes[n].recurrent
+                if self.nodes[n].recurrent:
+                    self.nodes[n].mem = 0
+                    self.nodes[n].mem_weight = self.nodes[n].RandomNormal()
+                else:
+                    self.nodes[n].mem = None
+                    self.nodes[n].mem_weight = None
+            elif n_type == 'tanh':
+                self.nodes[n].activation = ACTIVATION.TANH
+            elif n_type == 'sigmoid':
+                self.nodes[n].activation = ACTIVATION.SIGMOID
+            elif n_type == 'relu':
+                self.nodes[n].activation = ACTIVATION.RELU
+            elif n_type == 'leaky_relu':
+                self.nodes[n].activation = ACTIVATION.LEAKY_RELU
+            elif n_type == 'binary':
+                self.nodes[n].activation = ACTIVATION.BINARY
+            elif n_type == 'rev_binary':
+                self.nodes[n].activation = ACTIVATION.REV_BINARY
+            elif n_type == 'wide_binary':
+                self.nodes[n].activation = ACTIVATION.WIDE_BINARY
+            elif n_type == 'linear':
+                self.nodes[n].activation = ACTIVATION.LINEAR
+            elif n_type == 'pulse':
+                self.nodes[n].activation = ACTIVATION.PULSE
 
-    def Mutate(self, dt=1) -> list[tuple]:
+    def Mutate(self, modificator=5) -> list[tuple]:
         node_num = len(self.nodes)-(len(self.GetNodeKeyList([TYPE.INPUT]))+len(self.GetNodeKeyList([TYPE.OUTPUT])))
         link_num = len(self.links)
+        modificator = (-5+modificator)/10
         if node_num != 0:
             self.node_index = 0.05/node_num
         else:
@@ -536,11 +581,11 @@ class Network():
             self.link_index = 0.05/link_num
         else:
             self.link_index = 0.05
-        self.MutateBias(dt)
-        added_l, deleted_l = self.MutateLinks()
-        self.MutateWeights(dt)
-        added_n, deleted_n = self.MutateNodes()
-        self.MutateNodeType(dt)
+        self.MutateBias(modificator)
+        added_l, deleted_l = self.MutateLinks(modificator)
+        self.MutateWeights(modificator)
+        added_n, deleted_n = self.MutateNodes(modificator)
+        self.MutateNodeType(modificator)
         self.node_num = self.GetNodesNum()
         self.link_num = self.GetLinksNum()
         return [(added_n, deleted_n), (added_l, deleted_l)]

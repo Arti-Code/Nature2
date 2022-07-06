@@ -2,7 +2,7 @@ from math import pi as PI
 from json import loads, dumps
 
 TITLE = "NATURE"
-SUBTITLE = "v0.9.7" 
+SUBTITLE = "v0.9.11" 
 AUTHOR = "2019-2022 Artur Gwoździowski"
 
 class Configuration():
@@ -36,6 +36,9 @@ class Configuration():
         self.SENSOR_MAX_ANGLE = None
         self.CLOSE_VISION = None
         self.ROCK_NUM = None
+        self.ROCK_SIZE_MIN = None
+        self.ROCK_SIZE_MAX = None
+        self.ROCK_VERT_MIN = None
         self.RANK_SIZE = None
         self.MEAT_TIME = None
         self.SIZE2ENG = None
@@ -44,6 +47,7 @@ class Configuration():
         self.CHILDS_NUM = None
         self.MEAT2ENG = None
         self.VEGE2ENG = None
+        self.DMG2ENG = None
         self.HIT2FIT = None
         self.KILL2FIT = None
         self.VEGE2FIT = None
@@ -114,6 +118,10 @@ class Configuration():
         self.SENSOR_MAX_ANGLE       = cfg['SENSOR_MAX_ANGLE']
         self.CLOSE_VISION           = cfg['CLOSE_VISION']
         self.ROCK_NUM               = cfg['ROCK_NUM']
+        self.ROCK_SIZE_MIN          = cfg['ROCK_SIZE_MIN']
+        self.ROCK_SIZE_MAX          = cfg['ROCK_SIZE_MAX']
+        self.ROCK_VERT_MIN          = cfg['ROCK_VERT_MIN']
+        self.ROCK_VERT_MAX          = cfg['ROCK_VERT_MAX']
         self.RANK_SIZE              = cfg['RANK_SIZE']
         self.MEAT_TIME              = cfg['MEAT_TIME']
         self.SIZE2ENG               = cfg['SIZE2ENG']
@@ -122,6 +130,7 @@ class Configuration():
         self.CHILDS_NUM             = cfg['CHILDS_NUM']
         self.MEAT2ENG               = cfg['MEAT2ENG']
         self.VEGE2ENG               = cfg['VEGE2ENG']
+        self.DMG2ENG                = cfg['DMG2ENG']
         self.HIT2FIT                = cfg['HIT2FIT']
         self.KILL2FIT               = cfg['KILL2FIT']
         self.DIFF                   = cfg['DIFF']

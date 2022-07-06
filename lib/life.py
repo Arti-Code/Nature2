@@ -24,7 +24,7 @@ class Life(Body):
         space.add(self)
         self.selection_time = 0
         self.water_ahead = False
-        
+        self.border: bool = False
         self.collide_creature = False
         self.collide_plant = False
         self.collide_something = False
@@ -54,15 +54,19 @@ class Life(Body):
         if self.position.x <= 0:
             x = 2
             self.position = Vec2d(x, y)
+            self.border = True
         elif self.position.x >= cfg.WORLD[0]:
             x = cfg.WORLD[0]-2
             self.position = Vec2d(x, y)
+            self.border = True
         if self.position.y <= 0:
             y = 2
             self.position = Vec2d(x, y)
+            self.border = True
         elif self.position.y >= cfg.WORLD[1]:
             y = cfg.WORLD[1]-2
             self.position = Vec2d(x, y)
+            self.border = True
 
     def get_tile_coord(self) -> tuple:
         x = self.position.x; y = flipy(self.position.y)

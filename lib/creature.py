@@ -74,6 +74,8 @@ class Creature(Life):
         self.run_ref_time = 0.0
         self.on_water = False
         self.neuro.CalcNodeMutMod()
+        self.rock_vec: Vec2d=None
+        self.rock_dist = 0
 
     def genome_build(self, genome: dict) -> list[tuple]:
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
@@ -100,7 +102,7 @@ class Creature(Life):
         self.generation = genome['gen']+1
         self.genealogy = genome['genealogy']
         self.name = genome['name']
-        mutations = self.neuro.Mutate()
+        mutations = self.neuro.Mutate(self.mutations)
         self.nodes_num = self.neuro.GetNodesNum()
         self.links_num = self.neuro.GetLinksNum()
         self.signature = genome['signature']
@@ -208,6 +210,8 @@ class Creature(Life):
         self.vision.draw(screen=screen, camera=camera, rel_position=rel_pos, selected=marked, eye_color=eyes_color)
         self.color0 = self._color0
         self.draw_energy_bar(screen, rx, ry)
+        if self.rock_vec:
+            gfxdraw.line(screen, int(rx), int(ry), int(rx+self.rock_vec[0]), int(ry+self.rock_vec[1]), Color('red'))
         #self.reset_collisions()
         #self.vision.reset_range()
         #self.draw_water_bar(screen, rx, ry)
@@ -232,6 +236,8 @@ class Creature(Life):
         self.collide_plant = False
         self.collide_water = False
         self.collide_meat = False
+        self.border = False
+        #self.rock_vec = None
         
     def draw_name(self, camera: Camera):
         rpos = camera.rel_pos(Vector2((self.position.x), flipy(self.position.y+20)))
@@ -329,7 +335,7 @@ class Creature(Life):
 
     def get_input(self):
         input = []
-        al, ar, ad, pl, pr, pd, ml, mr, md = self.vision.get_detection()
+        al, ar, ad, pl, pr, pd, ml, mr, md, rl, rr, rd = self.vision.get_detection()
         #x = (self.position[0]-(cfg.WORLD[0]/2))/(cfg.WORLD[0]/2)
         #y = (self.position[1]-(cfg.WORLD[1]/2))/(cfg.WORLD[1]/2)
         eng = self.energy/self.max_energy
@@ -349,6 +355,10 @@ class Creature(Life):
         input.append(ml)
         input.append(mr)
         input.append(md)
+        input.append(rl)
+        input.append(rr)
+        input.append(rd)
+        input.append(int(self.border))
         self.pain = False
         self.reset_collisions()
         return input
@@ -460,7 +470,6 @@ class Creature(Life):
             return True
 
     def eat(self, energy: float):
-        #energy *= self.meat/10
         self.energy += energy
         self.energy = clamp(self.energy, 0, self.max_energy)
 

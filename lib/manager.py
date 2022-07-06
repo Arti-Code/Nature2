@@ -367,7 +367,9 @@ class Manager:
                 'ENERG', 'INJUR',
                 'ENE-L', 'ENE-R', 'ENE-D', 
                 'PLA-L', 'PLA-R', 'PLA-D',
-                'MEA-L', 'MEA-R', 'MEA-D'
+                'MEA-L', 'MEA-R', 'MEA-D',
+                'ROC-L', 'ROC-R', 'ROC-D',
+                'BORD'
             ]
             out_desc = [
                 "MOVE ", "LEFT ", "RIGHT", 

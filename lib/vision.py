@@ -1,14 +1,28 @@
 from random import random, randint
 from math import sin, cos, radians, degrees, pi as PI, floor, sqrt
+from enum import Enum
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect, draw
 from pygame.math import Vector2
 import pymunk as pm
-from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
+from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform, SegmentQueryInfo as RayCast
 from lib.math2 import flipy, ang2vec, ang2vec2, clamp
 from lib.config import cfg
 from lib.camera import Camera
 
+class TARGET_TYPE(Enum):
+    ENEMY   = 0
+    PLANT   = 1
+    MEAT    = 2
+    ROCK    = 3
+
+class Target():
+
+    def __init__(self, type: TARGET_TYPE, position: Vec2d, sqrt_distance: float=0.0, angle: float=0.0):
+        self.type: TARGET_TYPE=type
+        self.position = position
+        self.sqrt_distance = sqrt_distance
+        self.angle = angle
 
 class Vision(Circle):
 
@@ -26,6 +40,7 @@ class Vision(Circle):
         self.max_dist_enemy = 0.0
         self.max_dist_plant = 0.0
         self.max_dist_meat = 0.0
+        self.max_dist_rock = 0.0
         self.max_dist = 0.0
         self.rng = pow(self.radius, 2)
         self.reset_detection()
@@ -50,6 +65,11 @@ class Vision(Circle):
             'dist': rng,
             'target': None
         }
+        self.rock = {
+            'ang': 0.0,
+            'dist': rng,
+            'target': None
+        }
         self.observe_done = -1
         #self.update_max_dist()
 
@@ -61,6 +81,7 @@ class Vision(Circle):
         self.max_dist_enemy = rng
         self.max_dist_plant = rng
         self.max_dist_meat = rng
+        self.max_dist_rock = rng
         self.max_dist = rng
 
     def add_detection(self, angle: float, dist: float, target: Body, type: str, close_object: bool=False):
@@ -74,6 +95,7 @@ class Vision(Circle):
 
         if type == 'creature':
             if self.enemy['dist'] > dist:
+                
                 self.enemy = {
                     'ang': angle,
                     'dist': dist,
@@ -104,9 +126,20 @@ class Vision(Circle):
                 self.max_dist_meat = dist
                 if self.max_dist > dist:
                     self.max_dist = dist
+        elif type == 'rock':
+            dist1 = self.rock['dist']
+            if self.rock['dist'] > dist:
+                self.rock = {
+                    'ang': angle,
+                    'dist': dist,
+                    'target': target
+                }
+                self.max_dist_rock = dist
+                if self.max_dist > dist:
+                    self.max_dist = dist
 
     def update_max_dist(self):
-        self.max_dist = min([self.enemy['dist'], self.plant['dist'], self.meat['dist']])
+        self.max_dist = min([self.enemy['dist'], self.plant['dist'], self.meat['dist'], self.rock['dist']])
 
     def get_detection(self) -> list:
         enemy_l = -round((self.enemy['ang']/(self.semiwide)), 1)
@@ -118,13 +151,18 @@ class Vision(Circle):
         meat_l = -round((self.meat['ang']/(self.semiwide)), 1)
         meat_r = round((self.meat['ang']/(self.semiwide)), 1)
         meat_d = 1 - sqrt(self.meat['dist'])/cfg.SENSOR_RANGE
+        rock_l = -round((self.rock['ang']/(self.semiwide)), 1)
+        rock_r = round((self.rock['ang']/(self.semiwide)), 1)
+        rock_d = 1 - sqrt(self.rock['dist'])/cfg.SENSOR_RANGE
         enemy_l = clamp(enemy_l, 0, 1)
         enemy_r = clamp(enemy_r, 0, 1)
         plant_l = clamp(plant_l, 0, 1)
         plant_r = clamp(plant_r, 0, 1)
         meat_l = clamp(meat_l, 0, 1)
         meat_r = clamp(meat_r, 0, 1)
-        return [enemy_l, enemy_r, enemy_d, plant_l, plant_r, plant_d, meat_l, meat_r, meat_d]
+        rock_l = clamp(rock_l, 0, 1)
+        rock_r = clamp(rock_r, 0, 1)
+        return [enemy_l, enemy_r, enemy_d, plant_l, plant_r, plant_d, meat_l, meat_r, meat_d, rock_l, rock_r, rock_d]
 
     def set_detection_color(self, detection: bool):
         if detection:
@@ -162,6 +200,12 @@ class Vision(Circle):
                 xt = int(rel_target_pos.x); yt = int(rel_target_pos.y)
                 gfxdraw.line(screen, x0+int(v2[0]), y0+int(v2[1]), xt, yt, Color(0, 0, 255, 150))
                 gfxdraw.line(screen, x0+int(v3[0]), y0+int(v3[1]), xt, yt, Color(0, 0, 255, 150))
+            if self.rock['target'] != None:
+                target = self.rock['target']
+                rel_target_pos = camera.rel_pos(target.position)
+                xt = int(rel_target_pos.x); yt = int(rel_target_pos.y)
+                gfxdraw.line(screen, x0+int(v2[0]), y0+int(v2[1]), xt, yt, Color(175, 175, 175, 150))
+                gfxdraw.line(screen, x0+int(v3[0]), y0+int(v3[1]), xt, yt, Color(175, 175, 175, 150))
         gfxdraw.aacircle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/9+1), eye_color)
         gfxdraw.filled_circle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/9+1), eye_color)
         gfxdraw.aacircle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/9+1), eye_color)
