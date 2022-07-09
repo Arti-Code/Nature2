@@ -180,8 +180,9 @@ def process_creature_water_collisions_end(arbiter, space, data):
 
 
 def process_creatures_rock_collisions(arbiter, space, data):
-    arbiter.shapes[0].body.position -= arbiter.normal * 2.5
+    arbiter.shapes[0].body.position -= arbiter.normal * 1.5
     arbiter.shapes[0].body.collide_something = True
+    arbiter.shapes[0].body.border = True
     return False
 
 def process_creatures_rock_collisions_end(arbiter, space, data):

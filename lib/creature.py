@@ -53,7 +53,8 @@ class Creature(Life):
         self.side_angle = 0
         #self.sensor_angle = (1 - random())*cfg.SENSOR_MAX_ANGLE
         #self.sensor_angle = ((random()+1)/2)*cfg.SENSOR_MAX_ANGLE
-        self.vision: Vision = Vision(self, cfg.SENSOR_RANGE, cfg.SENSOR_MAX_ANGLE*(self.eyes/10), (0.0, 0.0), "vision")
+        rng = cfg.SENSOR_RANGE*0.45 + cfg.SENSOR_RANGE*(1-(self.eyes/10))*0.55
+        self.vision: Vision = Vision(self, int(rng), cfg.SENSOR_MAX_ANGLE*(self.eyes/10), (0.0, 0.0), "vision")
         space.add(self.vision)
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
@@ -381,7 +382,7 @@ class Creature(Life):
                 self.eating = True
             elif self.output[4] > self.output[3] and self.output[4] >= 0.2:
                 self.attacking = True
-            if self.output[0] >= 0.9 and not self.on_water and not self.attacking and not self.eating:
+            if self.output[0] >= 0.9:
                 if not self.running and self.run_time >= int(cfg.RUN_TIME/2):
                     if self.run_ref_time == 0.0:
                         self.run_ref_time = 1.0

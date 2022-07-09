@@ -247,7 +247,7 @@ class AncestorsWindow(UIWindow):
         i=0
         self.labels = []
         for (specie, gen, time) in history:
-            lab = UILabel(Rect((5, 10*i+2), (190, 15)), text=f"T({time}) \t {specie} \t GEN({gen})", manager=self.manager, container=self, parent_element=self, object_id='lab_ancestor'+str(i))
+            lab = UILabel(Rect((5, 10*i+2), (190, 15)), text=f"T({time}) {specie} GEN({gen})", manager=self.manager, container=self, parent_element=self, object_id='lab_ancestor'+str(i))
             self.labels.append(lab)
             i += 1
 
@@ -535,7 +535,7 @@ class GUI():
             data = self.owner.enviro.selected.genealogy
             count = len(data)
             height = 2 + 15 * count
-            self.ancestors_win = AncestorsWindow(manager=self.ui_mgr, rect=Rect((500, 0), (200, height)), history=data)
+            self.ancestors_win = AncestorsWindow(manager=self.ui_mgr, rect=Rect((500, 0), (250, height)), history=data)
 
     def create_history_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):

@@ -177,6 +177,8 @@ class Simulation():
         ranking = self.ranking1
         ranking.sort(key=sort_by_fitness, reverse=True)
         for rank in reversed(ranking):
+            rg = rank['genealogy'][len(rank['genealogy'])-1: -cfg.GENERATIONS_NUMBER]
+            cg = creature.genealogy[len(creature.genealogy)-1: -cfg.GENERATIONS_NUMBER]
             if rank['name'] == creature.name or rank['genealogy'][0][0] == creature.genealogy[0][0]:
                 if creature.fitness >= rank['fitness']:
                     ranking.remove(rank)
