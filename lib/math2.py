@@ -68,10 +68,10 @@ def tanh(x):
     return np.tanh(x)
     
 def relu(x):
-    return np.maximum(0,x)
+    return min(max(0,x), 1)
 
 def leaky_relu(x):
-    return np.maximum(0.1*x, x)
+    return min(max(0.1*x, x), 1)
 
 def pulse(x):
     r = (random()*2)-1
