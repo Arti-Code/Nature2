@@ -89,6 +89,7 @@ def process_creatures_collisions(arbiter, space, data):
         if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             if (size0+randint(0, 6)) > (size1+randint(0, 6)):
                 dmg = cfg.HIT * ((agent.size+agent.power)/2) * dt
+                target.hidding = False
                 if target.hit(dmg):
                     agent.fitness += cfg.KILL2FIT
                     agent.kills += 1
@@ -212,6 +213,8 @@ def process_agents_seeing(arbiter: Arbiter, space: Space, data):
     if not agent1.vision.observe:
         return False
     agent2: Creature = arbiter.shapes[1].body
+    if agent2.hidding:
+        return False
     dist = agent2.position.get_dist_sqrd(agent1.position)
     if dist > agent1.vision.max_dist_enemy:
         return False

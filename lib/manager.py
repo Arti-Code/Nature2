@@ -373,7 +373,7 @@ class Manager:
             ]
             out_desc = [
                 "MOVE ", "LEFT ", "RIGHT", 
-                "EAT  ", "ATACK", "RUN  "
+                "EAT  ", "ATACK", "HIDE"
             ]
 
             input_keys = network.GetNodeKeyList([TYPE.INPUT])

@@ -252,7 +252,6 @@ class Creature(Life):
         super().update(dt, selected)
         self.life_time += dt*0.1
         if self.running:
-            self.hidding = False
             self.run_time -= dt
             if self.run_time < 0:
                 self.run_time = 0
@@ -300,12 +299,8 @@ class Creature(Life):
       
     def move(self, dt: float) -> None:
         move = 0
-        if self.running and not self.on_water:
+        if self.running:
            move = cfg.SPEED*self.speed*2
-        elif self.on_water:
-            move = cfg.SPEED*self.speed*self.moving*cfg.WATER_MOVE
-        elif self.hidding:
-            move = cfg.SPEED*self.speed*self.moving*0.1
         else:
             move = cfg.SPEED*self.speed*self.moving
         if move < 0:
@@ -393,6 +388,10 @@ class Creature(Life):
                     self.running = True
             else:
                 self.running = False
+            if self.output[5] >= 0.7 and self.moving <= 0.2:
+                self.hidding = True
+            else:
+                self.hidding = False
 
     def draw_energy_bar(self, screen: Surface, rx: int, ry: int):
         bar_red = Color(255, 0, 0)
