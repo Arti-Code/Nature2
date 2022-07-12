@@ -220,7 +220,6 @@ def process_agents_seeing(arbiter: Arbiter, space: Space, data):
         return False
     close_object: bool=False
     filter: ShapeFilter=ShapeFilter()
-    #? [[[TEST: add rot_vec*size]]]
     if not line_of_sight(space, agent1.position+agent1.rotation_vector*(agent1.size+2), agent2.position, filter):
         return False
     if pow((agent1.size*3+cfg.CLOSE_VISION), 2) >= dist:

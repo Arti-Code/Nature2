@@ -53,7 +53,7 @@ class Creature(Life):
         self.side_angle = 0
         #self.sensor_angle = (1 - random())*cfg.SENSOR_MAX_ANGLE
         #self.sensor_angle = ((random()+1)/2)*cfg.SENSOR_MAX_ANGLE
-        rng = cfg.SENSOR_RANGE*0.45 + cfg.SENSOR_RANGE*(1-(self.eyes/10))*0.55
+        rng = cfg.SENSOR_RANGE*0.4 + cfg.SENSOR_RANGE*(1-(self.eyes/10))*0.6
         self.vision: Vision = Vision(self, int(rng), cfg.SENSOR_MAX_ANGLE*(self.eyes/10), (0.0, 0.0), "vision")
         space.add(self.vision)
         self.mem_time = 0
@@ -388,7 +388,7 @@ class Creature(Life):
                     self.running = True
             else:
                 self.running = False
-            if self.output[5] >= 0.7 and self.moving <= 0.2:
+            if self.output[5] >= 0.5 and self.moving <= 0.2:
                 self.hidding = True
             else:
                 self.hidding = False
