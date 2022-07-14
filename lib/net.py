@@ -570,7 +570,7 @@ class Network():
                 self.nodes[n].activation = ACTIVATION.PULSE
 
     def MutateNodeMemory(self, m=0):
-        if (random()) < self.MUT_MEM+self.self.MUT_MEM*m:
+        if (random()) < self.MUT_MEM+self.MUT_MEM*m:
             node_keys = self.GetNodeKeyList([TYPE.INPUT, TYPE.HIDDEN, TYPE.OUTPUT])
             n = choice(node_keys)
             self.nodes[n].recurrent = not self.nodes[n].recurrent
