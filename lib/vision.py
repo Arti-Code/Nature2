@@ -164,6 +164,29 @@ class Vision(Circle):
         rock_r = clamp(rock_r, 0, 1)
         return [enemy_l, enemy_r, enemy_d, plant_l, plant_r, plant_d, meat_l, meat_r, meat_d, rock_l, rock_r, rock_d]
 
+    def get_detection2(self) -> list:
+        #enemy_l = -round((self.enemy['ang']/(self.semiwide)), 1)
+        enemy_r = round((self.enemy['ang']/(self.semiwide)), 1)
+        enemy_d = 1 - sqrt(self.enemy['dist'])/cfg.SENSOR_RANGE
+        #plant_l = -round((self.plant['ang']/(self.semiwide)), 1)
+        plant_r = round((self.plant['ang']/(self.semiwide)), 1)
+        plant_d = 1 - sqrt(self.plant['dist'])/cfg.SENSOR_RANGE
+        #meat_l = -round((self.meat['ang']/(self.semiwide)), 1)
+        meat_r = round((self.meat['ang']/(self.semiwide)), 1)
+        meat_d = 1 - sqrt(self.meat['dist'])/cfg.SENSOR_RANGE
+        #rock_l = -round((self.rock['ang']/(self.semiwide)), 1)
+        rock_r = round((self.rock['ang']/(self.semiwide)), 1)
+        rock_d = 1 - sqrt(self.rock['dist'])/cfg.SENSOR_RANGE
+        #enemy_l = clamp(enemy_l, 0, 1)
+        #enemy_r = clamp(enemy_r, 0, 1)
+        #plant_l = clamp(plant_l, 0, 1)
+        #plant_r = clamp(plant_r, 0, 1)
+        #meat_l = clamp(meat_l, 0, 1)
+        #meat_r = clamp(meat_r, 0, 1)
+        #rock_l = clamp(rock_l, 0, 1)
+        #rock_r = clamp(rock_r, 0, 1)
+        return [enemy_r, enemy_d, plant_r, plant_d,meat_r, meat_d,rock_r, rock_d]
+
     def set_detection_color(self, detection: bool):
         if detection:
             self.active_color = self.seeing_color

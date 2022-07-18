@@ -3,7 +3,7 @@
   "SCREEN": [1900, 1000],
   "ITER": 2,
   
-  "PLANT_MIN_NUM": 20,
+  "PLANT_MIN_NUM": 10,
   "PLANT_MAX_NUM": 70,
   "PLANT_INIT_NUM": 50,
   "PLANT_MAX_SIZE": 11,
@@ -18,17 +18,17 @@
   "CREATURE_MAX_SIZE": 10,
 
   "EAT": 25,
-  "HIT": 500,
+  "HIT": 400,
   "SPEED": 2,
   "TURN": 1,
 
   "SENSOR_SPEED": 0.3,
-  "SENSOR_MAX_ANGLE": 6.2,
+  "SENSOR_MAX_ANGLE": 5,
   "SENSOR_RANGE": 400,
   "CLOSE_VISION": 10,
   
   "POWER_COST": 0.0004,
-  "MUTATIONS": 2,
+  "MUTATIONS": 3,
   "LINKS_RATE": 0.2,
   
   "BASE_ENERGY": 0.0035,
@@ -38,8 +38,8 @@
   "ATK_ENG": 0.06,
   "EAT_ENG": 0.06,
   "VEGE2ENG": 4,
-  "MEAT2ENG": 12,
-  "DMG2ENG": 1,
+  "MEAT2ENG": 10,
+  "DMG2ENG": 4,
   "RUN_COST": 120,
   "RUN_TIME": 6,
 
@@ -47,22 +47,22 @@
   "REP_ENERGY": 0.3,
   "CHILDS_NUM": 1,
   "MEM_TIME": 0.25,
-  "MEAT_TIME": 100,
+  "MEAT_TIME": 140,
   "DIET_MOD": 0.004,
   
   "DIFF": 0.4,
   
   "HIT2FIT": 0.1,
-  "KILL2FIT": 750,
+  "KILL2FIT": 400,
   "MEAT2FIT": 0.1,
   "VEGE2FIT": 0.06,
   "BORN2FIT": 250,
   
   "MIN_CARNIVORES": 2,
   "MIN_HERBIVORES": 4,
-  "RANK_SIZE": 30,
-  "RANK_DECAY": 0.5,
-  "AUTO_SAVE_TIME": 500,
+  "RANK_SIZE": 40,
+  "RANK_DECAY": 0.7,
+  "AUTO_SAVE_TIME": 100,
   "STAT_PERIOD": 50,
   "TIME": 1,
   
@@ -78,5 +78,5 @@
   "NET_BASE": 350,
   "GENERATIONS_NUMBER": 2,
   
-  "NET": [18, 0, 0, 0, 0, 0, 0, 0, 6]
+  "NET": [14, 0, 0, 0, 0, 0, 0, 0, 6]
 }

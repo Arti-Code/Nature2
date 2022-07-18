@@ -331,7 +331,7 @@ class Creature(Life):
 
     def get_input(self):
         input = []
-        al, ar, ad, pl, pr, pd, ml, mr, md, rl, rr, rd = self.vision.get_detection()
+        ar, ad, pr, pd, mr, md, rr, rd = self.vision.get_detection2()
         #x = (self.position[0]-(cfg.WORLD[0]/2))/(cfg.WORLD[0]/2)
         #y = (self.position[1]-(cfg.WORLD[1]/2))/(cfg.WORLD[1]/2)
         eng = self.energy/self.max_energy
@@ -342,16 +342,16 @@ class Creature(Life):
         #input.append(y)
         input.append(eng)
         input.append(int(self.pain))
-        input.append(al)
+        #input.append(al)
         input.append(ar)
         input.append(ad)
-        input.append(pl)
+        #input.append(pl)
         input.append(pr)
         input.append(pd)
-        input.append(ml)
+        #input.append(ml)
         input.append(mr)
         input.append(md)
-        input.append(rl)
+        #input.append(rl)
         input.append(rr)
         input.append(rd)
         input.append(int(self.border))

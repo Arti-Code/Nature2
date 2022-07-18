@@ -365,10 +365,14 @@ class Manager:
             inp_desc = [
                 'ENEMY', 'PLANT', 'MEAT ',
                 'ENERG', 'INJUR',
-                'ENE-L', 'ENE-R', 'ENE-D', 
-                'PLA-L', 'PLA-R', 'PLA-D',
-                'MEA-L', 'MEA-R', 'MEA-D',
-                'ROC-L', 'ROC-R', 'ROC-D',
+                #'ENE-L', 
+                'ENE-R', 'ENE-D', 
+                #'PLA-L', 
+                'PLA-R', 'PLA-D',
+                #'MEA-L', 
+                'MEA-R', 'MEA-D',
+                #'ROC-L', 
+                'ROC-R', 'ROC-D',
                 'BORD'
             ]
             out_desc = [
@@ -397,8 +401,17 @@ class Manager:
                 gfxdraw.filled_polygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0, 0, 0, 35))
                 for node_key in network.layers[layer].nodes:
                     node = network.nodes[node_key]
-                    if node.recombined:
-                        node_color = Color("#8f8f8f")
+                    if node.recurrent:
+                        if node.mem_weight >= 0:
+                            r = 150
+                            b = round(255 * node.mem_weight)
+                            g = 255 - b
+                            node_color = Color(r, g, b)
+                        else:
+                            g = -round(255 * node.mem_weight)
+                            b = 150
+                            r = g
+                            node_color = Color(r, g, b)
                     else:
                         if node.activation == ACTIVATION.TANH:
                             node_color = Color("#55ff2f")
@@ -423,18 +436,19 @@ class Manager:
                         from_node_key = link.from_node
                         (l0, n0) = network.FindNode(from_node_key)
                         g = 0
+                        a = abs(round(205*link.weight)+50)
                         if link.weight >= 0:
                             g = 0
-                            r = round(255*link.weight)
-                            b = 255 - r
+                            r = 255
+                            b = 0
                             if link.recombined:
                                 g = 255
                         else:
-                            b = abs(round(255*link.weight))
-                            r = 255 - b
+                            b = 255
+                            r = 0
                             if link.recombined:
                                 g = 255
-                        link_color = Color((r, g, b, 20))
+                        link_color = Color((r, g, b, a))
                         node_num0 = len(network.layers[l0].nodes)
                         #pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)-1))
                         pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)))
