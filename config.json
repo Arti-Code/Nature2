@@ -1,13 +1,13 @@
 {
   "WORLD": [1800, 950],
   "SCREEN": [1900, 1000],
-  "ITER": 2,
+  "ITER": 1,
   
   "PLANT_MIN_NUM": 10,
   "PLANT_MAX_NUM": 70,
   "PLANT_INIT_NUM": 50,
   "PLANT_MAX_SIZE": 11,
-  "PLANT_GROWTH": 13,
+  "PLANT_GROWTH": 11,
   "PLANT_LIFE": 500,
   "PLANT_RANGE": 400,
 
@@ -29,26 +29,26 @@
   
   "POWER_COST": 0.0004,
   "MUTATIONS": 3,
-  "LINKS_RATE": 0.2,
+  "LINKS_RATE": 0.23,
   
-  "BASE_ENERGY": 0.0035,
-  "MOVE_ENERGY": 0.0000004,
+  "BASE_ENERGY": 0.003,
+  "MOVE_ENERGY": 0.00000025,
   "SIZE2ENG": 200,
   "SIZE_COST": 300,
   "ATK_ENG": 0.06,
   "EAT_ENG": 0.06,
-  "VEGE2ENG": 4,
-  "MEAT2ENG": 10,
-  "DMG2ENG": 4,
-  "RUN_COST": 120,
+  "VEGE2ENG": 3.5,
+  "MEAT2ENG": 12,
+  "DMG2ENG": 5,
+  "RUN_COST": 200,
   "RUN_TIME": 6,
 
   "REP_TIME": 120,
   "REP_ENERGY": 0.3,
   "CHILDS_NUM": 1,
   "MEM_TIME": 0.25,
-  "MEAT_TIME": 140,
-  "DIET_MOD": 0.004,
+  "MEAT_TIME": 100,
+  "DIET_MOD": 0.0035,
   
   "DIFF": 0.4,
   
@@ -63,7 +63,7 @@
   "RANK_SIZE": 40,
   "RANK_DECAY": 0.7,
   "AUTO_SAVE_TIME": 100,
-  "STAT_PERIOD": 50,
+  "STAT_PERIOD": 100,
   "TIME": 1,
   
   "ROCK_NUM": 10,
@@ -78,5 +78,5 @@
   "NET_BASE": 350,
   "GENERATIONS_NUMBER": 2,
   
-  "NET": [14, 0, 0, 0, 0, 0, 0, 0, 6]
+  "NET": [15, 0, 0, 0, 0, 0, 0, 0, 5]
 }

@@ -103,10 +103,8 @@ class Manager:
     def save_project(self):
         project_name = self.enviro.project_name
         if project_name != '' and isinstance(project_name, str):
-            #self.add_to_projects_list(project_name)
             i = 0
             project = {}
-            #creatures = []
             project['name'] = project_name
             project['time'] = round(self.enviro.time, 1)
             project['cycles'] = self.enviro.cycles
@@ -365,27 +363,24 @@ class Manager:
             inp_desc = [
                 'ENEMY', 'PLANT', 'MEAT ',
                 'ENERG', 'INJUR',
-                #'ENE-L', 
-                'ENE-R', 'ENE-D', 
-                #'PLA-L', 
+                'ENE-R', 'ENE-D', 'FAMILY', 
                 'PLA-R', 'PLA-D',
-                #'MEA-L', 
                 'MEA-R', 'MEA-D',
-                #'ROC-L', 
                 'ROC-R', 'ROC-D',
                 'BORD'
             ]
             out_desc = [
-                "MOVE ", "LEFT ", "RIGHT", 
-                "EAT  ", "ATACK", "HIDE"
+                "MOVE ", "TURN ",
+                "EAT  ", "ATACK",
+                "HIDE"
             ]
 
-            input_keys = network.GetNodeKeyList([TYPE.INPUT])
-            output_keys = network.GetNodeKeyList([TYPE.OUTPUT])
+#            input_keys = network.GetNodeKeyList([TYPE.INPUT])
+#            output_keys = network.GetNodeKeyList([TYPE.OUTPUT])
             for layer in network.layers:
-                last_layer = False
-                if network.layers[layer].type == TYPE.OUTPUT:
-                    last_layer = True
+#                last_layer = False
+#                if network.layers[layer].type == TYPE.OUTPUT:
+#                    last_layer = True
                 node_num = len(network.layers[layer].nodes)
                 if node_num > 0:
                     dist_nn = round(max_layer_size/(node_num))
@@ -393,7 +388,7 @@ class Manager:
                     dist_nn = max_layer_size
                 dists[layer] = dist_nn
                 n = 0
-                desc_idx = 0
+#                desc_idx = 0
                 base_line.append(round((cfg.NET_BASE + max_nodes_num * v_space)/2))
                 back_box = Rect(4, cfg.SCREEN[1] - (max(base_line))-4, max_net_length+110, max_layer_size+6)
                 gfxdraw.aapolygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color("orange"))
@@ -402,16 +397,17 @@ class Manager:
                 for node_key in network.layers[layer].nodes:
                     node = network.nodes[node_key]
                     if node.recurrent:
-                        if node.mem_weight >= 0:
-                            r = 150
-                            b = round(255 * node.mem_weight)
-                            g = 255 - b
-                            node_color = Color(r, g, b)
-                        else:
-                            g = -round(255 * node.mem_weight)
-                            b = 150
-                            r = g
-                            node_color = Color(r, g, b)
+                        node_color = Color("orange")
+    #                    if node.mem_weight >= 0:
+    #                        r = 150
+    #                        b = round(255 * node.mem_weight)
+    #                        g = 255 - b
+    #                        node_color = Color(r, g, b)
+    #                    else:
+    #                        g = -round(255 * node.mem_weight)
+    #                        b = 150
+    #                        r = g
+    #                        node_color = Color(r, g, b)
                     else:
                         if node.activation == ACTIVATION.TANH:
                             node_color = Color("#55ff2f")
@@ -449,10 +445,8 @@ class Manager:
                             if link.recombined:
                                 g = 255
                         link_color = Color((r, g, b, a))
-                        node_num0 = len(network.layers[l0].nodes)
-                        #pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)-1))
+#                        node_num0 = len(network.layers[l0].nodes)
                         pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)))
-                        #pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)+1))
                     desc = ''
                     nodes_to_draw.append((node_color, l, n, node.recurrent, dist_nn, desc))
                     n += 1
@@ -466,16 +460,13 @@ class Manager:
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
                     text = "{:<2}  {:2> .1f}".format(inp_desc[n], val)
-                    #self.add_text(f'{inp_desc[n]} {round(val, 1)}', 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                     self.add_text(text, 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                 elif l == last_layer_idx:
                     val = self.enviro.selected.output[out]
                     text = "{:<2}  {:2> .1f}".format(out_desc[out], val)
-                    #self.add_text2(f'{out_desc[out]} {round(val, 1)}', 40 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)
                     self.add_text2(text, 40 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)
                     out += 1
                 else:
                     val = network.nodes[network.layers[l].nodes[n]].value
                     text = "{:^1.1f}".format(val)
-                    #self.add_text(f'{round(val, 1)}', 85 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                     self.add_text(text, 85 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
