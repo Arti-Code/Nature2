@@ -1,13 +1,7 @@
-from copy import copy, deepcopy
-from random import random, randint
-from math import sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt
-import pygame.gfxdraw as gfxdraw
-from pygame import Surface, Color, Rect
-import pymunk as pm
-from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform, Shape
-from lib.math2 import flipy, ang2vec, ang2vec2, clamp
-from lib.sensor import Sensor
-from lib.net import Network
+from random import randint
+from math import pi as PI
+from pygame import Surface, Color
+from pymunk import Vec2d, Body, Space, Shape
 from lib.config import *
 
 class Object(Body):

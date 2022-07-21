@@ -53,7 +53,8 @@ class Vision(Circle):
         self.enemy = {
             'ang': 0.0,
             'dist': rng,
-            'target': None
+            'target': None,
+            'family': False
         }
         self.plant = {
             'ang': 0.0,
@@ -95,17 +96,20 @@ class Vision(Circle):
 
         if type == 'creature':
             if self.enemy['dist'] > dist:
-                
+                family: bool=False
+                if self.body.name == target.name:
+                    family = True
                 self.enemy = {
                     'ang': angle,
                     'dist': dist,
-                    'target': target
+                    'target': target,
+                    'family': family
                 }
                 self.max_dist_enemy = dist
                 if self.max_dist > dist:
                     self.max_dist = dist
         elif type == 'plant':
-            dist1 = self.plant['dist']
+            #dist1 = self.plant['dist']
             if self.plant['dist'] > dist:
                 self.plant = {
                     'ang': angle,
@@ -116,7 +120,7 @@ class Vision(Circle):
                 if self.max_dist > dist:
                     self.max_dist = dist
         elif type == 'meat':
-            dist1 = self.meat['dist']
+            #dist1 = self.meat['dist']
             if self.meat['dist'] > dist:
                 self.meat = {
                     'ang': angle,
@@ -127,7 +131,7 @@ class Vision(Circle):
                 if self.max_dist > dist:
                     self.max_dist = dist
         elif type == 'rock':
-            dist1 = self.rock['dist']
+            #dist1 = self.rock['dist']
             if self.rock['dist'] > dist:
                 self.rock = {
                     'ang': angle,
@@ -164,6 +168,18 @@ class Vision(Circle):
         rock_r = clamp(rock_r, 0, 1)
         return [enemy_l, enemy_r, enemy_d, plant_l, plant_r, plant_d, meat_l, meat_r, meat_d, rock_l, rock_r, rock_d]
 
+    def get_detection2(self) -> list:
+        enemy_r = round((self.enemy['ang']/(self.semiwide)), 1)
+        enemy_d = 1 - sqrt(self.enemy['dist'])/cfg.SENSOR_RANGE
+        enemy_f = int(self.enemy['family'])
+        plant_r = round((self.plant['ang']/(self.semiwide)), 1)
+        plant_d = 1 - sqrt(self.plant['dist'])/cfg.SENSOR_RANGE
+        meat_r = round((self.meat['ang']/(self.semiwide)), 1)
+        meat_d = 1 - sqrt(self.meat['dist'])/cfg.SENSOR_RANGE
+        rock_r = round((self.rock['ang']/(self.semiwide)), 1)
+        rock_d = 1 - sqrt(self.rock['dist'])/cfg.SENSOR_RANGE
+        return [enemy_r, enemy_d, enemy_f, plant_r, plant_d,meat_r, meat_d,rock_r, rock_d]
+
     def set_detection_color(self, detection: bool):
         if detection:
             self.active_color = self.seeing_color
@@ -184,10 +200,13 @@ class Vision(Circle):
             gfxdraw.line(screen, x0, y0, x0+w2[0], y0+w2[1], self.active_color)    
             if self.enemy['target'] != None:
                 target = self.enemy['target']
+                c: Color= Color(255, 0, 0, 150)
+                if self.enemy['family']:
+                    c = Color(0, 255, 255, 150)
                 rel_target_pos = camera.rel_pos(target.position)
                 xt = int(rel_target_pos.x); yt = int(rel_target_pos.y)
-                gfxdraw.line(screen, x0+int(v2[0]), y0+int(v2[1]), xt, yt, Color(255, 0, 0, 150))
-                gfxdraw.line(screen, x0+int(v3[0]), y0+int(v3[1]), xt, yt, Color(255, 0, 0, 150))
+                gfxdraw.line(screen, x0+int(v2[0]), y0+int(v2[1]), xt, yt, c)
+                gfxdraw.line(screen, x0+int(v3[0]), y0+int(v3[1]), xt, yt, c)
             if self.plant['target'] != None:
                 target = self.plant['target']
                 rel_target_pos = camera.rel_pos(target.position)
