@@ -541,7 +541,7 @@ class Network():
         if (random()) < self.MUT_NODE_TYPE+self.MUT_NODE_TYPE*m:
             node_keys = self.GetNodeKeyList([TYPE.INPUT, TYPE.HIDDEN, TYPE.OUTPUT])
             n = choice(node_keys)
-            n_type = choice(['tanh', 'sigmoid', 'binary', 'relu', 'leaky_relu', 'memory'])
+            n_type = choice(['tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'memory'])
             if n_type == 'memory':
                 self.nodes[n].recurrent = not self.nodes[n].recurrent
                 if self.nodes[n].recurrent:
@@ -569,6 +569,18 @@ class Network():
             elif n_type == 'pulse':
                 self.nodes[n].activation = ACTIVATION.PULSE
 
+    def MutateNodeMemory(self, m=0):
+        if (random()) < self.MUT_MEM+self.MUT_MEM*m:
+            node_keys = self.GetNodeKeyList([TYPE.INPUT, TYPE.HIDDEN, TYPE.OUTPUT])
+            n = choice(node_keys)
+            self.nodes[n].recurrent = not self.nodes[n].recurrent
+            if self.nodes[n].recurrent:
+                self.nodes[n].mem = 0
+                self.nodes[n].mem_weight = self.nodes[n].RandomNormal()
+            else:
+                self.nodes[n].mem = None
+                self.nodes[n].mem_weight = None
+
     def Mutate(self, modificator=5) -> list[tuple]:
         node_num = len(self.nodes)-(len(self.GetNodeKeyList([TYPE.INPUT]))+len(self.GetNodeKeyList([TYPE.OUTPUT])))
         link_num = len(self.links)
@@ -585,7 +597,7 @@ class Network():
         added_l, deleted_l = self.MutateLinks(modificator)
         self.MutateWeights(modificator)
         added_n, deleted_n = self.MutateNodes(modificator)
-        self.MutateNodeType(modificator)
+        self.MutateNodeMemory(modificator)
         self.node_num = self.GetNodesNum()
         self.link_num = self.GetLinksNum()
         return [(added_n, deleted_n), (added_l, deleted_l)]

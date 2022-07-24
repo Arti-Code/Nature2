@@ -11,14 +11,11 @@ from pygame.constants import K_n
 from pygame.font import Font, match_font 
 from pymunk import BB, Vec2d, Space, Segment, Body, Circle, Shape, Poly, autogeometry
 import pymunk.pygame_util
-#from lib.life import Life, Creature, Plant
 from lib.wall import Wall
-from lib.sensor import Sensor
 from lib.math2 import set_world, world, flipy
 from lib.config import *
 from lib.manager import Manager
 from lib.collisions import process_creature_plant_collisions, process_edge_collisions, process_creatures_collisions, detect_creature, detect_plant, detect_plant_end, detect_creature_end
-#from lib.test import Test
 
 class Terrain:
 

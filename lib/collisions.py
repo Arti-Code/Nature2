@@ -89,6 +89,7 @@ def process_creatures_collisions(arbiter, space, data):
         if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             if (size0+randint(0, 6)) > (size1+randint(0, 6)):
                 dmg = cfg.HIT * ((agent.size+agent.power)/2) * dt
+                target.hidding = False
                 if target.hit(dmg):
                     agent.fitness += cfg.KILL2FIT
                     agent.kills += 1
@@ -180,8 +181,9 @@ def process_creature_water_collisions_end(arbiter, space, data):
 
 
 def process_creatures_rock_collisions(arbiter, space, data):
-    arbiter.shapes[0].body.position -= arbiter.normal * 2.5
+    arbiter.shapes[0].body.position -= arbiter.normal * 1.5
     arbiter.shapes[0].body.collide_something = True
+    arbiter.shapes[0].body.border = True
     return False
 
 def process_creatures_rock_collisions_end(arbiter, space, data):
@@ -211,12 +213,13 @@ def process_agents_seeing(arbiter: Arbiter, space: Space, data):
     if not agent1.vision.observe:
         return False
     agent2: Creature = arbiter.shapes[1].body
+    if agent2.hidding:
+        return False
     dist = agent2.position.get_dist_sqrd(agent1.position)
     if dist > agent1.vision.max_dist_enemy:
         return False
     close_object: bool=False
     filter: ShapeFilter=ShapeFilter()
-    #? [[[TEST: add rot_vec*size]]]
     if not line_of_sight(space, agent1.position+agent1.rotation_vector*(agent1.size+2), agent2.position, filter):
         return False
     if pow((agent1.size*3+cfg.CLOSE_VISION), 2) >= dist:

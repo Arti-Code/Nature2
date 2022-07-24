@@ -50,10 +50,8 @@ class Creature(Life):
         self.eye_colors = {}
         self.visual_range = cfg.SENSOR_RANGE
         self.sensors = []
-        self.side_angle = 0
-        #self.sensor_angle = (1 - random())*cfg.SENSOR_MAX_ANGLE
-        #self.sensor_angle = ((random()+1)/2)*cfg.SENSOR_MAX_ANGLE
-        self.vision: Vision = Vision(self, cfg.SENSOR_RANGE, cfg.SENSOR_MAX_ANGLE*(self.eyes/10), (0.0, 0.0), "vision")
+        rng = cfg.SENSOR_RANGE*0.4 + cfg.SENSOR_RANGE*(1-(self.eyes/10))*0.6
+        self.vision: Vision = Vision(self, int(rng), cfg.SENSOR_MAX_ANGLE*(self.eyes/10), (0.0, 0.0), "vision")
         space.add(self.vision)
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
@@ -76,6 +74,7 @@ class Creature(Life):
         self.neuro.CalcNodeMutMod()
         self.rock_vec: Vec2d=None
         self.rock_dist = 0
+        self.eng_lost = {'basic': 0.0, 'move': 0.0, 'neuro': 0.0, 'other': 0}
 
     def genome_build(self, genome: dict) -> list[tuple]:
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
@@ -251,7 +250,6 @@ class Creature(Life):
         super().update(dt, selected)
         self.life_time += dt*0.1
         if self.running:
-            self.hidding = False
             self.run_time -= dt
             if self.run_time < 0:
                 self.run_time = 0
@@ -299,12 +297,8 @@ class Creature(Life):
       
     def move(self, dt: float) -> None:
         move = 0
-        if self.running and not self.on_water:
+        if self.running:
            move = cfg.SPEED*self.speed*2
-        elif self.on_water:
-            move = cfg.SPEED*self.speed*self.moving*cfg.WATER_MOVE
-        elif self.hidding:
-            move = cfg.SPEED*self.speed*self.moving*0.1
         else:
             move = cfg.SPEED*self.speed*self.moving
         if move < 0:
@@ -327,35 +321,28 @@ class Creature(Life):
             rest_energy += cfg.EAT_ENG
         if self.attacking:
             rest_energy += cfg.ATK_ENG
-        if self.on_water:
-            base_energy += cfg.WATER_COST
         base_energy *= size_cost
-        self.energy -= (base_energy + move_energy + rest_energy + neuro_energy) * dt
+        total_eng_cost = (base_energy + move_energy + rest_energy + neuro_energy)
+        self.eng_lost = {'basic': base_energy, 'move': move_energy, 'neuro': neuro_energy, 'other': rest_energy}
+        self.energy -= total_eng_cost * dt
         self.energy = clamp(self.energy, 0, self.max_energy)
 
     def get_input(self):
         input = []
-        al, ar, ad, pl, pr, pd, ml, mr, md, rl, rr, rd = self.vision.get_detection()
-        #x = (self.position[0]-(cfg.WORLD[0]/2))/(cfg.WORLD[0]/2)
-        #y = (self.position[1]-(cfg.WORLD[1]/2))/(cfg.WORLD[1]/2)
+        ar, ad, af, pr, pd, mr, md, rr, rd = self.vision.get_detection2()
         eng = self.energy/self.max_energy
         input.append(self.collide_creature)
         input.append(self.collide_plant)
         input.append(self.collide_meat)
-        #input.append(x)
-        #input.append(y)
         input.append(eng)
         input.append(int(self.pain))
-        input.append(al)
         input.append(ar)
         input.append(ad)
-        input.append(pl)
+        input.append(af)
         input.append(pr)
         input.append(pd)
-        input.append(ml)
         input.append(mr)
         input.append(md)
-        input.append(rl)
         input.append(rr)
         input.append(rd)
         input.append(int(self.border))
@@ -372,26 +359,31 @@ class Creature(Life):
             self.output = self.neuro.Calc(input)
             self.mem_time = cfg.MEM_TIME
             for o in range(len(self.output)):
-                self.output[o] = clamp(self.output[o], 0, 1)
+                if o == 1:
+                    self.output[o] = clamp(self.output[1], -1, 1)
+                else:
+                    self.output[o] = clamp(self.output[o], 0, 1)
             self.moving = self.output[0]
-            self.turning = self.output[2] - self.output[1]
+            self.turning = self.output[1]
             self.eating = False
             self.attacking = False
-            if self.output[3] > self.output[4] and self.output[3] >= 0.2:
+            if self.output[2] > self.output[3] and self.output[2] >= 0.2:
                 self.eating = True
-            elif self.output[4] > self.output[3] and self.output[4] >= 0.2:
+            elif self.output[3] > self.output[2] and self.output[3] >= 0.2:
                 self.attacking = True
-            if self.output[0] >= 0.9 and not self.on_water and not self.attacking and not self.eating:
+            if self.output[0] >= 0.9:
                 if not self.running and self.run_time >= int(cfg.RUN_TIME/2):
                     if self.run_ref_time == 0.0:
                         self.run_ref_time = 1.0
                         self.running = True
                     else:
                         self.running = False
-                if self.running:
-                    self.running = True
             else:
                 self.running = False
+            if self.output[4] >= 0.5 and self.moving <= 0.2:
+                self.hidding = True
+            else:
+                self.hidding = False
 
     def draw_energy_bar(self, screen: Surface, rx: int, ry: int):
         bar_red = Color(255, 0, 0)
