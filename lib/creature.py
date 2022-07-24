@@ -50,9 +50,6 @@ class Creature(Life):
         self.eye_colors = {}
         self.visual_range = cfg.SENSOR_RANGE
         self.sensors = []
-        self.side_angle = 0
-        #self.sensor_angle = (1 - random())*cfg.SENSOR_MAX_ANGLE
-        #self.sensor_angle = ((random()+1)/2)*cfg.SENSOR_MAX_ANGLE
         rng = cfg.SENSOR_RANGE*0.4 + cfg.SENSOR_RANGE*(1-(self.eyes/10))*0.6
         self.vision: Vision = Vision(self, int(rng), cfg.SENSOR_MAX_ANGLE*(self.eyes/10), (0.0, 0.0), "vision")
         space.add(self.vision)
@@ -77,6 +74,7 @@ class Creature(Life):
         self.neuro.CalcNodeMutMod()
         self.rock_vec: Vec2d=None
         self.rock_dist = 0
+        self.eng_lost = {'basic': 0.0, 'move': 0.0, 'neuro': 0.0, 'other': 0}
 
     def genome_build(self, genome: dict) -> list[tuple]:
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
@@ -323,10 +321,10 @@ class Creature(Life):
             rest_energy += cfg.EAT_ENG
         if self.attacking:
             rest_energy += cfg.ATK_ENG
-        if self.on_water:
-            base_energy += cfg.WATER_COST
         base_energy *= size_cost
-        self.energy -= (base_energy + move_energy + rest_energy + neuro_energy) * dt
+        total_eng_cost = (base_energy + move_energy + rest_energy + neuro_energy)
+        self.eng_lost = {'basic': base_energy, 'move': move_energy, 'neuro': neuro_energy, 'other': rest_energy}
+        self.energy -= total_eng_cost * dt
         self.energy = clamp(self.energy, 0, self.max_energy)
 
     def get_input(self):

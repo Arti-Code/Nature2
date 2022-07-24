@@ -211,14 +211,19 @@ class EnviroWindow(UIWindow):
 class CreatureWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, data: dict, dT: float):
-        super().__init__(rect, manager=manager, window_display_title=data['SPECIE']+'  '+data['ENERGY'], object_id="#creature_win", visible=True)
+        super().__init__(rect, manager=manager, window_display_title=data['SPECIE']+'  '+data['ENG'], object_id="#creature_win", visible=True)
         self.manager = manager
         i=0
         self.labs = {}
         for key, val in data.items():
-            if key != 'S' or key != 'SPECIE' or key != 'ENERGY':
-                lab1 = UILabel(Rect((5, 15*i+5), (50, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
-                lab2 = UILabel(Rect((60, 15*i+5), (self.rect.width-65, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
+            if key != 'S' or key != 'SPECIE' or key != 'ENG':
+                if key == 'COST':
+                    lab1 = UILabel(Rect((5, 15*i+5), (self.rect.width-5, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
+                    lab2 = UILabel(Rect((self.rect.width-5, 15*i+5), (5, 15)), text=f"", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
+                else:            
+                    lab1 = UILabel(Rect((5, 15*i+5), (50, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
+                    lab2 = UILabel(Rect((60, 15*i+5), (self.rect.width-65, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
+            
             elif key == 'S':
                 lab1 = UILabel(Rect((5, 15*i+5), (10, 15)), text=f"{key}: ", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
                 lab2 = UILabel(Rect((15, 15*i+5), (self.rect.width-15, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
@@ -231,13 +236,17 @@ class CreatureWindow(UIWindow):
 
     def Update(self, data: dict, dT: float):
         self.refresh -= dT
-        self.set_display_title(data['SPECIE']+'  '+data['ENERGY'])
+        self.set_display_title(data['SPECIE']+'  '+data['ENG'])
         if self.refresh <= 0:
             self.refresh = 1
             data = data
             for key, val in data.items():
-                self.labs[key][0].set_text(f"{key}:")
-                self.labs[key][1].set_text(f"{val}")
+                if key == 'COST':
+                    self.labs[key][0].set_text(f"{val}:")
+                    self.labs[key][1].set_text(f"")
+                else:
+                    self.labs[key][0].set_text(f"{key}:")
+                    self.labs[key][1].set_text(f"{val}")
 
 class AncestorsWindow(UIWindow):
 
@@ -526,7 +535,7 @@ class GUI():
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((0, 0), (140, 275)), data=data, dT=dT)
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((0, 0), (165, 295)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
@@ -548,66 +557,68 @@ class GUI():
             self.history_win.Update(data, dT)
 
     def update_creature_win(self) -> dict:
-        if not self.owner.enviro.selected or not isinstance(self.owner.enviro.selected, Creature):
+        selected = self.owner.enviro.selected
+        if not isinstance(selected, Creature):
             data = {}
             data['SPECIE'] = ''
             data['GEN'] = ''
+            data['ENG'] = ''
             data['FOOD'] = ''
-            data['ENERGY'] = ''
             data['POWER'] = ''
             data['SPEED'] = ''
             data['EYES'] = ''
             data['SIZE'] = ''
             data['MUT'] = ''
-            data['BORN|KILL'] = ''
+            data['B|K'] = ''
             data['FIT'] = ''
             data["LIFE"] = ''
             data["REPRO"] = ''
             data['S'] = ''
-            if isinstance(self.owner.enviro.selected, Plant):
+            data['COST'] = ''
+            if isinstance(selected, Plant):
                 data['SPECIE'] = 'PLANT'
-                data['LIFE'] = str(round(self.owner.enviro.selected.life_time))
-                data['ENERGY'] = str(round(self.owner.enviro.selected.energy))
-                data['SIZE'] = str(round(self.owner.enviro.selected.shape.radius))
-                data['S'] = str(len(self.owner.enviro.selected.plants_in_area))
-            elif isinstance(self.owner.enviro.selected, Meat):
-                data['LIFE'] = str(round(self.owner.enviro.selected.life_time))
+                data['LIFE'] = str(round(selected.life_time))
+                data['ENG'] = str(round(selected.energy))
+                data['SIZE'] = str(round(selected.shape.radius))
+                data['S'] = str(len(selected.plants_in_area))
+            elif isinstance(selected, Meat):
+                data['LIFE'] = str(round(selected.life_time))
                 data['SPECIE'] = 'MEAT'
-                data['ENERGY'] = str(round(self.owner.enviro.selected.energy))
-                data['SIZE'] = str(round(self.owner.enviro.selected.radius))
+                data['ENG'] = str(round(selected.energy))
+                data['SIZE'] = str(round(selected.radius))
             return data
         data = {}
-        data['SPECIE'] = self.owner.enviro.selected.name
-        data['GEN'] = str(self.owner.enviro.selected.generation)
-        data['FOOD'] = str(self.owner.enviro.selected.food)
-        data['ENERGY'] = str(round(self.owner.enviro.selected.energy))+'/'+str(round(self.owner.enviro.selected.max_energy))
-        data['POWER'] = str(self.owner.enviro.selected.power)
-        data['SPEED'] = str(self.owner.enviro.selected.speed)
-        data['EYES'] = str(self.owner.enviro.selected.eyes)
-        data['SIZE'] = str(self.owner.enviro.selected.size)
-        data['MUT'] = f"{self.owner.enviro.selected.mutations}"
-        data['BORN|KILL'] = str(self.owner.enviro.selected.childs)+'|'+str(self.owner.enviro.selected.kills)
-        data['FIT'] = str(round(self.owner.enviro.selected.fitness))
-        data["LIFE"] = str(round(self.owner.enviro.selected.life_time))
-        data["REPRO"] = str(round(self.owner.enviro.selected.reproduction_time))
+        data['SPECIE'] = selected.name
+        data['GEN'] = str(selected.generation)
+        data['ENG'] = str(round(selected.energy))+'/'+str(round(selected.max_energy))
+        data['FOOD'] = str(selected.food)
+        data['POWER'] = str(selected.power)
+        data['SPEED'] = str(selected.speed)
+        data['EYES'] = str(selected.eyes)
+        data['SIZE'] = str(selected.size)
+        data['MUT'] = f"{selected.mutations}"
+        data['B|K'] = str(selected.childs)+'|'+str(selected.kills)
+        data['FIT'] = str(round(selected.fitness))
+        data["LIFE"] = str(round(selected.life_time))
+        data["REPRO"] = str(round(selected.reproduction_time))
         states = []
-        if self.owner.enviro.selected.hidding:
+        if selected.hidding:
             states.append('H')
-        if self.owner.enviro.selected.attacking:
+        if selected.attacking:
             states.append('A')
-        if self.owner.enviro.selected.running:
+        if selected.running:
             states.append('R')
-        if self.owner.enviro.selected.on_water:
+        if selected.on_water:
             states.append('W')
-        if self.owner.enviro.selected.eating:
+        if selected.eating:
             states.append('E')
-        if self.owner.enviro.selected.pain:
+        if selected.pain:
             states.append('T')
-        if self.owner.enviro.selected.collide_creature:
+        if selected.collide_creature:
             states.append('C')
-        if self.owner.enviro.selected.collide_meat:
+        if selected.collide_meat:
             states.append('M')
-        if self.owner.enviro.selected.collide_plant:
+        if selected.collide_plant:
             states.append('P')
         if len(states) > 0:
             data['S'] = '|'
@@ -616,6 +627,7 @@ class GUI():
         for state in states:
             data['S'] += state
             data['S'] += '|'
+        data['COST'] = f"B:{round(selected.eng_lost['basic'], 1)}|M:{round(selected.eng_lost['move'], 1)}|N:{round(selected.eng_lost['neuro'], 1)}|O:{round(selected.eng_lost['other'], 1)}|"
         return data
 
     def select_map(self):
