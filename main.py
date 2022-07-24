@@ -27,7 +27,7 @@ from lib.meat import Meat
 from lib.utils import log_to_file
 from lib.camera import Camera
 from lib.statistics import Statistics
-from lib.terrain import generate_terrain_blue, generate_terrain_red
+#from lib.terrain import generate_terrain_blue, generate_terrain_red
 
 class Simulation():
 
@@ -97,13 +97,13 @@ class Simulation():
         #self.terrain = image.load('res/images/map2.png').convert()
         self.map_time = 0.0
 
-    def create_terrain(self, rocks_filename: str, water_filename: str):
+    """ def create_terrain(self, rocks_filename: str, water_filename: str):
         rock_img = image.load(rocks_filename).convert()
         rock = generate_terrain_red(rock_img, self.space, 2, 1, 0, 8, Color((150, 150, 150, 255)))
         self.lands.append(rock)
         water_img = image.load(water_filename).convert()
         water = generate_terrain_blue(water_img, self.space, 2, 0.392, 0, 14, Color((0, 0, 255, 255)))
-        self.lands.append(water)
+        self.lands.append(water) """
         
     def create_rock2(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -177,6 +177,8 @@ class Simulation():
         ranking = self.ranking1
         ranking.sort(key=sort_by_fitness, reverse=True)
         for rank in reversed(ranking):
+            rg = rank['genealogy'][len(rank['genealogy'])-1: -cfg.GENERATIONS_NUMBER]
+            cg = creature.genealogy[len(creature.genealogy)-1: -cfg.GENERATIONS_NUMBER]
             if rank['name'] == creature.name or rank['genealogy'][0][0] == creature.genealogy[0][0]:
                 if creature.fitness >= rank['fitness']:
                     ranking.remove(rank)

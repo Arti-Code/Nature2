@@ -5,6 +5,7 @@ from pygame import Color
 from lib.config import *
 from lib.vision import Target, TARGET_TYPE
 from lib.rock import Rock
+from lib.creature import Creature
 
 def line_of_sight(space: Space, start_vec: Vec2d, end_vec: Vec2d, filter: ShapeFilter) -> bool:
     query: SegmentQueryInfo=space.segment_query_first(start_vec, end_vec, 1.0, filter)
@@ -81,8 +82,8 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
 #?  [[[ENEMYS CONTACT]]]
 def process_creatures_collisions(arbiter, space, data):
     dt = data['dt']
-    agent = arbiter.shapes[0].body
-    target = arbiter.shapes[1].body
+    agent: Creature = arbiter.shapes[0].body
+    target: Creature = arbiter.shapes[1].body
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
     agent.position -= arbiter.normal*(size1/size0)*0.4
@@ -91,14 +92,14 @@ def process_creatures_collisions(arbiter, space, data):
         if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             if (size0+randint(0, 6)) > (size1+randint(0, 6)):
                 dmg = cfg.HIT * ((agent.size+agent.power)/2) * dt
+                target.hidding = False
                 if target.hit(dmg):
                     agent.fitness += cfg.KILL2FIT
                     agent.kills += 1
                 else:
                     agent.fitness += dmg*cfg.HIT2FIT
-                meat = diet(agent.food, cfg.DIET_MOD)
-                meat_value = (dmg/(agent.max_energy*100)) * meat * cfg.MEAT2ENG
-                agent.eat(meat_value)
+                eng = diet(agent.food, cfg.DIET_MOD) * dmg * cfg.DMG2ENG
+                agent.eat(eng)
     agent.collide_creature = True
     return False
 
@@ -183,8 +184,9 @@ def process_creature_water_collisions_end(arbiter, space, data):
 
 #?  [[[ROCK CONTACT]]]
 def process_creatures_rock_collisions(arbiter, space, data):
-    arbiter.shapes[0].body.position -= arbiter.normal * 2.5
+    arbiter.shapes[0].body.position -= arbiter.normal * 1.5
     arbiter.shapes[0].body.collide_something = True
+    arbiter.shapes[0].body.border = True
     return False
 
 def process_creatures_rock_collisions_end(arbiter, space, data):
@@ -212,17 +214,18 @@ def process_plant_rock_collisions_end(arbiter, space, data):
 
 #?  [[[SEEING ENEMY]]]
 def process_agents_seeing(arbiter: Arbiter, space: Space, data):
-    agent1 = arbiter.shapes[0].body
+    agent1: Creature = arbiter.shapes[0].body
     if not agent1.vision.observe:
         return False
-    agent2 = arbiter.shapes[1].body
+    agent2: Creature = arbiter.shapes[1].body
+    if agent2.hidding:
+        return False
     dist = agent2.position.get_dist_sqrd(agent1.position)
     if dist > agent1.vision.max_dist_enemy:
         return False
     close_object: bool=False
     filter: ShapeFilter=ShapeFilter()
-    #***  [[[FIX: add rot_vec*20]]] !!!
-    if not line_of_sight(space, agent1.position+agent1.rotation_vector*20, agent2.position, filter):
+    if not line_of_sight(space, agent1.position+agent1.rotation_vector*(agent1.size+2), agent2.position, filter):
         return False
     if pow((agent1.size*3+cfg.CLOSE_VISION), 2) >= dist:
         close_object = True
@@ -289,8 +292,7 @@ def process_meats_seeing_end(arbiter, space, data):
     return False
 
 
-#?  [[[SEEING ROCK]]]
-def process_rocks_seeing(arbiter: Arbiter, space: Space, data):
+def process_rocks_seeing(arbiter: Arbiter, space, data):
     agent1 = arbiter.shapes[0].body
     if not agent1.vision.observe:
         return False
