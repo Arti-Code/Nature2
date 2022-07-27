@@ -216,19 +216,18 @@ class CreatureWindow(UIWindow):
         i=0
         self.labs = {}
         for key, val in data.items():
-            if key != 'S' or key != 'SPECIE' or key != 'ENG':
+            if key != 'SPECIE' and key != 'ENG':
                 if key == 'COST':
                     lab1 = UILabel(Rect((5, 15*i+5), (self.rect.width-5, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
                     lab2 = UILabel(Rect((self.rect.width-5, 15*i+5), (5, 15)), text=f"", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
+                elif key == 'S':
+                    lab1 = UILabel(Rect((5, 15*i+5), (10, 15)), text="", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
+                    lab2 = UILabel(Rect((15, 15*i+5), (self.rect.width-15, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
                 else:            
                     lab1 = UILabel(Rect((5, 15*i+5), (50, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
                     lab2 = UILabel(Rect((60, 15*i+5), (self.rect.width-65, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
-            
-            elif key == 'S':
-                lab1 = UILabel(Rect((5, 15*i+5), (10, 15)), text=f"{key}: ", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
-                lab2 = UILabel(Rect((15, 15*i+5), (self.rect.width-15, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
-            i+=1
-            self.labs[key] = (lab1, lab2)
+                self.labs[key] = (lab1, lab2)
+                i+=1
         btn_w = 80; btn_h = 20
         self.btn_ancestors = UIButton(Rect((rect.width/2-btn_w/2, (5+15*i)), (btn_w, btn_h)), text='ANCESTORS', manager=self.manager, container=self, parent_element=self, object_id="#btn_ancestors")
         self.refresh = 0
@@ -242,9 +241,12 @@ class CreatureWindow(UIWindow):
             data = data
             for key, val in data.items():
                 if key == 'COST':
-                    self.labs[key][0].set_text(f"{val}:")
+                    self.labs[key][0].set_text(f"{val}")
                     self.labs[key][1].set_text(f"")
-                else:
+                elif key == 'S':
+                    self.labs[key][0].set_text(f"")
+                    self.labs[key][1].set_text(f"{val}")
+                elif key != 'SPECIE' and key != 'ENG':
                     self.labs[key][0].set_text(f"{key}:")
                     self.labs[key][1].set_text(f"{val}")
 
@@ -535,7 +537,7 @@ class GUI():
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((0, 0), (165, 295)), data=data, dT=dT)
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((0, 0), (165, 260)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
