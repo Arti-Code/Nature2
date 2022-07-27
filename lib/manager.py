@@ -345,8 +345,8 @@ class Manager:
     def draw_net(self, network: Network):
         if network:
             last_layer_idx: int=len(network.layers)-1
-            h_space = 50
-            v_space = 14
+            h_space = cfg.GRAPH_H
+            v_space = cfg.GRAPH_V
             nodes_to_draw = []
             dists = {}
             max_nodes_num = 0
@@ -456,7 +456,7 @@ class Manager:
             for c, l, n, r, d, desc, v in nodes_to_draw:
                 v = clamp(v, -1.0, 1.0)
                 rv=0; gv = 0; bv=0
-                cv = int(5*abs(v))+3
+                cv = int(6*abs(v))+2
                 if v >= 0:
                     rv = int(255*v)
                 else:
@@ -465,8 +465,8 @@ class Manager:
                 gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color)
                 gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 2, c)
                 gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 2, c)
-                if r:
-                    gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 5, c)
+                #if r:
+                #    gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 5, c)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
                     text = "{:<2}  {:2> .1f}".format(inp_desc[n], val)
