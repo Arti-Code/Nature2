@@ -10,7 +10,7 @@ from pygame.font import Font, match_font
 from pygame import Surface, Color, Rect
 from pymunk import Vec2d, Shape, Circle, Poly
 from lib.math2 import flipy, clamp
-from lib.net import Network, TYPE, ACTIVATION
+from lib.net import Node, Link, Network, TYPE, ACTIVATION
 from lib.config import cfg
 from lib.gui import GUI
 from lib.utils import log_to_file
@@ -345,8 +345,8 @@ class Manager:
     def draw_net(self, network: Network):
         if network:
             last_layer_idx: int=len(network.layers)-1
-            h_space = 50
-            v_space = 14
+            h_space = cfg.GRAPH_H
+            v_space = cfg.GRAPH_V
             nodes_to_draw = []
             dists = {}
             max_nodes_num = 0
@@ -395,7 +395,8 @@ class Manager:
                 pygame.draw.polygon(self.screen, Color("orange"), [(back_box.left+1, back_box.top+1), (back_box.right-2, back_box.top+1), (back_box.right-2, back_box.bottom-2), (back_box.left+1, back_box.bottom-2)], 2)
                 gfxdraw.filled_polygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0, 0, 0, 35))
                 for node_key in network.layers[layer].nodes:
-                    node = network.nodes[node_key]
+                    node: Node = network.nodes[node_key]
+                    v = node.value
                     if node.recurrent:
                         node_color = Color("orange")
     #                    if node.mem_weight >= 0:
@@ -448,15 +449,24 @@ class Manager:
 #                        node_num0 = len(network.layers[l0].nodes)
                         pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)))
                     desc = ''
-                    nodes_to_draw.append((node_color, l, n, node.recurrent, dist_nn, desc))
+                    nodes_to_draw.append((node_color, l, n, node.recurrent, dist_nn, desc, v))
                     n += 1
                 l += 1
             out = 0
-            for c, l, n, r, d, desc in nodes_to_draw:
-                gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 3, c)
-                gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 3, c)
-                if r:
-                    gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 5, c)
+            for c, l, n, r, d, desc, v in nodes_to_draw:
+                v = clamp(v, -1.0, 1.0)
+                rv=0; gv = 0; bv=0
+                cv = int(6*abs(v))+2
+                if v >= 0:
+                    rv = int(255*v)
+                else:
+                    bv = int(255*abs(v))
+                v_color = Color(rv, gv, bv)
+                gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color)
+                gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 2, c)
+                gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 2, c)
+                #if r:
+                #    gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 5, c)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
                     text = "{:<2}  {:2> .1f}".format(inp_desc[n], val)

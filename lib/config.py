@@ -2,7 +2,7 @@ from math import pi as PI
 from json import loads, dumps
 
 TITLE = "NATURE"
-SUBTITLE = "v1.0.0" 
+SUBTITLE = "v1.0.2" 
 AUTHOR = "2019-2022 Artur Gwoździowski"
 
 class Configuration():
@@ -75,6 +75,8 @@ class Configuration():
         self.NET_BASE = None
         self.GENERATIONS_NUMBER = None
         self.NEURO_COST = None
+        self.GRAPH_H = None
+        self.GRAPH_V = None
         self.load_from_file2(filename)
 
     def load_from_file2(self, filename: str):
@@ -158,5 +160,7 @@ class Configuration():
         self.NET_BASE               = cfg['NET_BASE']
         self.GENERATIONS_NUMBER     = cfg['GENERATIONS_NUMBER']
         self.NEURO_COST             = cfg['NEURO_COST']
+        self.GRAPH_V                = cfg['GRAPH_V']
+        self.GRAPH_H                = cfg['GRAPH_H']
 
 cfg = Configuration('config.json')
