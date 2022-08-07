@@ -6,6 +6,7 @@ from pygame import Surface, Color, Rect, draw
 from pygame.math import Vector2
 import pymunk as pm
 from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform, SegmentQueryInfo as RayCast
+#from lib.creature import Creature
 from lib.math2 import flipy, ang2vec, ang2vec2, clamp
 from lib.config import cfg
 from lib.camera import Camera
@@ -149,6 +150,7 @@ class Vision(Circle):
         enemy_l = -round((self.enemy['ang']/(self.semiwide)), 1)
         enemy_r = round((self.enemy['ang']/(self.semiwide)), 1)
         enemy_d = 1 - sqrt(self.enemy['dist'])/cfg.SENSOR_RANGE
+        
         plant_l = -round((self.plant['ang']/(self.semiwide)), 1)
         plant_r = round((self.plant['ang']/(self.semiwide)), 1)
         plant_d = 1 - sqrt(self.plant['dist'])/cfg.SENSOR_RANGE
@@ -172,13 +174,16 @@ class Vision(Circle):
         enemy_r = round((self.enemy['ang']/(self.semiwide)), 1)
         enemy_d = 1 - sqrt(self.enemy['dist'])/cfg.SENSOR_RANGE
         enemy_f = int(self.enemy['family'])
+        enemy_s_p = 0.0
+        if self.enemy['target'] != None:
+            enemy_s_p = self.enemy['target'].size+self.enemy['target'].power
         plant_r = round((self.plant['ang']/(self.semiwide)), 1)
         plant_d = 1 - sqrt(self.plant['dist'])/cfg.SENSOR_RANGE
         meat_r = round((self.meat['ang']/(self.semiwide)), 1)
         meat_d = 1 - sqrt(self.meat['dist'])/cfg.SENSOR_RANGE
         rock_r = round((self.rock['ang']/(self.semiwide)), 1)
         rock_d = 1 - sqrt(self.rock['dist'])/cfg.SENSOR_RANGE
-        return [enemy_r, enemy_d, enemy_f, plant_r, plant_d,meat_r, meat_d,rock_r, rock_d]
+        return [enemy_r, enemy_d, enemy_f, enemy_s_p, plant_r, plant_d,meat_r, meat_d,rock_r, rock_d]
 
     def set_detection_color(self, detection: bool):
         if detection:

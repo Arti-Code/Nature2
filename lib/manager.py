@@ -363,7 +363,7 @@ class Manager:
             inp_desc = [
                 'ENEMY', 'PLANT', 'MEAT ',
                 'ENERG', 'INJUR',
-                'ENE-R', 'ENE-D', 'FAMILY', 
+                'ENE-R', 'ENE-D', 'FAMIL', 'EASY ',
                 'PLA-R', 'PLA-D',
                 'MEA-R', 'MEA-D',
                 'ROC-R', 'ROC-D',
@@ -460,6 +460,7 @@ class Manager:
                 if v >= 0:
                     rv = int(255*v)
                 else:
+                    gv = int(255*abs(v))
                     bv = int(255*abs(v))
                 v_color = Color(rv, gv, bv)
                 gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color)

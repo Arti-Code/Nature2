@@ -229,6 +229,16 @@ class Network():
                 selected.append(n)
         return selected
 
+#    def FindBackConnections(self, node_sign: int) -> tuple(list[int|None], list[int|None]):
+#        findings = ([], [])
+#        master: Node = self.nodes[node_sign]
+#        links = master.to_links
+#        for l in links:
+#            findings[1].append(l)
+#            link: Link = self.links[l]
+#            node_key = link.from_node
+#            findings[0].append(node_key)
+
     def GetLayerKeyList(self, layer_types=[TYPE.HIDDEN]):
         selected = []
         for l in self.layers:

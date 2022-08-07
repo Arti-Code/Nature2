@@ -76,6 +76,7 @@ class Simulation():
         self.show_network = True
         self.show_specie_name = True
         self.show_dist_and_ang = False
+        self.follow: bool=False
         self.selected = None
         self.time = 0
         self.cycles = 0
@@ -96,6 +97,7 @@ class Simulation():
         self.fitness = {'points': [], 'lifetime': []}
         #self.terrain = image.load('res/images/map2.png').convert()
         self.map_time = 0.0
+        self.follow_time: float = 0.0
 
     """ def create_terrain(self, rocks_filename: str, water_filename: str):
         rock_img = image.load(rocks_filename).convert()
@@ -253,6 +255,8 @@ class Simulation():
             self.statistics.plot('neuros')
         if event.key == pygame.K_F7:
             self.statistics.plot('fitness')
+        if event.key == pygame.K_F9:
+            self.follow = not self.follow
 
     def mouse_events(self, event):
         self.selected = None
@@ -375,6 +379,11 @@ class Simulation():
         return wall
 
     def draw(self):
+        if self.follow and self.selected != None:
+            #self.follow_time += self.dt
+            #if self.follow_time >= 0.1:
+                #self.follow_time = self.follow_time - 0.1
+            self.camera.focus_camera(Vector2(int(self.selected.position.x), int(self.selected.position.y)))
         self.screen.fill(Color('black'))
         #self.screen.blit(self.terrain, (-self.camera.get_offset_tuple()[0], -self.camera.get_offset_tuple()[1]))
         self.draw_creatures()
