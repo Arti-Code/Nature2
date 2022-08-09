@@ -1,3 +1,4 @@
+from enum import unique
 import os
 import sys
 from time import time
@@ -171,11 +172,22 @@ class Simulation():
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores', 'all creatures'])
 
+    def check_ranking(self):
+        self.ranking1.sort(key=sort_by_fitness, reverse=True)
+        i = -1
+        unique: list[str]=[]
+        to_remove: list=[]
+        for rank in self.ranking1:
+            i +=1
+            if not rank['name'] in unique:
+                unique.append(rank['name'])
+            else:
+                to_remove.append(rank)
+        for v in to_remove:
+            self.ranking1.remove(v)
+        to_remove.clear()
+
     def add_to_ranking(self, creature: Creature):
-        #if creature.food >= 6:
-        #    ranking = self.ranking2
-        #else:
-        #    ranking = self.ranking1
         ranking = self.ranking1
         ranking.sort(key=sort_by_fitness, reverse=True)
         for rank in reversed(ranking):
@@ -519,7 +531,7 @@ class Simulation():
             if creature.check_reproduction(dt):
                 for _ in range(cfg.CHILDS_NUM):
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)
-                    new_position = self.free_random_position(position=position, range=Vec2d(100, 100), size=genome['size'], categories=0b10000010000000)
+                    new_position = self.free_random_position(position=position, range=Vec2d(cfg.CREATURES_SEP, cfg.CREATURES_SEP), size=genome['size'], categories=0b10000010000000)
                     new_creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=new_position, genome=genome)
                     temp_list.append(new_creature)
 
@@ -531,28 +543,6 @@ class Simulation():
             self.creature_list.append(new_one)
         temp_list = []
         self.check_populatiom()
-
-    def update_terrain(self, dt):
-        self.map_time += dt
-        if self.map_time < 0.8:
-            return
-        #self.terrain.update()
-        for creature in self.creature_list:
-            coord0 = creature.get_tile_coord()
-            vec = creature.rotation_vector
-            coord = ((creature.position+(vec*100))/10)
-            creature.water_ahead = False
-            water_detectors = creature.detect_water(self.screen)
-            for detector in water_detectors:
-                if self.terrain.is_water_tile(detector)[0]:
-                    creature.water_ahead = True
-                    break
-            on_water_tile = self.terrain.is_water_tile(coord0)
-            if on_water_tile[0]:
-                creature.on_water = (True, on_water_tile[1])
-            else:
-                creature.on_water = (False, on_water_tile[1])
-        self.map_time = self.map_time-1.0
 
     def update_statistics(self):
         last = self.statistics.get_last_time('populations')
@@ -609,16 +599,6 @@ class Simulation():
             self.populations['carnivores'].append(self.carnivores)
 
     def check_creature_types(self):
-        #if self.herbivores < cfg.MIN_HERBIVORES:
-            #if len(self.ranking1) > 0:
-            #    genome = choice(self.ranking1)
-            #    creature = self.add_creature(genome=genome)
-            #    self.creature_list.append(creature)
-        #if self.carnivores < cfg.MIN_CARNIVORES:
-            #if len(self.ranking2) > 0:
-            #    genome = choice(self.ranking2)
-            #    creature = self.add_creature(genome=genome)
-            #    self.creature_list.append(creature)
         self.herbivores = 0
         self.carnivores = 0
         for creature in self.creature_list:

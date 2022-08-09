@@ -211,7 +211,7 @@ class EnviroWindow(UIWindow):
 class CreatureWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, data: dict, dT: float):
-        super().__init__(rect, manager=manager, window_display_title=data['SPECIE']+'  '+data['ENG'] + '   ' + str(self.owner.enviro.follow), object_id="#creature_win", visible=True)
+        super().__init__(rect, manager=manager, window_display_title=data['SPECIE']+'  '+data['ENG'], object_id="#creature_win", visible=True)
         self.manager = manager
         i=0
         self.labs = {}

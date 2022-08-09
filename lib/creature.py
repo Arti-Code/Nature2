@@ -331,7 +331,7 @@ class Creature(Life):
         input = []
         ar, ad, af, ap, pr, pd, mr, md, rr, rd = self.vision.get_detection2()
         eng = self.energy/self.max_energy
-        dng = clamp(((self.size+self.power)/2-(ap/2))/10, -1.0, 1.0)
+        #dng = clamp(((self.size+self.power)/2-(ap/2))/10, -1.0, 1.0)
         input.append(self.collide_creature)
         input.append(self.collide_plant)
         input.append(self.collide_meat)
@@ -340,7 +340,7 @@ class Creature(Life):
         input.append(ar)
         input.append(ad)
         input.append(af)
-        input.append(dng)
+        #input.append(dng)
         input.append(pr)
         input.append(pd)
         input.append(mr)

@@ -1,6 +1,6 @@
 {
   "WORLD": [3000, 2000],
-  "SCREEN": [1800, 950],
+  "SCREEN": [1900, 1000],
   "ITER": 1,
   
   "PLANT_MIN_NUM": 10,
@@ -16,6 +16,7 @@
   "CREATURE_MULTIPLY": 0.003,
   "CREATURE_MIN_SIZE": 4,
   "CREATURE_MAX_SIZE": 10,
+  "CREATURES_SEP": 200,
 
   "EAT": 25,
   "HIT": 300,
@@ -79,5 +80,5 @@
   "GRAPH_V": 28,
   "GENERATIONS_NUMBER": 2,
   
-  "NET": [16, 0, 0, 0, 0, 0, 0, 0, 5]
+  "NET": [15, 0, 0, 0, 0, 0, 0, 0, 5]
 }
