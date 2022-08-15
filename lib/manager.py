@@ -2,13 +2,11 @@ from copy import copy, deepcopy
 from shutil import rmtree
 import os
 import json
-from random import random, randint
-from math import floor, sin, cos, radians, degrees, pi as PI
+from math import pi as PI
 import pygame
 import pygame.gfxdraw as gfxdraw
 from pygame.font import Font, match_font 
 from pygame import Surface, Color, Rect
-from pymunk import Vec2d, Shape, Circle, Poly
 from lib.math2 import flipy, clamp
 from lib.net import Node, Link, Network, TYPE, ACTIVATION
 from lib.config import cfg
@@ -103,7 +101,6 @@ class Manager:
     def save_project(self):
         project_name = self.enviro.project_name
         if project_name != '' and isinstance(project_name, str):
-            i = 0
             project = {}
             project['name'] = project_name
             project['time'] = round(self.enviro.time, 1)
@@ -259,7 +256,6 @@ class Manager:
         json_cr = f.read()
         f.close()
         obj_cr = json.loads(json_cr)
-        #genome['neuro'] = json.loads(genome['neuro'])
         neuro = Network()
         neuro.FromJSON(obj_cr['neuro'])
         obj_cr['neuro'] = neuro
@@ -333,7 +329,6 @@ class Manager:
         self.load_project(project_name, last_save)
 
     def delete_project(self, sim_name: str) -> bool:
-        #if self.delete_from_projects_list(sim_name):
         res = True
         try:
             rmtree('saves/' + sim_name)
@@ -376,12 +371,7 @@ class Manager:
                 "HIDE"
             ]
 
-#            input_keys = network.GetNodeKeyList([TYPE.INPUT])
-#            output_keys = network.GetNodeKeyList([TYPE.OUTPUT])
             for layer in network.layers:
-#                last_layer = False
-#                if network.layers[layer].type == TYPE.OUTPUT:
-#                    last_layer = True
                 node_num = len(network.layers[layer].nodes)
                 if node_num > 0:
                     dist_nn = round(max_layer_size/(node_num))
@@ -389,7 +379,6 @@ class Manager:
                     dist_nn = max_layer_size
                 dists[layer] = dist_nn
                 n = 0
-#                desc_idx = 0
                 base_line.append(round((cfg.NET_BASE + max_nodes_num * v_space)/2))
                 back_box = Rect(4, cfg.SCREEN[1] - (max(base_line))-4, max_net_length+125, max_layer_size+6)
                 gfxdraw.aapolygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color("orange"))
@@ -400,55 +389,29 @@ class Manager:
                     v = node.value
                     if node.recurrent:
                         node_color = Color("black")
-    #                    if node.mem_weight >= 0:
-    #                        r = 150
-    #                        b = round(255 * node.mem_weight)
-    #                        g = 255 - b
-    #                        node_color = Color(r, g, b)
-    #                    else:
-    #                        g = -round(255 * node.mem_weight)
-    #                        b = 150
-    #                        r = g
-    #                        node_color = Color(r, g, b)
                     else:
                         if node.activation == ACTIVATION.TANH:
                             node_color = Color("#55ff2f")
-                        elif node.activation == ACTIVATION.SIGMOID:
-                            node_color = Color("#3094ff")
-                        elif node.activation == ACTIVATION.RELU:
-                            node_color = Color("#de39ff")
-                        elif node.activation == ACTIVATION.LEAKY_RELU:
-                            node_color = Color("#8649ff")
-                        elif node.activation == ACTIVATION.BINARY:
-                            node_color = Color("#ffff3b")
-                        elif node.activation == ACTIVATION.REV_BINARY:
-                            node_color = Color("#ffa42d")
-                        elif node.activation == ACTIVATION.WIDE_BINARY:
-                            node_color = Color("#ff291a")
-                        elif node.activation == ACTIVATION.LINEAR:
-                            node_color = Color("#3afdda")
-                        elif node.activation == ACTIVATION.PULSE:
-                            node_color = Color("#ffffff")
                     for link_key in node.to_links:
-                        link = network.links[link_key]
+                        link: Link=network.links[link_key]
                         from_node_key = link.from_node
                         (l0, n0) = network.FindNode(from_node_key)
                         g = 0
-                        a = abs(round(205*link.weight)+50)
-                        if link.weight >= 0:
+                        a = abs(round(200*link.signal))+55
+                        if link.signal >= 0:
                             g = 0
-                            r = 255
+                            r = 100+155*link.signal
                             b = 0
                             if link.recombined:
                                 g = 255
                         else:
-                            b = 255
+                            b = 100+abs(155*link.signal)
                             r = 0
                             if link.recombined:
                                 g = 255
                         link_color = Color((r, g, b, a))
-#                        node_num0 = len(network.layers[l0].nodes)
-                        pygame.draw.aaline(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)))
+                        w = a//50
+                        pygame.draw.line(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)), w)
                     desc = ''
                     nodes_to_draw.append((node_color, l, n, node.recurrent, dist_nn, desc, v))
                     n += 1
@@ -470,9 +433,6 @@ class Manager:
                 if r:
                     gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(cv/2), c)
                     gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(cv/2), c)
-                #gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 2, c)
-                #if r:
-                #    gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 5, c)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
                     text = "{:<2}  {:2> .1f}".format(inp_desc[n], val)

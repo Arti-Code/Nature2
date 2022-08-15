@@ -113,6 +113,11 @@ class Link():
         self.to_node = to_node
         self.weight = weight
         self.recombined = False
+        self.signal: float=0.0
+
+    def CalcSignal(self, input: float) -> float:
+        self.signal = (input * self.weight) * abs(input * self.weight)
+        return self.signal
 
     def RandomWeight(self):
         self.weight = clamp(gauss(0, 0.5), -1, 1)
@@ -369,30 +374,33 @@ class Network():
                 node_key = self.layers[lay1].nodes[nod1]
                 bias = self.nodes[node_key].bias
                 if self.nodes[node_key].activation == ACTIVATION.TANH:
+                    #elif self.nodes[node_key].activation == ACTIVATION.SIGMOID:
+                    #    func = sigmoid
+                    #elif self.nodes[node_key].activation == ACTIVATION.RELU:
+                    #    func = relu
+                    #elif self.nodes[node_key].activation == ACTIVATION.LEAKY_RELU:
+                    #    func = leaky_relu
+                    #elif self.nodes[node_key].activation == ACTIVATION.BINARY:
+                    #    func = binary
+                    #elif self.nodes[node_key].activation == ACTIVATION.REV_BINARY:
+                    #    func = rev_binary
+                    #elif self.nodes[node_key].activation == ACTIVATION.WIDE_BINARY:
+                    #    func = wide_binary
+                    #elif self.nodes[node_key].activation == ACTIVATION.LINEAR:
+                    #    func = linear
+                    #elif self.nodes[node_key].activation == ACTIVATION.PULSE:
+                    #    func = pulse
                     func = tanh
-                elif self.nodes[node_key].activation == ACTIVATION.SIGMOID:
-                    func = sigmoid
-                elif self.nodes[node_key].activation == ACTIVATION.RELU:
-                    func = relu
-                elif self.nodes[node_key].activation == ACTIVATION.LEAKY_RELU:
-                    func = leaky_relu
-                elif self.nodes[node_key].activation == ACTIVATION.BINARY:
-                    func = binary
-                elif self.nodes[node_key].activation == ACTIVATION.REV_BINARY:
-                    func = rev_binary
-                elif self.nodes[node_key].activation == ACTIVATION.WIDE_BINARY:
-                    func = wide_binary
-                elif self.nodes[node_key].activation == ACTIVATION.LINEAR:
-                    func = linear
-                elif self.nodes[node_key].activation == ACTIVATION.PULSE:
-                    func = pulse
 
                 for lin1 in range(len(self.nodes[node_key].to_links)):
                     link_key = self.nodes[node_key].to_links[lin1]
                     from_node_key = self.links[link_key].from_node
                     v = self.nodes[from_node_key].value
-                    w = self.links[link_key].weight
-                    dot = dot + ((v * w) * (abs(v * w)))
+                    link: Link=self.links[link_key]
+                    s: float=link.CalcSignal(v)
+                    #w = self.links[link_key].weight
+                    #dot = dot + ((v * w) * (abs(v * w)))
+                    dot = dot + s
                 dot = dot + bias
 
                 recurrent = self.nodes[node_key].recurrent
