@@ -23,7 +23,6 @@
   "SPEED": 2,
   "TURN": 1.3,
 
-  "SENSOR_SPEED": 0.3,
   "SENSOR_MAX_ANGLE": 5,
   "SENSOR_RANGE": 400,
   "CLOSE_VISION": 16,
@@ -73,8 +72,6 @@
   "ROCK_SIZE_MAX": 100,
   "ROCK_VERT_MIN": 4,
   "ROCK_VERT_MAX": 8,
-  "WATER_COST": 0.01,
-  "WATER_MOVE": 0.1,
   "NEURON_MOD": 50,
   "NEURO_COST": 0.02,
   "NET_BASE": 250,

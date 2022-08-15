@@ -29,7 +29,6 @@ class Configuration():
         self.REP_ENERGY = None
         self.SPEED = None
         self.TURN = None
-        self.SENSOR_SPEED = None
         self.CREATURE_MIN_SIZE = None
         self.CREATURE_MAX_SIZE = None
         self.HIT = None
@@ -72,8 +71,6 @@ class Configuration():
         self.NET = None
         self.RANK_DECAY = None
         self.STAT_PERIOD = None
-        self.WATER_MOVE = None
-        self.WATER_COST = None
         self.NEURON_MOD = None
         self.NET_BASE = None
         self.GENERATIONS_NUMBER = None
@@ -116,7 +113,6 @@ class Configuration():
         self.REP_ENERGY             = cfg['REP_ENERGY']
         self.SPEED                  = cfg['SPEED']
         self.TURN                   = cfg['TURN']
-        self.SENSOR_SPEED           = cfg['SENSOR_SPEED']
         self.CREATURE_MIN_SIZE      = cfg['CREATURE_MIN_SIZE']
         self.CREATURE_MAX_SIZE      = cfg['CREATURE_MAX_SIZE']
         self.HIT                    = cfg['HIT']
@@ -160,8 +156,6 @@ class Configuration():
         self.NET                    = cfg['NET']
         self.RANK_DECAY             = cfg['RANK_DECAY']
         self.STAT_PERIOD            = cfg['STAT_PERIOD']
-        self.WATER_MOVE             = cfg['WATER_MOVE']
-        self.WATER_COST             = cfg['WATER_COST']
         self.NEURON_MOD             = cfg['NEURON_MOD']
         self.NET_BASE               = cfg['NET_BASE']
         self.GENERATIONS_NUMBER     = cfg['GENERATIONS_NUMBER']
