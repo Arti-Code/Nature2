@@ -2,7 +2,7 @@ from math import pi as PI
 from json import loads, dumps
 
 TITLE = "NATURE"
-SUBTITLE = "v1.0.4" 
+SUBTITLE = "v1.0.5" 
 AUTHOR = "2019-2022 Artur Gwoździowski"
 
 class Configuration():
@@ -59,6 +59,8 @@ class Configuration():
         self.EAT_ENG = None
         self.LINKS_RATE = None
         self.MUTATIONS = None
+        self.DEL_LINK = None
+        self.DEL_NODE = None
         self.TIME = None
         self.BORN2FIT = None
         self.RUN_TIME = None
@@ -145,6 +147,8 @@ class Configuration():
         self.EAT_ENG                = cfg['EAT_ENG']
         self.LINKS_RATE             = cfg['LINKS_RATE']
         self.MUTATIONS              = cfg['MUTATIONS']
+        self.DEL_LINK               = cfg['DEL_LINK']
+        self.DEL_NODE               = cfg['DEL_NODE']
         self.TIME                   = cfg['TIME']
         self.BORN2FIT               = cfg['BORN2FIT']
         self.RUN_TIME               = cfg['RUN_TIME']

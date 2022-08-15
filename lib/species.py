@@ -40,7 +40,7 @@ def modify_name(name: str) -> str:
     if rnd <= 0.5:
         new_name = name[0:4]+ch
     elif rnd <= 0.85:
-        new_name = name[0:2]+ch+name[4:6]
+        new_name = name[0:2]+ch+name[4:2]
     else:
-        new_name = ch + name[2:6]
+        new_name = ch + name[2:4]
     return new_name

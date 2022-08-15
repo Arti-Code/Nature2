@@ -193,7 +193,7 @@ class Simulation():
         for rank in reversed(ranking):
             rg = rank['genealogy'][len(rank['genealogy'])-1: -cfg.GENERATIONS_NUMBER]
             cg = creature.genealogy[len(creature.genealogy)-1: -cfg.GENERATIONS_NUMBER]
-            if rank['name'] == creature.name or rank['genealogy'][0][0] == creature.genealogy[0][0]:
+            if rank['name'] == creature.name:
                 if creature.fitness >= rank['fitness']:
                     ranking.remove(rank)
                     ranking.append(creature.get_genome())

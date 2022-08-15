@@ -371,8 +371,8 @@ class Manager:
                 'BORD'
             ]
             out_desc = [
-                "MOVE ", "TURN ",
-                "EAT  ", "ATACK",
+                "MOVE", "TURN",
+                "EAT", "ATAK",
                 "HIDE"
             ]
 
@@ -391,7 +391,7 @@ class Manager:
                 n = 0
 #                desc_idx = 0
                 base_line.append(round((cfg.NET_BASE + max_nodes_num * v_space)/2))
-                back_box = Rect(4, cfg.SCREEN[1] - (max(base_line))-4, max_net_length+110, max_layer_size+6)
+                back_box = Rect(4, cfg.SCREEN[1] - (max(base_line))-4, max_net_length+125, max_layer_size+6)
                 gfxdraw.aapolygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color("orange"))
                 pygame.draw.polygon(self.screen, Color("orange"), [(back_box.left+1, back_box.top+1), (back_box.right-2, back_box.top+1), (back_box.right-2, back_box.bottom-2), (back_box.left+1, back_box.bottom-2)], 2)
                 gfxdraw.filled_polygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0, 0, 0, 35))
@@ -399,7 +399,7 @@ class Manager:
                     node: Node = network.nodes[node_key]
                     v = node.value
                     if node.recurrent:
-                        node_color = Color("orange")
+                        node_color = Color("black")
     #                    if node.mem_weight >= 0:
     #                        r = 150
     #                        b = round(255 * node.mem_weight)
@@ -459,14 +459,18 @@ class Manager:
                 rv=0; gv = 0; bv=0
                 cv = int(6*abs(v))+2
                 if v >= 0:
-                    rv = int(255*v)
+                    gv = 255
                 else:
-                    gv = int(255*abs(v))
-                    bv = int(255*abs(v))
+                    rv = 255
+                    gv = 150
+                    bv = 25
                 v_color = Color(rv, gv, bv)
                 gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color)
-                gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 2, c)
-                gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 2, c)
+                gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color)
+                if r:
+                    gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(cv/2), c)
+                    gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(cv/2), c)
+                #gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 2, c)
                 #if r:
                 #    gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), 5, c)
                 if l == 0:
@@ -475,8 +479,8 @@ class Manager:
                     self.add_text(text, 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                 elif l == last_layer_idx:
                     val = self.enviro.selected.output[out]
-                    text = "{:<2}  {:2> .1f}".format(out_desc[out], val)
-                    self.add_text2(text, 40 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)
+                    text = "{:<}:{:< .1f}".format(out_desc[out], val)
+                    self.add_text2(text, 130 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)
                     out += 1
                 else:
                     val = network.nodes[network.layers[l].nodes[n]].value

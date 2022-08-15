@@ -55,7 +55,7 @@ class Creature(Life):
         space.add(self.vision)
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
-        self.reproduction_time = cfg.REP_TIME
+        self.reproduction_time = random()*cfg.REP_TIME
         self.energy = self.max_energy
         for sensor in self.sensors:
            space.add(sensor.shape)
@@ -66,7 +66,7 @@ class Creature(Life):
         self.pain: bool=False
         self.running: bool=False
         self.life_time: float=0.0
-        self.run_time = cfg.RUN_TIME
+        self.run_time = random()*cfg.RUN_TIME
         self.hidding: bool=False
         self.hide_ref_time = 0.0
         self.run_ref_time = 0.0

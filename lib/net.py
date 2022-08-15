@@ -144,9 +144,9 @@ class Network():
 
     MUT_BIAS        =   0.12 * cfg.MUTATIONS
     MUT_WEIGHT      =   0.12 * cfg.MUTATIONS
-    MUT_DEL_LINK    =   0.04 * cfg.MUTATIONS
+    MUT_DEL_LINK    =   0.04 * cfg.MUTATIONS + cfg.DEL_LINK
     MUT_ADD_LINK    =   0.04 * cfg.MUTATIONS
-    MUT_DEL_NODE    =   0.03 * cfg.MUTATIONS
+    MUT_DEL_NODE    =   0.03 * cfg.MUTATIONS + cfg.DEL_NODE
     MUT_ADD_NODE    =   0.03 * cfg.MUTATIONS
     MUT_NODE_TYPE   =   0.08 * cfg.MUTATIONS
     MUT_MEM         =   0.08 * cfg.MUTATIONS
@@ -392,7 +392,7 @@ class Network():
                     from_node_key = self.links[link_key].from_node
                     v = self.nodes[from_node_key].value
                     w = self.links[link_key].weight
-                    dot = dot + (v * w)
+                    dot = dot + ((v * w) * (abs(v * w)))
                 dot = dot + bias
 
                 recurrent = self.nodes[node_key].recurrent
