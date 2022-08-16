@@ -211,12 +211,18 @@ class EnviroWindow(UIWindow):
 class CreatureWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, data: dict, dT: float):
+        standart: dict[list[str]]={0: ["GEN", "POWER", "SPEED"], 1: ["FOOD", "EYES", "MUT"], 2: ["FIT", "LIFE", "REPRO"]}
         super().__init__(rect, manager=manager, window_display_title=data['SPECIE']+'  '+data['ENG'], object_id="#creature_win", visible=True)
         self.manager = manager
         i=0
         self.labs = {}
         for key, val in data.items():
             if key != 'SPECIE' and key != 'ENG':
+                #for dk, dv in standart:
+                #    if key in dv:
+                #        lab1 = UILabel(Rect((1, 15*i+5), (self.rect.width-1, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
+
+
                 if key == 'COST':
                     lab1 = UILabel(Rect((1, 15*i+5), (self.rect.width-1, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
                     lab2 = UILabel(Rect((self.rect.width-1, 15*i+5), (1, 15)), text=f"", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))

@@ -309,7 +309,6 @@ class Manager:
             self.enviro.statistics.load_statistics(stat, obj_list['statistics'][stat])
         if not f.closed:
             f.close()
-        #log_to_file(project_name+' loaded', 'log.txt')
 
     def load_last(self, project_name: str):
         path = f"saves/{project_name}"

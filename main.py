@@ -676,7 +676,7 @@ class Simulation():
         set_win_pos(20, 20)
         # self.init(cfg.WORLD)
         self.create_enviro()
-        self.set_icon('res/images/planet3-32.png')
+        self.set_icon('res/images/biosynth32.png')
         while self.running:
             self.auto_save()
             self.events()
