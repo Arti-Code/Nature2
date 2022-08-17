@@ -436,11 +436,11 @@ class Network():
         links_to_add = []
         added = 0; deleted = 0
         link_keys = self.links.keys()
-        l = choice([*link_keys])
-        #for l in self.links:
-        if (random()) < self.MUT_DEL_LINK+self.MUT_DEL_LINK*m:
-            links_to_kill.append(l)
-            deleted += 1
+        if link_keys:
+            if (random()) < self.MUT_DEL_LINK+self.MUT_DEL_LINK*m:
+                l = choice([*link_keys])
+                links_to_kill.append(l)
+                deleted += 1
 
         if (random()) < self.MUT_ADD_LINK+self.MUT_ADD_LINK*m:
             link_added = False
@@ -470,10 +470,10 @@ class Network():
         return (added, deleted)
     
     def MutateWeights(self, m=0):
-        #for l in self.links:
-        l = choice([*self.links.keys()])
-        if (random()) < self.MUT_WEIGHT+self.MUT_WEIGHT*m:
-            self.links[l].RandomWeight()
+        if self.links:
+            l = choice([*self.links.keys()])
+            if (random()) < self.MUT_WEIGHT+self.MUT_WEIGHT*m:
+                self.links[l].RandomWeight()
 
     def MutateNodes(self, m=0):
         nodes_to_kill = []
