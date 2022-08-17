@@ -482,11 +482,17 @@ class Simulation():
         self.update_statistics()
 
     def update_meat(self, dT: float):
+        to_kill: list[Meat]=[]
         for meat in self.meat_list:
             meat.update(dT, self.selected)
             if meat.life_time <= 0 or meat.energy <= 0:
-                meat.kill(self.space)
-                self.meat_list.remove(meat)
+                to_kill.append(meat)
+        
+        for m in to_kill:
+            m.kill(self.space)
+            self.meat_list.remove(m)
+
+        to_kill.clear()
 
     def update_creatures(self, dt: float):
         ### CHECK ENERGY ###
