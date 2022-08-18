@@ -502,7 +502,10 @@ class Creature(Life):
             if not n2 in neuro1:
                 neuro_diff += 1
         mean_fizjo_diff = (mean(fizjo_diff))/10
-        mean_neuro_diff = neuro_diff / ((len(neuro1) + len(neuro2))/2)
+        sum_len = (len(neuro1) + len(neuro2))
+        mean_neuro_diff = 0.0
+        if sum_len != 0:
+            mean_neuro_diff = neuro_diff / (sum_len/2)
         diff = mean([mean_fizjo_diff, mean_neuro_diff])
         if diff <= treashold:
             return True

@@ -484,13 +484,14 @@ class Network():
         hidden_list = self.GetLayerKeyList([TYPE.HIDDEN])
         input_nodes = self.GetNodeKeyList([TYPE.INPUT])
         output_nodes = self.GetNodeKeyList([TYPE.OUTPUT])
-        #node_keys = self.GetNodeKeyList([TYPE.HIDDEN])
-        n = choice([*self.nodes.keys()])
-        if self.nodes[n].type == TYPE.HIDDEN:
-            if random() < (self.MUT_DEL_NODE+self.MUT_DEL_NODE*m):
-                if not n in nodes_to_kill:
-                    nodes_to_kill.append(n)
-                    deleted += 1
+        node_keys = self.GetNodeKeyList([TYPE.HIDDEN])
+        if node_keys:
+            n = choice(node_keys)
+            if self.nodes[n].type == TYPE.HIDDEN:
+                if random() < (self.MUT_DEL_NODE+self.MUT_DEL_NODE*m):
+                    if not n in nodes_to_kill:
+                        nodes_to_kill.append(n)
+                        deleted += 1
 
         if random() < (self.MUT_ADD_NODE+self.MUT_ADD_NODE*m):
             layer_key = choice(hidden_list)
