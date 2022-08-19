@@ -315,8 +315,8 @@ class Simulation():
         while not free_pos:
             x = randint(int(pos0[0]), int(pos1[0]))
             y = randint(int(pos0[1]), int(pos1[1]))
-            x = clamp(x, 10, cfg.WORLD[0]-10)
-            y = clamp(y, 10, cfg.WORLD[1]-10)
+            x = clamp(x, cfg.PLANT_EDGE, cfg.WORLD[0]-cfg.PLANT_EDGE)
+            y = clamp(y, cfg.PLANT_EDGE, cfg.WORLD[1]-cfg.PLANT_EDGE)
             rnd_pos = Vec2d(x, y)
             free_pos = self.is_position_free(rnd_pos, size, categories)
             i += 1

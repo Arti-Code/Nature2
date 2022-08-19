@@ -2,7 +2,7 @@ from math import pi as PI
 from json import loads, dumps
 
 TITLE = "NATURE"
-SUBTITLE = "v1.0.7" 
+SUBTITLE = "v1.0.8" 
 AUTHOR = "2019-2022 Artur Gwoździowski"
 
 class Configuration():
@@ -18,6 +18,7 @@ class Configuration():
         self.PLANT_MAX_NUM = None
         self.PLANT_LIFE = None
         self.PLANT_RANGE = None
+        self.PLANT_EDGE = None
         self.CREATURE_MULTIPLY = None
         self.CREATURE_MIN_NUM = None
         self.CREATURE_INIT_NUM = None
@@ -102,6 +103,7 @@ class Configuration():
         self.PLANT_MAX_NUM          = cfg['PLANT_MAX_NUM']
         self.PLANT_LIFE             = cfg['PLANT_LIFE']
         self.PLANT_RANGE            = cfg['PLANT_RANGE']
+        self.PLANT_EDGE             = cfg['PLANT_EDGE']
         self.CREATURE_MULTIPLY      = cfg['CREATURE_MULTIPLY']
         self.CREATURE_MIN_NUM       = cfg['CREATURE_MIN_NUM']
         self.CREATURES_SEP          = cfg['CREATURES_SEP']

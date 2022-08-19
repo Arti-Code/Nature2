@@ -1,4 +1,5 @@
 from enum import Enum, IntEnum
+from logging.config import listen
 from platform import node
 from random import random, randint, choice, gauss
 from lib.math2 import sigmoid, tanh, relu, leaky_relu, binary, rev_binary, wide_binary, linear, pulse ,clamp
@@ -151,8 +152,8 @@ class Network():
     MUT_WEIGHT      =   0.12 * cfg.MUTATIONS
     MUT_DEL_LINK    =   0.04 * cfg.MUTATIONS + cfg.DEL_LINK
     MUT_ADD_LINK    =   0.04 * cfg.MUTATIONS
-    MUT_DEL_NODE    =   0.03 * cfg.MUTATIONS + cfg.DEL_NODE
-    MUT_ADD_NODE    =   0.03 * cfg.MUTATIONS
+    MUT_DEL_NODE    =   0.05 * cfg.MUTATIONS + cfg.DEL_NODE
+    MUT_ADD_NODE    =   0.05 * cfg.MUTATIONS
     MUT_NODE_TYPE   =   0.08 * cfg.MUTATIONS
     MUT_MEM         =   0.08 * cfg.MUTATIONS
     ADD_NODE_NUM = 0
@@ -486,12 +487,15 @@ class Network():
         output_nodes = self.GetNodeKeyList([TYPE.OUTPUT])
         node_keys = self.GetNodeKeyList([TYPE.HIDDEN])
         if node_keys:
-            n = choice(node_keys)
-            if self.nodes[n].type == TYPE.HIDDEN:
-                if random() < (self.MUT_DEL_NODE+self.MUT_DEL_NODE*m):
-                    if not n in nodes_to_kill:
-                        nodes_to_kill.append(n)
-                        deleted += 1
+            if random() < (self.MUT_DEL_NODE+self.MUT_DEL_NODE*m):
+                l = listen(node_keys)
+                while node_keys:
+                    n = choice(node_keys)
+                    node_keys.remove(n)
+                    if not self.nodes[n].from_links and not self.nodes[n].to_links:
+                        if not n in nodes_to_kill:
+                            nodes_to_kill.append(n)
+                            deleted += 1
 
         if random() < (self.MUT_ADD_NODE+self.MUT_ADD_NODE*m):
             layer_key = choice(hidden_list)
