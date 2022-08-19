@@ -17,7 +17,7 @@ class Camera():
 
     def update(self, move: Vector2=Vector2(0, 0)):
         self.center += move
-        self.rect = Rect(int(self.center.x-(self.size.x/2)*self.scale), int(self.center.y-(self.size.y/2)*self.scale), int(self.size.x*self.scale), int(self.size.y*self.scale))
+        self.center_rect()
 
     def get_offset_vec(self) -> Vector2:
         return Vector2(self.rect.x, self.rect.y)
@@ -66,3 +66,10 @@ class Camera():
     def reset_zoom(self):
         self.scale = 1
         self.update()
+
+    def center_rect(self):
+        self.rect = Rect(int(self.center.x-(self.size.x/2)*self.scale), int(self.center.y-(self.size.y/2)*self.scale), int(self.size.x*self.scale), int(self.size.y*self.scale))
+
+    def focus_camera(self, center: Vector2):
+        self.center = center
+        self.center_rect()
