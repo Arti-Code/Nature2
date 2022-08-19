@@ -104,7 +104,6 @@ def process_creatures_collisions(arbiter, space, data):
     return False
 
 def process_creatures_collisions_end(arbiter, space, data):
-    #arbiter.shapes[0].body.collide_creature = False
     return False
 
 #?  [[[PLANT CONTACT]]]
@@ -129,7 +128,6 @@ def process_creature_plant_collisions(arbiter, space, data):
             eat = cfg.EAT * size0 * dt
             target.energy = target.energy - eat
             vege = diet(11-hunter.food, cfg.DIET_MOD)
-            #vege = hunter.vege/((hunter.vege+hunter.meat)/2)
             plant_value = eat*vege*cfg.VEGE2ENG
             hunter.eat(plant_value)
             hunter.fitness += plant_value*cfg.VEGE2FIT/size0
@@ -137,7 +135,6 @@ def process_creature_plant_collisions(arbiter, space, data):
     return False
 
 def process_creatures_plant_collisions_end(arbiter, space, data):
-    #arbiter.shapes[0].body.collide_plant = False
     return False
 
 #?  [[[MEAT CONTACT]]]
@@ -147,7 +144,6 @@ def process_creature_meat_collisions(arbiter, space, data):
     target = arbiter.shapes[1].body
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
-    #~ new changes
     if size0 != 0:
         hunter.position -= arbiter.normal*(size1/size0)*0.4
     else:
@@ -170,16 +166,6 @@ def process_creature_meat_collisions(arbiter, space, data):
     return False
 
 def process_creatures_meat_collisions_end(arbiter, space, data):
-    #arbiter.shapes[0].body.collide_meat = False
-    return False        
-
-#?  [[[WATER CONTACT]]]
-def process_creature_water_collisions(arbiter, space, data):
-    arbiter.shapes[0].body.on_water = True
-    return False
-
-def process_creature_water_collisions_end(arbiter, space, data):
-    arbiter.shapes[0].body.on_water = False
     return False
 
 #?  [[[ROCK CONTACT]]]

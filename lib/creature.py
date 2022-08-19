@@ -57,8 +57,6 @@ class Creature(Life):
         self.max_energy = self.size*cfg.SIZE2ENG
         self.reproduction_time = random()*cfg.REP_TIME
         self.energy = self.max_energy
-        for sensor in self.sensors:
-           space.add(sensor.shape)
         self.moving: float=0.0
         self.eating: bool=False
         self.attacking: bool=False
@@ -222,6 +220,7 @@ class Creature(Life):
         if self.normal != None:
             gfxdraw.line(screen, int(self.position.x), int(flipy(self.position.y)), int(self.position.x+self.normal.x*50), int(flipy(self.position.y+self.normal.y*50)), Color('yellow'))
             #self.normal = None
+
     def draw_detectors(self, screen, rel_pos: Vector2):
         for detector in self.sensors:
             detector.draw(screen=screen, rel_pos=rel_pos)
@@ -304,7 +303,6 @@ class Creature(Life):
         if move < 0:
             move = 0
         turn = self.turning*cfg.TURN*dt
-        #self.sensor_angle = (1-((self.output[3]+1)/2))*cfg.SENSOR_MAX_ANGLE
         self.angle = (self.angle+(turn))%(2*PI)
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
         return abs(move)
