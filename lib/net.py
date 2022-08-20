@@ -1,4 +1,5 @@
 from enum import Enum, IntEnum
+from logging.config import listen
 from platform import node
 from random import random, randint, choice, gauss
 from lib.math2 import sigmoid, tanh, relu, leaky_relu, binary, rev_binary, wide_binary, linear, pulse ,clamp
@@ -113,6 +114,11 @@ class Link():
         self.to_node = to_node
         self.weight = weight
         self.recombined = False
+        self.signal: float=0.0
+
+    def CalcSignal(self, input: float) -> float:
+        self.signal = (input * self.weight) * abs(input * self.weight)
+        return self.signal
 
     def RandomWeight(self):
         self.weight = clamp(gauss(0, 0.5), -1, 1)
@@ -144,10 +150,10 @@ class Network():
 
     MUT_BIAS        =   0.12 * cfg.MUTATIONS
     MUT_WEIGHT      =   0.12 * cfg.MUTATIONS
-    MUT_DEL_LINK    =   0.04 * cfg.MUTATIONS
+    MUT_DEL_LINK    =   0.04 * cfg.MUTATIONS + cfg.DEL_LINK
     MUT_ADD_LINK    =   0.04 * cfg.MUTATIONS
-    MUT_DEL_NODE    =   0.03 * cfg.MUTATIONS
-    MUT_ADD_NODE    =   0.03 * cfg.MUTATIONS
+    MUT_DEL_NODE    =   0.05 * cfg.MUTATIONS + cfg.DEL_NODE
+    MUT_ADD_NODE    =   0.05 * cfg.MUTATIONS
     MUT_NODE_TYPE   =   0.08 * cfg.MUTATIONS
     MUT_MEM         =   0.08 * cfg.MUTATIONS
     ADD_NODE_NUM = 0
@@ -228,6 +234,16 @@ class Network():
             if self.nodes[n].type in node_types:
                 selected.append(n)
         return selected
+
+#    def FindBackConnections(self, node_sign: int) -> tuple(list[int|None], list[int|None]):
+#        findings = ([], [])
+#        master: Node = self.nodes[node_sign]
+#        links = master.to_links
+#        for l in links:
+#            findings[1].append(l)
+#            link: Link = self.links[l]
+#            node_key = link.from_node
+#            findings[0].append(node_key)
 
     def GetLayerKeyList(self, layer_types=[TYPE.HIDDEN]):
         selected = []
@@ -359,30 +375,33 @@ class Network():
                 node_key = self.layers[lay1].nodes[nod1]
                 bias = self.nodes[node_key].bias
                 if self.nodes[node_key].activation == ACTIVATION.TANH:
+                    #elif self.nodes[node_key].activation == ACTIVATION.SIGMOID:
+                    #    func = sigmoid
+                    #elif self.nodes[node_key].activation == ACTIVATION.RELU:
+                    #    func = relu
+                    #elif self.nodes[node_key].activation == ACTIVATION.LEAKY_RELU:
+                    #    func = leaky_relu
+                    #elif self.nodes[node_key].activation == ACTIVATION.BINARY:
+                    #    func = binary
+                    #elif self.nodes[node_key].activation == ACTIVATION.REV_BINARY:
+                    #    func = rev_binary
+                    #elif self.nodes[node_key].activation == ACTIVATION.WIDE_BINARY:
+                    #    func = wide_binary
+                    #elif self.nodes[node_key].activation == ACTIVATION.LINEAR:
+                    #    func = linear
+                    #elif self.nodes[node_key].activation == ACTIVATION.PULSE:
+                    #    func = pulse
                     func = tanh
-                elif self.nodes[node_key].activation == ACTIVATION.SIGMOID:
-                    func = sigmoid
-                elif self.nodes[node_key].activation == ACTIVATION.RELU:
-                    func = relu
-                elif self.nodes[node_key].activation == ACTIVATION.LEAKY_RELU:
-                    func = leaky_relu
-                elif self.nodes[node_key].activation == ACTIVATION.BINARY:
-                    func = binary
-                elif self.nodes[node_key].activation == ACTIVATION.REV_BINARY:
-                    func = rev_binary
-                elif self.nodes[node_key].activation == ACTIVATION.WIDE_BINARY:
-                    func = wide_binary
-                elif self.nodes[node_key].activation == ACTIVATION.LINEAR:
-                    func = linear
-                elif self.nodes[node_key].activation == ACTIVATION.PULSE:
-                    func = pulse
 
                 for lin1 in range(len(self.nodes[node_key].to_links)):
                     link_key = self.nodes[node_key].to_links[lin1]
                     from_node_key = self.links[link_key].from_node
                     v = self.nodes[from_node_key].value
-                    w = self.links[link_key].weight
-                    dot = dot + (v * w)
+                    link: Link=self.links[link_key]
+                    s: float=link.CalcSignal(v)
+                    #w = self.links[link_key].weight
+                    #dot = dot + ((v * w) * (abs(v * w)))
+                    dot = dot + s
                 dot = dot + bias
 
                 recurrent = self.nodes[node_key].recurrent
@@ -418,11 +437,11 @@ class Network():
         links_to_add = []
         added = 0; deleted = 0
         link_keys = self.links.keys()
-        l = choice([*link_keys])
-        #for l in self.links:
-        if (random()) < self.MUT_DEL_LINK+self.MUT_DEL_LINK*m:
-            links_to_kill.append(l)
-            deleted += 1
+        if link_keys:
+            if (random()) < self.MUT_DEL_LINK+self.MUT_DEL_LINK*m:
+                l = choice([*link_keys])
+                links_to_kill.append(l)
+                deleted += 1
 
         if (random()) < self.MUT_ADD_LINK+self.MUT_ADD_LINK*m:
             link_added = False
@@ -452,10 +471,10 @@ class Network():
         return (added, deleted)
     
     def MutateWeights(self, m=0):
-        #for l in self.links:
-        l = choice([*self.links.keys()])
-        if (random()) < self.MUT_WEIGHT+self.MUT_WEIGHT*m:
-            self.links[l].RandomWeight()
+        if self.links:
+            l = choice([*self.links.keys()])
+            if (random()) < self.MUT_WEIGHT+self.MUT_WEIGHT*m:
+                self.links[l].RandomWeight()
 
     def MutateNodes(self, m=0):
         nodes_to_kill = []
@@ -466,13 +485,17 @@ class Network():
         hidden_list = self.GetLayerKeyList([TYPE.HIDDEN])
         input_nodes = self.GetNodeKeyList([TYPE.INPUT])
         output_nodes = self.GetNodeKeyList([TYPE.OUTPUT])
-        #node_keys = self.GetNodeKeyList([TYPE.HIDDEN])
-        n = choice([*self.nodes.keys()])
-        if self.nodes[n].type == TYPE.HIDDEN:
+        node_keys = self.GetNodeKeyList([TYPE.HIDDEN])
+        if node_keys:
             if random() < (self.MUT_DEL_NODE+self.MUT_DEL_NODE*m):
-                if not n in nodes_to_kill:
-                    nodes_to_kill.append(n)
-                    deleted += 1
+                l = listen(node_keys)
+                while node_keys:
+                    n = choice(node_keys)
+                    node_keys.remove(n)
+                    if not self.nodes[n].from_links and not self.nodes[n].to_links:
+                        if not n in nodes_to_kill:
+                            nodes_to_kill.append(n)
+                            deleted += 1
 
         if random() < (self.MUT_ADD_NODE+self.MUT_ADD_NODE*m):
             layer_key = choice(hidden_list)

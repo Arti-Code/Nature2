@@ -2,7 +2,7 @@ from math import pi as PI
 from json import loads, dumps
 
 TITLE = "NATURE"
-SUBTITLE = "v1.0.0" 
+SUBTITLE = "v1.1.0 (ZoomIn/ZoomOut)" 
 AUTHOR = "2019-2022 Artur Gwoździowski"
 
 class Configuration():
@@ -18,17 +18,18 @@ class Configuration():
         self.PLANT_MAX_NUM = None
         self.PLANT_LIFE = None
         self.PLANT_RANGE = None
+        self.PLANT_EDGE = None
         self.CREATURE_MULTIPLY = None
         self.CREATURE_MIN_NUM = None
-        self.EAT = None
         self.CREATURE_INIT_NUM = None
+        self.CREATURES_SEP = None
+        self.EAT = None
         self.BASE_ENERGY = None
         self.MOVE_ENERGY = None
         self.REP_TIME = None
         self.REP_ENERGY = None
         self.SPEED = None
         self.TURN = None
-        self.SENSOR_SPEED = None
         self.CREATURE_MIN_SIZE = None
         self.CREATURE_MAX_SIZE = None
         self.HIT = None
@@ -58,6 +59,8 @@ class Configuration():
         self.EAT_ENG = None
         self.LINKS_RATE = None
         self.MUTATIONS = None
+        self.DEL_LINK = None
+        self.DEL_NODE = None
         self.TIME = None
         self.BORN2FIT = None
         self.RUN_TIME = None
@@ -69,12 +72,12 @@ class Configuration():
         self.NET = None
         self.RANK_DECAY = None
         self.STAT_PERIOD = None
-        self.WATER_MOVE = None
-        self.WATER_COST = None
         self.NEURON_MOD = None
         self.NET_BASE = None
         self.GENERATIONS_NUMBER = None
         self.NEURO_COST = None
+        self.GRAPH_H = None
+        self.GRAPH_V = None
         self.load_from_file2(filename)
 
     def load_from_file2(self, filename: str):
@@ -100,8 +103,10 @@ class Configuration():
         self.PLANT_MAX_NUM          = cfg['PLANT_MAX_NUM']
         self.PLANT_LIFE             = cfg['PLANT_LIFE']
         self.PLANT_RANGE            = cfg['PLANT_RANGE']
+        self.PLANT_EDGE             = cfg['PLANT_EDGE']
         self.CREATURE_MULTIPLY      = cfg['CREATURE_MULTIPLY']
         self.CREATURE_MIN_NUM       = cfg['CREATURE_MIN_NUM']
+        self.CREATURES_SEP          = cfg['CREATURES_SEP']
         self.EAT                    = cfg['EAT']
         self.CREATURE_INIT_NUM      = cfg['CREATURE_INIT_NUM']
         self.BASE_ENERGY            = cfg['BASE_ENERGY']
@@ -110,7 +115,6 @@ class Configuration():
         self.REP_ENERGY             = cfg['REP_ENERGY']
         self.SPEED                  = cfg['SPEED']
         self.TURN                   = cfg['TURN']
-        self.SENSOR_SPEED           = cfg['SENSOR_SPEED']
         self.CREATURE_MIN_SIZE      = cfg['CREATURE_MIN_SIZE']
         self.CREATURE_MAX_SIZE      = cfg['CREATURE_MAX_SIZE']
         self.HIT                    = cfg['HIT']
@@ -141,6 +145,8 @@ class Configuration():
         self.EAT_ENG                = cfg['EAT_ENG']
         self.LINKS_RATE             = cfg['LINKS_RATE']
         self.MUTATIONS              = cfg['MUTATIONS']
+        self.DEL_LINK               = cfg['DEL_LINK']
+        self.DEL_NODE               = cfg['DEL_NODE']
         self.TIME                   = cfg['TIME']
         self.BORN2FIT               = cfg['BORN2FIT']
         self.RUN_TIME               = cfg['RUN_TIME']
@@ -152,11 +158,11 @@ class Configuration():
         self.NET                    = cfg['NET']
         self.RANK_DECAY             = cfg['RANK_DECAY']
         self.STAT_PERIOD            = cfg['STAT_PERIOD']
-        self.WATER_MOVE             = cfg['WATER_MOVE']
-        self.WATER_COST             = cfg['WATER_COST']
         self.NEURON_MOD             = cfg['NEURON_MOD']
         self.NET_BASE               = cfg['NET_BASE']
         self.GENERATIONS_NUMBER     = cfg['GENERATIONS_NUMBER']
         self.NEURO_COST             = cfg['NEURO_COST']
+        self.GRAPH_V                = cfg['GRAPH_V']
+        self.GRAPH_H                = cfg['GRAPH_H']
 
 cfg = Configuration('config.json')

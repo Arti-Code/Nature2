@@ -211,24 +211,29 @@ class EnviroWindow(UIWindow):
 class CreatureWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, data: dict, dT: float):
+        standart: dict[list[str]]={0: ["GEN", "POWER", "SPEED"], 1: ["FOOD", "EYES", "MUT"], 2: ["FIT", "LIFE", "REPRO"]}
         super().__init__(rect, manager=manager, window_display_title=data['SPECIE']+'  '+data['ENG'], object_id="#creature_win", visible=True)
         self.manager = manager
         i=0
         self.labs = {}
         for key, val in data.items():
-            if key != 'S' or key != 'SPECIE' or key != 'ENG':
+            if key != 'SPECIE' and key != 'ENG':
+                #for dk, dv in standart:
+                #    if key in dv:
+                #        lab1 = UILabel(Rect((1, 15*i+5), (self.rect.width-1, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
+
+
                 if key == 'COST':
-                    lab1 = UILabel(Rect((5, 15*i+5), (self.rect.width-5, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
-                    lab2 = UILabel(Rect((self.rect.width-5, 15*i+5), (5, 15)), text=f"", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
+                    lab1 = UILabel(Rect((1, 15*i+5), (self.rect.width-1, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
+                    lab2 = UILabel(Rect((self.rect.width-1, 15*i+5), (1, 15)), text=f"", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
+                elif key == 'S':
+                    lab1 = UILabel(Rect((5, 15*i+5), (10, 15)), text="", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
+                    lab2 = UILabel(Rect((15, 15*i+5), (self.rect.width-15, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
                 else:            
                     lab1 = UILabel(Rect((5, 15*i+5), (50, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
                     lab2 = UILabel(Rect((60, 15*i+5), (self.rect.width-65, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
-            
-            elif key == 'S':
-                lab1 = UILabel(Rect((5, 15*i+5), (10, 15)), text=f"{key}: ", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
-                lab2 = UILabel(Rect((15, 15*i+5), (self.rect.width-15, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
-            i+=1
-            self.labs[key] = (lab1, lab2)
+                self.labs[key] = (lab1, lab2)
+                i+=1
         btn_w = 80; btn_h = 20
         self.btn_ancestors = UIButton(Rect((rect.width/2-btn_w/2, (5+15*i)), (btn_w, btn_h)), text='ANCESTORS', manager=self.manager, container=self, parent_element=self, object_id="#btn_ancestors")
         self.refresh = 0
@@ -242,9 +247,12 @@ class CreatureWindow(UIWindow):
             data = data
             for key, val in data.items():
                 if key == 'COST':
-                    self.labs[key][0].set_text(f"{val}:")
+                    self.labs[key][0].set_text(f"{val}")
                     self.labs[key][1].set_text(f"")
-                else:
+                elif key == 'S':
+                    self.labs[key][0].set_text(f"")
+                    self.labs[key][1].set_text(f"{val}")
+                elif key != 'SPECIE' and key != 'ENG':
                     self.labs[key][0].set_text(f"{key}:")
                     self.labs[key][1].set_text(f"{val}")
 
@@ -482,7 +490,7 @@ class GUI():
         creatures = self.get_saved_creatures()
         cr_num = len(creatures)
         h = 10 + (20 * cr_num)
-        pos = Rect((10+self.cx-w/2, self.cy-h+50), (w, h+10))
+        pos = Rect((10+self.cx-w/2, 25), (w, h+10))
         self.load_creature_win = LoadCreatureWindow(manager=self.ui_mgr, rect=pos, creature_names=creatures)
 
     def create_info_win(self, text: str, title: str):
@@ -530,12 +538,13 @@ class GUI():
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         data['NEURO'] = ''
         data['PHYSIC'] = ''
+        data['FOLLOW'] = str(self.owner.enviro.follow)
         self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (160, 140)), data=data, dT=dT)
 
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((0, 0), (165, 295)), data=data, dT=dT)
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((0, 0), (165, 250)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
@@ -651,6 +660,7 @@ class GUI():
         data['PLANTS'] = str(len(self.owner.enviro.plant_list))
         data['NEURO'] = str(round(self.owner.enviro.neuro_avg_time*1000, 1)) + 'ms'
         data['PHYSIC'] = str(round(self.owner.enviro.physics_avg_time*1000, 1)) + 'ms'
+        data['FOLLOW'] = str(self.owner.enviro.follow)
         return data
 
     def process_event(self, event, dt: float)->bool:

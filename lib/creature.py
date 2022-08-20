@@ -55,10 +55,8 @@ class Creature(Life):
         space.add(self.vision)
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
-        self.reproduction_time = cfg.REP_TIME
+        self.reproduction_time = random()*cfg.REP_TIME
         self.energy = self.max_energy
-        for sensor in self.sensors:
-           space.add(sensor.shape)
         self.moving: float=0.0
         self.eating: bool=False
         self.attacking: bool=False
@@ -66,7 +64,7 @@ class Creature(Life):
         self.pain: bool=False
         self.running: bool=False
         self.life_time: float=0.0
-        self.run_time = cfg.RUN_TIME
+        self.run_time = random()*cfg.RUN_TIME
         self.hidding: bool=False
         self.hide_ref_time = 0.0
         self.run_ref_time = 0.0
@@ -132,7 +130,7 @@ class Creature(Life):
 
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
         x = self.position.x; y = flipy(self.position.y)
-        r = self.shape.radius
+        r = self.shape.radius / camera.scale
         rect = Rect(x-r, y-r, 2*r, 2*r)
         if not camera.rect_on_screen(rect):
             return False
@@ -222,6 +220,7 @@ class Creature(Life):
         if self.normal != None:
             gfxdraw.line(screen, int(self.position.x), int(flipy(self.position.y)), int(self.position.x+self.normal.x*50), int(flipy(self.position.y+self.normal.y*50)), Color('yellow'))
             #self.normal = None
+
     def draw_detectors(self, screen, rel_pos: Vector2):
         for detector in self.sensors:
             detector.draw(screen=screen, rel_pos=rel_pos)
@@ -304,7 +303,6 @@ class Creature(Life):
         if move < 0:
             move = 0
         turn = self.turning*cfg.TURN*dt
-        #self.sensor_angle = (1-((self.output[3]+1)/2))*cfg.SENSOR_MAX_ANGLE
         self.angle = (self.angle+(turn))%(2*PI)
         self.velocity = (move*self.rotation_vector.x, move*self.rotation_vector.y)
         return abs(move)
@@ -329,8 +327,9 @@ class Creature(Life):
 
     def get_input(self):
         input = []
-        ar, ad, af, pr, pd, mr, md, rr, rd = self.vision.get_detection2()
+        ar, ad, af, ap, pr, pd, mr, md, rr, rd = self.vision.get_detection2()
         eng = self.energy/self.max_energy
+        #dng = clamp(((self.size+self.power)/2-(ap/2))/10, -1.0, 1.0)
         input.append(self.collide_creature)
         input.append(self.collide_plant)
         input.append(self.collide_meat)
@@ -339,6 +338,7 @@ class Creature(Life):
         input.append(ar)
         input.append(ad)
         input.append(af)
+        #input.append(dng)
         input.append(pr)
         input.append(pd)
         input.append(mr)
@@ -500,7 +500,10 @@ class Creature(Life):
             if not n2 in neuro1:
                 neuro_diff += 1
         mean_fizjo_diff = (mean(fizjo_diff))/10
-        mean_neuro_diff = neuro_diff / ((len(neuro1) + len(neuro2))/2)
+        sum_len = (len(neuro1) + len(neuro2))
+        mean_neuro_diff = 0.0
+        if sum_len != 0:
+            mean_neuro_diff = neuro_diff / (sum_len/2)
         diff = mean([mean_fizjo_diff, mean_neuro_diff])
         if diff <= treashold:
             return True
