@@ -26,7 +26,7 @@ class Meat(Life):
 
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
         x = self.position.x; y = flipy(self.position.y)
-        r = self.radius
+        r = self.radius / camera.scale
         rect = Rect(x-r, y-r, 2*r, 2*r)
         if not camera.rect_on_screen(rect):
             return False
@@ -37,7 +37,7 @@ class Meat(Life):
         if r > 0:
             gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), self.color1)
             if r > 2:
-                gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-2), self.color0)
+                gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-2*camera.scale), self.color0)
         return True
 
     def update(self, dT: float, selected: Body):
@@ -47,12 +47,12 @@ class Meat(Life):
             self.life_time = 0
         if self.energy < 0:
             self.energy = 0
-        alfa = int((255*self.life_time)/cfg.MEAT_TIME)
+        alfa = int(200*(self.life_time/cfg.MEAT_TIME))+55
         alfa = clamp(alfa, 0, 255)
         self._color0.a = alfa
         self.color0 = self._color0
         if self.energy > 0:
-            new_size = floor(log2(self.energy))
+            new_size = clamp(floor(log2(self.energy)), 1, 20)
             if new_size != self.shape.radius:
                 self.shape.unsafe_set_radius(new_size)
                 self.radius = self.shape.radius

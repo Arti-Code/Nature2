@@ -130,7 +130,7 @@ class Creature(Life):
 
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
         x = self.position.x; y = flipy(self.position.y)
-        r = self.shape.radius
+        r = self.shape.radius / camera.scale
         rect = Rect(x-r, y-r, 2*r, 2*r)
         if not camera.rect_on_screen(rect):
             return False
