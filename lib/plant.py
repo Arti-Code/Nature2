@@ -84,7 +84,7 @@ class Plant(Life):
 
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
         x = self.position.x; y = flipy(self.position.y)
-        r = self.shape.radius
+        r = self.shape.radius / camera.scale
         rect = Rect(x-r, y-r, 2*r, 2*r)
         if not camera.rect_on_screen(rect):
             return False
@@ -95,7 +95,7 @@ class Plant(Life):
         if r > 0:
             gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), self.color0)
             if r >= 3 and self.color1 != None:
-                gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-2), self.color1)
+                gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-2/camera.scale), self.color1)
         #if r >= 6 and self.color3 != None:
         #    gfxdraw.filled_circle(screen, int(rx), flipy(int(ry)), int(2), self.color3)
         return True

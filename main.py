@@ -269,6 +269,12 @@ class Simulation():
             self.statistics.plot('fitness')
         if event.key == pygame.K_F9:
             self.follow = not self.follow
+        if event.key == pygame.K_KP_PLUS:
+            self.camera.zoom_out()
+        if event.key == pygame.K_KP_MINUS:
+            self.camera.zoom_in()
+        if event.key == pygame.K_KP_MULTIPLY:
+            self.camera.reset_zoom()
 
     def mouse_events(self, event):
         self.selected = None

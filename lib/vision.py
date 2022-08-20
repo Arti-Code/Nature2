@@ -192,8 +192,8 @@ class Vision(Circle):
             self.active_color = self.base_color
 
     def draw(self, screen: Surface, camera: Camera, rel_position: Vector2, selected: bool=False, eye_color: Color=Color('skyblue')):
-        r = int(self.radius)
-        s = self.body.size
+        r = int(self.radius/camera.scale)
+        s = self.body.size/camera.scale
         x0 = int(rel_position.x); y0 = int(rel_position.y)
         v2 = (cos(self.body.angle+1)*(s*0.85), sin(self.body.angle+1)*(s*0.85))
         v3 = (cos(self.body.angle-1)*(s*0.85), sin(self.body.angle-1)*(s*0.85))
