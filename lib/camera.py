@@ -31,8 +31,8 @@ class Camera():
         return Vector2(int(rx), int(ry))
 
     def rev_pos(self, position: Vector2) -> Vector2:
-        rx = (position.x + self.rect.left)/self.scale
-        ry = (position.y + self.rect.top)/self.scale
+        rx = (position.x*self.scale + self.rect.left)
+        ry = (position.y*self.scale + self.rect.top)
         return Vector2(int(rx), int(ry))
 
     def point_on_screen(self, position: Vector2) -> bool:

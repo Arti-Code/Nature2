@@ -280,7 +280,7 @@ class Simulation():
         self.selected = None
         mouseX, mouseY = pygame.mouse.get_pos()
         rel_mouse = self.camera.rev_pos(Vector2(mouseX, mouseY))
-        #print(f'mouse: {mouseX}|{mouseY} -> {rel_mouse.x}|{rel_mouse.y}')
+        print(f'mouse: {mouseX}|{mouseY} -> {rel_mouse.x}|{rel_mouse.y}')
         self.selected = self.find_creature(rel_mouse.x, flipy(rel_mouse.y))
         if self.selected == None:
             self.selected = self.find_plant(rel_mouse.x, flipy(rel_mouse.y))
