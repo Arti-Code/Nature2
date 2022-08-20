@@ -49,7 +49,7 @@ class Meat(Life):
             self.energy = 0
         alfa = int(200*(self.life_time/cfg.MEAT_TIME))+55
         alfa = clamp(alfa, 0, 255)
-        self._color0.a = alfa
+        #self._color0.a = alfa
         self.color0 = self._color0
         if self.energy > 0:
             new_size = clamp(floor(log2(self.energy)), 1, 20)
