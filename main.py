@@ -398,12 +398,8 @@ class Simulation():
 
     def draw(self):
         if self.follow and self.selected != None:
-            #self.follow_time += self.dt
-            #if self.follow_time >= 0.1:
-                #self.follow_time = self.follow_time - 0.1
             self.camera.focus_camera(Vector2(int(self.selected.position.x), int(self.selected.position.y)))
         self.screen.fill(Color('black'))
-        #self.screen.blit(self.terrain, (-self.camera.get_offset_tuple()[0], -self.camera.get_offset_tuple()[1]))
         self.draw_creatures()
         self.draw_plants()
         self.draw_meat()
@@ -653,7 +649,6 @@ class Simulation():
         )
 
     def check_populatiom(self):
-        #if randint(0, 9) == 0:
         self.check_creature_types()
 
         if len(self.creature_list) < cfg.CREATURE_MIN_NUM:

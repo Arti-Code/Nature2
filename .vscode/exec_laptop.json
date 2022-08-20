@@ -19,7 +19,7 @@
   },
   {
    "optionDest": "icon_file",
-   "value": "C:/Users/gwozd/Kody/PYTHON/Nature/res/icons/planet2-128.ico"
+   "value": "C:/Users/gwozd/Kody/PYTHON/Nature/res/icons/biosynth128.ico"
   },
   {
    "optionDest": "name",
@@ -42,6 +42,14 @@
    "value": false
   },
   {
+   "optionDest": "disable_windowed_traceback",
+   "value": false
+  },
+  {
+   "optionDest": "embed_manifest",
+   "value": true
+  },
+  {
    "optionDest": "uac_admin",
    "value": false
   },
@@ -62,7 +70,7 @@
    "value": false
   },
   {
-   "optionDest": "disable_windowed_traceback",
+   "optionDest": "argv_emulation",
    "value": false
   },
   {

@@ -1,4 +1,4 @@
-from math import sqrt, floor, log2
+from math import sqrt, floor, log2, ceil
 from random import random, randint
 import pygame.gfxdraw as gfxdraw
 from pygame import Surface, Color, Rect
@@ -35,9 +35,9 @@ class Meat(Life):
         ry = rel_pos.y
         super().draw(screen, camera, selected)
         if r > 0:
-            gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), self.color1)
-            if r > 2:
-                gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-2*camera.scale), self.color0)
+            gfxdraw.filled_circle(screen, int(rx), int(ry), ceil(r), self.color1)
+            if r > 2/camera.scale:
+                gfxdraw.filled_circle(screen, int(rx), int(ry), ceil(r-2/camera.scale), self.color0)
         return True
 
     def update(self, dT: float, selected: Body):
@@ -49,7 +49,7 @@ class Meat(Life):
             self.energy = 0
         alfa = int(200*(self.life_time/cfg.MEAT_TIME))+55
         alfa = clamp(alfa, 0, 255)
-        self._color0.a = alfa
+        #self._color0.a = alfa
         self.color0 = self._color0
         if self.energy > 0:
             new_size = clamp(floor(log2(self.energy)), 1, 20)

@@ -28,14 +28,7 @@ class Plant(Life):
         self.shape = Circle(self, self.size)
         self.shape.collision_type = collision_tag
         space.add(self.shape)
-        #self.area = Circle(self, cfg.PLANT_RANGE)
-        #self.area.collision_type = 18
-        #self.area.sensor = True
-        #space.add(self.area)
         self.new_plant = 2
-        self.plants_in_area = []
-        self.area_timer = 5.0
-        self.check_area: bool=False
 
     def life_time_calc(self, dt: int):
         self.life_time -= dt
@@ -45,7 +38,6 @@ class Plant(Life):
 
     def update(self, dt: float, selected: Body):
         super().update(dt, selected)
-        #self.update_area_timer(dt=dt)
         if self.energy < self.max_energy and self.energy > 0:
             self.energy += cfg.PLANT_GROWTH*dt
             new_size = floor(log2(self.energy))
@@ -61,16 +53,6 @@ class Plant(Life):
         self.color0 = self._color0
         self.color1 = self._color1
 
-    def update_area_timer(self, dt: float, restart_time: float=5.0):
-        self.area_timer -= dt
-        if self.area_timer <= 0:
-           # if not self.check_area:
-            self.check_area = True
-            #else:
-                #self.check_area = False
-                #self.area_timer = restart_time
-
-
     def check_reproduction(self) -> bool:
         if self.energy >= self.max_energy:
             return True
@@ -79,12 +61,11 @@ class Plant(Life):
 
     def kill(self, space: Space):
         space.remove(self.shape)
-        #space.remove(self.area)
         space.remove(self)
 
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
         x = self.position.x; y = flipy(self.position.y)
-        r = self.shape.radius / camera.scale
+        r = ceil(self.shape.radius / camera.scale)
         rect = Rect(x-r, y-r, 2*r, 2*r)
         if not camera.rect_on_screen(rect):
             return False
@@ -93,9 +74,7 @@ class Plant(Life):
         ry = rel_pos.y
         super().draw(screen, camera, selected)
         if r > 0:
-            gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), self.color0)
-            if r >= 3 and self.color1 != None:
-                gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-2/camera.scale), self.color1)
-        #if r >= 6 and self.color3 != None:
-        #    gfxdraw.filled_circle(screen, int(rx), flipy(int(ry)), int(2), self.color3)
+            gfxdraw.filled_circle(screen, int(rx), int(ry), ceil(r), self.color0)
+            if r > 2/camera.scale:
+                gfxdraw.filled_circle(screen, int(rx), int(ry), ceil(r-2/camera.scale), self.color1)
         return True
