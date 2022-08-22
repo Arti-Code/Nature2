@@ -144,14 +144,14 @@ class RankWindow(UIWindow):
         lbl_w = 305
         for i in range(cfg.RANK_SIZE):
             text = '.'
-            num = UILabel(Rect((1, 15*i+5), (14, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position_'+str(i))
-            spec = UILabel(Rect((20, 15*i+5), (50, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_specie_'+str(i))
-            gen = UILabel(Rect((70, 15*i+5), (29, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_generation_'+str(i))
-            pwr = UILabel(Rect((100, 15*i+5), (24, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_power_'+str(i))
-            eat = UILabel(Rect((125, 15*i+5), (24, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eat_'+str(i))
-            eye = UILabel(Rect((150, 15*i+5), (24, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eye_'+str(i))
-            fit = UILabel(Rect((175, 15*i+5), (45, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_fitness_'+str(i))
-            self.labels.append([num, spec, gen, pwr, eat, eye, fit])
+            num = UILabel(Rect((1, 15*i+5), (12, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position_'+str(i))
+            spec = UILabel(Rect((15, 15*i+5), (45, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_specie_'+str(i))
+            gen = UILabel(Rect((63, 15*i+5), (40, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_generation_'+str(i))
+            #pwr = UILabel(Rect((80, 15*i+5), (24, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_power_'+str(i))
+            eat = UILabel(Rect((105, 15*i+5), (25, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eat_'+str(i))
+            #eye = UILabel(Rect((150, 15*i+5), (24, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eye_'+str(i))
+            fit = UILabel(Rect((132, 15*i+5), (53, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_fitness_'+str(i))
+            self.labels.append([num, spec, gen, eat, fit])
 
     def Update(self, ranking1: list, ranking2: list):
         rank_count1 = len(ranking1)
@@ -159,10 +159,10 @@ class RankWindow(UIWindow):
             self.labels[i][0].set_text(str(i+1)+'.')
             self.labels[i][1].set_text(ranking1[i]['name'])
             self.labels[i][2].set_text('G:' + str(ranking1[i]['gen']))
-            self.labels[i][3].set_text('P:' + str(ranking1[i]['power']))
-            self.labels[i][4].set_text('E:' + str(ranking1[i]['food']))
-            self.labels[i][5].set_text('V:' + str(ranking1[i]['eyes']))
-            self.labels[i][6].set_text('F:' + str(round(ranking1[i]['fitness'])))
+            #self.labels[i][3].set_text('P:' + str(ranking1[i]['power']))
+            self.labels[i][3].set_text('E:' + str(ranking1[i]['food']))
+            #self.labels[i][5].set_text('V:' + str(ranking1[i]['eyes']))
+            self.labels[i][4].set_text('F:' + str(round(ranking1[i]['fitness'])))
         
 class InfoWindow(UIWindow):
 
@@ -506,7 +506,7 @@ class GUI():
         self.credits_win = CreditsWindow(owner=self.owner, manager=self.ui_mgr, rect=pos, title=title, subtitle=subtitle, author=author, bar_text=bar_text)
 
     def create_rank_win(self):
-        w = 225
+        w = 185
         h = cfg.RANK_SIZE * 15 + 35
         pos = Rect((self.cx*2-(w+10), 25), (w, h))
         self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)
@@ -589,7 +589,7 @@ class GUI():
                 data['LIFE'] = str(round(selected.life_time))
                 data['ENG'] = str(round(selected.energy))
                 data['SIZE'] = str(round(selected.shape.radius))
-                data['S'] = str(len(selected.plants_in_area))
+                #data['S'] = str(len(selected.plants_in_area))
             elif isinstance(selected, Meat):
                 data['LIFE'] = str(round(selected.life_time))
                 data['SPECIE'] = 'MEAT'

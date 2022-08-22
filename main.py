@@ -525,10 +525,6 @@ class Simulation():
             self.neuro_avg_time = mean(self.neuro_single_times)
             self.neuro_single_times = []
 
-        ### MOVEMENT ###
-        #for creature in self.creature_list:
-        #    creature.move(dt)
-
         ### REPRODUCE ###
         temp_list = []
         overpopulation = self.creatures_num-cfg.REP_TIME
@@ -543,7 +539,7 @@ class Simulation():
                     new_creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=new_position, genome=genome)
                     temp_list.append(new_creature)
 
-        if random() <= cfg.CREATURE_MULTIPLY:
+        if random() <= cfg.CREATURE_MULTIPLY*self.dt:
             creature = self.add_random_creature()
             self.creature_list.append(creature)
 
