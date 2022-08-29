@@ -117,7 +117,8 @@ class Link():
         self.signal: float=0.0
 
     def CalcSignal(self, input: float) -> float:
-        self.signal = (input * self.weight) * abs(input * self.weight)
+        self.signal = input * self.weight
+        #self.signal = (input * self.weight) * abs(input * self.weight)
         return self.signal
 
     def RandomWeight(self):
@@ -375,22 +376,6 @@ class Network():
                 node_key = self.layers[lay1].nodes[nod1]
                 bias = self.nodes[node_key].bias
                 if self.nodes[node_key].activation == ACTIVATION.TANH:
-                    #elif self.nodes[node_key].activation == ACTIVATION.SIGMOID:
-                    #    func = sigmoid
-                    #elif self.nodes[node_key].activation == ACTIVATION.RELU:
-                    #    func = relu
-                    #elif self.nodes[node_key].activation == ACTIVATION.LEAKY_RELU:
-                    #    func = leaky_relu
-                    #elif self.nodes[node_key].activation == ACTIVATION.BINARY:
-                    #    func = binary
-                    #elif self.nodes[node_key].activation == ACTIVATION.REV_BINARY:
-                    #    func = rev_binary
-                    #elif self.nodes[node_key].activation == ACTIVATION.WIDE_BINARY:
-                    #    func = wide_binary
-                    #elif self.nodes[node_key].activation == ACTIVATION.LINEAR:
-                    #    func = linear
-                    #elif self.nodes[node_key].activation == ACTIVATION.PULSE:
-                    #    func = pulse
                     func = tanh
 
                 for lin1 in range(len(self.nodes[node_key].to_links)):

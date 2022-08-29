@@ -2,7 +2,9 @@ from copy import copy, deepcopy
 from random import random, randint
 from math import pi as PI, sqrt
 from statistics import mean
+from matplotlib.pyplot import draw
 import pygame.gfxdraw as gfxdraw
+import pygame.draw as draw
 from pygame import Surface, Color, Rect
 from pygame.math import Vector2
 import pymunk as pm
@@ -55,7 +57,7 @@ class Creature(Life):
         space.add(self.vision)
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
-        self.reproduction_time = random()*cfg.REP_TIME
+        self.reproduction_time = ((random()*2)-1)*cfg.REP_TIME*0.33+cfg.REP_TIME
         self.energy = self.max_energy
         self.moving: float=0.0
         self.eating: bool=False
@@ -176,6 +178,8 @@ class Creature(Life):
             y2 = round(ry + rot.y*(r/1.6))
             x3 = round(rx + rot.x*(r/1.1))
             y3 = round(ry + rot.y*(r/1.1))
+            x4 = round(rx + rot.x*(r*2))
+            y4 = round(ry + rot.y*(r*2))
             r2 = round(r/2)
             r: int; g: int; b: int
             if self.food >= 6:
@@ -199,6 +203,8 @@ class Creature(Life):
             gfxdraw.aacircle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
             gfxdraw.filled_circle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
             gfxdraw.filled_circle(screen, int(x3), int(y3), int(r2*0.67), Color('black'))
+
+            #draw.arc(screen, Color('white'), Rect(x4-r2*2, y4-r2*2, r2*4, r2*4), -PI/3, PI/3, 1)
         eyes_color: Color=self.NORMAL_EYES
         if self.attacking:
             eyes_color=self.ATTACK_EYES
