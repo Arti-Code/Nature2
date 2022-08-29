@@ -11,6 +11,7 @@ from copy import copy
 from pygame import Rect
 from pygame_gui import UIManager, PackageResource
 from pygame_gui.elements import UITextBox, UIWindow, UIButton, UILabel, UITextEntryLine, UIPanel
+from pygame_gui.core import UIFontDictionary
 from lib.config import cfg, TITLE, SUBTITLE, AUTHOR
 from lib.life import Life
 from lib.creature import Creature
@@ -260,22 +261,19 @@ class CreatureWindow2(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, data: dict, dT: float):
         grid: dict[tuple]={
-                "G": (0, 0, 1), "P": (0, 1, 1), "M": (0, 2, 1), "D": (0, 3, 1), "V": (0, 4, 1),
-                "X": (1, 0, 1), "O": (1, 1, 1), "B|K": (1, 2, 2), "L": (1, 4, 1), 
-                "R": (2, 0, 1), "F": (2, 1, 1), "S": (2, 2, 3),
-                "C": (3, 0, 5)
+                "G": (0, 0, 2), "D": (0, 2, 1), "O": (0, 3, 1), "M": (0, 4, 1), "P": (0, 5, 1), "V": (0, 6, 1), "X": (0, 7, 1), "L": (0, 8, 1),
+                "R": (1, 0, 1), "F": (1, 1, 1), "S": (1, 4, 4),
+                "C": (2, 0, 5), "B|K": (2, 5, 3)
         } 
         super().__init__(rect, manager=manager, window_display_title=data['SPECIE']+'  '+data['ENG'], object_id="#creature_win", visible=True)
         self.manager = manager
-        i=0
         self.groups: list[dict] = [{}, {}, {}]
         self.labs = {}
         for key, val in data.items():
             if key != 'SPECIE' and key != 'ENG':
                 (row, col, siz) = grid[key]
-                lab1 = UILabel(Rect((40*col+2, 15*row+5), (siz*38, 15)), text=f"|{key}:{val}|", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
+                lab1 = UILabel(Rect((40*col+2, 15*row+5), (siz*38, 15)), text=f"|{key}:{val}|", manager=self.manager, container=self, parent_element=self, object_id='#lab_creature_win')
                 self.labs[key] = lab1
-                i+=1
         #btn_w = 80; btn_h = 20
         #self.btn_ancestors = UIButton(Rect((rect.width/2-btn_w/2, (5+15*i)), (btn_w, btn_h)), text='ANCESTORS', manager=self.manager, container=self, parent_element=self, object_id="#btn_ancestors")
         self.refresh = 0
@@ -388,6 +386,8 @@ class GUI():
         self.cy = round(cfg.SCREEN[1]/2)
         #self.ui_mgr = UIManager(window_resolution=(self.view[0], self.view[1]), theme_path='blue.json')
         self.ui_mgr = UIManager(window_resolution=view, theme_path='res/themes/blue.json')
+        self.ui_mgr.add_font_paths('fira.ttf', 'res/fonts/fira.ttf')
+        self.ui_mgr.add_font_paths('fira', 'res/fonts/fira.ttf')
         #self.ui_mgr.load_theme('blue.json')
         self.buttons = []
         self.title = None
@@ -409,6 +409,8 @@ class GUI():
         self.history_win = None
         self.ancestors_win = None
         self.rebuild_ui(self.view)
+        #self.fonts: UIFontDictionary = UIFontDictionary()
+        #self.fonts.add_font_path('fira.ttf', 'res/fonts')
 
     def rebuild_ui(self, new_size: tuple):         
         self.ui_mgr.set_window_resolution(new_size)
@@ -584,7 +586,7 @@ class GUI():
     def create_creature_win2(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow2(manager=self.ui_mgr, rect=Rect((20, 20), (205, 80)), data=data, dT=dT)
+            self.creature_win = CreatureWindow2(manager=self.ui_mgr, rect=Rect((20, 20), (325, 30)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
