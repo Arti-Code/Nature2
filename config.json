@@ -2,6 +2,7 @@
   "WORLD": [1500, 900],
   "SCREEN": [1500, 900],
   "ITER": 1,
+  "FPS": 50,
   
   "PLANT_MIN_NUM": 40,
   "PLANT_MAX_NUM": 200,
@@ -12,7 +13,7 @@
   "PLANT_RANGE": 1000,
   "PLANT_EDGE": 100,
 
-  "CREATURE_MIN_NUM": 12,
+  "CREATURE_MIN_NUM": 25,
   "CREATURE_INIT_NUM": 50,
   "CREATURE_MULTIPLY": 0.01,
   "CREATURE_MIN_SIZE": 4,
@@ -68,7 +69,7 @@
   "STAT_PERIOD": 100,
   "TIME": 1,
   
-  "ROCK_NUM": 16,
+  "ROCK_NUM": 7,
   "ROCK_SIZE_MIN": 50,
   "ROCK_SIZE_MAX": 150,
   "ROCK_VERT_MIN": 8,
@@ -80,5 +81,5 @@
   "GRAPH_V": 15,
   "GENERATIONS_NUMBER": 20,
   
-  "NET": [15, 0, 0, 0, 0, 0, 0, 0, 5]
+  "NET": [16, 0, 0, 0, 0, 0, 0, 0, 5]
 }

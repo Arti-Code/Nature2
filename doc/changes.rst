@@ -1,8 +1,13 @@
 NATURE
 changes log
 
+________________________________________________________________
+v1.1.2 (02.09.2022):
+[new]:
+* "danger" receptor
+[updates]:
+* creature info win split and improve visual aspect
 ----------------------------------------------------------------
-
 v1.1.1 (29.08.2022):
 [new]:
 * change logs document 
