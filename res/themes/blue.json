@@ -145,10 +145,10 @@
     {
         "colours":
         {
-            "normal_text":"#ffffff",
-            "normal_bg":"#1a86f9d4",
-            "hovered_bg":"#71fefced",
-            "normal_border": "#1e64fa"
+           "normal_text":"#ffffff",
+           "normal_bg":"#23bd00",
+           "hovered_bg":"#53fa00",
+           "normal_border": "#048000"
         }
     },
     "#load_back":

@@ -356,7 +356,7 @@ class Manager:
 
             inp_desc = [
                 'ENEMY', 'PLANT', 'MEAT ',
-                'ENERG', 'INJUR',
+                'ENERG', 'INJUR', 'DNGER',
                 'ENE-R', 'ENE-D', 'FAMIL', 
                 #'EASY ',
                 'PLA-R', 'PLA-D',
