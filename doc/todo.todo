@@ -1,8 +1,10 @@
 EVOLUTION v1.1:
-    ☐ thin ranging window
+    ✔ thin ranging window
     ☐ hp bar to front
     ☐ ancestors window
     ☐ caption display
     ☐ eyes scale
     ☐ yaw display
-    
+    ☐ all-in-one charts
+    ☐ borders as rocks
+    ☐ exec with optional params

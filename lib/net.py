@@ -560,22 +560,6 @@ class Network():
                     self.nodes[n].mem_weight = None
             elif n_type == 'tanh':
                 self.nodes[n].activation = ACTIVATION.TANH
-            elif n_type == 'sigmoid':
-                self.nodes[n].activation = ACTIVATION.SIGMOID
-            elif n_type == 'relu':
-                self.nodes[n].activation = ACTIVATION.RELU
-            elif n_type == 'leaky_relu':
-                self.nodes[n].activation = ACTIVATION.LEAKY_RELU
-            elif n_type == 'binary':
-                self.nodes[n].activation = ACTIVATION.BINARY
-            elif n_type == 'rev_binary':
-                self.nodes[n].activation = ACTIVATION.REV_BINARY
-            elif n_type == 'wide_binary':
-                self.nodes[n].activation = ACTIVATION.WIDE_BINARY
-            elif n_type == 'linear':
-                self.nodes[n].activation = ACTIVATION.LINEAR
-            elif n_type == 'pulse':
-                self.nodes[n].activation = ACTIVATION.PULSE
 
     def MutateNodeMemory(self, m=0):
         if (random()) < self.MUT_MEM+self.MUT_MEM*m:
@@ -584,7 +568,8 @@ class Network():
             self.nodes[n].recurrent = not self.nodes[n].recurrent
             if self.nodes[n].recurrent:
                 self.nodes[n].mem = 0
-                self.nodes[n].mem_weight = self.nodes[n].RandomNormal()
+                mem = self.nodes[n].RandomNormal()
+                self.nodes[n].mem_weight = mem * abs(mem)
             else:
                 self.nodes[n].mem = None
                 self.nodes[n].mem_weight = None
