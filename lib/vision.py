@@ -230,10 +230,10 @@ class Vision(Circle):
                 xt = int(rel_target_pos.x); yt = int(rel_target_pos.y)
                 gfxdraw.line(screen, x0+int(v2[0]), y0+int(v2[1]), xt, yt, Color(175, 175, 175, 150))
                 gfxdraw.line(screen, x0+int(v3[0]), y0+int(v3[1]), xt, yt, Color(175, 175, 175, 150))
-        gfxdraw.aacircle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/9+1), eye_color)
-        gfxdraw.filled_circle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/9+1), eye_color)
-        gfxdraw.aacircle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/9+1), eye_color)
-        gfxdraw.filled_circle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/9+1), eye_color)
+        gfxdraw.aacircle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/(10*camera.scale)+1), eye_color)
+        gfxdraw.filled_circle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/(10*camera.scale)+1), eye_color)
+        gfxdraw.aacircle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/(10*camera.scale)+1), eye_color)
+        gfxdraw.filled_circle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/(10*camera.scale)+1), eye_color)
 
     def new_observation(self) -> bool:
         if not self.observe:

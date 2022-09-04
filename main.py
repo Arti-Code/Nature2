@@ -401,10 +401,10 @@ class Simulation():
         if self.follow and self.selected != None:
             self.camera.focus_camera(Vector2(int(self.selected.position.x), int(self.selected.position.y)))
         self.screen.fill(Color('black'))
-        self.draw_creatures()
-        self.draw_plants()
-        self.draw_meat()
         self.draw_rocks()
+        self.draw_meat()
+        self.draw_plants()
+        self.draw_creatures()
         self.draw_interface()
     
     def draw_creatures(self):
