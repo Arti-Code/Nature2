@@ -2,7 +2,7 @@ from math import pi as PI
 from json import loads, dumps
 
 TITLE = "NATURE"
-SUBTITLE = "v1.1.2" 
+SUBTITLE = "v1.1.3" 
 AUTHOR = "2019-2022 Artur Gwoździowski"
 
 class Configuration():

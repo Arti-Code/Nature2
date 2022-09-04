@@ -13,7 +13,6 @@ FILL_COLOR:     Color=Color('grey20')
 BORDER_COLOR:   Color=Color('darkgray')
 class Rock(Body):
 
-
     def __init__(self, space: Space, vertices_num: int, size: int, position: Vec2d, thickness: float=1.0):
         super().__init__(body_type=Body.STATIC)
         self.border_color = BORDER_COLOR
