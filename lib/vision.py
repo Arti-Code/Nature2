@@ -1,15 +1,15 @@
-from random import random, randint
-from math import sin, cos, radians, degrees, pi as PI, floor, sqrt
 from enum import Enum
+from math import cos, degrees, sin, sqrt
+
 import pygame.gfxdraw as gfxdraw
-from pygame import Surface, Color, Rect, draw
+from pygame import Color, Surface
 from pygame.math import Vector2
-import pymunk as pm
-from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform, SegmentQueryInfo as RayCast
-#from lib.creature import Creature
-from lib.math2 import flipy, ang2vec, ang2vec2, clamp
-from lib.config import cfg
+from pymunk import Body, Circle, Vec2d
+
 from lib.camera import Camera
+from lib.config import cfg
+from lib.math2 import clamp
+
 
 class TARGET_TYPE(Enum):
     ENEMY   = 0

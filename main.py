@@ -1,41 +1,40 @@
-from enum import unique
 import os
 import sys
-from time import time
-from math import degrees, hypot, sin, cos, pi as PI, floor, ceil, log2, sqrt, log10
 from collections import deque
-from lib.math2 import clamp
+from math import ceil, cos, floor, hypot
+from math import pi as PI
+from math import sin
+from random import randint, random
 from statistics import mean
-from random import randint, random, choice
+from time import time
 from typing import Union
+
 import pygame
-from pygame import Color, Surface, image
+import pymunk.pygame_util
+from pygame import Color, image
 from pygame.constants import *
 from pygame.math import Vector2
 from pygame.time import Clock
-from pygame.transform import scale2x, scale, smoothscale
-from pymunk import Vec2d, Space, Segment, Body, Circle, Shape, ShapeFilter
-import pymunk.pygame_util
-from lib.creature import Creature
-from lib.plant import Plant
-from lib.wall import Wall
-from lib.math2 import set_world, world, flipy
-from lib.config import cfg, TITLE, SUBTITLE
-from lib.manager import Manager
-from lib.rock import Rock
-from lib.collisions import *
-from lib.meat import Meat
-from lib.utils import log_to_file
+from pymunk import ShapeFilter, Space, Vec2d
+
 from lib.camera import Camera
+from lib.collisions import *
+from lib.config import TITLE, cfg
+from lib.creature import Creature
+from lib.manager import Manager
+from lib.math2 import flipy, set_world, world
+from lib.meat import Meat
+from lib.plant import Plant
+from lib.rock import Rock
 from lib.statistics import Statistics
-#from lib.terrain import generate_terrain_blue, generate_terrain_red
+from lib.wall import Wall
+
 
 class Simulation():
 
     def __init__(self):
         self.scale = 1
         flags = pygame.OPENGL
-        #self.screen = Surface(size=cfg.SCREEN, flags=0)
         self.screen = pygame.display.set_mode(size=cfg.SCREEN, flags=0, vsync=1)
         self.space = Space()
         self.space.iterations = cfg.ITER
@@ -51,7 +50,6 @@ class Simulation():
         self.space.debug_draw(self.options)
         self.draw_debug: bool=False
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
-        #self.create_terrain('res/images/map2.png', 'res/images/map2.png')
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores', 'all'])
         self.statistics.add_collection('creatures', ['size', 'speed', 'food', 'power', 'mutations', 'vision'])

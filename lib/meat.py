@@ -1,13 +1,15 @@
-from math import sqrt, floor, log2, ceil
-from random import random, randint
+from math import ceil, floor, log2
+
 import pygame.gfxdraw as gfxdraw
-from pygame import Surface, Color, Rect
-from pymunk import Segment, Poly, Body, Circle, Space, Vec2d
-from lib.math2 import flipy, clamp
-from lib.life import Life
-from lib.config import cfg
+from pygame import Color, Rect, Surface
 from pygame.math import Vector2
+from pymunk import Body, Circle, Space, Vec2d
+
 from lib.camera import Camera
+from lib.config import cfg
+from lib.life import Life
+from lib.math2 import clamp, flipy
+
 
 class Meat(Life):
 
