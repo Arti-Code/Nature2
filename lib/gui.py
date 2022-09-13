@@ -612,7 +612,7 @@ class GUI():
     def create_creature_win2(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow2(manager=self.ui_mgr, rect=Rect((5, 5), (170, 60)), data=data, dT=dT)
+            self.creature_win = CreatureWindow2(manager=self.ui_mgr, rect=Rect((5, 5), (185, 60)), data=data, dT=dT)
 
     def create_creature_advance_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
