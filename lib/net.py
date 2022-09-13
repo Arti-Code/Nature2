@@ -1,13 +1,13 @@
-from enum import Enum, IntEnum
-from logging.config import listen
-from platform import node
-from random import random, randint, choice, gauss
-from lib.math2 import sigmoid, tanh, relu, leaky_relu, binary, rev_binary, wide_binary, linear, pulse ,clamp
-from copy import deepcopy, copy
 import json
-import numpy as np
+from copy import deepcopy
+from enum import IntEnum
+from logging.config import listen
+from random import choice, gauss, randint, random
+
 from lib.config import cfg
-from math import sin, cos
+from lib.math2 import (binary, clamp, linear, relu, rev_binary, sigmoid, tanh,
+                       wide_binary)
+
 
 class TYPE(IntEnum):
 

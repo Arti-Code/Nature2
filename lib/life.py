@@ -1,15 +1,17 @@
-from copy import copy, deepcopy
-from random import random, randint
-from math import sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt
+from math import ceil
+from math import pi as PI
+from math import sin
+from random import randint
+
 import pygame.gfxdraw as gfxdraw
-from pygame import Surface, Color, Rect
-import pymunk as pm
-from pymunk import Vec2d, Body, Space
-from lib.object import Object
-from lib.math2 import flipy, clamp
-from lib.config import cfg
-from lib.camera import Camera
+from pygame import Color, Rect, Surface
 from pygame.math import Vector2
+from pymunk import Body, Space, Vec2d
+
+from lib.camera import Camera
+from lib.config import cfg
+from lib.math2 import flipy
+
 
 class Life(Body):
 

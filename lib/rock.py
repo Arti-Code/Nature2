@@ -1,13 +1,15 @@
-from random import random, randint, gauss
-from math import sin, cos, pi as PI
-import pygame.gfxdraw as gfxdraw
-from pygame.draw import line, lines, polygon
-from pygame import Surface, Color, Rect
-import pymunk as pm
-from pymunk import Segment, Poly, Body, Space, Vec2d
-from lib.math2 import flipy
-from lib.camera import Camera
+from math import cos
+from math import pi as PI
+from math import sin
+from random import gauss, random
+
+from pygame import Color, Rect, Surface
+from pygame.draw import polygon
 from pygame.math import Vector2
+from pymunk import Body, Poly, Space, Vec2d
+
+from lib.camera import Camera
+from lib.math2 import flipy
 
 FILL_COLOR:     Color=Color('grey20')
 BORDER_COLOR:   Color=Color('darkgray')

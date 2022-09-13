@@ -1,22 +1,22 @@
 from copy import copy, deepcopy
-from random import random, randint
-from math import pi as PI, sqrt
+from math import pi as PI
+from math import sqrt
+from random import randint, random
 from statistics import mean
-from matplotlib.pyplot import draw
+
 import pygame.gfxdraw as gfxdraw
-import pygame.draw as draw
-from pygame import Surface, Color, Rect
+from pygame import Color, Rect, Surface
 from pygame.math import Vector2
-import pymunk as pm
-from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
-from lib.life import Life
-from lib.math2 import flipy, clamp
-from lib.net import Network
-from lib.species import random_name, modify_name
-from lib.config import cfg
-from lib.utils import log_to_file
+from pymunk import Body, Circle, Space, Vec2d
+
 from lib.camera import Camera
+from lib.config import cfg
+from lib.life import Life
+from lib.math2 import clamp, flipy
+from lib.net import Network
+from lib.species import modify_name, random_name
 from lib.vision import Vision
+
 
 class Creature(Life):
 

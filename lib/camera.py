@@ -1,6 +1,6 @@
-from pygame.math import Vector2
 from pygame import Rect
-from typing import Union
+from pygame.math import Vector2
+
 from lib.math2 import clamp
 
 
