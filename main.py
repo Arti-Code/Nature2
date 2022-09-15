@@ -1,41 +1,40 @@
-from enum import unique
 import os
 import sys
-from time import time
-from math import degrees, hypot, sin, cos, pi as PI, floor, ceil, log2, sqrt, log10
 from collections import deque
-from lib.math2 import clamp
+from math import ceil, cos, floor, hypot
+from math import pi as PI
+from math import sin
+from random import randint, random
 from statistics import mean
-from random import randint, random, choice
+from time import time
 from typing import Union
+
 import pygame
-from pygame import Color, Surface, image
+import pymunk.pygame_util
+from pygame import Color, image
 from pygame.constants import *
 from pygame.math import Vector2
 from pygame.time import Clock
-from pygame.transform import scale2x, scale, smoothscale
-from pymunk import Vec2d, Space, Segment, Body, Circle, Shape, ShapeFilter
-import pymunk.pygame_util
-from lib.creature import Creature
-from lib.plant import Plant
-from lib.wall import Wall
-from lib.math2 import set_world, world, flipy
-from lib.config import cfg, TITLE, SUBTITLE
-from lib.manager import Manager
-from lib.rock import Rock
-from lib.collisions import *
-from lib.meat import Meat
-from lib.utils import log_to_file
+from pymunk import ShapeFilter, Space, Vec2d
+
 from lib.camera import Camera
+from lib.collisions import *
+from lib.config import TITLE, cfg
+from lib.creature import Creature
+from lib.manager import Manager
+from lib.math2 import flipy, set_world, world
+from lib.meat import Meat
+from lib.plant import Plant
+from lib.rock import Rock
 from lib.statistics import Statistics
-#from lib.terrain import generate_terrain_blue, generate_terrain_red
+from lib.wall import Wall
+
 
 class Simulation():
 
     def __init__(self):
         self.scale = 1
         flags = pygame.OPENGL
-        #self.screen = Surface(size=cfg.SCREEN, flags=0)
         self.screen = pygame.display.set_mode(size=cfg.SCREEN, flags=0, vsync=1)
         self.space = Space()
         self.space.iterations = cfg.ITER
@@ -51,7 +50,6 @@ class Simulation():
         self.space.debug_draw(self.options)
         self.draw_debug: bool=False
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
-        #self.create_terrain('res/images/map2.png', 'res/images/map2.png')
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores', 'all'])
         self.statistics.add_collection('creatures', ['size', 'speed', 'food', 'power', 'mutations', 'vision'])
@@ -312,19 +310,20 @@ class Simulation():
             return True
         return False
 
-    def free_random_position(self, position: Union[Vec2d, tuple], range: Union[Vec2d, tuple], size: float, categories: int=0b10000010000000) ->Vec2d:
-        pos0 = position-range
-        pos1 = position+range
+    def free_random_position(self, position: Union[Vec2d, tuple], range: Union[Vec2d, tuple]) ->Vec2d:
         rnd_pos = None
         free_pos = False
         i = 0
         while not free_pos:
-            x = randint(int(pos0[0]), int(pos1[0]))
-            y = randint(int(pos0[1]), int(pos1[1]))
-            x = clamp(x, cfg.PLANT_EDGE, cfg.WORLD[0]-cfg.PLANT_EDGE)
-            y = clamp(y, cfg.PLANT_EDGE, cfg.WORLD[1]-cfg.PLANT_EDGE)
+            x = randint(0, int(range[0]))*2-range[0]
+            y = randint(0, int(range[1]))*2-range[1]
+            x = int(position[0])+x
+            y = int(position[1])+y
+            if (x > 15 and x < cfg.WORLD[0]-15) and (y > 15 and y < cfg.WORLD[1]-15):
+                free_pos = True
+            #x = clamp(x, cfg.PLANT_EDGE, cfg.WORLD[0]-cfg.PLANT_EDGE)
+            #y = clamp(y, cfg.PLANT_EDGE, cfg.WORLD[1]-cfg.PLANT_EDGE)
             rnd_pos = Vec2d(x, y)
-            free_pos = self.is_position_free(rnd_pos, size, categories)
             i += 1
             if i > 50:
                 return rnd_pos
@@ -334,7 +333,7 @@ class Simulation():
         creature: Creature
         cpos = None
         if pos is None:
-            cpos = self.free_random_position(Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), cfg.CREATURE_MAX_SIZE, categories=0b10000010000000)
+            cpos = self.free_random_position(Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2))
         else:
             cpos = pos
         if genome is None:
@@ -376,7 +375,7 @@ class Simulation():
             size = randint(1, cfg.PLANT_MAX_SIZE)
         else:
             size = 3
-        pos = self.free_random_position(Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), size, 0b10000010000000)
+        pos = self.free_random_position(Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2), Vec2d(cfg.WORLD[0]/2, cfg.WORLD[1]/2))
         plant = Plant(screen=self.screen, space=self.space, collision_tag=6, world_size=world,
                       size=size, color0=Color((127, 255, 0)), color1=Color('darkgreen'), color3=Color((110, 50, 9)), position=pos)
         return plant
@@ -386,7 +385,7 @@ class Simulation():
             size = cfg.PLANT_MAX_SIZE
         else:
             size = 3
-        pos = self.free_random_position(Vec2d(position[0], position[1]), Vec2d(radius, radius), size, 0b10000010000000)
+        pos = self.free_random_position(Vec2d(position[0], position[1]), Vec2d(radius, radius))
         plant = Plant(screen=self.screen, space=self.space, collision_tag=6, world_size=world,
                       size=size, color0=Color((127, 255, 0)), color1=Color('darkgreen'), color3=Color((110, 50, 9)), position=pos)
         return plant
@@ -400,10 +399,10 @@ class Simulation():
         if self.follow and self.selected != None:
             self.camera.focus_camera(Vector2(int(self.selected.position.x), int(self.selected.position.y)))
         self.screen.fill(Color('black'))
-        self.draw_creatures()
-        self.draw_plants()
-        self.draw_meat()
         self.draw_rocks()
+        self.draw_meat()
+        self.draw_plants()
+        self.draw_creatures()
         self.draw_interface()
     
     def draw_creatures(self):
@@ -509,7 +508,7 @@ class Simulation():
                     size = ceil(creature.size)
                     eng = round(creature.max_energy)
                     for _ in range(1):
-                        new_pos = self.free_random_position(pos, Vec2d(0, 0), size, 0b10000010000000)
+                        new_pos = self.free_random_position(pos, Vec2d(0, 0))
                         meat = Meat(screen=self.screen, space=self.space, position=new_pos, collision_tag=10, energy=int(eng))
                         self.meat_list.append(meat)
                 creature.kill(self.space)
@@ -525,10 +524,6 @@ class Simulation():
             self.neuro_avg_time = mean(self.neuro_single_times)
             self.neuro_single_times = []
 
-        ### MOVEMENT ###
-        #for creature in self.creature_list:
-        #    creature.move(dt)
-
         ### REPRODUCE ###
         temp_list = []
         overpopulation = self.creatures_num-cfg.REP_TIME
@@ -539,11 +534,11 @@ class Simulation():
             if creature.check_reproduction(dt):
                 for _ in range(cfg.CHILDS_NUM):
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)
-                    new_position = self.free_random_position(position=position, range=Vec2d(cfg.CREATURES_SEP, cfg.CREATURES_SEP), size=genome['size'], categories=0b10000010000000)
+                    new_position = self.free_random_position(position=position, range=Vec2d(cfg.CREATURES_SEP, cfg.CREATURES_SEP))
                     new_creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=new_position, genome=genome)
                     temp_list.append(new_creature)
 
-        if random() <= cfg.CREATURE_MULTIPLY:
+        if random() <= cfg.CREATURE_MULTIPLY*self.dt:
             creature = self.add_random_creature()
             self.creature_list.append(creature)
 
@@ -642,11 +637,23 @@ class Simulation():
 
     def clock_step(self):
         pygame.display.flip()
-        self.dt = self.clock.tick(self.FPS)/1000*cfg.TIME
+        self.dt = self.clock.tick(cfg.FPS)/1000*cfg.TIME
         time = self.cycles*6000 + round(self.time)
-        pygame.display.set_caption(
-            f"{TITLE}     [TIME: {time}s]     [fps: {round(self.clock.get_fps())}]    [dT: {round(self.dt*1000)}ms]     [herbivores: {self.herbivores}]     [hunters: {self.carnivores}]     [plants: {len(self.plant_list)}]     [neuro: {round(self.neuro_avg_time*1000, 1)}ms]     [physics: {round(self.physics_avg_time*1000, 1)}ms]"
-        )
+        self.display_caption(time)
+
+    def display_caption(self, time):
+        _fps = round(self.clock.get_fps())
+        _dt = round(self.dt*1000)
+        if _fps < 100:
+            _fps = ' '+str(_fps)
+        else:
+            _fps = str(_fps)
+        if _dt < 100:
+            _dt = ' '+str(_dt)
+        else:
+            _fps = str(_fps)
+        txt = f"{TITLE}     [TIME: {time}s]    [fps: {_fps}]    [dT: {_dt}ms]     [herbivores: {self.herbivores}]     [hunters: {self.carnivores}]     [plants: {len(self.plant_list)}]     [neuro: {round(self.neuro_avg_time*1000, 1)}ms]     [physics: {round(self.physics_avg_time*1000, 1)}ms]"
+        pygame.display.set_caption(txt)
 
     def check_populatiom(self):
         self.check_creature_types()

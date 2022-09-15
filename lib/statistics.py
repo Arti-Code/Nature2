@@ -1,13 +1,9 @@
-from cProfile import label
-from calendar import c
-from matplotlib.image import FigureImage
-from matplotlib.pyplot import legend
-import numpy as np
+from bokeh.colors import RGB
 from bokeh.io import show
-from bokeh.plotting import figure, Figure
-from bokeh.layouts import column
-from bokeh.colors import Color, RGB
+from bokeh.plotting import Figure, figure
+
 from lib.config import cfg
+
 
 class Statistics():
 

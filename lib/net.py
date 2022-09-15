@@ -1,13 +1,13 @@
-from enum import Enum, IntEnum
-from logging.config import listen
-from platform import node
-from random import random, randint, choice, gauss
-from lib.math2 import sigmoid, tanh, relu, leaky_relu, binary, rev_binary, wide_binary, linear, pulse ,clamp
-from copy import deepcopy, copy
 import json
-import numpy as np
+from copy import deepcopy
+from enum import IntEnum
+from logging.config import listen
+from random import choice, gauss, randint, random
+
 from lib.config import cfg
-from math import sin, cos
+from lib.math2 import (binary, clamp, linear, relu, rev_binary, sigmoid, tanh,
+                       wide_binary)
+
 
 class TYPE(IntEnum):
 
@@ -117,7 +117,8 @@ class Link():
         self.signal: float=0.0
 
     def CalcSignal(self, input: float) -> float:
-        self.signal = (input * self.weight) * abs(input * self.weight)
+        self.signal = input * self.weight
+        #self.signal = (input * self.weight) * abs(input * self.weight)
         return self.signal
 
     def RandomWeight(self):
@@ -375,22 +376,6 @@ class Network():
                 node_key = self.layers[lay1].nodes[nod1]
                 bias = self.nodes[node_key].bias
                 if self.nodes[node_key].activation == ACTIVATION.TANH:
-                    #elif self.nodes[node_key].activation == ACTIVATION.SIGMOID:
-                    #    func = sigmoid
-                    #elif self.nodes[node_key].activation == ACTIVATION.RELU:
-                    #    func = relu
-                    #elif self.nodes[node_key].activation == ACTIVATION.LEAKY_RELU:
-                    #    func = leaky_relu
-                    #elif self.nodes[node_key].activation == ACTIVATION.BINARY:
-                    #    func = binary
-                    #elif self.nodes[node_key].activation == ACTIVATION.REV_BINARY:
-                    #    func = rev_binary
-                    #elif self.nodes[node_key].activation == ACTIVATION.WIDE_BINARY:
-                    #    func = wide_binary
-                    #elif self.nodes[node_key].activation == ACTIVATION.LINEAR:
-                    #    func = linear
-                    #elif self.nodes[node_key].activation == ACTIVATION.PULSE:
-                    #    func = pulse
                     func = tanh
 
                 for lin1 in range(len(self.nodes[node_key].to_links)):
@@ -575,22 +560,6 @@ class Network():
                     self.nodes[n].mem_weight = None
             elif n_type == 'tanh':
                 self.nodes[n].activation = ACTIVATION.TANH
-            elif n_type == 'sigmoid':
-                self.nodes[n].activation = ACTIVATION.SIGMOID
-            elif n_type == 'relu':
-                self.nodes[n].activation = ACTIVATION.RELU
-            elif n_type == 'leaky_relu':
-                self.nodes[n].activation = ACTIVATION.LEAKY_RELU
-            elif n_type == 'binary':
-                self.nodes[n].activation = ACTIVATION.BINARY
-            elif n_type == 'rev_binary':
-                self.nodes[n].activation = ACTIVATION.REV_BINARY
-            elif n_type == 'wide_binary':
-                self.nodes[n].activation = ACTIVATION.WIDE_BINARY
-            elif n_type == 'linear':
-                self.nodes[n].activation = ACTIVATION.LINEAR
-            elif n_type == 'pulse':
-                self.nodes[n].activation = ACTIVATION.PULSE
 
     def MutateNodeMemory(self, m=0):
         if (random()) < self.MUT_MEM+self.MUT_MEM*m:
@@ -599,7 +568,8 @@ class Network():
             self.nodes[n].recurrent = not self.nodes[n].recurrent
             if self.nodes[n].recurrent:
                 self.nodes[n].mem = 0
-                self.nodes[n].mem_weight = self.nodes[n].RandomNormal()
+                mem = self.nodes[n].RandomNormal()
+                self.nodes[n].mem_weight = mem * abs(mem)
             else:
                 self.nodes[n].mem = None
                 self.nodes[n].mem_weight = None

@@ -1,20 +1,22 @@
 from copy import copy, deepcopy
-from random import random, randint
-from math import pi as PI, sqrt
+from math import pi as PI
+from math import sqrt
+from random import randint, random
 from statistics import mean
+
 import pygame.gfxdraw as gfxdraw
-from pygame import Surface, Color, Rect
+from pygame import Color, Rect, Surface
 from pygame.math import Vector2
-import pymunk as pm
-from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform
-from lib.life import Life
-from lib.math2 import flipy, clamp
-from lib.net import Network
-from lib.species import random_name, modify_name
-from lib.config import cfg
-from lib.utils import log_to_file
+from pymunk import Body, Circle, Space, Vec2d
+
 from lib.camera import Camera
+from lib.config import cfg
+from lib.life import Life
+from lib.math2 import clamp, flipy
+from lib.net import Network
+from lib.species import modify_name, random_name
 from lib.vision import Vision
+
 
 class Creature(Life):
 
@@ -55,7 +57,7 @@ class Creature(Life):
         space.add(self.vision)
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
-        self.reproduction_time = random()*cfg.REP_TIME
+        self.reproduction_time = ((random()*2)-1)*cfg.REP_TIME*0.33+cfg.REP_TIME
         self.energy = self.max_energy
         self.moving: float=0.0
         self.eating: bool=False
@@ -176,6 +178,8 @@ class Creature(Life):
             y2 = round(ry + rot.y*(r/1.6))
             x3 = round(rx + rot.x*(r/1.1))
             y3 = round(ry + rot.y*(r/1.1))
+            x4 = round(rx + rot.x*(r*2))
+            y4 = round(ry + rot.y*(r*2))
             r2 = round(r/2)
             r: int; g: int; b: int
             if self.food >= 6:
@@ -199,6 +203,8 @@ class Creature(Life):
             gfxdraw.aacircle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
             gfxdraw.filled_circle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
             gfxdraw.filled_circle(screen, int(x3), int(y3), int(r2*0.67), Color('black'))
+
+            #draw.arc(screen, Color('white'), Rect(x4-r2*2, y4-r2*2, r2*4, r2*4), -PI/3, PI/3, 1)
         eyes_color: Color=self.NORMAL_EYES
         if self.attacking:
             eyes_color=self.ATTACK_EYES
@@ -327,9 +333,10 @@ class Creature(Life):
 
     def get_input(self):
         input = []
-        ar, ad, af, ap, pr, pd, mr, md, rr, rd = self.vision.get_detection2()
+        ar, ad, af, aw, pr, pd, mr, md, rr, rd = self.vision.get_detection2()
         eng = self.energy/self.max_energy
-        #dng = clamp(((self.size+self.power)/2-(ap/2))/10, -1.0, 1.0)
+        pwr = self.size+self.power+(self.attacking*10)
+        dng = clamp((aw-pwr)/30, -1, 1)
         input.append(self.collide_creature)
         input.append(self.collide_plant)
         input.append(self.collide_meat)
@@ -338,7 +345,7 @@ class Creature(Life):
         input.append(ar)
         input.append(ad)
         input.append(af)
-        #input.append(dng)
+        input.append(dng)
         input.append(pr)
         input.append(pd)
         input.append(mr)

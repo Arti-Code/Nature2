@@ -11,6 +11,7 @@ from copy import copy
 from pygame import Rect
 from pygame_gui import UIManager, PackageResource
 from pygame_gui.elements import UITextBox, UIWindow, UIButton, UILabel, UITextEntryLine, UIPanel
+from pygame_gui.core import UIFontDictionary
 from lib.config import cfg, TITLE, SUBTITLE, AUTHOR
 from lib.life import Life
 from lib.creature import Creature
@@ -137,32 +138,28 @@ class LoadCreatureWindow(UIWindow):
 class RankWindow(UIWindow):
 
     def __init__(self, owner, manager: UIManager, rect: Rect):
-        super().__init__(rect, manager=manager, window_display_title='Ranking', object_id="#rank_win", visible=True)
+        super().__init__(rect, manager=manager, window_display_title='Ranking', object_id="#rank_win", resizable=True, visible=True)
         self.owner = owner
         self.manager = manager
         self.labels = []
-        lbl_w = 305
         for i in range(cfg.RANK_SIZE):
             text = '.'
-            num = UILabel(Rect((1, 15*i+5), (14, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_position_'+str(i))
-            spec = UILabel(Rect((20, 15*i+5), (50, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_specie_'+str(i))
-            gen = UILabel(Rect((70, 15*i+5), (29, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_generation_'+str(i))
-            pwr = UILabel(Rect((100, 15*i+5), (24, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_power_'+str(i))
-            eat = UILabel(Rect((125, 15*i+5), (24, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eat_'+str(i))
-            eye = UILabel(Rect((150, 15*i+5), (24, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_eye_'+str(i))
-            fit = UILabel(Rect((175, 15*i+5), (45, 15)), text=text, manager=manager, container=self, parent_element=self, object_id='rank_fitness_'+str(i))
-            self.labels.append([num, spec, gen, pwr, eat, eye, fit])
+            num = UILabel(Rect((1, 11*i+1), (14, 10)), text=text, manager=manager, container=self, parent_element=self, object_id='#rank_label')
+            spec = UILabel(Rect((15, 11*i+1), (38, 10)), text=text, manager=manager, container=self, parent_element=self, object_id='#rank_label')
+            gen = UILabel(Rect((55, 11*i+1), (28, 10)), text=text, manager=manager, container=self, parent_element=self, object_id='#rank_label')
+            eat = UILabel(Rect((85, 11*i+1), (15, 10)), text=text, manager=manager, container=self, parent_element=self, object_id='#rank_label')
+            fit = UILabel(Rect((101, 11*i+1), (39, 10)), text=text, manager=manager, container=self, parent_element=self, object_id='#rank_label')
+            self.labels.append([num, spec, gen, eat, fit])
 
     def Update(self, ranking1: list, ranking2: list):
         rank_count1 = len(ranking1)
         for i in range(rank_count1):
             self.labels[i][0].set_text(str(i+1)+'.')
             self.labels[i][1].set_text(ranking1[i]['name'])
-            self.labels[i][2].set_text('G:' + str(ranking1[i]['gen']))
-            self.labels[i][3].set_text('P:' + str(ranking1[i]['power']))
-            self.labels[i][4].set_text('E:' + str(ranking1[i]['food']))
-            self.labels[i][5].set_text('V:' + str(ranking1[i]['eyes']))
-            self.labels[i][6].set_text('F:' + str(round(ranking1[i]['fitness'])))
+            self.labels[i][2].set_text('G' + str(ranking1[i]['gen']))
+            self.labels[i][3].set_text('E' + str(ranking1[i]['food']))
+            #self.labels[i][4].set_text('F' + str(round(ranking1[i]['fitness']/1000, 2)) + "k")
+            self.labels[i][4].set_text('F' + str(round(ranking1[i]['fitness'])))
         
 class InfoWindow(UIWindow):
 
@@ -211,50 +208,69 @@ class EnviroWindow(UIWindow):
 class CreatureWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, data: dict, dT: float):
-        standart: dict[list[str]]={0: ["GEN", "POWER", "SPEED"], 1: ["FOOD", "EYES", "MUT"], 2: ["FIT", "LIFE", "REPRO"]}
-        super().__init__(rect, manager=manager, window_display_title=data['SPECIE']+'  '+data['ENG'], object_id="#creature_win", visible=True)
+        super().__init__(rect=rect, manager=manager, window_display_title=data['SPECIE']+'  '+data['ENG']+' ['+data['G']+']', object_id="#creature_win", resizable=True, visible=True)
+        grid: dict[tuple]={
+                "D": (0, 0, 2), "O": (0, 2, 2), "M": (0, 4, 2), "P": (0, 6, 2),
+                "V": (1, 0, 2), "X": (1, 2, 2), "F": (1, 4, 2), "R": (1, 6, 2),
+                "L": (2, 0, 2), "B": (2, 2, 2), "K": (2, 4, 2), 
+                "S": (3, 0, 8)
+        } 
         self.manager = manager
-        i=0
         self.labs = {}
+        i = 0
         for key, val in data.items():
-            if key != 'SPECIE' and key != 'ENG':
-                #for dk, dv in standart:
-                #    if key in dv:
-                #        lab1 = UILabel(Rect((1, 15*i+5), (self.rect.width-1, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
-
-
-                if key == 'COST':
-                    lab1 = UILabel(Rect((1, 15*i+5), (self.rect.width-1, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
-                    lab2 = UILabel(Rect((self.rect.width-1, 15*i+5), (1, 15)), text=f"", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
-                elif key == 'S':
-                    lab1 = UILabel(Rect((5, 15*i+5), (10, 15)), text="", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
-                    lab2 = UILabel(Rect((15, 15*i+5), (self.rect.width-15, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
-                else:            
-                    lab1 = UILabel(Rect((5, 15*i+5), (50, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
-                    lab2 = UILabel(Rect((60, 15*i+5), (self.rect.width-65, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
-                self.labs[key] = (lab1, lab2)
-                i+=1
-        btn_w = 80; btn_h = 20
-        self.btn_ancestors = UIButton(Rect((rect.width/2-btn_w/2, (5+15*i)), (btn_w, btn_h)), text='ANCESTORS', manager=self.manager, container=self, parent_element=self, object_id="#btn_ancestors")
+            if key in [*grid.keys()]:
+                (row, col, siz) = grid[key]
+                lab1 = UILabel(Rect((20*col+2, 10*row+2), (siz*20, 10)), text=f"|{key}:{val}|", manager=self.manager, container=self, parent_element=self, object_id='#lab_creature_win')
+                self.labs[key] = lab1
+                i = max(i, row+1)
+        btn_w = 100; btn_h = 20
+        self.btn_ancestors = UIButton(Rect((rect.width/2-btn_w/2, (5+10*i)), (btn_w, btn_h)), text='ANCESTORS', manager=self.manager, container=self, parent_element=self, object_id="#btn_ancestors")
         self.refresh = 0
         self.Update(data, dT)
 
     def Update(self, data: dict, dT: float):
         self.refresh -= dT
-        self.set_display_title(data['SPECIE']+'  '+data['ENG'])
+        self.set_display_title(data['SPECIE']+'  '+data['ENG']+' ['+data['G']+']')
         if self.refresh <= 0:
             self.refresh = 1
             data = data
             for key, val in data.items():
-                if key == 'COST':
-                    self.labs[key][0].set_text(f"{val}")
-                    self.labs[key][1].set_text(f"")
-                elif key == 'S':
-                    self.labs[key][0].set_text(f"")
-                    self.labs[key][1].set_text(f"{val}")
-                elif key != 'SPECIE' and key != 'ENG':
-                    self.labs[key][0].set_text(f"{key}:")
-                    self.labs[key][1].set_text(f"{val}")
+                if key in [*self.labs.keys()]:
+                    self.labs[key].set_text(f"|{key}:{val}|")
+
+class TestWindow(UIWindow):
+
+    def __init__(self, manager: UIManager, rect: Rect, bar_text: str=''):
+        super().__init__(rect, manager=manager, window_display_title=bar_text, object_id="#test_win", visible=True)
+        self.manager = manager
+
+class CreatureAdvanceWindow(UIWindow):
+
+    def __init__(self, manager: UIManager, rect: Rect, data: dict, dT: float):
+        grid: dict[tuple]={"C": (0, 0, 5)} 
+        super().__init__(rect, manager=manager, window_display_title=data['SPECIE'], object_id="#creature_advance_win", visible=True)
+        self.manager = manager
+        self.labs = {}
+        for key, val in data.items():
+            if key in [*grid.keys()]:
+                (row, col, siz) = grid[key]
+                lab1 = UILabel(Rect((40*col+2, 15*row+5), (siz*38, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='#lab_creature_win')
+                self.labs[key] = lab1
+        #btn_w = 80; btn_h = 20
+        #self.btn_ancestors = UIButton(Rect((rect.width/2-btn_w/2, (5+15*i)), (btn_w, btn_h)), text='ANCESTORS', manager=self.manager, container=self, parent_element=self, object_id="#btn_ancestors")
+        self.refresh = 0
+        self.Update(data, dT)
+
+    def Update(self, data: dict, dT: float):
+        self.refresh -= dT
+        self.set_display_title(data['SPECIE'])
+        if self.refresh <= 0:
+            self.refresh = 1
+            data = data
+            for key, val in data.items():
+                if key in [*self.labs.keys()]:
+                    self.labs[key].set_text(f"{val}")
 
 class AncestorsWindow(UIWindow):
 
@@ -264,7 +280,7 @@ class AncestorsWindow(UIWindow):
         i=0
         self.labels = []
         for (specie, gen, time) in history:
-            lab = UILabel(Rect((5, 10*i+2), (190, 15)), text=f"T({time}) {specie} GEN({gen})", manager=self.manager, container=self, parent_element=self, object_id='lab_ancestor'+str(i))
+            lab = UILabel(Rect((5, 10*i+2), (rect.width-10, 10)), text=f"T({time}) {specie} G({gen})", manager=self.manager, container=self, parent_element=self, object_id='lab_ancestor'+str(i))
             self.labels.append(lab)
             i += 1
 
@@ -309,7 +325,7 @@ class InfoMenuWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect):
         super().__init__(rect, manager=manager, window_display_title='Info Menu', object_id="#info_menu", visible=True)
         self.manager = manager
-        btn_list = [('Creature Info', '#creature_win'), ('Enviroment Info', '#enviro'), ('Ranking', '#rank'), ('Credits', '#credits'), ('Back', '#info_back')]
+        btn_list = [('Creature Info', '#creature_win'), ('Special Info', '#creature_advance_win'), ('Enviroment Info', '#enviro'), ('Ranking', '#rank'), ('Test', '#test_win_btn'), ('Credits', '#credits'), ('Back', '#info_back')]
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
@@ -353,6 +369,8 @@ class GUI():
         self.cy = round(cfg.SCREEN[1]/2)
         #self.ui_mgr = UIManager(window_resolution=(self.view[0], self.view[1]), theme_path='blue.json')
         self.ui_mgr = UIManager(window_resolution=view, theme_path='res/themes/blue.json')
+        self.ui_mgr.add_font_paths('fira.ttf', 'res/fonts/fira.ttf')
+        self.ui_mgr.add_font_paths('fira', 'res/fonts/fira.ttf')
         #self.ui_mgr.load_theme('blue.json')
         self.buttons = []
         self.title = None
@@ -369,11 +387,15 @@ class GUI():
         self.save_menu = None
         self.enviro_win = None
         self.creature_win = None
+        self.creature_advance_win = None
         self.rank_win = None
         self.credits_win = None
         self.history_win = None
         self.ancestors_win = None
+        self.test_win = None
         self.rebuild_ui(self.view)
+        #self.fonts: UIFontDictionary = UIFontDictionary()
+        #self.fonts.add_font_path('fira.ttf', 'res/fonts')
 
     def rebuild_ui(self, new_size: tuple):         
         self.ui_mgr.set_window_resolution(new_size)
@@ -418,6 +440,9 @@ class GUI():
     def create_menu_btn(self, rect: Rect):
         self.btn_menu = UIButton(rect, 'MENU', self.ui_mgr, object_id='#btn_menu')
 
+    def create_test(self):
+        self.test_win = TestWindow(manager=self.ui_mgr, rect=Rect((5, 5), (75, 25)), bar_text='Test')
+
     def create_custom_btn(self, rect: Rect, title: str, obj_id: str):
         btn = UIButton(relative_rect=rect, text=title, manager=self.ui_mgr, object_id=obj_id)
         return btn
@@ -439,7 +464,7 @@ class GUI():
 
     def create_info_menu(self):
         w = 250
-        h = 250
+        h = 300
         pos = Rect((self.cx-w/2, self.cy-h), (w, h))
         self.info_menu = InfoMenuWindow(manager=self.ui_mgr, rect=pos)
 
@@ -494,7 +519,7 @@ class GUI():
         self.load_creature_win = LoadCreatureWindow(manager=self.ui_mgr, rect=pos, creature_names=creatures)
 
     def create_info_win(self, text: str, title: str):
-        w = 300
+        w = 250
         h = 120
         pos = Rect((self.cx-w/2, self.cy-h/2), (w, h))
         self.info_win = InfoWindow(manager=self.ui_mgr, rect=pos, text=text, title=title)
@@ -506,8 +531,8 @@ class GUI():
         self.credits_win = CreditsWindow(owner=self.owner, manager=self.ui_mgr, rect=pos, title=title, subtitle=subtitle, author=author, bar_text=bar_text)
 
     def create_rank_win(self):
-        w = 225
-        h = cfg.RANK_SIZE * 15 + 35
+        w = 140
+        h = cfg.RANK_SIZE * 11 + 25
         pos = Rect((self.cx*2-(w+10), 25), (w, h))
         self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)
 
@@ -544,7 +569,12 @@ class GUI():
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((0, 0), (165, 250)), data=data, dT=dT)
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((5, 5), (185, 60)), data=data, dT=dT)
+
+    def create_creature_advance_win(self, dT: float):
+        if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
+            data = self.update_creature_win()
+            self.creature_advance_win = CreatureAdvanceWindow(manager=self.ui_mgr, rect=Rect((5, 5), (180, 45)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
@@ -553,7 +583,7 @@ class GUI():
             data = self.owner.enviro.selected.genealogy
             count = len(data)
             height = 2 + 15 * count
-            self.ancestors_win = AncestorsWindow(manager=self.ui_mgr, rect=Rect((500, 0), (250, height)), history=data)
+            self.ancestors_win = AncestorsWindow(manager=self.ui_mgr, rect=Rect((500, 0), (150, height)), history=data)
 
     def create_history_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
@@ -570,46 +600,48 @@ class GUI():
         if not isinstance(selected, Creature):
             data = {}
             data['SPECIE'] = ''
-            data['GEN'] = ''
+            data['G'] = ''
             data['ENG'] = ''
-            data['FOOD'] = ''
-            data['POWER'] = ''
-            data['SPEED'] = ''
-            data['EYES'] = ''
-            data['SIZE'] = ''
-            data['MUT'] = ''
-            data['B|K'] = ''
-            data['FIT'] = ''
-            data["LIFE"] = ''
-            data["REPRO"] = ''
+            data['D'] = ''
+            data['P'] = ''
+            data['M'] = ''
+            data['V'] = ''
+            data['O'] = ''
+            data['X'] = ''
+            data['B'] = ''
+            data['K'] = ''
+            data['F'] = ''
+            data["L"] = ''
+            data["R"] = ''
             data['S'] = ''
-            data['COST'] = ''
+            data['C'] = ''
             if isinstance(selected, Plant):
                 data['SPECIE'] = 'PLANT'
-                data['LIFE'] = str(round(selected.life_time))
+                data['L'] = str(round(selected.life_time))
                 data['ENG'] = str(round(selected.energy))
-                data['SIZE'] = str(round(selected.shape.radius))
-                data['S'] = str(len(selected.plants_in_area))
+                data['O'] = str(round(selected.shape.radius))
+                #data['S'] = str(len(selected.plants_in_area))
             elif isinstance(selected, Meat):
-                data['LIFE'] = str(round(selected.life_time))
+                data['L'] = str(round(selected.life_time))
                 data['SPECIE'] = 'MEAT'
                 data['ENG'] = str(round(selected.energy))
-                data['SIZE'] = str(round(selected.radius))
+                data['O'] = str(round(selected.radius))
             return data
         data = {}
         data['SPECIE'] = selected.name
-        data['GEN'] = str(selected.generation)
+        data['G'] = str(selected.generation)
         data['ENG'] = str(round(selected.energy))+'/'+str(round(selected.max_energy))
-        data['FOOD'] = str(selected.food)
-        data['POWER'] = str(selected.power)
-        data['SPEED'] = str(selected.speed)
-        data['EYES'] = str(selected.eyes)
-        data['SIZE'] = str(selected.size)
-        data['MUT'] = f"{selected.mutations}"
-        data['B|K'] = str(selected.childs)+'|'+str(selected.kills)
-        data['FIT'] = str(round(selected.fitness))
-        data["LIFE"] = str(round(selected.life_time))
-        data["REPRO"] = str(round(selected.reproduction_time))
+        data['D'] = str(selected.food)
+        data['P'] = str(selected.power)
+        data['M'] = str(selected.speed)
+        data['V'] = str(selected.eyes)
+        data['O'] = str(selected.size)
+        data['X'] = f"{selected.mutations}"
+        data['B'] = str(selected.childs)
+        data['K'] = str(selected.kills)
+        data['F'] = str(round(selected.fitness))
+        data["L"] = str(round(selected.life_time))
+        data["R"] = str(round(selected.reproduction_time))
         states = []
         if selected.hidding:
             states.append('H')
@@ -630,13 +662,16 @@ class GUI():
         if selected.collide_plant:
             states.append('P')
         if len(states) > 0:
-            data['S'] = '|'
+            data['S'] = ''
         else:
             data['S'] = ''
+        i = 0
         for state in states:
+            i += 1
             data['S'] += state
-            data['S'] += '|'
-        data['COST'] = f"B:{round(selected.eng_lost['basic'], 1)}|M:{round(selected.eng_lost['move'], 1)}|N:{round(selected.eng_lost['neuro'], 1)}|O:{round(selected.eng_lost['other'], 1)}|"
+            if i < len(states):
+                data['S'] += '|'
+        data['C'] = f"B:{round(selected.eng_lost['basic'], 1)}|M:{round(selected.eng_lost['move'], 1)}|N:{round(selected.eng_lost['neuro'], 1)}|O:{round(selected.eng_lost['other'], 1)}"
         return data
 
     def select_map(self):
@@ -755,6 +790,9 @@ class GUI():
                 elif event.ui_object_id == '#info_menu.#creature_win':
                     #self.info_menu.kill()
                     self.create_creature_win(dt)
+                elif event.ui_object_id == '#info_menu.#creature_advance_win':
+                    #self.info_menu.kill()
+                    self.create_creature_advance_win(dt)
                 elif event.ui_object_id == '#creature_win.#btn_ancestors':
                     self.create_ancestors_win(dt)
                 elif event.ui_object_id == '#info_menu.#rank':
@@ -777,6 +815,10 @@ class GUI():
                     creature_name = event.ui_element.obj_to_load
                     #self.load_creature_win.kill()
                     self.load_creature(creature_name=creature_name)
+                elif event.ui_object_id == '#info_menu.#test_win_btn':
+                    
+                    #self.load_creature_win.kill()
+                    self.create_test()
             return True
         else:
             return False
@@ -797,6 +839,9 @@ class GUI():
         if self.creature_win and self.owner.enviro.selected:
             data = self.update_creature_win()
             self.creature_win.Update(data, dT)
+        if self.creature_advance_win and self.owner.enviro.selected:
+            data = self.update_creature_win()
+            self.creature_advance_win.Update(data, dT)
         if self.history_win and self.owner.enviro.selected:
             self.update_creature_history(dT=dT)
 

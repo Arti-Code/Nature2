@@ -1,18 +1,17 @@
+import json
+import os
 from copy import copy, deepcopy
 from shutil import rmtree
-import os
-import json
-from math import pi as PI
+
 import pygame
 import pygame.gfxdraw as gfxdraw
-from pygame.font import Font, match_font 
-from pygame import Surface, Color, Rect
-from lib.math2 import flipy, clamp
-from lib.net import Node, Link, Network, TYPE, ACTIVATION
+from pygame import Color, Rect, Surface
+
 from lib.config import cfg
-from lib.gui import GUI
-from lib.utils import log_to_file
 from lib.creature import Creature
+from lib.gui import GUI
+from lib.math2 import clamp
+from lib.net import ACTIVATION, Link, Network, Node
 
 
 class Manager:
@@ -357,8 +356,8 @@ class Manager:
             inp_desc = [
                 'ENEMY', 'PLANT', 'MEAT ',
                 'ENERG', 'INJUR',
-                'ENE-R', 'ENE-D', 'FAMIL', 
-                #'EASY ',
+                'ENE-R', 'ENE-D', 
+                'FAMIL', 'DNGER',
                 'PLA-R', 'PLA-D',
                 'MEA-R', 'MEA-D',
                 'ROC-R', 'ROC-D',

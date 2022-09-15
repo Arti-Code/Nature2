@@ -1,15 +1,15 @@
-from random import random, randint
-from math import sin, cos, radians, degrees, pi as PI, floor, sqrt
 from enum import Enum
+from math import cos, degrees, sin, sqrt
+
 import pygame.gfxdraw as gfxdraw
-from pygame import Surface, Color, Rect, draw
+from pygame import Color, Surface
 from pygame.math import Vector2
-import pymunk as pm
-from pymunk import Vec2d, Body, Circle, Segment, Space, Poly, Transform, SegmentQueryInfo as RayCast
-#from lib.creature import Creature
-from lib.math2 import flipy, ang2vec, ang2vec2, clamp
-from lib.config import cfg
+from pymunk import Body, Circle, Vec2d
+
 from lib.camera import Camera
+from lib.config import cfg
+from lib.math2 import clamp
+
 
 class TARGET_TYPE(Enum):
     ENEMY   = 0
@@ -174,16 +174,16 @@ class Vision(Circle):
         enemy_r = round((self.enemy['ang']/(self.semiwide)), 1)
         enemy_d = 1 - sqrt(self.enemy['dist'])/cfg.SENSOR_RANGE
         enemy_f = int(self.enemy['family'])
-        enemy_s_p = 0.0
+        enemy_danger = 0.0
         if self.enemy['target'] != None:
-            enemy_s_p = self.enemy['target'].size+self.enemy['target'].power
+            enemy_danger = self.enemy['target'].size+self.enemy['target'].power+(self.enemy['target'].attacking*10)
         plant_r = round((self.plant['ang']/(self.semiwide)), 1)
         plant_d = 1 - sqrt(self.plant['dist'])/cfg.SENSOR_RANGE
         meat_r = round((self.meat['ang']/(self.semiwide)), 1)
         meat_d = 1 - sqrt(self.meat['dist'])/cfg.SENSOR_RANGE
         rock_r = round((self.rock['ang']/(self.semiwide)), 1)
         rock_d = 1 - sqrt(self.rock['dist'])/cfg.SENSOR_RANGE
-        return [enemy_r, enemy_d, enemy_f, enemy_s_p, plant_r, plant_d,meat_r, meat_d,rock_r, rock_d]
+        return [enemy_r, enemy_d, enemy_f, enemy_danger, plant_r, plant_d,meat_r, meat_d,rock_r, rock_d]
 
     def set_detection_color(self, detection: bool):
         if detection:
@@ -230,10 +230,10 @@ class Vision(Circle):
                 xt = int(rel_target_pos.x); yt = int(rel_target_pos.y)
                 gfxdraw.line(screen, x0+int(v2[0]), y0+int(v2[1]), xt, yt, Color(175, 175, 175, 150))
                 gfxdraw.line(screen, x0+int(v3[0]), y0+int(v3[1]), xt, yt, Color(175, 175, 175, 150))
-        gfxdraw.aacircle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/9+1), eye_color)
-        gfxdraw.filled_circle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/9+1), eye_color)
-        gfxdraw.aacircle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/9+1), eye_color)
-        gfxdraw.filled_circle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/9+1), eye_color)
+        gfxdraw.aacircle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/(10*camera.scale)+1), eye_color)
+        gfxdraw.filled_circle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/(10*camera.scale)+1), eye_color)
+        gfxdraw.aacircle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/(10*camera.scale)+1), eye_color)
+        gfxdraw.filled_circle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/(10*camera.scale)+1), eye_color)
 
     def new_observation(self) -> bool:
         if not self.observe:

@@ -1,15 +1,16 @@
-from copy import copy, deepcopy
-from random import random, randint
-from math import sin, cos, radians, degrees, floor, ceil, pi as PI, sqrt, log2, log10
+from math import ceil, floor, log2
+from random import random
+
 import pygame.gfxdraw as gfxdraw
-from pygame import Surface, Color, Rect
+from pygame import Color, Rect, Surface
 from pygame.math import Vector2
-import pymunk as pm
-from pymunk import Vec2d, Body, Circle, Segment, Space, Poly
-from lib.life import Life
-from lib.math2 import flipy, clamp
-from lib.config import *
+from pymunk import Body, Circle, Space, Vec2d
+
 from lib.camera import Camera
+from lib.config import *
+from lib.life import Life
+from lib.math2 import clamp, flipy
+
 
 class Plant(Life):
 

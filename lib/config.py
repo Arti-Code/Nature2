@@ -1,8 +1,7 @@
-from math import pi as PI
-from json import loads, dumps
+from json import loads
 
 TITLE = "NATURE"
-SUBTITLE = "v1.1.0 (ZoomIn/ZoomOut)" 
+SUBTITLE = "v1.1.5" 
 AUTHOR = "2019-2022 Artur Gwoździowski"
 
 class Configuration():
@@ -11,6 +10,8 @@ class Configuration():
         self.WORLD = None
         self.SCREEN = None
         self.ITER = None
+        self.FPS = None
+
         self.PLANT_MAX_SIZE = None
         self.PLANT_GROWTH = None
         self.PLANT_INIT_NUM = None
@@ -19,29 +20,36 @@ class Configuration():
         self.PLANT_LIFE = None
         self.PLANT_RANGE = None
         self.PLANT_EDGE = None
+
         self.CREATURE_MULTIPLY = None
         self.CREATURE_MIN_NUM = None
         self.CREATURE_INIT_NUM = None
-        self.CREATURES_SEP = None
-        self.EAT = None
-        self.BASE_ENERGY = None
-        self.MOVE_ENERGY = None
-        self.REP_TIME = None
-        self.REP_ENERGY = None
-        self.SPEED = None
-        self.TURN = None
         self.CREATURE_MIN_SIZE = None
         self.CREATURE_MAX_SIZE = None
+        self.CREATURES_SEP = None
+
+        self.BASE_ENERGY = None
+        self.MOVE_ENERGY = None
+        self.REP_ENERGY = None
+
+        self.EAT = None
+        self.SPEED = None
+        self.TURN = None
         self.HIT = None
+
+        self.REP_TIME = None
         self.MEM_TIME = None
+        self.MEAT_TIME = None
+
         self.SENSOR_MAX_ANGLE = None
         self.CLOSE_VISION = None
+
         self.ROCK_NUM = None
         self.ROCK_SIZE_MIN = None
         self.ROCK_SIZE_MAX = None
         self.ROCK_VERT_MIN = None
+
         self.RANK_SIZE = None
-        self.MEAT_TIME = None
         self.SIZE2ENG = None
         self.SIZE_COST = None
         self.POWER_COST = None
@@ -96,6 +104,7 @@ class Configuration():
         self.WORLD                  = cfg['WORLD']
         self.SCREEN                 = cfg['SCREEN']
         self.ITER                   = cfg['ITER']
+        self.FPS                    = cfg['FPS']
         self.PLANT_MAX_SIZE         = cfg['PLANT_MAX_SIZE']
         self.PLANT_GROWTH           = cfg['PLANT_GROWTH']
         self.PLANT_INIT_NUM         = cfg['PLANT_INIT_NUM']
