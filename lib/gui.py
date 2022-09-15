@@ -208,54 +208,11 @@ class EnviroWindow(UIWindow):
 class CreatureWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, data: dict, dT: float):
-        standart: dict[list[str]]={0: ["G", "P", "M"], 1: ["D", "V", "X"], 2: ["F", "L", "R"]}
-        super().__init__(rect, manager=manager, window_display_title=data['SPECIE']+'  '+data['ENG'], object_id="#creature_win", visible=True)
-        self.manager = manager
-        i=0
-        self.labs = {}
-        for key, val in data.items():
-            if key != 'SPECIE' and key != 'ENG':
-                if key == 'C':
-                    lab1 = UILabel(Rect((1, 15*i+5), (self.rect.width-1, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
-                    lab2 = UILabel(Rect((self.rect.width-1, 15*i+5), (1, 15)), text=f"", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
-                elif key == 'S':
-                    lab1 = UILabel(Rect((5, 15*i+5), (10, 15)), text="", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
-                    lab2 = UILabel(Rect((15, 15*i+5), (self.rect.width-15, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
-                else:            
-                    lab1 = UILabel(Rect((5, 15*i+5), (50, 15)), text=f"{key}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_key'+str(i))
-                    lab2 = UILabel(Rect((60, 15*i+5), (self.rect.width-65, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='lab_info_val'+str(i))
-                self.labs[key] = (lab1, lab2)
-                i+=1
-        btn_w = 80; btn_h = 20
-        self.btn_ancestors = UIButton(Rect((rect.width/2-btn_w/2, (5+15*i)), (btn_w, btn_h)), text='ANCESTORS', manager=self.manager, container=self, parent_element=self, object_id="#btn_ancestors")
-        self.refresh = 0
-        self.Update(data, dT)
-
-    def Update(self, data: dict, dT: float):
-        self.refresh -= dT
-        self.set_display_title(data['SPECIE']+'  '+data['ENG'])
-        if self.refresh <= 0:
-            self.refresh = 1
-            data = data
-            for key, val in data.items():
-                if key == 'C':
-                    self.labs[key][0].set_text(f"{val}")
-                    self.labs[key][1].set_text(f"")
-                elif key == 'S':
-                    self.labs[key][0].set_text(f"")
-                    self.labs[key][1].set_text(f"{val}")
-                elif key != 'SPECIE' and key != 'ENG':
-                    self.labs[key][0].set_text(f"{key}:")
-                    self.labs[key][1].set_text(f"{val}")
-
-class CreatureWindow2(UIWindow):
-
-    def __init__(self, manager: UIManager, rect: Rect, data: dict, dT: float):
         super().__init__(rect=rect, manager=manager, window_display_title=data['SPECIE']+'  '+data['ENG']+' ['+data['G']+']', object_id="#creature_win", resizable=True, visible=True)
         grid: dict[tuple]={
                 "D": (0, 0, 2), "O": (0, 2, 2), "M": (0, 4, 2), "P": (0, 6, 2),
                 "V": (1, 0, 2), "X": (1, 2, 2), "F": (1, 4, 2), "R": (1, 6, 2),
-                "L": (2, 0, 2), "B|K": (2, 2, 4), 
+                "L": (2, 0, 2), "B": (2, 2, 2), "K": (2, 4, 2), 
                 "S": (3, 0, 8)
         } 
         self.manager = manager
@@ -609,10 +566,10 @@ class GUI():
         data['FOLLOW'] = str(self.owner.enviro.follow)
         self.enviro_win = EnviroWindow(manager=self.ui_mgr, rect=Rect((0, 0), (160, 140)), data=data, dT=dT)
 
-    def create_creature_win2(self, dT: float):
+    def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow2(manager=self.ui_mgr, rect=Rect((5, 5), (185, 60)), data=data, dT=dT)
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((5, 5), (185, 60)), data=data, dT=dT)
 
     def create_creature_advance_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
@@ -651,7 +608,8 @@ class GUI():
             data['V'] = ''
             data['O'] = ''
             data['X'] = ''
-            data['B|K'] = ''
+            data['B'] = ''
+            data['K'] = ''
             data['F'] = ''
             data["L"] = ''
             data["R"] = ''
@@ -679,7 +637,8 @@ class GUI():
         data['V'] = str(selected.eyes)
         data['O'] = str(selected.size)
         data['X'] = f"{selected.mutations}"
-        data['B|K'] = str(selected.childs)+'|'+str(selected.kills)
+        data['B'] = str(selected.childs)
+        data['K'] = str(selected.kills)
         data['F'] = str(round(selected.fitness))
         data["L"] = str(round(selected.life_time))
         data["R"] = str(round(selected.reproduction_time))
@@ -830,7 +789,7 @@ class GUI():
                     self.create_enviro_win(dt)
                 elif event.ui_object_id == '#info_menu.#creature_win':
                     #self.info_menu.kill()
-                    self.create_creature_win2(dt)
+                    self.create_creature_win(dt)
                 elif event.ui_object_id == '#info_menu.#creature_advance_win':
                     #self.info_menu.kill()
                     self.create_creature_advance_win(dt)
@@ -880,6 +839,9 @@ class GUI():
         if self.creature_win and self.owner.enviro.selected:
             data = self.update_creature_win()
             self.creature_win.Update(data, dT)
+        if self.creature_advance_win and self.owner.enviro.selected:
+            data = self.update_creature_win()
+            self.creature_advance_win.Update(data, dT)
         if self.history_win and self.owner.enviro.selected:
             self.update_creature_history(dT=dT)
 
