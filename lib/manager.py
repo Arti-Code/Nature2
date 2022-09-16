@@ -381,7 +381,7 @@ class Manager:
                 back_box = Rect(4, cfg.SCREEN[1] - (max(base_line))-4, max_net_length+125, max_layer_size+6)
                 gfxdraw.aapolygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color("orange"))
                 pygame.draw.polygon(self.screen, Color("orange"), [(back_box.left+1, back_box.top+1), (back_box.right-2, back_box.top+1), (back_box.right-2, back_box.bottom-2), (back_box.left+1, back_box.bottom-2)], 2)
-                gfxdraw.filled_polygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0, 0, 0, 35))
+                gfxdraw.filled_polygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0,0,0, 75))
                 for node_key in network.layers[layer].nodes:
                     node: Node = network.nodes[node_key]
                     v = node.value
@@ -409,7 +409,12 @@ class Manager:
                                 g = 255
                         link_color = Color((r, g, b, a))
                         w = a//50
-                        pygame.draw.line(self.screen, link_color, (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2)), (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2)), w)
+                        p0 = (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2))
+                        p1 = (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2))
+                        #p = ((p1[0]+p0[0])//2, (p1[1]+p0[1])//2)
+                        #gfxdraw.aacircle(self.screen, p[0], p[1]-2, int(12), Color('white'))
+                        #self.add_text2(f"{round(link.weight, 1)}", p[0], p[1]-2, Color('white'), False, False, True, False)
+                        pygame.draw.line(self.screen, link_color, p0, p1, w)
                     desc = ''
                     nodes_to_draw.append((node_color, l, n, node.recurrent, dist_nn, desc, v))
                     n += 1

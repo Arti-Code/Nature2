@@ -333,10 +333,12 @@ class Creature(Life):
 
     def get_input(self):
         input = []
-        ar, ad, af, aw, pr, pd, mr, md, rr, rd = self.vision.get_detection2()
+        ar, ad, af, aw, pr, pd, mr, md, rr, rd = self.vision.get_detection()
         eng = self.energy/self.max_energy
-        pwr = self.size+self.power+(self.attacking*10)
-        dng = clamp((aw-pwr)/30, -1, 1)
+        dng = 0.0
+        if aw != 0:
+            pwr = self.size+self.power+(self.attacking*10)
+            dng = clamp((aw-pwr)/30, -1, 1)
         input.append(self.collide_creature)
         input.append(self.collide_plant)
         input.append(self.collide_meat)
