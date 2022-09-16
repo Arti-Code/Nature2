@@ -1,11 +1,11 @@
 {
-  "WORLD": [3000, 2000],
+  "WORLD": [1600, 950],
   "SCREEN": [1600, 950],
   "ITER": 1,
   "FPS": 30,
   
   "PLANT_MIN_NUM": 10,
-  "PLANT_MAX_NUM": 110,
+  "PLANT_MAX_NUM": 70,
   "PLANT_INIT_NUM": 50,
   "PLANT_MAX_SIZE": 11,
   "PLANT_GROWTH": 26,
@@ -69,16 +69,16 @@
   "STAT_PERIOD": 100,
   "TIME": 1,
   
-  "ROCK_NUM": 30,
-  "ROCK_SIZE_MIN": 40,
-  "ROCK_SIZE_MAX": 120,
+  "ROCK_NUM": 6,
+  "ROCK_SIZE_MIN": 20,
+  "ROCK_SIZE_MAX": 100,
   "ROCK_VERT_MIN": 6,
   "ROCK_VERT_MAX": 12,
   "NEURON_MOD": 50,
   "NEURO_COST": 0.05,
-  "NET_BASE": 160,
-  "GRAPH_H": 24,
-  "GRAPH_V": 10,
+  "NET_BASE": 250,
+  "GRAPH_H": 30,
+  "GRAPH_V": 16,
   "GENERATIONS_NUMBER": 10,
   
   "NET": [16, 0, 0, 0, 0, 0, 0, 0, 5]
