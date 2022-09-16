@@ -333,7 +333,7 @@ class Creature(Life):
 
     def get_input(self):
         input = []
-        ar, ad, af, aw, pr, pd, mr, md, rr, rd = self.vision.get_detection2()
+        ar, ad, af, aw, pr, pd, mr, md, rr, rd = self.vision.get_detection()
         eng = self.energy/self.max_energy
         dng = 0.0
         if aw != 0:
