@@ -178,12 +178,6 @@ class Creature(Life):
                 gfxdraw.aacircle(screen, int(sx), int(sy), int(size-1), shadow)
                 gfxdraw.filled_circle(screen, int(sx), int(sy), int(size-1), shadow)
         if size > 2:
-            x2 = round(rx + rot.x*(size/1.6))
-            y2 = round(ry + rot.y*(size/1.6))
-            x3 = round(rx + rot.x*(size/1.1))
-            y3 = round(ry + rot.y*(size/1.1))
-            x4 = round(rx + rot.x*(size*2))
-            y4 = round(ry + rot.y*(size*2))
             r2 = round(size/2)
             r: int; g: int; b: int
             if self.food >= 6:
@@ -202,12 +196,8 @@ class Creature(Life):
                 g +=50
                 r = clamp(r, 0, 255)
                 g = clamp(g, 0, 255)
-            #gfxdraw.aacircle(screen, int(x2), int(y2), int(r2), Color(175, 175, 175, a))    
-            #gfxdraw.filled_circle(screen, int(x2), int(y2), int(r2), Color(175, 175, 175, a))
             gfxdraw.aacircle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
             gfxdraw.filled_circle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
-            #gfxdraw.filled_circle(screen, int(x3), int(y3), int(r2*0.67), Color('black'))
-            #draw.arc(screen, Color('white'), Rect(x4-r2*2, y4-r2*2, r2*4, r2*4), -PI/3, PI/3, 1)
         eyes_color: Color=self.NORMAL_EYES
         if self.hidding:
             eyes_color = self.HIDED_EYES
@@ -220,17 +210,11 @@ class Creature(Life):
         self.draw_energy_bar(screen, rx, ry)
         if self.rock_vec:
             gfxdraw.line(screen, int(rx), int(ry), int(rx+self.rock_vec[0]), int(ry+self.rock_vec[1]), Color('red'))
-        #self.reset_collisions()
-        #self.vision.reset_range()
-        #self.draw_water_bar(screen, rx, ry)
-        #self.draw_name(screen)
-        #self.draw_normal(screen)
         return True
 
     def draw_normal(self, screen):
         if self.normal != None:
             gfxdraw.line(screen, int(self.position.x), int(flipy(self.position.y)), int(self.position.x+self.normal.x*50), int(flipy(self.position.y+self.normal.y*50)), Color('yellow'))
-            #self.normal = None
 
     def draw_detectors(self, screen, rel_pos: Vector2):
         for detector in self.sensors:
@@ -246,7 +230,6 @@ class Creature(Life):
         self.collide_water = False
         self.collide_meat = False
         self.border = False
-        #self.rock_vec = None
         
     def draw_name(self, camera: Camera):
         rpos = camera.rel_pos(Vector2((self.position.x), flipy(self.position.y+20)))
