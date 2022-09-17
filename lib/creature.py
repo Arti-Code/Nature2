@@ -24,6 +24,7 @@ class Creature(Life):
     ATTACK_EYES: Color=Color('red')
     EAT_EYES: Color=Color('yellow')
     NORMAL_EYES: Color=Color('skyblue')
+    HIDED_EYES: Color=Color(175,175,175,50)
 
     def __init__(self, screen: Surface, space: Space, time: int, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
         super().__init__(screen=screen, space=space, collision_tag=collision_tag, position=position)
@@ -203,12 +204,14 @@ class Creature(Life):
                 g = clamp(g, 0, 255)
             #gfxdraw.aacircle(screen, int(x2), int(y2), int(r2), Color(175, 175, 175, a))    
             #gfxdraw.filled_circle(screen, int(x2), int(y2), int(r2), Color(175, 175, 175, a))
-            #gfxdraw.aacircle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
-            #gfxdraw.filled_circle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
+            gfxdraw.aacircle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
+            gfxdraw.filled_circle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
             #gfxdraw.filled_circle(screen, int(x3), int(y3), int(r2*0.67), Color('black'))
             #draw.arc(screen, Color('white'), Rect(x4-r2*2, y4-r2*2, r2*4, r2*4), -PI/3, PI/3, 1)
         eyes_color: Color=self.NORMAL_EYES
-        if self.attacking:
+        if self.hidding:
+            eyes_color = self.HIDED_EYES
+        elif self.attacking:
             eyes_color=self.ATTACK_EYES
         elif self.eating:
             eyes_color=self.EAT_EYES
@@ -272,8 +275,12 @@ class Creature(Life):
             x=x0+(cos(a)*s)
             y=y0+(sin(a)*s)
             points.append((x, y))
-        gfxdraw.aapolygon(screen, points, Color("white"))
-        gfxdraw.filled_polygon(screen, points, Color("white"))
+        alfa: int=255
+        if self.hidding:
+            alfa=25
+        color: Color=Color(150,150,150,alfa)
+        gfxdraw.aapolygon(screen, points, color)
+        gfxdraw.filled_polygon(screen, points, color)
 
 
     def update(self, dt: float, selected: Body):
