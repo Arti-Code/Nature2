@@ -1,6 +1,7 @@
+#from cmath import cos, sin
 from copy import copy, deepcopy
 from math import pi as PI
-from math import sqrt
+from math import sqrt, sin, cos
 from random import randint, random
 from statistics import mean
 
@@ -37,6 +38,7 @@ class Creature(Life):
         self.kills = 0
         self.genealogy = []
         self.mutations_num = [(0, 0), (0, 0)]
+        self.open_yaw: bool=True
         if genome == None:
             self.random_build(color0, color1, color2, color3, time)
             self.signature = self.get_signature()
@@ -132,8 +134,8 @@ class Creature(Life):
 
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
         x = self.position.x; y = flipy(self.position.y)
-        r = self.shape.radius / camera.scale
-        rect = Rect(x-r, y-r, 2*r, 2*r)
+        size = self.shape.radius / camera.scale
+        rect = Rect(x-size, y-size, 2*size, 2*size)
         if not camera.rect_on_screen(rect):
             return False
         rel_pos = camera.rel_pos(Vector2(x, y))
@@ -159,28 +161,29 @@ class Creature(Life):
         marked = False
         if selected == self:
             marked = True
-        gfxdraw.aacircle(screen, int(rx), int(ry), int(r), color2)
-        gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), color2)
-        gfxdraw.aacircle(screen, int(rx), int(ry), int(r-1), self.color2)
-        gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-1), color2)
+        self.draw_yaw(screen, rel_pos, size, self.open_yaw)
+        gfxdraw.aacircle(screen, int(rx), int(ry), int(size), color2)
+        gfxdraw.filled_circle(screen, int(rx), int(ry), int(size), color2)
+        gfxdraw.aacircle(screen, int(rx), int(ry), int(size-1), self.color2)
+        gfxdraw.filled_circle(screen, int(rx), int(ry), int(size-1), color2)
         if self.running:
             shadow = color2
             shadow.a = 80
             for i in range(3):
-                sx = rx-(rot.x*r*(0.8*(i+1)))
-                sy = ry-(rot.y*r*(0.8*(i+1)))
-                gfxdraw.aacircle(screen, int(sx), int(sy), int(r), shadow)
-                gfxdraw.filled_circle(screen, int(sx), int(sy), int(r), shadow)
-                gfxdraw.aacircle(screen, int(sx), int(sy), int(r-1), shadow)
-                gfxdraw.filled_circle(screen, int(sx), int(sy), int(r-1), shadow)
-        if r > 2:
-            x2 = round(rx + rot.x*(r/1.6))
-            y2 = round(ry + rot.y*(r/1.6))
-            x3 = round(rx + rot.x*(r/1.1))
-            y3 = round(ry + rot.y*(r/1.1))
-            x4 = round(rx + rot.x*(r*2))
-            y4 = round(ry + rot.y*(r*2))
-            r2 = round(r/2)
+                sx = rx-(rot.x*size*(0.8*(i+1)))
+                sy = ry-(rot.y*size*(0.8*(i+1)))
+                gfxdraw.aacircle(screen, int(sx), int(sy), int(size), shadow)
+                gfxdraw.filled_circle(screen, int(sx), int(sy), int(size), shadow)
+                gfxdraw.aacircle(screen, int(sx), int(sy), int(size-1), shadow)
+                gfxdraw.filled_circle(screen, int(sx), int(sy), int(size-1), shadow)
+        if size > 2:
+            x2 = round(rx + rot.x*(size/1.6))
+            y2 = round(ry + rot.y*(size/1.6))
+            x3 = round(rx + rot.x*(size/1.1))
+            y3 = round(ry + rot.y*(size/1.1))
+            x4 = round(rx + rot.x*(size*2))
+            y4 = round(ry + rot.y*(size*2))
+            r2 = round(size/2)
             r: int; g: int; b: int
             if self.food >= 6:
                 r = round(25.5*self.food)
@@ -198,12 +201,11 @@ class Creature(Life):
                 g +=50
                 r = clamp(r, 0, 255)
                 g = clamp(g, 0, 255)
-            gfxdraw.aacircle(screen, int(x2), int(y2), int(r2), Color(175, 175, 175, a))    
-            gfxdraw.filled_circle(screen, int(x2), int(y2), int(r2), Color(175, 175, 175, a))
-            gfxdraw.aacircle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
-            gfxdraw.filled_circle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
-            gfxdraw.filled_circle(screen, int(x3), int(y3), int(r2*0.67), Color('black'))
-
+            #gfxdraw.aacircle(screen, int(x2), int(y2), int(r2), Color(175, 175, 175, a))    
+            #gfxdraw.filled_circle(screen, int(x2), int(y2), int(r2), Color(175, 175, 175, a))
+            #gfxdraw.aacircle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
+            #gfxdraw.filled_circle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
+            #gfxdraw.filled_circle(screen, int(x3), int(y3), int(r2*0.67), Color('black'))
             #draw.arc(screen, Color('white'), Rect(x4-r2*2, y4-r2*2, r2*4, r2*4), -PI/3, PI/3, 1)
         eyes_color: Color=self.NORMAL_EYES
         if self.attacking:
@@ -251,8 +253,33 @@ class Creature(Life):
         rpos = camera.rel_pos(Vector2((self.position.x-50), flipy(self.position.y+30)))
         return f"T:{(round(sqrt(self.vision.max_dist)))} | E:{(round(sqrt(self.vision.max_dist_enemy)))} | P:{(round(sqrt(self.vision.max_dist_plant)))} | M:{(round(sqrt(self.vision.max_dist_meat)))}", rpos.x, rpos.y
 
+    def draw_yaw(self, screen: Surface, pos: Vector2, size: float, open: bool=True):
+        s: float = size/2
+        f: float = self.angle
+        n = 24-open*14
+        a = 0
+        d: float = 2*PI/n
+        cv: Vector2=self.rotation_vector
+        x0=pos.x + cv.x*size
+        y0=pos.y + cv.y*size
+        points: list[tuple]=[]
+        for i in range(n):
+            if i == 0:
+                x = x0; y = y0
+                points.append((x, y))
+                continue
+            a = f+d*i
+            x=x0+(cos(a)*s)
+            y=y0+(sin(a)*s)
+            points.append((x, y))
+        gfxdraw.aapolygon(screen, points, Color("white"))
+        gfxdraw.filled_polygon(screen, points, Color("white"))
+
+
     def update(self, dt: float, selected: Body):
         super().update(dt, selected)
+        if random() <= 0.01:
+            self.open_yaw = not self.open_yaw
         self.life_time += dt*0.1
         if self.running:
             self.run_time -= dt
