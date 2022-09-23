@@ -29,7 +29,7 @@
   "SENSOR_RANGE": 550,
   "CLOSE_VISION": 25,
   "POWER_COST": 0.1,
-  "MUTATIONS": 2,
+  "MUTATIONS": 6,
   "DEL_LINK": 0.09,
   "DEL_NODE": 0.03,
   "LINKS_RATE": 0.18,
@@ -53,7 +53,7 @@
   "MEAT_TIME": 120,
   "DIET_MOD": 0.003,
   
-  "DIFF": 0.35,
+  "DIFF": 0.3,
   
   "HIT2FIT": 0.1,
   "KILL2FIT": 250,

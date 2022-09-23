@@ -274,8 +274,8 @@ class CreatureAdvanceWindow(UIWindow):
 
 class AncestorsWindow(UIWindow):
 
-    def __init__(self, manager: UIManager, rect: Rect, history: list):
-        super().__init__(rect, manager=manager, window_display_title='Ancestors', object_id="#genealogy_win", visible=True)
+    def __init__(self, manager: UIManager, rect: Rect, history: list, first_one: str=""):
+        super().__init__(rect, manager=manager, window_display_title=f"first one: {first_one}", object_id="#genealogy_win", visible=True)
         self.manager = manager
         i=0
         self.labels = []
@@ -367,11 +367,9 @@ class GUI():
         self.edytor = edytor
         self.cx = round(cfg.SCREEN[0]/2)
         self.cy = round(cfg.SCREEN[1]/2)
-        #self.ui_mgr = UIManager(window_resolution=(self.view[0], self.view[1]), theme_path='blue.json')
         self.ui_mgr = UIManager(window_resolution=view, theme_path='res/themes/blue.json')
         self.ui_mgr.add_font_paths('fira.ttf', 'res/fonts/fira.ttf')
         self.ui_mgr.add_font_paths('fira', 'res/fonts/fira.ttf')
-        #self.ui_mgr.load_theme('blue.json')
         self.buttons = []
         self.title = None
         self.subtitle = None
@@ -394,18 +392,14 @@ class GUI():
         self.ancestors_win = None
         self.test_win = None
         self.rebuild_ui(self.view)
-        #self.fonts: UIFontDictionary = UIFontDictionary()
-        #self.fonts.add_font_path('fira.ttf', 'res/fonts')
 
     def rebuild_ui(self, new_size: tuple):         
         self.ui_mgr.set_window_resolution(new_size)
         self.ui_mgr.clear_and_reset()
         self.size = new_size
         self.create_title(new_size)
-        #self.create_enviro_win()
         btn_pos = Rect((round(cfg.SCREEN[0]-57), 2), (55, 55))
         self.create_menu_btn(btn_pos)
-        #self.create_title(new_size)
 
     def get_saved_creatures(self) -> list:
         creatures = []
@@ -551,7 +545,6 @@ class GUI():
 
     def kill_title(self):
         self.title.kill()
-        #self.subtitle.kill()
         if self.world:
             self.world.kill()
 
@@ -581,9 +574,10 @@ class GUI():
             self.ancestors_win.kill()
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.owner.enviro.selected.genealogy
+            first = self.owner.enviro.selected.first_one
             count = len(data)
             height = 2 + 15 * count
-            self.ancestors_win = AncestorsWindow(manager=self.ui_mgr, rect=Rect((500, 0), (150, height)), history=data)
+            self.ancestors_win = AncestorsWindow(manager=self.ui_mgr, rect=Rect((500, 0), (150, height)), history=data, first_one=first)
 
     def create_history_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):

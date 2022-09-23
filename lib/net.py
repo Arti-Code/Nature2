@@ -118,7 +118,6 @@ class Link():
 
     def CalcSignal(self, input: float) -> float:
         self.signal = input * self.weight
-        #self.signal = (input * self.weight) * abs(input * self.weight)
         return self.signal
 
     def RandomWeight(self):
@@ -191,9 +190,9 @@ class Network():
             else:
                 layer_type = TYPE.HIDDEN
 
-            layer_key = self.AddNewLayer(layer_type)
+            self.AddNewLayer(layer_type)
             
-            for nod1 in range(node_list[lay1]):
+            for _ in range(node_list[lay1]):
                 node_key = self.AddNewNode(lay1)
                 for lay0 in range(lay1):
                     for nod0 in range(len(self.layers[lay0].nodes)):
@@ -408,7 +407,6 @@ class Network():
         return output
 
     def MutateBias(self, m=0):
-#        for n in self.nodes:
         node_keys = self.GetNodeKeyList([TYPE.INPUT, TYPE.HIDDEN, TYPE.OUTPUT])
         n = choice(node_keys)
         if (random()) < self.MUT_BIAS+self.MUT_BIAS*m:
@@ -545,7 +543,6 @@ class Network():
         return (added, deleted)
     
     def MutateNodeType(self, m=0):
-        #for n in self.nodes:
         if (random()) < self.MUT_NODE_TYPE+self.MUT_NODE_TYPE*m:
             node_keys = self.GetNodeKeyList([TYPE.INPUT, TYPE.HIDDEN, TYPE.OUTPUT])
             n = choice(node_keys)

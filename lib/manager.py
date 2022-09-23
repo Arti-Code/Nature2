@@ -125,6 +125,7 @@ class Manager:
                 creature_to_save['neuro'] = creature.neuro.ToJSON()
                 creature_to_save['signature'] = deepcopy(creature.signature)
                 creature_to_save['genealogy'] = deepcopy(creature.genealogy)
+                creature_to_save['first_one'] = copy(creature.first_one)
                 project['creatures'].append(creature_to_save)
             project['ranking1'] = []
             for rank in self.enviro.ranking1:
@@ -145,6 +146,7 @@ class Manager:
                 rank_to_save['neuro'] = rank['neuro'].ToJSON()
                 rank_to_save['signature'] = deepcopy(rank['signature'])
                 rank_to_save['genealogy'] = deepcopy(rank['genealogy'])
+                rank_to_save['first_one'] = copy(rank['first_one'])
                 project['ranking1'].append(rank_to_save)
             project['ranking2'] = []
             for rank in self.enviro.ranking2:
@@ -165,6 +167,7 @@ class Manager:
                 rank_to_save['neuro'] = rank['neuro'].ToJSON()
                 rank_to_save['signature'] = deepcopy(rank['signature'])
                 rank_to_save['genealogy'] = deepcopy(rank['genealogy'])
+                rank_to_save['first_one'] = copy(rank['first_one'])
                 project['ranking2'].append(rank_to_save)
             project['statistics'] = {}
             project['statistics']['populations'] = self.enviro.statistics.get_collection('populations')
@@ -196,6 +199,7 @@ class Manager:
         cr['neuro'] = creature.neuro.ToJSON()
         cr['signature'] = deepcopy(creature.signature)
         cr['genealogy'] = deepcopy(creature.genealogy)
+        cr['first_one'] = copy(creature.first_one)
         with open("saves/creatures/"+creature.name+".json", 'w+') as creature_file:
             json.dump(cr, creature_file)
         creature_file.close()
@@ -395,7 +399,7 @@ class Manager:
                         from_node_key = link.from_node
                         (l0, n0) = network.FindNode(from_node_key)
                         g = 0
-                        a = abs(round(200*link.signal))+55
+                        a = abs(round(150*link.signal))+105
                         if link.signal >= 0:
                             g = 0
                             r = 100+155*link.signal
@@ -405,6 +409,7 @@ class Manager:
                         else:
                             b = 100+abs(155*link.signal)
                             r = 0
+                            g = 50+abs(105*link.signal)
                             if link.recombined:
                                 g = 255
                         link_color = Color((r, g, b, a))
@@ -431,11 +436,17 @@ class Manager:
                     gv = 150
                     bv = 25
                 v_color = Color(rv, gv, bv)
-                gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color)
-                gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color)
+                xn = 80 + l * h_space
+                yn = cfg.SCREEN[1] - base_line[l] + d*n + round(d/2)
+                gfxdraw.aacircle(self.screen, xn, yn, cv, v_color)
+                gfxdraw.filled_circle(self.screen, xn, yn, cv, v_color)
                 if r:
-                    gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(cv/2), c)
-                    gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(cv/2), c)
+                    #gfxdraw.filled_polygon(self.screen, diamand, v_color)
+                    #gfxdraw.box(self.screen, Rect((xn-cv, yn-cv), (cv*2, cv*2)), v_color)
+                    gfxdraw.aacircle(self.screen, xn, yn, int(cv/1.2), c)
+                    #gfxdraw.aacircle(self.screen, xn, yn, int(cv/1.6), c)
+                    gfxdraw.aacircle(self.screen, xn, yn, int(cv/2.0), c)
+                    #gfxdraw.filled_circle(self.screen, xn, yn, int(cv/2.5), c)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
                     text = "{:<2}  {:2> .1f}".format(inp_desc[n], val)

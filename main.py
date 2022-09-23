@@ -34,7 +34,6 @@ class Simulation():
 
     def __init__(self):
         self.scale = 1
-        flags = pygame.OPENGL
         self.screen = pygame.display.set_mode(size=cfg.SCREEN, flags=0, vsync=1)
         self.space = Space()
         self.space.iterations = cfg.ITER
@@ -94,29 +93,9 @@ class Simulation():
         self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5], 'vision': [5]}
         self.neuros = {'nodes': [], 'links': []}
         self.fitness = {'points': [], 'lifetime': []}
-        #self.terrain = image.load('res/images/map2.png').convert()
         self.map_time = 0.0
         self.follow_time: float = 0.0
-
-    """ def create_terrain(self, rocks_filename: str, water_filename: str):
-        rock_img = image.load(rocks_filename).convert()
-        rock = generate_terrain_red(rock_img, self.space, 2, 1, 0, 8, Color((150, 150, 150, 255)))
-        self.lands.append(rock)
-        water_img = image.load(water_filename).convert()
-        water = generate_terrain_blue(water_img, self.space, 2, 0.392, 0, 14, Color((0, 0, 255, 255)))
-        self.lands.append(water) """
         
-    def create_rock2(self, vert_num: int, size: int, position: Vec2d):
-        ang_step = (2*PI)/vert_num
-        vertices = []
-        for v in range(vert_num):
-            vert_ang = v*ang_step + (random()*2-1)*ang_step*0.4
-            x = sin(vert_ang)*size + (random()*2-1)*size*0.4
-            y = cos(vert_ang)*size + (random()*2-1)*size*0.4
-            vertices.append(Vec2d(x, y)+position)
-        rock = Rock(self.screen, self.space, vertices, 3, Color('grey40'), Color('grey'))
-        self.wall_list.append(rock)
-
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         rock: Rock=Rock(self.space, vert_num, size, position, 2)
         self.rocks_list.append(rock)
@@ -135,7 +114,7 @@ class Simulation():
             self.wall_list.append(wall)
         self.create_rocks(cfg.ROCK_NUM)
 
-        for c in range(cfg.CREATURE_INIT_NUM):
+        for _ in range(cfg.CREATURE_INIT_NUM):
             creature = self.add_creature()
             self.creature_list.append(creature)
         self.create_plants(cfg.PLANT_INIT_NUM)
@@ -153,7 +132,7 @@ class Simulation():
             self.create_rock(randint(cfg.ROCK_VERT_MIN, cfg.ROCK_VERT_MAX), randint(cfg.ROCK_SIZE_MIN, cfg.ROCK_SIZE_MAX), random_position(cfg.WORLD))
 
     def create_plants(self, plant_num: int):
-        for _p in range(plant_num):
+        for _ in range(plant_num):
             plant = self.add_plant(mature=False, rnd_growth=True)
             self.plant_list.append(plant)
 
@@ -189,8 +168,8 @@ class Simulation():
         ranking = self.ranking1
         ranking.sort(key=sort_by_fitness, reverse=True)
         for rank in reversed(ranking):
-            rg = rank['genealogy'][len(rank['genealogy'])-1: -cfg.GENERATIONS_NUMBER]
-            cg = creature.genealogy[len(creature.genealogy)-1: -cfg.GENERATIONS_NUMBER]
+            #rg = rank['genealogy'][len(rank['genealogy'])-1: -cfg.GENERATIONS_NUMBER]
+            #cg = creature.genealogy[len(creature.genealogy)-1: -cfg.GENERATIONS_NUMBER]
             if rank['name'] == creature.name:
                 if creature.fitness >= rank['fitness']:
                     ranking.remove(rank)
@@ -321,8 +300,6 @@ class Simulation():
             y = int(position[1])+y
             if (x > 15 and x < cfg.WORLD[0]-15) and (y > 15 and y < cfg.WORLD[1]-15):
                 free_pos = True
-            #x = clamp(x, cfg.PLANT_EDGE, cfg.WORLD[0]-cfg.PLANT_EDGE)
-            #y = clamp(y, cfg.PLANT_EDGE, cfg.WORLD[1]-cfg.PLANT_EDGE)
             rnd_pos = Vec2d(x, y)
             i += 1
             if i > 50:
@@ -503,14 +480,12 @@ class Simulation():
                 self.fitness['points'].append(creature.fitness)
                 self.fitness['lifetime'].append(creature.life_time)
                 self.add_to_ranking(creature)
-                if not creature.on_water:
-                    pos = creature.position
-                    size = ceil(creature.size)
-                    eng = round(creature.max_energy)
-                    for _ in range(1):
-                        new_pos = self.free_random_position(pos, Vec2d(0, 0))
-                        meat = Meat(screen=self.screen, space=self.space, position=new_pos, collision_tag=10, energy=int(eng))
-                        self.meat_list.append(meat)
+                pos = creature.position
+                eng = round(creature.max_energy)
+                for _ in range(1):
+                    new_pos = self.free_random_position(pos, Vec2d(0, 0))
+                    meat = Meat(screen=self.screen, space=self.space, position=new_pos, collision_tag=10, energy=int(eng))
+                    self.meat_list.append(meat)
                 creature.kill(self.space)
                 self.creature_list.remove(creature)
 
@@ -668,7 +643,6 @@ class Simulation():
         if r == 0 or len(self.ranking1) == 0:
             creature = self.add_creature()
         else:
-            #ranking = choice([self.ranking1, self.ranking2])
             ranking = self.ranking1
             rank_size = len(ranking)
             rnd = randint(0, rank_size-1)

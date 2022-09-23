@@ -1,4 +1,3 @@
-#from cmath import cos, sin
 from copy import copy, deepcopy
 from math import pi as PI
 from math import sqrt, sin, cos
@@ -103,6 +102,10 @@ class Creature(Life):
         self.speed = clamp(self.speed, 1, 10)
         self.generation = genome['gen']+1
         self.genealogy = genome['genealogy']
+        if 'first_one' in genome.keys():
+            self.first_one: str = genome['first_one']
+        else:
+            self.first_one: str = genome['genealogy'][0]
         self.name = genome['name']
         mutations = self.neuro.Mutate(self.mutations)
         self.nodes_num = self.neuro.GetNodesNum()
@@ -432,6 +435,7 @@ class Creature(Life):
 
     def add_specie(self, name: str, generation: int, time: int):
         data = (name, generation, time)
+        self.first_one: str=f"{data[0]} {data[2]}"
         self.genealogy.append(data)
         if len(self.genealogy) > cfg.GENERATIONS_NUMBER:
             self.genealogy.pop(0)
@@ -454,6 +458,7 @@ class Creature(Life):
         genome['neuro'] = self.neuro.Replicate()
         genome['signature'] = deepcopy(self.signature)
         genome['genealogy'] = copy(self.genealogy)
+        genome['first_one'] = copy(self.first_one)
         return genome
 
     def similar(self, parent_genome: dict, treashold: float) -> bool:
@@ -502,35 +507,57 @@ class Creature(Life):
 
     def get_signature(self) -> list:
         signature: list=[]
-        signature.append([self.size, self.power, self.food, self.eyes])
-        links_keys: list=[]
+        signature.append([self.size, self.power, self.food, self.eyes, self.speed, self.mutations])
+        link_keys: list=[]
         for link_key in self.neuro.links:
-            links_keys.append(link_key)
-        signature.append(links_keys)
+            link_keys.append(link_key)
+        signature.append(link_keys)
+        node_keys: list=[]
+        for node_key in self.neuro.nodes:
+            node_keys.append(node_key)
+        signature.append(node_keys)
         return signature
 
     def compare_signature(self, signature1: list, signature2: list, treashold: float) -> bool:
         fizjo1 = signature1[0]
         fizjo2 = signature2[0]
-        neuro1 = signature1[1]
-        neuro2 = signature2[1]
+        links1 = signature1[1]
+        links2 = signature2[1]
+        if len(signature1)==2 or len(signature2)==2:
+            nodes1 = []
+            nodes2 = []
+        else:
+            nodes1 = signature1[2]
+            nodes2 = signature2[2]
         fizjo_diff: list = []
-        neuro_diff: int = 0
-        for f in range(len(fizjo1)):
+        link_diff: int = 0
+        node_diff: int = 0
+        fizjo_len = min([len(fizjo1), len(fizjo2)])
+        for f in range(fizjo_len):
             diff = abs(fizjo1[f]-fizjo2[f])
             fizjo_diff.append(diff)
-        for n1 in neuro1:
-            if not n1 in neuro2:
-                neuro_diff += 1
-        for n2 in neuro2:
-            if not n2 in neuro1:
-                neuro_diff += 1
+        for l1 in links1:
+            if not l1 in links2:
+                link_diff += 1
+        for l2 in links2:
+            if not l2 in links1:
+                link_diff += 1
+        for n1 in nodes1:
+            if not n1 in nodes2:
+                node_diff += 1
+        for n2 in nodes2:
+            if not n2 in nodes1:
+                node_diff += 1
         mean_fizjo_diff = (mean(fizjo_diff))/10
-        sum_len = (len(neuro1) + len(neuro2))
-        mean_neuro_diff = 0.0
+        sum_len = (len(links1) + len(links2))
+        sum_len_nod = (len(nodes1) + len(nodes2))
+        mean_link_diff = 0.0
+        mean_node_diff = 0.0
         if sum_len != 0:
-            mean_neuro_diff = neuro_diff / (sum_len/2)
-        diff = mean([mean_fizjo_diff, mean_neuro_diff])
+            mean_link_diff = link_diff / (sum_len/2)
+        if sum_len_nod != 0:
+            mean_node_diff = node_diff / (sum_len_nod/2)
+        diff = mean([mean_fizjo_diff, mean_link_diff, mean_node_diff])
         if diff <= treashold:
             return True
         else:

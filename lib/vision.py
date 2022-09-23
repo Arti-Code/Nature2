@@ -73,7 +73,6 @@ class Vision(Circle):
             'target': None
         }
         self.observe_done = -1
-        #self.update_max_dist()
 
     def allow_observe(self, allow: bool):
         self.observe = allow
@@ -110,7 +109,6 @@ class Vision(Circle):
                 if self.max_dist > dist:
                     self.max_dist = dist
         elif type == 'plant':
-            #dist1 = self.plant['dist']
             if self.plant['dist'] > dist:
                 self.plant = {
                     'ang': angle,
@@ -121,7 +119,6 @@ class Vision(Circle):
                 if self.max_dist > dist:
                     self.max_dist = dist
         elif type == 'meat':
-            #dist1 = self.meat['dist']
             if self.meat['dist'] > dist:
                 self.meat = {
                     'ang': angle,
@@ -132,7 +129,6 @@ class Vision(Circle):
                 if self.max_dist > dist:
                     self.max_dist = dist
         elif type == 'rock':
-            #dist1 = self.rock['dist']
             if self.rock['dist'] > dist:
                 self.rock = {
                     'ang': angle,
