@@ -10,7 +10,7 @@ from lib.math2 import flipy
 from lib.camera import Camera
 
 
-class Wall(Body):
+class Walle(Body):
 
     def __init__(self, screen: Surface, space: Space, p1: tuple, p2: tuple, thickness: float, border_color: Color, fill_color: Color):
         super().__init__(body_type=Body.STATIC)

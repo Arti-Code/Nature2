@@ -25,9 +25,8 @@ from lib.manager import Manager
 from lib.math2 import flipy, set_world, world
 from lib.meat import Meat
 from lib.plant import Plant
-from lib.rock import Rock
+from lib.rock import Rock, Wall
 from lib.statistics import Statistics
-from lib.wall import Wall
 
 
 class Simulation():
@@ -97,14 +96,6 @@ class Simulation():
         #self.terrain = image.load('res/images/map2.png').convert()
         self.map_time = 0.0
         self.follow_time: float = 0.0
-
-    """ def create_terrain(self, rocks_filename: str, water_filename: str):
-        rock_img = image.load(rocks_filename).convert()
-        rock = generate_terrain_red(rock_img, self.space, 2, 1, 0, 8, Color((150, 150, 150, 255)))
-        self.lands.append(rock)
-        water_img = image.load(water_filename).convert()
-        water = generate_terrain_blue(water_img, self.space, 2, 0.392, 0, 14, Color((0, 0, 255, 255)))
-        self.lands.append(water) """
         
     def create_rock2(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -391,8 +382,7 @@ class Simulation():
         return plant
 
     def add_wall(self, point0: tuple, point1: tuple, thickness: float) -> Wall:
-        wall = Wall(self.screen, self.space, point0, point1,
-                    thickness, Color('gray'), Color('navy'))
+        wall = Wall(self.space, point0, point1, 6)
         return wall
 
     def draw(self):
