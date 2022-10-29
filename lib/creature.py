@@ -412,7 +412,7 @@ class Creature(Life):
                         self.running = False
             else:
                 self.running = False
-            if self.output[4] >= 0.5 and self.moving <= 0.2:
+            if self.output[4] >= 0.5 and self.moving <= cfg.HIDE_SPEED and not self.eating and not self.attacking:
                 self.hidding = True
             else:
                 self.hidding = False

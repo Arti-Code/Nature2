@@ -23,6 +23,7 @@
   "EAT": 22,
   "HIT": 300,
   "SPEED": 2,
+  "HIDE_SPEED": 0.1,
   "TURN": 1.3,
 
   "SENSOR_MAX_ANGLE": 5,

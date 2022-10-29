@@ -34,6 +34,7 @@ class Configuration():
 
         self.EAT = None
         self.SPEED = None
+        self.HIDE_SPEED = None
         self.TURN = None
         self.HIT = None
 
@@ -123,6 +124,7 @@ class Configuration():
         self.REP_TIME               = cfg['REP_TIME']
         self.REP_ENERGY             = cfg['REP_ENERGY']
         self.SPEED                  = cfg['SPEED']
+        self.HIDE_SPEED             = cfg["HIDE_SPEED"]
         self.TURN                   = cfg['TURN']
         self.CREATURE_MIN_SIZE      = cfg['CREATURE_MIN_SIZE']
         self.CREATURE_MAX_SIZE      = cfg['CREATURE_MAX_SIZE']
