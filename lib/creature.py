@@ -69,6 +69,7 @@ class Creature(Life):
         self.pain: bool=False
         self.running: bool=False
         self.life_time: float=0.0
+        self.hide_time: float=0.0
         self.run_time = random()*cfg.RUN_TIME
         self.hidding: bool=False
         self.hide_ref_time = 0.0
@@ -271,6 +272,8 @@ class Creature(Life):
         if random() <= 0.01:
             self.open_yaw = not self.open_yaw
         self.life_time += dt*0.1
+        if self.hidding:
+            self.hide_time += dt*0.1
         if self.running:
             self.run_time -= dt
             if self.run_time < 0:
@@ -425,7 +428,7 @@ class Creature(Life):
         gfxdraw.box(screen, Rect(rx-round(10), ry+round(size+3), round(20*(self.energy/self.max_energy)), 1), bar_green)
   
     def life2fit(self):
-        self.fitness += self.life_time
+        self.fitness += (self.life_time-self.hide_time)
         self.fitness = round(self.fitness)
 
     def kill(self, space: Space):

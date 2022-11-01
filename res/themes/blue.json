@@ -410,6 +410,16 @@
            "normal_border": "#00bd06"
         }
     },
+    "#load_creature_win.#btn_del_spec":
+    {
+        "colours":
+        {
+           "normal_text":"#ffffff",
+           "normal_bg":"#ff7b00",
+           "hovered_bg":"#ff4400",
+           "normal_border": "#ff0000"
+        }
+    },
     "#load_creature_win.#lab_creature_to_load":
     {
         "colours":
