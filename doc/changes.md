@@ -12,6 +12,7 @@ __NEW:__
 * new executable version icon
 * advance creature window
 * creature yaw draw (opened or closed)
+* delete saved creatures
 
 __UPDATE:__
 * creature info win split and improve visual aspect
