@@ -1,6 +1,6 @@
 from bokeh.colors import RGB
 from bokeh.io import show
-from bokeh.plotting import Figure, figure
+from bokeh.plotting import figure
 
 from lib.config import cfg
 
@@ -58,17 +58,17 @@ class Statistics():
         p: None
         if collection_name == 'creatures':
             y_range1 = (1, cfg.CREATURE_MAX_SIZE+1)
-            p: Figure=figure(plot_width=w, plot_height=600, y_range=y_range1, x_range=x_range)
+            p=figure(plot_width=w, plot_height=600, y_range=y_range1, x_range=x_range)
         elif collection_name == 'neuros':
             y_range3 = (0, max([max(self.data[collection_name]['nodes']), max(self.data[collection_name]['links'])])+5)
-            p: Figure=figure(plot_width=w, plot_height=600, y_range=y_range3, x_range=x_range)
+            p=figure(plot_width=w, plot_height=600, y_range=y_range3, x_range=x_range)
         elif collection_name == 'fitness':
             y_range4 = (0, max([max(data['points']), max(data['lifetime'])]))
-            p: Figure=figure(plot_width=w, plot_height=600, y_range=y_range4, x_range=x_range)
+            p=figure(plot_width=w, plot_height=600, y_range=y_range4, x_range=x_range)
         else:
             cr_num = max(data['all'])
             y_range2 = (0, max([cfg.PLANT_MAX_NUM, cr_num])+5)
-            p: Figure=figure(plot_width=w, plot_height=600, y_range=y_range2, x_range=x_range)
+            p=figure(plot_width=w, plot_height=600, y_range=y_range2, x_range=x_range)
         for data_key in data:
             if data_key != 'time':
                 d = data[data_key]
