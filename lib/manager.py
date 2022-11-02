@@ -440,10 +440,12 @@ class Manager:
                     gv = 150
                     bv = 25
                 v_color = Color(rv, gv, bv)
+                v_color_alfa = Color(rv, gv, bv, 75)
+                black_color = Color(0, 0, 0, 75)
                 gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color)
-                gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color)
+                gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color_alfa)
                 if r:
-                    gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(cv/2), c)
+                    gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(cv/2), black_color)
                     gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(cv/2), c)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
