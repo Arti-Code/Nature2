@@ -1,6 +1,7 @@
+#from cmath import cos, sin
 from copy import copy, deepcopy
 from math import pi as PI
-from math import sqrt
+from math import sqrt, sin, cos
 from random import randint, random
 from statistics import mean
 
@@ -23,6 +24,7 @@ class Creature(Life):
     ATTACK_EYES: Color=Color('red')
     EAT_EYES: Color=Color('yellow')
     NORMAL_EYES: Color=Color('skyblue')
+    HIDED_EYES: Color=Color(175,175,175,50)
 
     def __init__(self, screen: Surface, space: Space, time: int, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
         super().__init__(screen=screen, space=space, collision_tag=collision_tag, position=position)
@@ -37,6 +39,7 @@ class Creature(Life):
         self.kills = 0
         self.genealogy = []
         self.mutations_num = [(0, 0), (0, 0)]
+        self.open_yaw: bool=True
         if genome == None:
             self.random_build(color0, color1, color2, color3, time)
             self.signature = self.get_signature()
@@ -66,6 +69,7 @@ class Creature(Life):
         self.pain: bool=False
         self.running: bool=False
         self.life_time: float=0.0
+        self.hide_time: float=0.0
         self.run_time = random()*cfg.RUN_TIME
         self.hidding: bool=False
         self.hide_ref_time = 0.0
@@ -132,8 +136,8 @@ class Creature(Life):
 
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
         x = self.position.x; y = flipy(self.position.y)
-        r = self.shape.radius / camera.scale
-        rect = Rect(x-r, y-r, 2*r, 2*r)
+        size = self.shape.radius / camera.scale
+        rect = Rect(x-size, y-size, 2*size, 2*size)
         if not camera.rect_on_screen(rect):
             return False
         rel_pos = camera.rel_pos(Vector2(x, y))
@@ -159,28 +163,23 @@ class Creature(Life):
         marked = False
         if selected == self:
             marked = True
-        gfxdraw.aacircle(screen, int(rx), int(ry), int(r), color2)
-        gfxdraw.filled_circle(screen, int(rx), int(ry), int(r), color2)
-        gfxdraw.aacircle(screen, int(rx), int(ry), int(r-1), self.color2)
-        gfxdraw.filled_circle(screen, int(rx), int(ry), int(r-1), color2)
+        self.draw_yaw(screen, rel_pos, size, self.open_yaw)
+        gfxdraw.aacircle(screen, int(rx), int(ry), int(size), color2)
+        gfxdraw.filled_circle(screen, int(rx), int(ry), int(size), color2)
+        gfxdraw.aacircle(screen, int(rx), int(ry), int(size-1), self.color2)
+        gfxdraw.filled_circle(screen, int(rx), int(ry), int(size-1), color2)
         if self.running:
             shadow = color2
             shadow.a = 80
             for i in range(3):
-                sx = rx-(rot.x*r*(0.8*(i+1)))
-                sy = ry-(rot.y*r*(0.8*(i+1)))
-                gfxdraw.aacircle(screen, int(sx), int(sy), int(r), shadow)
-                gfxdraw.filled_circle(screen, int(sx), int(sy), int(r), shadow)
-                gfxdraw.aacircle(screen, int(sx), int(sy), int(r-1), shadow)
-                gfxdraw.filled_circle(screen, int(sx), int(sy), int(r-1), shadow)
-        if r > 2:
-            x2 = round(rx + rot.x*(r/1.6))
-            y2 = round(ry + rot.y*(r/1.6))
-            x3 = round(rx + rot.x*(r/1.1))
-            y3 = round(ry + rot.y*(r/1.1))
-            x4 = round(rx + rot.x*(r*2))
-            y4 = round(ry + rot.y*(r*2))
-            r2 = round(r/2)
+                sx = rx-(rot.x*size*(0.8*(i+1)))
+                sy = ry-(rot.y*size*(0.8*(i+1)))
+                gfxdraw.aacircle(screen, int(sx), int(sy), int(size), shadow)
+                gfxdraw.filled_circle(screen, int(sx), int(sy), int(size), shadow)
+                gfxdraw.aacircle(screen, int(sx), int(sy), int(size-1), shadow)
+                gfxdraw.filled_circle(screen, int(sx), int(sy), int(size-1), shadow)
+        if size > 2:
+            r2 = round(size/2)
             r: int; g: int; b: int
             if self.food >= 6:
                 r = round(25.5*self.food)
@@ -198,15 +197,12 @@ class Creature(Life):
                 g +=50
                 r = clamp(r, 0, 255)
                 g = clamp(g, 0, 255)
-            gfxdraw.aacircle(screen, int(x2), int(y2), int(r2), Color(175, 175, 175, a))    
-            gfxdraw.filled_circle(screen, int(x2), int(y2), int(r2), Color(175, 175, 175, a))
             gfxdraw.aacircle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
             gfxdraw.filled_circle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
-            gfxdraw.filled_circle(screen, int(x3), int(y3), int(r2*0.67), Color('black'))
-
-            #draw.arc(screen, Color('white'), Rect(x4-r2*2, y4-r2*2, r2*4, r2*4), -PI/3, PI/3, 1)
         eyes_color: Color=self.NORMAL_EYES
-        if self.attacking:
+        if self.hidding:
+            eyes_color = self.HIDED_EYES
+        elif self.attacking:
             eyes_color=self.ATTACK_EYES
         elif self.eating:
             eyes_color=self.EAT_EYES
@@ -215,17 +211,11 @@ class Creature(Life):
         self.draw_energy_bar(screen, rx, ry)
         if self.rock_vec:
             gfxdraw.line(screen, int(rx), int(ry), int(rx+self.rock_vec[0]), int(ry+self.rock_vec[1]), Color('red'))
-        #self.reset_collisions()
-        #self.vision.reset_range()
-        #self.draw_water_bar(screen, rx, ry)
-        #self.draw_name(screen)
-        #self.draw_normal(screen)
         return True
 
     def draw_normal(self, screen):
         if self.normal != None:
             gfxdraw.line(screen, int(self.position.x), int(flipy(self.position.y)), int(self.position.x+self.normal.x*50), int(flipy(self.position.y+self.normal.y*50)), Color('yellow'))
-            #self.normal = None
 
     def draw_detectors(self, screen, rel_pos: Vector2):
         for detector in self.sensors:
@@ -241,7 +231,6 @@ class Creature(Life):
         self.collide_water = False
         self.collide_meat = False
         self.border = False
-        #self.rock_vec = None
         
     def draw_name(self, camera: Camera):
         rpos = camera.rel_pos(Vector2((self.position.x), flipy(self.position.y+20)))
@@ -251,9 +240,40 @@ class Creature(Life):
         rpos = camera.rel_pos(Vector2((self.position.x-50), flipy(self.position.y+30)))
         return f"T:{(round(sqrt(self.vision.max_dist)))} | E:{(round(sqrt(self.vision.max_dist_enemy)))} | P:{(round(sqrt(self.vision.max_dist_plant)))} | M:{(round(sqrt(self.vision.max_dist_meat)))}", rpos.x, rpos.y
 
+    def draw_yaw(self, screen: Surface, pos: Vector2, size: float, open: bool=True):
+        s: float = size/2
+        f: float = self.angle
+        n = 24-open*14
+        a = 0
+        d: float = 2*PI/n
+        cv: Vector2=self.rotation_vector
+        x0=pos.x + cv.x*size
+        y0=pos.y + cv.y*size
+        points: list[tuple]=[]
+        for i in range(n):
+            if i == 0:
+                x = x0; y = y0
+                points.append((x, y))
+                continue
+            a = f+d*i
+            x=x0+(cos(a)*s)
+            y=y0+(sin(a)*s)
+            points.append((x, y))
+        alfa: int=255
+        if self.hidding:
+            alfa=25
+        color: Color=Color(150,150,150,alfa)
+        gfxdraw.aapolygon(screen, points, color)
+        gfxdraw.filled_polygon(screen, points, color)
+
+
     def update(self, dt: float, selected: Body):
         super().update(dt, selected)
+        if random() <= 0.01:
+            self.open_yaw = not self.open_yaw
         self.life_time += dt*0.1
+        if self.hidding:
+            self.hide_time += dt*0.1
         if self.running:
             self.run_time -= dt
             if self.run_time < 0:
@@ -327,8 +347,14 @@ class Creature(Life):
             rest_energy += cfg.ATK_ENG
         base_energy *= size_cost
         total_eng_cost = (base_energy + move_energy + rest_energy + neuro_energy)
-        self.eng_lost = {'basic': base_energy, 'move': move_energy, 'neuro': neuro_energy, 'other': rest_energy}
-        self.energy -= total_eng_cost * dt
+        if self.hidding:
+            self.eng_lost = {'basic': base_energy*0.5, 'move': move_energy*0.5, 'neuro': neuro_energy*0.5, 'other': rest_energy*0.5}
+        else:
+            self.eng_lost = {'basic': base_energy, 'move': move_energy, 'neuro': neuro_energy, 'other': rest_energy}
+        if self.hidding:
+            self.energy -= total_eng_cost * dt * 0.5
+        else:
+            self.energy -= total_eng_cost * dt
         self.energy = clamp(self.energy, 0, self.max_energy)
 
     def get_input(self):
@@ -389,7 +415,7 @@ class Creature(Life):
                         self.running = False
             else:
                 self.running = False
-            if self.output[4] >= 0.5 and self.moving <= 0.2:
+            if self.output[4] >= 0.5 and self.moving <= cfg.HIDE_SPEED and not self.eating and not self.attacking:
                 self.hidding = True
             else:
                 self.hidding = False
@@ -402,7 +428,7 @@ class Creature(Life):
         gfxdraw.box(screen, Rect(rx-round(10), ry+round(size+3), round(20*(self.energy/self.max_energy)), 1), bar_green)
   
     def life2fit(self):
-        self.fitness += self.life_time
+        self.fitness += (self.life_time-self.hide_time)
         self.fitness = round(self.fitness)
 
     def kill(self, space: Space):

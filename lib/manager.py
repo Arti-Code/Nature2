@@ -335,6 +335,15 @@ class Manager:
         finally:
             return res
 
+    def delete_creature(self, name: str) -> bool:
+        res = True
+        try:
+            os.remove('saves/creatures/' + name + '.json')
+        except:
+            res = False
+        finally:
+            return res
+
     def draw_net(self, network: Network):
         if network:
             last_layer_idx: int=len(network.layers)-1

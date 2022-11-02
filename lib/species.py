@@ -1,4 +1,5 @@
 from random import choice, random
+from uuid import uuid1
 
 names: list = [
     "am","af", "ax", "ar", "av", "al", "aq", "ak", "ar", "at",
@@ -45,3 +46,21 @@ def modify_name(name: str) -> str:
     else:
         new_name = ch + name[2:6]
     return new_name
+
+class SpecType():
+
+    def __init__(self, name: str, time: int, parent: int=None) -> None:
+        self.idx: int = uuid1().int
+        self.name: str = name
+        self.origin_time: int = time
+        self.parent: int = parent
+        self.childs: list[tuple[int, int]] = []
+        self.population: list[int] = []
+
+    def new_one(self, time: int):
+        self.population.append(time)
+
+    def new_spec(self, idx: int, time: int):
+        self.childs.append(idx, time)
+
+        
