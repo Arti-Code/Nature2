@@ -90,6 +90,12 @@ class DelBtn(UIButton):
         super().__init__(rect, text, manager, container, parent_element=parent_element, object_id=object_id)
         self.sim_to_kill = sim_to_kill
 
+class DelSpecBtn(UIButton):
+
+    def __init__(self, rect: Rect, text: str, manager: UIManager, container, parent_element, object_id: str, spec_to_kill: str):
+        super().__init__(rect, text, manager, container, parent_element=parent_element, object_id=object_id)
+        self.spec_to_kill = spec_to_kill
+
 class LoadBtn(UIButton):
 
     def __init__(self, rect: Rect, text: str, manager: UIManager, container, parent_element, object_id: str, obj_to_load: str):
@@ -119,8 +125,9 @@ class LoadCreatureWindow(UIWindow):
         i = 0
         for c in creatures:
             text = f"{c[0]}   [G:{c[1]}]  [P:{c[2]}]  [F:{c[3]}]  [M:{c[4]}]  [S:{c[5]}]"
-            lab = UILabel(Rect((25, (space+btn_h_xs)*i+5), (btn_w+100, btn_h_xs)), text=text, manager=self.manager, container=self, parent_element=self, object_id='#lab_creature_to_load')
             btn = LoadBtn(Rect((5, (space+btn_h_xs)*i+5), (btn_h_xs, btn_h_xs)), text="", manager=self.manager, container=self, parent_element=self, object_id='#btn_load_creature', obj_to_load=c[0])
+            lab = UILabel(Rect((25, (space+btn_h_xs)*i+5), (btn_w+100, btn_h_xs)), text=text, manager=self.manager, container=self, parent_element=self, object_id='#lab_creature_to_load')
+            btn = DelSpecBtn(Rect((280, (space+btn_h_xs)*i+5), (btn_h_xs, btn_h_xs)), text="", manager=self.manager, container=self, parent_element=self, object_id='#btn_del_spec', spec_to_kill=c[0])
             buttons.append((lab, btn))
             i += 1
         #btn = UIButton(Rect((50, (space+btn_h_xs)*i+10), (btn_w, btn_h)), text='Back', manager=self.manager, container=self, parent_element=self, object_id='#load_creature_back')
@@ -449,6 +456,9 @@ class GUI():
 
     def load_creature(self, creature_name: str):
         self.owner.load_creature(name=creature_name)
+
+    def delete_creature(self, creature_name: str):
+        self.owner.delete_creature(name=creature_name)
 
     def create_main_menu(self):
         w = 250
@@ -813,10 +823,15 @@ class GUI():
                 #   >>> LOAD CREATURE WINDOW <<<
                 elif event.ui_object_id == '#load_creature_win.#btn_load_creature':
                     creature_name = event.ui_element.obj_to_load
-                    #self.load_creature_win.kill()
                     self.load_creature(creature_name=creature_name)
+                elif event.ui_object_id == '#load_creature_win.#btn_del_spec':
+                    spec = event.ui_element.spec_to_kill
+                    #btn_del_spec', spec_to_kill=c[0]
+                    #print(f"spec to kill: {spec}")
+                    self.load_creature_win.kill()
+                    self.delete_creature(spec)
+                    self.create_load_creature_win()
                 elif event.ui_object_id == '#info_menu.#test_win_btn':
-                    
                     #self.load_creature_win.kill()
                     self.create_test()
             return True
