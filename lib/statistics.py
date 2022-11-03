@@ -1,6 +1,6 @@
 from bokeh.colors import RGB
 from bokeh.io import show
-from bokeh.plotting import figure
+from bokeh.plotting import figure, Figure
 
 from lib.config import cfg
 
