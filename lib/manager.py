@@ -387,9 +387,9 @@ class Manager:
                 dists[layer] = dist_nn
                 n = 0
                 base_line.append(round((cfg.NET_BASE + max_nodes_num * v_space)/2))
-                back_box = Rect(4, cfg.SCREEN[1] - (max(base_line))-4, max_net_length+125, max_layer_size+6)
-                gfxdraw.aapolygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color("orange"))
-                pygame.draw.polygon(self.screen, Color("orange"), [(back_box.left+1, back_box.top+1), (back_box.right-2, back_box.top+1), (back_box.right-2, back_box.bottom-2), (back_box.left+1, back_box.bottom-2)], 2)
+                back_box = Rect(4, cfg.SCREEN[1] - (max(base_line))-4, max_net_length+105, max_layer_size+6)
+                gfxdraw.aapolygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0, 255, 255))
+                pygame.draw.polygon(self.screen, Color(0, 255, 255), [(back_box.left+1, back_box.top+1), (back_box.right-2, back_box.top+1), (back_box.right-2, back_box.bottom-2), (back_box.left+1, back_box.bottom-2)], 1)
                 gfxdraw.filled_polygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0,0,0, 75))
                 for node_key in network.layers[layer].nodes:
                     node: Node = network.nodes[node_key]
@@ -420,9 +420,6 @@ class Manager:
                         w = a//50
                         p0 = (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2))
                         p1 = (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2))
-                        #p = ((p1[0]+p0[0])//2, (p1[1]+p0[1])//2)
-                        #gfxdraw.aacircle(self.screen, p[0], p[1]-2, int(12), Color('white'))
-                        #self.add_text2(f"{round(link.weight, 1)}", p[0], p[1]-2, Color('white'), False, False, True, False)
                         pygame.draw.line(self.screen, link_color, p0, p1, w)
                     desc = ''
                     nodes_to_draw.append((node_color, l, n, node.recurrent, dist_nn, desc, v))
@@ -440,8 +437,8 @@ class Manager:
                     gv = 150
                     bv = 25
                 v_color = Color(rv, gv, bv)
-                v_color_alfa = Color(rv, gv, bv, 75)
-                black_color = Color(0, 0, 0, 75)
+                v_color_alfa = Color(rv, gv, bv, 50)
+                black_color = Color(0, 0, 0, 50)
                 gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color)
                 gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color_alfa)
                 if r:
@@ -454,7 +451,7 @@ class Manager:
                 elif l == last_layer_idx:
                     val = self.enviro.selected.output[out]
                     text = "{:<}:{:< .1f}".format(out_desc[out], val)
-                    self.add_text2(text, 130 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) + 2, Color('white'), False, False, True, False)
+                    self.add_text2(text, 90 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 2, Color('white'), False, False, False, True)
                     out += 1
                 else:
                     val = network.nodes[network.layers[l].nodes[n]].value

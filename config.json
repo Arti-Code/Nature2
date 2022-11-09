@@ -42,7 +42,7 @@
   "SIZE_COST": 350,
   "ATK_ENG": 0.1,
   "EAT_ENG": 0.1,
-  "VEGE2ENG": 2.5,
+  "VEGE2ENG": 2,
   "MEAT2ENG": 12,
   "DMG2ENG": 4,
   "RUN_COST": 4,
@@ -58,10 +58,10 @@
   "DIFF": 0.35,
   
   "HIT2FIT": 0.2,
-  "KILL2FIT": 400,
+  "KILL2FIT": 500,
   "MEAT2FIT": 0.2,
   "VEGE2FIT": 0.2,
-  "BORN2FIT": 400,
+  "BORN2FIT": 500,
   
   "MIN_CARNIVORES": 2,
   "MIN_HERBIVORES": 4,
