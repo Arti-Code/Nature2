@@ -23,6 +23,7 @@ class Configuration():
 
         self.CREATURE_MULTIPLY = None
         self.CREATURE_MIN_NUM = None
+        self.CREATURE_MAX_NUM = None
         self.CREATURE_INIT_NUM = None
         self.CREATURE_MIN_SIZE = None
         self.CREATURE_MAX_SIZE = None
@@ -116,6 +117,7 @@ class Configuration():
         self.PLANT_EDGE             = cfg['PLANT_EDGE']
         self.CREATURE_MULTIPLY      = cfg['CREATURE_MULTIPLY']
         self.CREATURE_MIN_NUM       = cfg['CREATURE_MIN_NUM']
+        self.CREATURE_MAX_NUM       = cfg['CREATURE_MAX_NUM']
         self.CREATURES_SEP          = cfg['CREATURES_SEP']
         self.EAT                    = cfg['EAT']
         self.CREATURE_INIT_NUM      = cfg['CREATURE_INIT_NUM']

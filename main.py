@@ -531,6 +531,8 @@ class Simulation():
             overpopulation = 0
         for creature in self.creature_list:
             creature.update(dt=dt, selected=self.selected)
+            if len(self.creature_list) >= cfg.CREATURE_MAX_NUM:
+                continue
             if creature.check_reproduction(dt):
                 for _ in range(cfg.CHILDS_NUM):
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)
