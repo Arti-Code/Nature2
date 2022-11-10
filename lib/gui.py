@@ -63,7 +63,7 @@ class MenuWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect):
         super().__init__(rect, manager=manager, window_display_title='Main Menu', object_id="#menu_win", visible=True)
         self.manager = manager
-        btn_list = [('Resume', '#btn_resume'), ('New Simulation', '#btn_sim'), ('Select Terrain', '#btn_map'), ('Save Menu', '#save_menu'), ('Load Menu', '#btn_load'), ('Settings', '#btn_set'), ('Info', '#btn_info'), ('Quit', '#btn_quit')]
+        btn_list = [('Resume', '#btn_resume'), ('New Simulation', '#btn_sim'), ('Save Menu', '#save_menu'), ('Load Menu', '#btn_load'), ('Settings', '#btn_set'), ('Info', '#btn_info'), ('Quit', '#btn_quit')]
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
@@ -342,7 +342,7 @@ class InfoMenuWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect):
         super().__init__(rect, manager=manager, window_display_title='Info Menu', object_id="#info_menu", visible=True)
         self.manager = manager
-        btn_list = [('Creature Info', '#creature_win'), ('Special Info', '#creature_advance_win'), ('Enviroment Info', '#enviro'), ('Ranking', '#rank'), ('Test', '#test_win_btn'), ('Credits', '#credits'), ('Back', '#info_back')]
+        btn_list = [('Creature Info', '#creature_win'), ('Special Info', '#creature_advance_win'), ('Enviroment Info', '#enviro'), ('Ranking', '#rank'), ('Credits', '#credits'), ('Back', '#info_back')]
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
@@ -355,7 +355,7 @@ class SaveMenuWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect):
         super().__init__(rect, manager=manager, window_display_title='Save Menu', object_id="#save_menu", visible=True)
         self.manager = manager
-        btn_list = [('Save Progress', '#save_progress'), ('Save Creature', '#save_creature'), ('Duplicate Sim', '#duplicate_sim'), ('Back', '#save_back')]
+        btn_list = [('Save Progress', '#save_progress'), ('Save Creature', '#save_creature'), ('Back', '#save_back')]
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
@@ -583,12 +583,14 @@ class GUI():
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((5, 5), (90, 120)), data=data, dT=dT)
+            w = 110; h = 140
+            pos = Rect((self.cx*2-(w+10), 25), (w, h))
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=pos, data=data, dT=dT)
 
     def create_creature_advance_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_advance_win = CreatureAdvanceWindow(manager=self.ui_mgr, rect=Rect((100, 5), (100, 60)), data=data, dT=dT)
+            self.creature_advance_win = CreatureAdvanceWindow(manager=self.ui_mgr, rect=Rect((115, 5), (110, 60)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
@@ -628,7 +630,7 @@ class GUI():
             data["L"] = ''
             data["R"] = ''
             data['S'] = ''
-            data['C'] = ''
+            data['C'] = {}
             if isinstance(selected, Plant):
                 data['SPECIE'] = 'PLANT'
                 data['L'] = str(round(selected.life_time))
@@ -837,14 +839,9 @@ class GUI():
                     self.load_creature(creature_name=creature_name)
                 elif event.ui_object_id == '#load_creature_win.#btn_del_spec':
                     spec = event.ui_element.spec_to_kill
-                    #btn_del_spec', spec_to_kill=c[0]
-                    #print(f"spec to kill: {spec}")
                     self.load_creature_win.kill()
                     self.delete_creature(spec)
                     self.create_load_creature_win()
-                elif event.ui_object_id == '#info_menu.#test_win_btn':
-                    #self.load_creature_win.kill()
-                    self.create_test()
             return True
         else:
             return False
