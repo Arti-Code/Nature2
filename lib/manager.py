@@ -373,9 +373,9 @@ class Manager:
                 'BORD'
             ]
             out_desc = [
-                "MOVE", "TURN",
-                "EAT", "ATAK",
-                "HIDE"
+                "M", "T",
+                "E", "A",
+                "H"
             ]
 
             for layer in network.layers:

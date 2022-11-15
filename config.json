@@ -1,7 +1,7 @@
 {
   "WORLD": [600, 600],
   "SCREEN": [600, 600],
-  "ITER": 1,
+  "ITER": 4,
   "FPS": 30,
   
   "PLANT_MIN_NUM": 1,
