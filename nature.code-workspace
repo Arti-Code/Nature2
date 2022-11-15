@@ -19,11 +19,6 @@
 			"phisionomy",
 			"rpos"
 		],
-		"todo-tree.tree.showBadges": true,
-		"workbench.colorCustomizations": {
-			"activityBar.background": "#290990",
-			"titleBar.activeBackground": "#3A0DC9",
-			"titleBar.activeForeground": "#FBFAFF"
-		}
+		"todo-tree.tree.showBadges": true
 	}
 }

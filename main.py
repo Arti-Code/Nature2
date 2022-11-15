@@ -55,10 +55,16 @@ class Simulation():
         self.statistics.add_collection('creatures', ['size', 'speed', 'food', 'power', 'mutations', 'vision'])
         self.statistics.add_collection('neuros', ['nodes', 'links'])
         self.statistics.add_collection('fitness', ['points', 'lifetime'])
+        self.update_time: float = 0.0
+        self.draw_time: float = 0.0
+        self.neuro_time: float = 0.0
+        self.physics_time: float = 0.0
 
     def init_vars(self):
         self.neuro_single_times = []
         self.neuro_avg_time = 1
+        self.draw_single_times = []
+        self.draw_avg_time = 1
         self.physics_single_times = []
         self.physics_avg_time = 1
         self.project_name = None
@@ -94,17 +100,8 @@ class Simulation():
         self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5], 'vision': [5]}
         self.neuros = {'nodes': [], 'links': []}
         self.fitness = {'points': [], 'lifetime': []}
-        #self.terrain = image.load('res/images/map2.png').convert()
         self.map_time = 0.0
         self.follow_time: float = 0.0
-
-    """ def create_terrain(self, rocks_filename: str, water_filename: str):
-        rock_img = image.load(rocks_filename).convert()
-        rock = generate_terrain_red(rock_img, self.space, 2, 1, 0, 8, Color((150, 150, 150, 255)))
-        self.lands.append(rock)
-        water_img = image.load(water_filename).convert()
-        water = generate_terrain_blue(water_img, self.space, 2, 0.392, 0, 14, Color((0, 0, 255, 255)))
-        self.lands.append(water) """
         
     def create_rock2(self, vert_num: int, size: int, position: Vec2d):
         ang_step = (2*PI)/vert_num
@@ -396,6 +393,7 @@ class Simulation():
         return wall
 
     def draw(self):
+        draw_time: float=time()
         if self.follow and self.selected != None:
             self.camera.focus_camera(Vector2(int(self.selected.position.x), int(self.selected.position.y)))
         self.screen.fill(Color('black'))
@@ -404,6 +402,11 @@ class Simulation():
         self.draw_plants()
         self.draw_creatures()
         self.draw_interface()
+        draw_time = time() - draw_time
+        self.draw_single_times.append(draw_time)
+        if len(self.draw_single_times) >= 150:
+            self.draw_avg_time = mean(self.draw_single_times)
+            self.draw_single_times = []
     
     def draw_creatures(self):
         for creature in self.creature_list:
@@ -476,11 +479,13 @@ class Simulation():
 
     def update(self):
         self.calc_time()
+        #update_time = time()
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
         self.update_meat(self.dt)
         self.manager.update_gui(self.dt, self.ranking1, self.ranking2)
         self.update_statistics()
+        #update_time = time()-update_time
 
     def update_meat(self, dT: float):
         to_kill: list[Meat]=[]
@@ -654,7 +659,11 @@ class Simulation():
             _dt = ' '+str(_dt)
         else:
             _fps = str(_fps)
-        txt = f"{TITLE}     [TIME: {time}s]    [fps: {_fps}]    [dT: {_dt}ms]     [herbivores: {self.herbivores}]     [hunters: {self.carnivores}]     [plants: {len(self.plant_list)}]     [neuro: {round(self.neuro_avg_time*1000, 1)}ms]     [physics: {round(self.physics_avg_time*1000, 1)}ms]"
+        total: int = self.herbivores+self.carnivores
+        txt = f"\
+            {TITLE}     [TIME: {time}s]    [fps: {_fps}]    [dT: {_dt}ms]\
+            [herbivores: {self.herbivores}]     [hunters: {self.carnivores}]     [total: {total}]     [plants: {len(self.plant_list)}]     \
+            [neuro: {round(self.neuro_avg_time*1000, 1)}ms]     [physics: {round(self.physics_avg_time*1000, 1)}ms]     [draw: {round(self.draw_avg_time*1000, 1)}ms]"
         pygame.display.set_caption(txt)
 
     def check_populatiom(self):
