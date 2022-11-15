@@ -243,7 +243,7 @@ class CreatureWindow(UIWindow):
         self.refresh -= dT
         self.set_display_title(data['SPECIE'] +' ['+data['G']+']')
         if self.refresh <= 0:
-            self.refresh = 1
+            self.refresh = 0.1
             data = data
             for key, val in data.items():
                 if key in [*self.labs.keys()]:
@@ -283,7 +283,7 @@ class CreatureAdvanceWindow(UIWindow):
         self.refresh -= dT
         self.set_display_title(data['SPECIE'])
         if self.refresh <= 0:
-            self.refresh = 1
+            self.refresh = 0.1
             eng_data = data["C"]
             for key, val in eng_data.items():
                 if key in [*self.labs.keys()]:

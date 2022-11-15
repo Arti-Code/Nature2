@@ -438,7 +438,7 @@ class Manager:
                     bv = 25
                 v_color = Color(rv, gv, bv)
                 v_color_alfa = Color(rv, gv, bv, 50)
-                black_color = Color(0, 0, 0, 50)
+                black_color = Color(255, 255, 255, 255)
                 gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color)
                 gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color_alfa)
                 if r:
