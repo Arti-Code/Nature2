@@ -63,7 +63,7 @@ class MenuWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect):
         super().__init__(rect, manager=manager, window_display_title='Main Menu', object_id="#menu_win", visible=True)
         self.manager = manager
-        btn_list = [('Resume', '#btn_resume'), ('New Simulation', '#btn_sim'), ('Select Terrain', '#btn_map'), ('Save Menu', '#save_menu'), ('Load Menu', '#btn_load'), ('Settings', '#btn_set'), ('Info', '#btn_info'), ('Quit', '#btn_quit')]
+        btn_list = [('Resume', '#btn_resume'), ('New Simulation', '#btn_sim'), ('Save Menu', '#save_menu'), ('Load Menu', '#btn_load'), ('Settings', '#btn_set'), ('Info', '#btn_info'), ('Quit', '#btn_quit')]
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
@@ -118,7 +118,7 @@ class LoadSimWindow(UIWindow):
 class LoadCreatureWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, creature_names: list):
-        super().__init__(rect, manager=manager, window_display_title='Load Creature', object_id="#load_creature_win", visible=True)
+        super().__init__(rect, manager=manager, window_display_title='Load Creature', object_id="#load_creature_win", resizable=True, visible=True)
         self.manager = manager
         creatures = self.read_creature_list(creature_names=creature_names)
         buttons = []
@@ -215,12 +215,15 @@ class EnviroWindow(UIWindow):
 class CreatureWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, data: dict, dT: float):
-        super().__init__(rect=rect, manager=manager, window_display_title=data['SPECIE']+'  '+data['ENG']+' ['+data['G']+']', object_id="#creature_win", resizable=True, visible=True)
+        super().__init__(rect=rect, manager=manager, window_display_title=data['SPECIE'] + ' ['+data['G']+']', object_id="#creature_win", resizable=True, visible=True)
         grid: dict[tuple]={
-                "D": (0, 0, 2), "O": (0, 2, 2), "M": (0, 4, 2), "P": (0, 6, 2),
-                "V": (1, 0, 2), "X": (1, 2, 2), "F": (1, 4, 2), "R": (1, 6, 2),
-                "L": (2, 0, 2), "B": (2, 2, 2), "K": (2, 4, 2), 
-                "S": (3, 0, 8)
+                "D": (0, 0, 2), "O": (0, 2, 2), 
+                "M": (1, 0, 2), "V": (1, 2, 2), 
+                "P": (2, 0, 2), "X": (2, 2, 2), 
+                "F": (3, 0, 2), "R": (3, 2, 2),
+                "B": (4, 0, 2), "K": (4, 2, 2), 
+                "L": (5, 0, 2), "S": (5, 2, 2),
+                "ENG": (6, 0, 4)
         } 
         self.manager = manager
         self.labs = {}
@@ -228,23 +231,23 @@ class CreatureWindow(UIWindow):
         for key, val in data.items():
             if key in [*grid.keys()]:
                 (row, col, siz) = grid[key]
-                lab1 = UILabel(Rect((20*col+2, 10*row+2), (siz*20, 10)), text=f"|{key}:{val}|", manager=self.manager, container=self, parent_element=self, object_id='#lab_creature_win')
+                lab1 = UILabel(Rect((20*col+2, 10*row+2), (siz*20, 10)), text=f"{key}:{val}", manager=self.manager, container=self, parent_element=self, object_id='#lab_creature_win')
                 self.labs[key] = lab1
                 i = max(i, row+1)
-        btn_w = 100; btn_h = 20
-        self.btn_ancestors = UIButton(Rect((rect.width/2-btn_w/2, (5+10*i)), (btn_w, btn_h)), text='ANCESTORS', manager=self.manager, container=self, parent_element=self, object_id="#btn_ancestors")
+        btn_w = 80; btn_h = 20
+        self.btn_ancestors = UIButton(Rect((rect.width/2-btn_w/2, (5+10*i)), (btn_w, btn_h)), text='HISTORY', manager=self.manager, container=self, parent_element=self, object_id="#btn_ancestors")
         self.refresh = 0
         self.Update(data, dT)
 
     def Update(self, data: dict, dT: float):
         self.refresh -= dT
-        self.set_display_title(data['SPECIE']+'  '+data['ENG']+' ['+data['G']+']')
+        self.set_display_title(data['SPECIE'] +' ['+data['G']+']')
         if self.refresh <= 0:
-            self.refresh = 1
+            self.refresh = 0.1
             data = data
             for key, val in data.items():
                 if key in [*self.labs.keys()]:
-                    self.labs[key].set_text(f"|{key}:{val}|")
+                    self.labs[key].set_text(f"{key}:{val}")
 
 class TestWindow(UIWindow):
 
@@ -255,14 +258,21 @@ class TestWindow(UIWindow):
 class CreatureAdvanceWindow(UIWindow):
 
     def __init__(self, manager: UIManager, rect: Rect, data: dict, dT: float):
-        grid: dict[tuple]={"C": (0, 0, 5)} 
-        super().__init__(rect, manager=manager, window_display_title=data['SPECIE'], object_id="#creature_advance_win", visible=True)
+        grid: dict[tuple]={
+            "B": (0, 0, 2),
+            "M": (0, 2, 2),
+            "N": (1, 0, 2),
+            "O": (1, 2, 2),
+            "T": (2, 0, 4)
+        } 
+        energy_data = data["C"]
+        super().__init__(rect, manager=manager, window_display_title=f"{data['SPECIE']}", object_id="#creature_advance_win", resizable=True, visible=True)
         self.manager = manager
         self.labs = {}
-        for key, val in data.items():
+        for key, val in energy_data.items():
             if key in [*grid.keys()]:
                 (row, col, siz) = grid[key]
-                lab1 = UILabel(Rect((40*col+2, 15*row+5), (siz*38, 15)), text=f"{val}", manager=self.manager, container=self, parent_element=self, object_id='#lab_creature_win')
+                lab1 = UILabel(Rect((20*col+2, 10*row+5), (siz*25, 15)), text=f"{key}: {val}", manager=self.manager, container=self, parent_element=self, object_id='#lab_creature_win')
                 self.labs[key] = lab1
         #btn_w = 80; btn_h = 20
         #self.btn_ancestors = UIButton(Rect((rect.width/2-btn_w/2, (5+15*i)), (btn_w, btn_h)), text='ANCESTORS', manager=self.manager, container=self, parent_element=self, object_id="#btn_ancestors")
@@ -273,11 +283,11 @@ class CreatureAdvanceWindow(UIWindow):
         self.refresh -= dT
         self.set_display_title(data['SPECIE'])
         if self.refresh <= 0:
-            self.refresh = 1
-            data = data
-            for key, val in data.items():
+            self.refresh = 0.1
+            eng_data = data["C"]
+            for key, val in eng_data.items():
                 if key in [*self.labs.keys()]:
-                    self.labs[key].set_text(f"{val}")
+                    self.labs[key].set_text(f"{key}: {val}")
 
 class AncestorsWindow(UIWindow):
 
@@ -332,7 +342,7 @@ class InfoMenuWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect):
         super().__init__(rect, manager=manager, window_display_title='Info Menu', object_id="#info_menu", visible=True)
         self.manager = manager
-        btn_list = [('Creature Info', '#creature_win'), ('Special Info', '#creature_advance_win'), ('Enviroment Info', '#enviro'), ('Ranking', '#rank'), ('Test', '#test_win_btn'), ('Credits', '#credits'), ('Back', '#info_back')]
+        btn_list = [('Creature Info', '#creature_win'), ('Special Info', '#creature_advance_win'), ('Enviroment Info', '#enviro'), ('Ranking', '#rank'), ('Credits', '#credits'), ('Back', '#info_back')]
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
@@ -345,7 +355,7 @@ class SaveMenuWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect):
         super().__init__(rect, manager=manager, window_display_title='Save Menu', object_id="#save_menu", visible=True)
         self.manager = manager
-        btn_list = [('Save Progress', '#save_progress'), ('Save Creature', '#save_creature'), ('Duplicate Sim', '#duplicate_sim'), ('Back', '#save_back')]
+        btn_list = [('Save Progress', '#save_progress'), ('Save Creature', '#save_creature'), ('Back', '#save_back')]
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
@@ -374,11 +384,9 @@ class GUI():
         self.edytor = edytor
         self.cx = round(cfg.SCREEN[0]/2)
         self.cy = round(cfg.SCREEN[1]/2)
-        #self.ui_mgr = UIManager(window_resolution=(self.view[0], self.view[1]), theme_path='blue.json')
         self.ui_mgr = UIManager(window_resolution=view, theme_path='res/themes/blue.json')
         self.ui_mgr.add_font_paths('fira.ttf', 'res/fonts/fira.ttf')
         self.ui_mgr.add_font_paths('fira', 'res/fonts/fira.ttf')
-        #self.ui_mgr.load_theme('blue.json')
         self.buttons = []
         self.title = None
         self.subtitle = None
@@ -401,18 +409,14 @@ class GUI():
         self.ancestors_win = None
         self.test_win = None
         self.rebuild_ui(self.view)
-        #self.fonts: UIFontDictionary = UIFontDictionary()
-        #self.fonts.add_font_path('fira.ttf', 'res/fonts')
 
     def rebuild_ui(self, new_size: tuple):         
         self.ui_mgr.set_window_resolution(new_size)
         self.ui_mgr.clear_and_reset()
         self.size = new_size
         self.create_title(new_size)
-        #self.create_enviro_win()
         btn_pos = Rect((round(cfg.SCREEN[0]-57), 2), (55, 55))
         self.create_menu_btn(btn_pos)
-        #self.create_title(new_size)
 
     def get_saved_creatures(self) -> list:
         creatures = []
@@ -579,12 +583,14 @@ class GUI():
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=Rect((5, 5), (185, 60)), data=data, dT=dT)
+            w = 110; h = 140
+            pos = Rect((self.cx*2-(w+10), 25), (w, h))
+            self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=pos, data=data, dT=dT)
 
     def create_creature_advance_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_advance_win = CreatureAdvanceWindow(manager=self.ui_mgr, rect=Rect((5, 5), (180, 45)), data=data, dT=dT)
+            self.creature_advance_win = CreatureAdvanceWindow(manager=self.ui_mgr, rect=Rect((115, 5), (110, 60)), data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
@@ -624,7 +630,7 @@ class GUI():
             data["L"] = ''
             data["R"] = ''
             data['S'] = ''
-            data['C'] = ''
+            data['C'] = {}
             if isinstance(selected, Plant):
                 data['SPECIE'] = 'PLANT'
                 data['L'] = str(round(selected.life_time))
@@ -681,7 +687,14 @@ class GUI():
             data['S'] += state
             if i < len(states):
                 data['S'] += '|'
-        data['C'] = f"B:{round(selected.eng_lost['basic'], 1)}|M:{round(selected.eng_lost['move'], 1)}|N:{round(selected.eng_lost['neuro'], 1)}|O:{round(selected.eng_lost['other'], 1)}"
+        total_eng_cost = round(selected.eng_lost['basic']+selected.eng_lost['move']+selected.eng_lost['neuro']+selected.eng_lost['other'], 1)
+        data['C'] = {
+                "B": round(selected.eng_lost['basic'], 1),
+                "M": round(selected.eng_lost['move'], 1),
+                "N": round(selected.eng_lost['neuro'], 1),
+                "O": round(selected.eng_lost['other'], 1),
+                "T": total_eng_cost
+        }
         return data
 
     def select_map(self):
@@ -826,14 +839,9 @@ class GUI():
                     self.load_creature(creature_name=creature_name)
                 elif event.ui_object_id == '#load_creature_win.#btn_del_spec':
                     spec = event.ui_element.spec_to_kill
-                    #btn_del_spec', spec_to_kill=c[0]
-                    #print(f"spec to kill: {spec}")
                     self.load_creature_win.kill()
                     self.delete_creature(spec)
                     self.create_load_creature_win()
-                elif event.ui_object_id == '#info_menu.#test_win_btn':
-                    #self.load_creature_win.kill()
-                    self.create_test()
             return True
         else:
             return False

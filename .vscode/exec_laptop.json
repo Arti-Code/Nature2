@@ -7,7 +7,7 @@
   },
   {
    "optionDest": "filenames",
-   "value": "C:/Users/gwozd/Kody/PYTHON/Nature/main.py"
+   "value": "C:/PYTHON/Nature/main.py"
   },
   {
    "optionDest": "onefile",
@@ -19,7 +19,7 @@
   },
   {
    "optionDest": "icon_file",
-   "value": "C:/Users/gwozd/Kody/PYTHON/Nature/res/icons/biosynth128.ico"
+   "value": "C:/PYTHON/Nature/res/icons/biosynth128.ico"
   },
   {
    "optionDest": "name",
@@ -75,19 +75,15 @@
   },
   {
    "optionDest": "datas",
-   "value": "C:/Users/gwozd/Kody/PYTHON/Nature/res/icons/planet01.ico;."
+   "value": "C:/PYTHON/Nature/res;res/"
   },
   {
    "optionDest": "datas",
-   "value": "C:/Users/gwozd/Kody/PYTHON/Nature/res;res/"
+   "value": "C:/PYTHON/Nature/saves;saves/"
   },
   {
    "optionDest": "datas",
-   "value": "C:/Users/gwozd/Kody/PYTHON/Nature/saves;saves/"
-  },
-  {
-   "optionDest": "datas",
-   "value": "C:/Users/gwozd/Kody/PYTHON/Nature/env/Lib/site-packages/pygame_gui/data;pygame_gui/data/"
+   "value": "C:/Python310/Lib/site-packages/pygame_gui/data;pygame_gui/data/"
   }
  ],
  "nonPyinstallerOptions": {

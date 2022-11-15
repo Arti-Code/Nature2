@@ -19,6 +19,7 @@ __UPDATE:__
 * creature info window has a new format and take less place on screen
 * better dynamic neural network display
 * shorter ranking window
+* few GUI improvements
 
 __FIX:__
 * load creature window autosizing
