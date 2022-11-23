@@ -6,6 +6,7 @@ from lib.config import *
 from lib.vision import Target, TARGET_TYPE
 from lib.rock import Rock
 from lib.creature import Creature
+from lib.plant import Plant
 
 def line_of_sight(space: Space, start_vec: Vec2d, end_vec: Vec2d, filter: ShapeFilter) -> bool:
     query: SegmentQueryInfo=space.segment_query_first(start_vec, end_vec, 1.0, filter)
@@ -86,8 +87,10 @@ def process_creatures_collisions(arbiter, space, data):
     target: Creature = arbiter.shapes[1].body
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
-    agent.position -= arbiter.normal*(size1/size0)*0.4
-    target.position += arbiter.normal*(size0/size1)*0.4
+    agent_tl = arbiter.normal*(size1/size0)*0.4
+    target_tl = arbiter.normal*(size0/size1)*0.4
+    agent.position -= agent_tl + agent_tl*agent.running
+    target.position += target_tl + target_tl*target.running
     if agent.attacking:
         if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             if (size0+randint(0, 6)) > (size1+randint(0, 6)):
@@ -109,19 +112,25 @@ def process_creatures_collisions_end(arbiter, space, data):
 #?  [[[PLANT CONTACT]]]
 def process_creature_plant_collisions(arbiter, space, data):
     dt = data['dt']
-    hunter = arbiter.shapes[0].body
-    target = arbiter.shapes[1].body
+    hunter: Creature = arbiter.shapes[0].body
+    target: Plant = arbiter.shapes[1].body
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
+    hunter_tl: float = 0.0
+    target_tl: float = 0.0
+
     if size0 != 0:
-        hunter.position -= arbiter.normal*(size1/size0)*0.4
+        hunter_tl = arbiter.normal*(size1/size0)*0.4
     else:
-        hunter.position -= arbiter.normal*0.2
-    size1 = arbiter.shapes[1].radius
+        hunter_tl = arbiter.normal*0.2
+    hunter.position -= hunter_tl + hunter_tl*hunter.running
+
     if size1 != 0:
-        target.position += arbiter.normal*(size0/size1)*0.4
+        target_tl = arbiter.normal*(size0/size1)*0.4
     else:
-        target.position += arbiter.normal*0.2
+        target_tl = arbiter.normal*0.2
+    target.position += target_tl
+    
     if hunter.eating:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             target.color0 = Color('yellow')

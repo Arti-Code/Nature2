@@ -11,7 +11,7 @@ from typing import Union
 
 import pygame
 import pymunk.pygame_util
-from pygame import Color, image
+from pygame import Color, image, Surface
 from pygame.constants import *
 from pygame.math import Vector2
 from pygame.time import Clock
@@ -59,6 +59,8 @@ class Simulation():
         self.draw_time: float = 0.0
         self.neuro_time: float = 0.0
         self.physics_time: float = 0.0
+        self.net_timer: float=0.0
+        self.net: Surface=None
 
     def init_vars(self):
         self.neuro_single_times = []
@@ -402,6 +404,8 @@ class Simulation():
         self.draw_plants()
         self.draw_creatures()
         self.draw_interface()
+        if self.net:
+            self.screen.blit(self.net, (25, 25), special_flags=BLEND_ALPHA_SDL2)
         draw_time = time() - draw_time
         self.draw_single_times.append(draw_time)
         if len(self.draw_single_times) >= 150:
@@ -435,6 +439,8 @@ class Simulation():
             rock.draw(screen=self.screen, camera=self.camera)
 
     def draw_interface(self):
+        #if self.net_timer >= cfg.MEM_TIME:
+        #    self.net_timer = self.net_timer%cfg.MEM_TIME
         self.draw_network()
         self.draw_texts()
         self.manager.draw_gui(screen=self.screen)
@@ -448,7 +454,7 @@ class Simulation():
         if self.show_network:
             if self.selected != None:
                 if isinstance(self.selected, Creature):
-                    self.manager.draw_net(self.selected.neuro)
+                    self.net = self.manager.draw_net(self.selected.neuro)
 
     def calc_time(self):
         self.time += self.dt*0.1
@@ -478,6 +484,7 @@ class Simulation():
         self.rocks_list = []
 
     def update(self):
+        #self.net_timer += self.dt
         self.calc_time()
         #update_time = time()
         self.update_creatures(self.dt)

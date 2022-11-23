@@ -336,7 +336,7 @@ class Creature(Life):
     def calc_energy(self, dt: float, move: float):
         size_cost = self.size * cfg.SIZE_COST
         move_energy = move * cfg.MOVE_ENERGY * size_cost
-        base_energy = cfg.BASE_ENERGY
+        base_energy = cfg.BASE_ENERGY * size_cost
         neuro_energy = (self.nodes_num+self.links_num)*cfg.NEURO_COST
         if self.running:
             move_energy *= cfg.RUN_COST
@@ -345,16 +345,14 @@ class Creature(Life):
             rest_energy += cfg.EAT_ENG
         if self.attacking:
             rest_energy += cfg.ATK_ENG
-        base_energy *= size_cost
+        rest_energy *= size_cost
         total_eng_cost = (base_energy + move_energy + rest_energy + neuro_energy)
         if self.hidding:
-            self.eng_lost = {'basic': base_energy*0.5, 'move': move_energy*0.5, 'neuro': neuro_energy*0.5, 'other': rest_energy*0.5}
-        else:
+            total_eng_cost = total_eng_cost * 0.5
             self.eng_lost = {'basic': base_energy, 'move': move_energy, 'neuro': neuro_energy, 'other': rest_energy}
-        if self.hidding:
-            self.energy -= total_eng_cost * dt * 0.5
         else:
-            self.energy -= total_eng_cost * dt
+            self.eng_lost = {'basic': base_energy*0.5, 'move': move_energy*0.5, 'neuro': neuro_energy*0.5, 'other': rest_energy*0.5}
+        self.energy -= total_eng_cost * dt
         self.energy = clamp(self.energy, 0, self.max_energy)
 
     def get_input(self):
