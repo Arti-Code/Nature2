@@ -421,7 +421,7 @@ class Simulation():
             if creature.draw(screen=self.screen, camera=self.camera, selected=self.selected):
                 if self.show_specie_name:
                     name, x, y = creature.draw_name(camera=self.camera)
-                    self.manager.add_text2(name, x, y, Color('skyblue'), False, False, True, False)
+                    self.manager.add_text2(name, x, y, Color('skyblue'), False, False, False, True)
 
     def draw_plants(self):
         for plant in self.plant_list:
@@ -706,7 +706,7 @@ class Simulation():
         set_win_pos(20, 20)
         # self.init(cfg.WORLD)
         self.create_enviro()
-        self.set_icon('res/images/biosynth32.png')
+        self.set_icon('res\images\logo256.png')
         while self.running:
             self.auto_save()
             self.events()

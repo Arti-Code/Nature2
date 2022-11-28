@@ -79,6 +79,8 @@ class Creature(Life):
         self.rock_vec: Vec2d=None
         self.rock_dist = 0
         self.eng_lost = {'basic': 0.0, 'move': 0.0, 'neuro': 0.0, 'other': 0}
+        self.ahead: Vec2d
+        self.update_orientation()
 
     def genome_build(self, genome: dict) -> list[tuple]:
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
@@ -134,16 +136,20 @@ class Creature(Life):
         self.name = random_name(3, True)
         self.add_specie(self.name, self.generation, time)
 
+    def update_orientation(self):
+        self.ahead = self.position+self.rotation_vector*self.size*1.2
+
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
         x = self.position.x; y = flipy(self.position.y)
-        size = self.shape.radius / camera.scale
+        size = round(self.shape.radius / camera.scale)
         rect = Rect(x-size, y-size, 2*size, 2*size)
         if not camera.rect_on_screen(rect):
             return False
         rel_pos = camera.rel_pos(Vector2(x, y))
         self.rel_pos = rel_pos
-        rx = rel_pos.x
-        ry = rel_pos.y
+        self.rel_size = size
+        rx = round(rel_pos.x)
+        ry = round(rel_pos.y)
         super().draw(screen, camera, selected)
         rot = self.rotation_vector
         color0 = self.color0
@@ -164,20 +170,20 @@ class Creature(Life):
         if selected == self:
             marked = True
         self.draw_yaw(screen, rel_pos, size, self.open_yaw)
-        gfxdraw.aacircle(screen, int(rx), int(ry), int(size), color2)
-        gfxdraw.filled_circle(screen, int(rx), int(ry), int(size), color2)
-        gfxdraw.aacircle(screen, int(rx), int(ry), int(size-1), self.color2)
-        gfxdraw.filled_circle(screen, int(rx), int(ry), int(size-1), color2)
+        gfxdraw.aacircle(screen, rx, ry, size, color2)
+        gfxdraw.filled_circle(screen, rx, ry, size, color2)
+        gfxdraw.aacircle(screen, rx, ry, size-1, self.color2)
+        gfxdraw.filled_circle(screen, rx, ry, size-1, color2)
         if self.running:
             shadow = color2
             shadow.a = 80
             for i in range(3):
-                sx = rx-(rot.x*size*(0.8*(i+1)))
-                sy = ry-(rot.y*size*(0.8*(i+1)))
-                gfxdraw.aacircle(screen, int(sx), int(sy), int(size), shadow)
-                gfxdraw.filled_circle(screen, int(sx), int(sy), int(size), shadow)
-                gfxdraw.aacircle(screen, int(sx), int(sy), int(size-1), shadow)
-                gfxdraw.filled_circle(screen, int(sx), int(sy), int(size-1), shadow)
+                sx = round(rx-(rot.x*size*(0.8*(i+1))))
+                sy = round(ry-(rot.y*size*(0.8*(i+1))))
+                gfxdraw.aacircle(screen, sx, sy, size, shadow)
+                gfxdraw.filled_circle(screen, sx, sy, size, shadow)
+                gfxdraw.aacircle(screen, sx, sy, size-1, shadow)
+                gfxdraw.filled_circle(screen, sx, sy, size-1, shadow)
         if size > 2:
             r2 = round(size/2)
             r: int; g: int; b: int
@@ -197,8 +203,8 @@ class Creature(Life):
                 g +=50
                 r = clamp(r, 0, 255)
                 g = clamp(g, 0, 255)
-            gfxdraw.aacircle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
-            gfxdraw.filled_circle(screen, int(rx), int(ry), int(r2), Color(r, g, b, a))
+            gfxdraw.aacircle(screen, rx, ry, r2, Color(r, g, b, a))
+            gfxdraw.filled_circle(screen, rx, ry, r2, Color(r, g, b, a))
         eyes_color: Color=self.NORMAL_EYES
         if self.hidding:
             eyes_color = self.HIDED_EYES
@@ -208,9 +214,9 @@ class Creature(Life):
             eyes_color=self.EAT_EYES
         self.vision.draw(screen=screen, camera=camera, rel_position=rel_pos, selected=marked, eye_color=eyes_color)
         self.color0 = self._color0
-        self.draw_energy_bar(screen, rx, ry)
-        if self.rock_vec:
-            gfxdraw.line(screen, int(rx), int(ry), int(rx+self.rock_vec[0]), int(ry+self.rock_vec[1]), Color('red'))
+        self.draw_energy_bar(screen, rx, ry, size)
+        #if self.rock_vec:
+        #    gfxdraw.line(screen, int(rx), int(ry), int(rx+self.rock_vec[0]), int(ry+self.rock_vec[1]), Color('red'))
         return True
 
     def draw_normal(self, screen):
@@ -233,8 +239,7 @@ class Creature(Life):
         self.border = False
         
     def draw_name(self, camera: Camera):
-        rpos = camera.rel_pos(Vector2((self.position.x), flipy(self.position.y+20)))
-        return self.name, rpos.x, rpos.y
+        return self.name, self.rel_pos.x-14, self.rel_pos.y+self.rel_size+6
 
     def draw_dist(self, camera: Camera):
         rpos = camera.rel_pos(Vector2((self.position.x-50), flipy(self.position.y+30)))
@@ -385,6 +390,7 @@ class Creature(Life):
     def analize(self):
         if self.mem_time <= 0:
             if not self.vision.new_observation():
+                self.update_orientation()
                 return
             input = self.get_input()
             self.vision.reset_observation()
@@ -417,12 +423,11 @@ class Creature(Life):
             else:
                 self.hidding = False
 
-    def draw_energy_bar(self, screen: Surface, rx: int, ry: int):
+    def draw_energy_bar(self, screen: Surface, rx: int, ry: int, rel_size: int):
         bar_red = Color(255, 0, 0)
         bar_green = Color(0, 255, 0)
-        size = self.shape.radius
-        gfxdraw.box(screen, Rect(rx-round(10), ry+round(size+3), round(19), 1), bar_red)
-        gfxdraw.box(screen, Rect(rx-round(10), ry+round(size+3), round(20*(self.energy/self.max_energy)), 1), bar_green)
+        gfxdraw.box(screen, Rect(rx-10, ry+rel_size+5, 20, 1), bar_red)
+        gfxdraw.box(screen, Rect(rx-10, ry+rel_size+5, round(20*(self.energy/self.max_energy)), 1), bar_green)
   
     def life2fit(self):
         self.fitness += (self.life_time-self.hide_time)

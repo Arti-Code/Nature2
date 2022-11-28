@@ -220,7 +220,7 @@ def process_agents_seeing(arbiter: Arbiter, space: Space, data):
         return False
     close_object: bool=False
     filter: ShapeFilter=ShapeFilter()
-    if not line_of_sight(space, agent1.position+agent1.rotation_vector*(agent1.size+2), agent2.position, filter):
+    if not line_of_sight(space, agent1.ahead, agent2.position, filter):
         return False
     if pow((agent1.size*3+cfg.CLOSE_VISION), 2) >= dist:
         close_object = True
@@ -237,7 +237,7 @@ def process_agents_seeing_end(arbiter, space, data):
 
 #?  [[[SEEING PLANT]]
 def process_plants_seeing(arbiter: Arbiter, space: Space, data):
-    agent1 = arbiter.shapes[0].body
+    agent1: Creature = arbiter.shapes[0].body
     if not agent1.vision.observe:
         return False
     agent2 = arbiter.shapes[1].body
@@ -246,7 +246,7 @@ def process_plants_seeing(arbiter: Arbiter, space: Space, data):
         return False
     close_object: bool=False
     filter: ShapeFilter=ShapeFilter()
-    if not line_of_sight(space, agent1.position+agent1.rotation_vector*20, agent2.position, filter):
+    if not line_of_sight(space, agent1.ahead, agent2.position, filter):
         return False
     if pow((agent1.size*3+cfg.CLOSE_VISION), 2) >= dist:
         close_object = True
@@ -263,7 +263,7 @@ def process_plants_seeing_end(arbiter, space, data):
 
 #?  [[[SEEING MEAT]]]
 def process_meats_seeing(arbiter: Arbiter, space: Space, data):
-    agent1 = arbiter.shapes[0].body
+    agent1: Creature = arbiter.shapes[0].body
     if not agent1.vision.observe:
         return False
     agent2 = arbiter.shapes[1].body
@@ -272,7 +272,7 @@ def process_meats_seeing(arbiter: Arbiter, space: Space, data):
         return False
     close_object: bool=False
     filter: ShapeFilter=ShapeFilter()
-    if not line_of_sight(space, agent1.position+agent1.rotation_vector*20, agent2.position, filter):
+    if not line_of_sight(space, agent1.ahead, agent2.position, filter):
         return False
     if pow((agent1.size*3+cfg.CLOSE_VISION), 2) >= dist:
         close_object = True
