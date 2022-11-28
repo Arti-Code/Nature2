@@ -322,10 +322,11 @@ class Creature(Life):
       
     def move(self, dt: float) -> None:
         move = 0
+        speed = cfg.SPEED*(self.speed+(cfg.CREATURE_MAX_SIZE-self.size))/2
         if self.running:
-           move = cfg.SPEED*self.speed*2
+           move = speed*2
         else:
-            move = cfg.SPEED*self.speed*self.moving
+            move = speed*self.moving
         if move < 0:
             move = 0
         turn = self.turning*cfg.TURN*dt
@@ -346,12 +347,10 @@ class Creature(Life):
         if self.attacking:
             rest_energy += cfg.ATK_ENG
         rest_energy *= size_cost
-        total_eng_cost = (base_energy + move_energy + rest_energy + neuro_energy)
         if self.hidding:
-            total_eng_cost = total_eng_cost * 0.5
-            self.eng_lost = {'basic': base_energy, 'move': move_energy, 'neuro': neuro_energy, 'other': rest_energy}
-        else:
-            self.eng_lost = {'basic': base_energy*0.5, 'move': move_energy*0.5, 'neuro': neuro_energy*0.5, 'other': rest_energy*0.5}
+            base_energy*=0.5; move_energy*=0.5; rest_energy*=0.5; neuro_energy*=0.5
+        total_eng_cost = base_energy + move_energy + rest_energy + neuro_energy
+        self.eng_lost = {'basic': base_energy, 'move': move_energy, 'neuro': neuro_energy, 'other': rest_energy, 'velocity': move}
         self.energy -= total_eng_cost * dt
         self.energy = clamp(self.energy, 0, self.max_energy)
 

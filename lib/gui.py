@@ -263,7 +263,8 @@ class CreatureAdvanceWindow(UIWindow):
             "M": (0, 2, 2),
             "N": (1, 0, 2),
             "O": (1, 2, 2),
-            "T": (2, 0, 4)
+            "T": (2, 0, 2),
+            "V": (2, 2, 2)
         } 
         energy_data = data["C"]
         super().__init__(rect, manager=manager, window_display_title=f"{data['SPECIE']}", object_id="#creature_advance_win", resizable=True, visible=True)
@@ -693,7 +694,8 @@ class GUI():
                 "M": round(selected.eng_lost['move'], 1),
                 "N": round(selected.eng_lost['neuro'], 1),
                 "O": round(selected.eng_lost['other'], 1),
-                "T": total_eng_cost
+                "T": total_eng_cost,
+                "V": round(selected.eng_lost['velocity'], 1)
         }
         return data
 
