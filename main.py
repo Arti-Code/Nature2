@@ -665,9 +665,8 @@ class Simulation():
         else:
             _fps = str(_fps)
         total: int = self.herbivores+self.carnivores
-        txt = f"\
-            {TITLE}     [TIME: {time}s]    [fps: {_fps}]    [dT: {_dt}ms]\
-            [herbivores: {self.herbivores}]     [hunters: {self.carnivores}]     [total: {total}]     [plants: {len(self.plant_list)}]     \
+        txt = f"[{TITLE}]     [TIME: {time}s]    [fps: {_fps}]    [dT: {_dt}ms]\
+            [herbivores: {self.herbivores}]     [hunters: {self.carnivores}]     [total: {total}]     [plants: {len(self.plant_list)}]\
             [neuro: {round(self.neuro_avg_time*1000, 1)}ms]     [physics: {round(self.physics_avg_time*1000, 1)}ms]     [draw: {round(self.draw_avg_time*1000, 1)}ms]"
         pygame.display.set_caption(txt)
 

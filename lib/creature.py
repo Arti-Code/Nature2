@@ -353,7 +353,7 @@ class Creature(Life):
             rest_energy += cfg.ATK_ENG
         rest_energy *= size_cost
         if self.hidding:
-            base_energy*=0.5; move_energy*=0.5; rest_energy*=0.5; neuro_energy*=0.5
+            base_energy*=0.2; move_energy*=0.2; rest_energy*=0.2; neuro_energy*=0.2
         total_eng_cost = base_energy + move_energy + rest_energy + neuro_energy
         self.eng_lost = {'basic': base_energy, 'move': move_energy, 'neuro': neuro_energy, 'other': rest_energy, 'velocity': move}
         self.energy -= total_eng_cost * dt

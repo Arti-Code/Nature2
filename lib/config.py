@@ -1,7 +1,7 @@
 from json import loads
 
 TITLE = "NATURE"
-SUBTITLE = "v1.1.14" 
+SUBTITLE = "v1.2.0" 
 AUTHOR = "2019-2022 Artur Gwoździowski"
 
 class Configuration():
@@ -76,8 +76,6 @@ class Configuration():
         self.RUN_COST = None
         self.DIET_MOD = None
         self.SENSOR_RANGE = None
-        self.MIN_CARNIVORES = None
-        self.MIN_HERBIVORES = None
         self.NET = None
         self.RANK_DECAY = None
         self.STAT_PERIOD = None
@@ -164,8 +162,6 @@ class Configuration():
         self.RUN_COST               = cfg['RUN_COST']
         self.DIET_MOD               = cfg['DIET_MOD']
         self.SENSOR_RANGE           = cfg['SENSOR_RANGE']
-        self.MIN_CARNIVORES         = cfg['MIN_CARNIVORES']
-        self.MIN_HERBIVORES         = cfg['MIN_HERBIVORES']
         self.NET                    = cfg['NET']
         self.RANK_DECAY             = cfg['RANK_DECAY']
         self.STAT_PERIOD            = cfg['STAT_PERIOD']
