@@ -1,5 +1,6 @@
 from random import choice, random
 from uuid import uuid1
+from lib.math2 import clamp
 
 names: list = [
     "am","af", "ax", "ar", "av", "al", "aq", "ak", "ar", "at",
@@ -46,6 +47,18 @@ def modify_name(name: str) -> str:
     else:
         new_name = ch + name[2:6]
     return new_name
+
+def brotherhood(agent1_name: str, agent2_name: str) -> float:
+    l1 = len(agent1_name)
+    l2 = len(agent2_name)
+    family_rate = 0.0
+    if l1 == l2 and l1 == 6:
+        for n in range(3):
+            if agent1_name[2*n:2+2*n] == agent2_name[2*n:2+2*n]:
+                family_rate += 0.15 + (0.3 - 0.1*n)
+        return clamp(family_rate, 0, 1)
+    else:
+        return 0
 
 class SpecType():
 
