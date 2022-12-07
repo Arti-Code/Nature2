@@ -10,8 +10,8 @@ from pygame import Color, Rect, Surface
 from pygame.math import Vector2
 from pymunk import Body, Circle, Space, Vec2d
 
-from lib.camera import Camera
 from lib.config import cfg
+from lib.camera import Camera
 from lib.life import Life
 from lib.math2 import clamp, flipy
 from lib.net import Network
@@ -55,8 +55,8 @@ class Creature(Life):
         self.eye_colors = {}
         self.visual_range = cfg.SENSOR_RANGE
         self.sensors = []
-        rng = cfg.SENSOR_RANGE*0.4 + cfg.SENSOR_RANGE*(1-(self.eyes/10))*0.6
-        self.vision: Vision = Vision(self, int(rng), cfg.SENSOR_MAX_ANGLE*(self.eyes/10), (0.0, 0.0), "vision")
+        self.rng = int(cfg.SENSOR_RANGE*0.4 + cfg.SENSOR_RANGE*(1-(self.eyes/10))*0.6)
+        self.vision: Vision = Vision(self, self.rng, cfg.SENSOR_MAX_ANGLE*(self.eyes/10), (0.0, 0.0), "vision")
         space.add(self.vision)
         self.mem_time = 0
         self.max_energy = self.size*cfg.SIZE2ENG
@@ -327,7 +327,7 @@ class Creature(Life):
       
     def move(self, dt: float) -> None:
         move = 0
-        speed = cfg.SPEED*(self.speed+(cfg.CREATURE_MAX_SIZE-self.size))/2
+        speed = cfg.SPEED*((self.speed*2)+(cfg.CREATURE_MAX_SIZE-self.size))/3
         if self.running:
            move = speed*2
         else:
@@ -353,7 +353,7 @@ class Creature(Life):
             rest_energy += cfg.ATK_ENG
         rest_energy *= size_cost
         if self.hidding:
-            base_energy*=0.5; move_energy*=0.5; rest_energy*=0.5; neuro_energy*=0.5
+            base_energy*=cfg.HIDE_MOD; move_energy*=cfg.HIDE_MOD; rest_energy*=cfg.HIDE_MOD; neuro_energy*=cfg.HIDE_MOD
         total_eng_cost = base_energy + move_energy + rest_energy + neuro_energy
         self.eng_lost = {'basic': base_energy, 'move': move_energy, 'neuro': neuro_energy, 'other': rest_energy, 'velocity': move}
         self.energy -= total_eng_cost * dt
@@ -420,8 +420,11 @@ class Creature(Life):
                 self.running = False
             if self.output[4] >= 0.5 and self.moving <= cfg.HIDE_SPEED and not self.eating and not self.attacking:
                 self.hidding = True
+                r=self.rng*cfg.HIDE_MOD
+                self.vision.change_range(round(r))
             else:
                 self.hidding = False
+                self.vision.change_range(self.rng)
 
     def draw_energy_bar(self, screen: Surface, rx: int, ry: int, rel_size: int):
         bar_red = Color(255, 0, 0)

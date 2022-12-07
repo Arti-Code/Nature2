@@ -1,7 +1,7 @@
 from json import loads
 
 TITLE = "NATURE"
-SUBTITLE = "v1.2.0" 
+SUBTITLE = "v1.2.1" 
 AUTHOR = "2019-2022 Artur Gwoździowski"
 
 class Configuration():
@@ -37,7 +37,7 @@ class Configuration():
         self.HIDE_SPEED = None
         self.TURN = None
         self.HIT = None
-
+        self.HIDE_MOD = None
         self.REP_TIME = None
         self.MEM_TIME = None
         self.MEAT_TIME = None
@@ -127,6 +127,7 @@ class Configuration():
         self.CREATURE_MIN_SIZE      = cfg['CREATURE_MIN_SIZE']
         self.CREATURE_MAX_SIZE      = cfg['CREATURE_MAX_SIZE']
         self.HIT                    = cfg['HIT']
+        self.HIDE_MOD               = cfg['HIDE_MOD']
         self.MEM_TIME               = cfg['MEM_TIME']
         self.SENSOR_MAX_ANGLE       = cfg['SENSOR_MAX_ANGLE']
         self.CLOSE_VISION           = cfg['CLOSE_VISION']

@@ -17,9 +17,9 @@ from pygame.math import Vector2
 from pygame.time import Clock
 from pymunk import ShapeFilter, Space, Vec2d
 
+from lib.config import TITLE, cfg
 from lib.camera import Camera
 from lib.collisions import *
-from lib.config import TITLE, cfg
 from lib.creature import Creature
 from lib.manager import Manager
 from lib.math2 import flipy, set_world, world
