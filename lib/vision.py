@@ -9,6 +9,7 @@ from pymunk import Body, Circle, Vec2d
 from lib.camera import Camera
 from lib.config import cfg
 from lib.math2 import clamp
+from lib.species import brotherhood
 
 
 class TARGET_TYPE(Enum):
@@ -43,7 +44,8 @@ class Vision(Circle):
         self.max_dist_meat = 0.0
         self.max_dist_rock = 0.0
         self.max_dist = 0.0
-        self.rng = pow(self.radius, 2)
+        self.change_range(radius)
+        #self.rng = pow(self.radius, 2)
         self.reset_detection()
         self.reset_range()
         self.observe: bool=True
@@ -78,6 +80,11 @@ class Vision(Circle):
     def allow_observe(self, allow: bool):
         self.observe = allow
 
+    def change_range(self, vision_radius: int):
+        #self.radius = vision_radius
+        self.unsafe_set_radius(vision_radius)
+        self.rng = pow(self.radius, 2)
+
     def reset_range(self):
         rng = self.rng
         self.max_dist_enemy = rng
@@ -98,8 +105,9 @@ class Vision(Circle):
         if type == 'creature':
             if self.enemy['dist'] > dist:
                 family: bool=False
-                if self.body.name == target.name:
-                    family = True
+                #if self.body.name == target.name:
+                #    family = True
+                family = brotherhood(self.body.name, target.name)
                 self.enemy = {
                     'ang': angle,
                     'dist': dist,
@@ -149,7 +157,7 @@ class Vision(Circle):
     def get_detection(self) -> list:
         enemy_r = round((self.enemy['ang']/(self.semiwide)), 1)
         enemy_d = 1 - sqrt(self.enemy['dist'])/cfg.SENSOR_RANGE
-        enemy_f = int(self.enemy['family'])
+        enemy_f = self.enemy['family']
         enemy_danger = 0.0
         if self.enemy['target'] != None:
             enemy_danger = self.enemy['target'].size+self.enemy['target'].power+(self.enemy['target'].attacking*10)
@@ -182,7 +190,7 @@ class Vision(Circle):
             if self.enemy['target'] != None:
                 target = self.enemy['target']
                 c: Color= Color(255, 0, 0, 150)
-                if self.enemy['family']:
+                if self.enemy['family']>=0.5:
                     c = Color(0, 255, 255, 150)
                 rel_target_pos = camera.rel_pos(target.position)
                 xt = int(rel_target_pos.x); yt = int(rel_target_pos.y)

@@ -19,6 +19,7 @@
 			"phisionomy",
 			"rpos"
 		],
-		"todo-tree.tree.showBadges": true
+		"todo-tree.tree.showBadges": true,
+		"esbonio.sphinx.confDir": ""
 	}
 }

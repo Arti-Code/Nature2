@@ -35,13 +35,15 @@ class ACTIVATION(IntEnum):
 
 class Node():
 
-    def __init__(self, node_type, activation=ACTIVATION.TANH, bias = 0, recurrent=False, mem_weight=None):
+    def __init__(self, node_type, activation=ACTIVATION.TANH, bias = 0, recurrent=False, mem_weight=None, long_mem: bool=False):
         self.bias = bias
         self.value = 0
         self.to_links = []
         self.from_links = []
         self.type = node_type
         self.recurrent = recurrent
+        self.long_mem: bool=long_mem
+        
         if self.recurrent:
             self.mem = 0
             if mem_weight:
@@ -51,6 +53,7 @@ class Node():
         else:
             self.mem = None
             self.mem_weight = None
+
         self.activation = ACTIVATION.TANH
         self.recombined = False
         if activation == ACTIVATION.TANH:
@@ -101,6 +104,7 @@ class Node():
         node['type'] = self.type
         node['recurrent'] = str(int(self.recurrent))
         node['mem_weight'] = self.mem_weight
+        node['long_mem'] = str(int(self.long_mem))
         node['bias'] = self.bias
         node['from_links'] = json.dumps(self.from_links)
         node['to_links'] = json.dumps(self.to_links)
@@ -390,11 +394,15 @@ class Network():
                 dot = dot + bias
 
                 recurrent = self.nodes[node_key].recurrent
+                long_mem = self.nodes[node_key].long_mem
+
                 if recurrent:
                     mem = self.nodes[node_key].mem
                     mem_weight = self.nodes[node_key].mem_weight
                     dot = dot * mem_weight + mem
                     dot = func(dot)
+                    if long_mem:
+                        dot *= abs(dot)
                     self.nodes[node_key].mem = dot
                 else:
                     dot = func(dot)   
@@ -569,7 +577,9 @@ class Network():
             if self.nodes[n].recurrent:
                 self.nodes[n].mem = 0
                 mem = self.nodes[n].RandomNormal()
-                self.nodes[n].mem_weight = mem * abs(mem)
+                self.nodes[n].mem_weight = mem
+                if randint(0, 1) == 1: 
+                    self.nodes[n].long_mem = not self.nodes[n].long_mem
             else:
                 self.nodes[n].mem = None
                 self.nodes[n].mem_weight = None
@@ -675,7 +685,9 @@ class Network():
         self.nodes.clear()
         for n in nodes0:
             node_key = int(n)
-            node = Node(nodes0[n]['type'], nodes0[n]['activation'], nodes0[n]['bias'], bool(int(nodes0[n]['recurrent'])), nodes0[n]['mem_weight'])
+            if not 'long_mem' in nodes0[n].keys():
+                nodes0[n]['long_mem'] = False
+            node = Node(nodes0[n]['type'], nodes0[n]['activation'], nodes0[n]['bias'], bool(int(nodes0[n]['recurrent'])), nodes0[n]['mem_weight'], bool(int(nodes0[n]['long_mem'])))
             self.nodes[node_key] = node
             self.nodes[node_key].from_links = json.loads(nodes0[n]['from_links'])
             self.nodes[node_key].to_links = json.loads(nodes0[n]['to_links'])
