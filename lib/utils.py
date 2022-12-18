@@ -26,9 +26,11 @@ class Timer():
         self.time += delta
         if self.time < self.interval:
             return False
-        self.time = 0
         if self.one_shoot:
+            self.time = 0
             self.run = False
+        else:
+            self.time -= self.interval
         return True
 
     def stop(self):
@@ -42,8 +44,6 @@ class Timer():
         self.run = True
 
     def set_timer(self, interval: float, one_shoot: bool=True):
-        self.time = 0
-        self.run: True
         self.interval = interval
         self.one_shoot = one_shoot
         

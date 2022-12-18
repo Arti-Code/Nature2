@@ -17,6 +17,7 @@ from lib.math2 import clamp, flipy
 from lib.net import Network
 from lib.species import modify_name, random_name
 from lib.vision import Vision
+from lib.utils import Timer
 
 
 class Creature(Life):
@@ -81,6 +82,17 @@ class Creature(Life):
         self.eng_lost = {'basic': 0.0, 'move': 0.0, 'neuro': 0.0, 'other': 0}
         self.ahead: Vec2d
         self.update_orientation()
+        #self.create_timers()
+
+    def create_timers(self):
+        self.timer: dict[Timer] = {}
+        test_timer = Timer(randint(10, 60), False, True, "test")
+        self.timer["test"] = test_timer
+
+    def update_timers(self, dt: float):
+        for t in self.timer:
+            if self.timer[t].timeout(dt):
+                print("timeout")
 
     def genome_build(self, genome: dict) -> list[tuple]:
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
@@ -239,6 +251,7 @@ class Creature(Life):
         self.border = False
         
     def draw_name(self, camera: Camera):
+        #return self.name+"("+str(round(self.timer['test'].time))+")", self.rel_pos.x-14, self.rel_pos.y+self.rel_size+6
         return self.name, self.rel_pos.x-14, self.rel_pos.y+self.rel_size+6
 
     def draw_dist(self, camera: Camera):
@@ -271,9 +284,9 @@ class Creature(Life):
         gfxdraw.aapolygon(screen, points, color)
         gfxdraw.filled_polygon(screen, points, color)
 
-
     def update(self, dt: float, selected: Body):
         super().update(dt, selected)
+        #self.update_timers(dt)
         if random() <= 0.01:
             self.open_yaw = not self.open_yaw
         self.life_time += dt*0.1
@@ -549,3 +562,4 @@ class Creature(Life):
             return True
         else:
             return False
+
