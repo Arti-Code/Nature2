@@ -26,7 +26,7 @@ from lib.math2 import flipy, set_world, world
 from lib.meat import Meat
 from lib.plant import Plant
 from lib.rock import Rock
-from lib.sim_stat import Statistics
+#from lib.sim_stat import Statistics
 from lib.wall import Wall
 
 
@@ -50,11 +50,11 @@ class Simulation():
         self.space.debug_draw(self.options)
         self.draw_debug: bool=False
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
-        self.statistics = Statistics()
-        self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores', 'all'])
-        self.statistics.add_collection('creatures', ['size', 'speed', 'food', 'power', 'mutations', 'vision'])
-        self.statistics.add_collection('neuros', ['nodes', 'links'])
-        self.statistics.add_collection('fitness', ['points', 'lifetime'])
+        #self.statistics = Statistics()
+        #self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores', 'all'])
+        #self.statistics.add_collection('creatures', ['size', 'speed', 'food', 'power', 'mutations', 'vision'])
+        #self.statistics.add_collection('neuros', ['nodes', 'links'])
+        #self.statistics.add_collection('fitness', ['points', 'lifetime'])
         self.update_time: float = 0.0
         self.draw_time: float = 0.0
         self.neuro_time: float = 0.0
@@ -166,8 +166,8 @@ class Simulation():
         self.last_save_time = 0
         self.populations = {'plants': [], 'herbivores': [], 'carnivores': []}
         self.map_time = 0.0
-        self.statistics = Statistics()
-        self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores', 'all creatures'])
+        #self.statistics = Statistics()
+        #self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores', 'all creatures'])
 
     def check_ranking(self):
         self.ranking1.sort(key=sort_by_fitness, reverse=True)
@@ -256,14 +256,14 @@ class Simulation():
             self.show_specie_name = not self.show_specie_name
         if event.key == pygame.K_F8:
             self.show_dist_and_ang = not self.show_dist_and_ang
-        if event.key == pygame.K_F4:
-            self.statistics.plot('populations')
-        if event.key == pygame.K_F5:
-            self.statistics.plot('creatures')
-        if event.key == pygame.K_F6:
-            self.statistics.plot('neuros')
-        if event.key == pygame.K_F7:
-            self.statistics.plot('fitness')
+        #if event.key == pygame.K_F4:
+        #    self.statistics.plot('populations')
+        #if event.key == pygame.K_F5:
+        #    self.statistics.plot('creatures')
+        #if event.key == pygame.K_F6:
+        #    self.statistics.plot('neuros')
+        #if event.key == pygame.K_F7:
+        #    self.statistics.plot('fitness')
         if event.key == pygame.K_F9:
             self.follow = not self.follow
         if event.key == pygame.K_KP_PLUS:
@@ -491,7 +491,7 @@ class Simulation():
         self.update_plants(self.dt)
         self.update_meat(self.dt)
         self.manager.update_gui(self.dt, self.ranking1, self.ranking2)
-        self.update_statistics()
+        #self.update_statistics()
         #update_time = time()-update_time
 
     def update_meat(self, dT: float):
@@ -561,59 +561,59 @@ class Simulation():
         temp_list = []
         self.check_populatiom()
 
-    def update_statistics(self):
-        last = self.statistics.get_last_time('populations')
-        t = int(self.get_time())
-        if t >= int(last+cfg.STAT_PERIOD):
-            p = round(mean(self.populations['plants']))
-            h = round(mean(self.populations['herbivores']))
-            c = round(mean(self.populations['carnivores']))
-            data = {
-                'plants': p, 
-                'herbivores': h, 
-                'carnivores': c,
-                'all': h+c
-            }
-            self.statistics.add_data('populations', last+cfg.STAT_PERIOD, data)
-            data = {}
-            if self.creatures['size'] == []:
-                self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5], 'vision': [5]}
-            data = {
-                'size': round(mean(self.creatures['size']), 2),
-                'speed': round(mean(self.creatures['speed']), 2),
-                'power': round(mean(self.creatures['power']), 2),
-                'food': round(mean(self.creatures['food']), 2),
-                'mutations': round(mean(self.creatures['mutations']), 2),
-                'vision': round(mean(self.creatures['vision']), 2)
-            }
-            self.populations = {'plants': [], 'herbivores': [], 'carnivores': [], 'all': []}
-            self.mutations = {'added_nodes': [], 'deleted_nodes': [], 'added_links': [], 'deleted_links': []}
-            self.creatures = {'size': [], 'speed': [], 'food': [], 'power': [], 'mutations': [], 'vision': []}
-            self.statistics.add_data('creatures', last+cfg.STAT_PERIOD, data)
-            if self.neuros['nodes'] == []:
-                self.neuros = {'nodes': [14], 'links': [8]}
-            data = {}
-            data = {
-                'nodes': round(mean(self.neuros['nodes']), 2),
-                'links': round(mean(self.neuros['links']), 2)
-            }
-            self.statistics.add_data('neuros', last+cfg.STAT_PERIOD, data)
-            self.neuros = {'nodes': [], 'links': []}
-            data = {}
-            if len(self.fitness['points']) == 0:
-                self.fitness['points'].append(0)
-            if len(self.fitness['lifetime']) == 0:
-                self.fitness['lifetime'].append(0)
-            data = {
-                'points': round(mean(self.fitness['points']), 2),
-                'lifetime': round(mean(self.fitness['lifetime']), 2)
-            }
-            self.statistics.add_data('fitness', last+cfg.STAT_PERIOD, data)
-            self.fitness = {'points': [], 'lifetime': []}
-        else:
-            self.populations['plants'].append(len(self.plant_list))
-            self.populations['herbivores'].append(self.herbivores)
-            self.populations['carnivores'].append(self.carnivores)
+#    def update_statistics(self):
+#        last = self.statistics.get_last_time('populations')
+#        t = int(self.get_time())
+#        if t >= int(last+cfg.STAT_PERIOD):
+#            p = round(mean(self.populations['plants']))
+#            h = round(mean(self.populations['herbivores']))
+#            c = round(mean(self.populations['carnivores']))
+#            data = {
+#                'plants': p, 
+#                'herbivores': h, 
+#                'carnivores': c,
+#                'all': h+c
+#            }
+#            self.statistics.add_data('populations', last+cfg.STAT_PERIOD, data)
+#            data = {}
+#            if self.creatures['size'] == []:
+#                self.creatures = {'size': [5], 'speed': [5], 'food': [5], 'power': [5], 'mutations': [5], 'vision': [5]}
+#            data = {
+#                'size': round(mean(self.creatures['size']), 2),
+#                'speed': round(mean(self.creatures['speed']), 2),
+#                'power': round(mean(self.creatures['power']), 2),
+#                'food': round(mean(self.creatures['food']), 2),
+#                'mutations': round(mean(self.creatures['mutations']), 2),
+#                'vision': round(mean(self.creatures['vision']), 2)
+#            }
+#            self.populations = {'plants': [], 'herbivores': [], 'carnivores': [], 'all': []}
+#            self.mutations = {'added_nodes': [], 'deleted_nodes': [], 'added_links': [], 'deleted_links': []}
+#            self.creatures = {'size': [], 'speed': [], 'food': [], 'power': [], 'mutations': [], 'vision': []}
+#            self.statistics.add_data('creatures', last+cfg.STAT_PERIOD, data)
+#            if self.neuros['nodes'] == []:
+#                self.neuros = {'nodes': [14], 'links': [8]}
+#            data = {}
+#            data = {
+#                'nodes': round(mean(self.neuros['nodes']), 2),
+#                'links': round(mean(self.neuros['links']), 2)
+#            }
+#            self.statistics.add_data('neuros', last+cfg.STAT_PERIOD, data)
+#            self.neuros = {'nodes': [], 'links': []}
+#            data = {}
+#            if len(self.fitness['points']) == 0:
+#                self.fitness['points'].append(0)
+#            if len(self.fitness['lifetime']) == 0:
+#                self.fitness['lifetime'].append(0)
+#            data = {
+#                'points': round(mean(self.fitness['points']), 2),
+#                'lifetime': round(mean(self.fitness['lifetime']), 2)
+#            }
+#            self.statistics.add_data('fitness', last+cfg.STAT_PERIOD, data)
+#            self.fitness = {'points': [], 'lifetime': []}
+#        else:
+#            self.populations['plants'].append(len(self.plant_list))
+#            self.populations['herbivores'].append(self.herbivores)
+#            self.populations['carnivores'].append(self.carnivores)
 
     def check_creature_types(self):
         self.herbivores = 0

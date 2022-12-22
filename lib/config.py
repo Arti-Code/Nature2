@@ -1,7 +1,7 @@
 from json import loads
 
 TITLE = "NATURE"
-SUBTITLE = "v1.2.1" 
+SUBTITLE = "v1.2.3 (statistics)" 
 AUTHOR = "2019-2022 Artur Gwoździowski"
 
 class Configuration():

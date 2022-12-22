@@ -394,6 +394,7 @@ class Manager:
                 for node_key in network.layers[layer].nodes:
                     node: Node = network.nodes[node_key]
                     v = node.value
+                    mem = node.mean
                     if node.recurrent:
                         node_color = Color("black")
                     else:
@@ -422,11 +423,11 @@ class Manager:
                         p1 = (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2))
                         pygame.draw.line(self.screen, link_color, p0, p1, w)
                     desc = ''
-                    nodes_to_draw.append((node_color, l, n, node.recurrent, dist_nn, desc, v, node.long_mem))
+                    nodes_to_draw.append((node_color, l, n, node.recurrent, dist_nn, desc, v, mem))
                     n += 1
                 l += 1
             out = 0
-            for c, l, n, r, d, desc, v, long in nodes_to_draw:
+            for c, l, n, r, d, desc, v, mem in nodes_to_draw:
                 v = clamp(v, -1.0, 1.0)
                 rv=0; gv = 0; bv=0
                 cv = int(6*abs(v))+2
@@ -442,10 +443,9 @@ class Manager:
                 gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color)
                 gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color_alfa)
                 if r:
-                    if long:
-                        black_color=Color(0, 255, 255, 255)
-                    gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(cv/2), black_color)
-                    gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(cv/2), c)
+                    mc = int(6*abs(mem))+2
+                    gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(mc-1), black_color)
+                    gfxdraw.circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(mc-1), black_color)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
                     text = "{:<2}  {:2> .1f}".format(inp_desc[n], val)
