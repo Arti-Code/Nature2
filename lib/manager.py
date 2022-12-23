@@ -166,11 +166,11 @@ class Manager:
                 rank_to_save['signature'] = deepcopy(rank['signature'])
                 rank_to_save['genealogy'] = deepcopy(rank['genealogy'])
                 project['ranking2'].append(rank_to_save)
-#            project['statistics'] = {}
-#            project['statistics']['populations'] = self.enviro.statistics.get_collection('populations')
-#            project['statistics']['creatures'] = self.enviro.statistics.get_collection('creatures')
-#            project['statistics']['neuros'] = self.enviro.statistics.get_collection('neuros')
-#            project['statistics']['fitness'] = self.enviro.statistics.get_collection('fitness')
+            project['statistics'] = {}
+            project['statistics']['populations'] = self.enviro.statistics.get_collection('populations')
+            project['statistics']['creatures'] = self.enviro.statistics.get_collection('creatures')
+            project['statistics']['neuros'] = self.enviro.statistics.get_collection('neuros')
+            project['statistics']['fitness'] = self.enviro.statistics.get_collection('fitness')
             if self.add_to_save_list(project_name, str(round(self.enviro.get_time(0)))):
                 with open("saves/" + project_name + "/" + str(round(self.enviro.get_time(0))) + ".json", 'w+') as json_file:
                     json.dump(project, json_file)
@@ -304,8 +304,8 @@ class Manager:
             neuro.FromJSON(rank['neuro'])
             rank['neuro'] = neuro
             self.enviro.ranking2.append(rank)
-#        for stat in obj_list['statistics']:
-#            self.enviro.statistics.load_statistics(stat, obj_list['statistics'][stat])
+        for stat in obj_list['statistics']:
+            self.enviro.statistics.load_statistics(stat, obj_list['statistics'][stat])
         if not f.closed:
             f.close()
 
@@ -444,8 +444,9 @@ class Manager:
                 gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color_alfa)
                 if r:
                     mc = int(6*abs(mem))+2
-                    gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(mc-1), black_color)
-                    gfxdraw.circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(mc-1), black_color)
+                    #gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(mc-1), black_color)
+                    gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(mc), black_color)
+                    #gfxdraw.circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(mc-1), black_color)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
                     text = "{:<2}  {:2> .1f}".format(inp_desc[n], val)
