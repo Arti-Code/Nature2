@@ -57,7 +57,7 @@ class Statistics():
         #    w = int(data['time'][len(data['time'])-1]/10)
         #if collection_name == 'creatures':
         y_range0 = (1, cfg.CREATURE_MAX_SIZE+1)
-        p0=figure(width=w, height=600, y_range=y_range0, x_range=x_range)
+        p0=figure(width=w, height=350, y_range=y_range0, x_range=x_range)
         for data_key in self.data['creatures']:
             if data_key != 'time':
                 d = self.data['creatures'][data_key]
@@ -67,7 +67,7 @@ class Statistics():
         #elif collection_name == 'neuros':
 
         y_range1 = (0, max([max(self.data['neuros']['nodes']), max(self.data['neuros']['links'])])+5)
-        p1=figure(width=w, height=600, y_range=y_range1, x_range=x_range)
+        p1=figure(width=w, height=350, y_range=y_range1, x_range=x_range)
         for data_key in self.data['neuros']:
             if data_key != 'time':
                 d = self.data['neuros'][data_key]
@@ -77,7 +77,7 @@ class Statistics():
         #elif collection_name == 'fitness':
 
         y_range2 = (0, max([max(self.data['fitness']['points']), max(self.data['fitness']['lifetime'])]))
-        p2=figure(width=w, height=600, y_range=y_range2, x_range=x_range)
+        p2=figure(width=w, height=350, y_range=y_range2, x_range=x_range)
         for data_key in self.data['fitness']:
             if data_key != 'time':
                 d = self.data['fitness'][data_key]
@@ -88,7 +88,7 @@ class Statistics():
 
         cr_num = max(self.data['populations']['all'])
         y_range3 = (0, max([cfg.PLANT_MAX_NUM, cr_num])+5)
-        p3=figure(width=w, height=600, y_range=y_range3, x_range=x_range)
+        p3=figure(width=w, height=350, y_range=y_range3, x_range=x_range)
         for data_key in self.data['populations']:
             if data_key != 'time':
                 d = self.data['populations'][data_key]
