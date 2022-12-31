@@ -59,8 +59,8 @@ class Manager:
             return True
         return False
 
-    def update_gui(self, dt: float, ranking1: list, ranking2: list):
-        self.gui.update(dt, ranking1, ranking2)
+    def update_gui(self, dt: float, ranking: list):
+        self.gui.update(dt, ranking)
 
     def draw_gui(self, screen: Surface):
         self.gui.draw_ui(screen)
@@ -270,7 +270,7 @@ class Manager:
         self.load_project(project_name, save_name)
 
     def load_project(self, project_name: str, save_name: str):
-        cfg.load_from_file2("saves/" + project_name + "/config.json")
+        cfg.load_from_file("saves/" + project_name + "/config.json")
         f = open("saves/" + project_name + "/" + save_name + ".json", "r")
         json_list = f.read()
         obj_list = json.loads(json_list)

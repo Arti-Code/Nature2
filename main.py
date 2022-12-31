@@ -489,7 +489,7 @@ class Simulation():
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
         self.update_meat(self.dt)
-        self.manager.update_gui(self.dt, self.ranking1, self.ranking2)
+        self.manager.update_gui(self.dt, self.ranking1)
         self.update_statistics()
         #update_time = time()-update_time
 

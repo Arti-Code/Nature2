@@ -1,8 +1,8 @@
 from json import loads
 
 TITLE = "NATURE"
-SUBTITLE = "v1.2.42.4 (statistics)" 
-AUTHOR = "2019-2022 Artur Gwoździowski"
+SUBTITLE = "v1.2.5" 
+AUTHOR = "2019-2023 Artur Gwoździowski"
 
 class Configuration():
 
@@ -86,9 +86,9 @@ class Configuration():
         self.NEURO_COST = None
         self.GRAPH_H = None
         self.GRAPH_V = None
-        self.load_from_file2(filename)
+        self.load_from_file(filename)
 
-    def load_from_file2(self, filename: str):
+    def load_from_file(self, filename: str):
         f = open(filename, 'r')
         json_cfg = f.read()
         f.close()
@@ -96,7 +96,7 @@ class Configuration():
         for param in cfg:
             self.__setattr__(param, cfg[param])
 
-    def load_from_file(self, filename: str):
+    """ def _load_from_file(self, filename: str):
         f = open(filename, 'r')
         json_cfg = f.read()
         f.close()
@@ -173,6 +173,6 @@ class Configuration():
         self.GENERATIONS_NUMBER     = cfg['GENERATIONS_NUMBER']
         self.NEURO_COST             = cfg['NEURO_COST']
         self.GRAPH_V                = cfg['GRAPH_V']
-        self.GRAPH_H                = cfg['GRAPH_H']
+        self.GRAPH_H                = cfg['GRAPH_H'] """
 
 cfg = Configuration('config.json')
