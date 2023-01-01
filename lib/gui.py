@@ -167,15 +167,6 @@ class RankWindow(UIWindow):
             self.labels[i][3].set_text('E' + str(agent['food']))
             self.labels[i][4].set_text('F' + str(round(agent['fitness'])))
             i += 1
-
-"""     def Update2(self, ranking: list):
-        rank_count = len(ranking)
-        for i in range(rank_count):
-            self.labels[i][0].set_text(str(i+1)+'.')
-            self.labels[i][1].set_text(ranking[i]['name'])
-            self.labels[i][2].set_text('G' + str(ranking[i]['gen']))
-            self.labels[i][3].set_text('E' + str(ranking[i]['food']))
-            self.labels[i][4].set_text('F' + str(round(ranking[i]['fitness']))) """
         
 class InfoWindow(UIWindow):
 

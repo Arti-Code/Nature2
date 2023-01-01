@@ -274,7 +274,6 @@ class Manager:
         f = open("saves/" + project_name + "/" + save_name + ".json", "r")
         json_list = f.read()
         obj_list = json.loads(json_list)
-        #self.enviro.creature_list.clear()
         self.enviro.create_empty_world()
         self.enviro.create_borders()
         self.enviro.create_rocks(cfg.ROCK_NUM)
@@ -284,12 +283,9 @@ class Manager:
         self.enviro.time = round(obj_list['time'], 1)
         self.enviro.cycles = obj_list['cycles']
         self.enviro.last_save_time = obj_list['last_save_time']
-        #obj_list['ranking1'].sort(key=Sort_By_Fitness, reverse=True)
-        #obj_list['ranking2'].sort(key=Sort_By_Fitness, reverse=True)
         self.enviro.ranking1 = []
         self.enviro.ranking2 = []
         for genome in obj_list['creatures']:
-            #genome['neuro'] = json.loads(genome['neuro'])
             neuro = Network()
             neuro.FromJSON(genome['neuro'])
             genome['neuro'] = neuro
