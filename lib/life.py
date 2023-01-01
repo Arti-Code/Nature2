@@ -39,7 +39,6 @@ class Life(Body):
             x =rel_pos.x; y =rel_pos.y
             r = ceil(self.shape.radius / camera.scale)
             self.draw_selection(screen, x, y, r)
-        #gfxdraw.rectangle(screen, self.rect, Color('orange'))
 
     def update(self, dt: float, selected: Body):
         r = self.shape.radius

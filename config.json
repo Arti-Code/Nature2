@@ -36,7 +36,7 @@
   "LINKS_RATE": 0.2,
   
   "BASE_ENERGY": 0.2,
-  "MOVE_ENERGY": 0.01,
+  "MOVE_ENERGY": 0.03,
   "SIZE2ENG": 200,
   "SIZE_COST": 2.3,
   "ATK_ENG": 0.02,
