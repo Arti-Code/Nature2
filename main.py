@@ -64,6 +64,8 @@ class Simulation():
     def init_vars(self):
         self.neuro_single_times = []
         self.neuro_avg_time = 1
+        self.update_single_times = []
+        self.update_avg_time = 1
         self.draw_single_times = []
         self.draw_avg_time = 1
         self.physics_single_times = []
@@ -483,15 +485,18 @@ class Simulation():
         self.rocks_list = []
 
     def update(self):
-        #self.net_timer += self.dt
+        update_time: float = time()
         self.calc_time()
-        #update_time = time()
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
         self.update_meat(self.dt)
         self.manager.update_gui(self.dt, self.ranking1)
         self.update_statistics()
-        #update_time = time()-update_time
+        update_time = time()-update_time
+        self.update_single_times.append(update_time)
+        if len(self.update_single_times) >= 150:
+            self.update_avg_time = mean(self.update_single_times)-self.neuro_avg_time
+            self.update_single_times = []
 
     def update_meat(self, dT: float):
         to_kill: list[Meat]=[]
@@ -648,8 +653,8 @@ class Simulation():
             self.plant_list.append(plant)
 
     def physics_step(self, dt: float):
-        for _ in range(1):
-            self.space.step(dt)
+        #for _ in range(1):
+        self.space.step(dt)
 
     def clock_step(self):
         pygame.display.flip()
@@ -669,9 +674,7 @@ class Simulation():
         else:
             _fps = str(_fps)
         total: int = self.herbivores+self.carnivores
-        txt = f"[{TITLE}]     [TIME: {time}s]    [fps: {_fps}]    [dT: {_dt}ms]\
-            [herbivores: {self.herbivores}]     [hunters: {self.carnivores}]     [total: {total}]     [plants: {len(self.plant_list)}]\
-            [neuro: {round(self.neuro_avg_time*1000, 1)}ms]     [physics: {round(self.physics_avg_time*1000, 1)}ms]     [draw: {round(self.draw_avg_time*1000, 1)}ms]"
+        txt = f"[{TITLE}]     [TIME: {time}s]     [fps: {_fps}]     [dT: {_dt}ms]     [herbs: {self.herbivores}]     [hunters: {self.carnivores}]     [all: {total}]     [plants: {len(self.plant_list)}]     [update: {round(self.update_avg_time*1000, 1)}ms]     [neuro: {round(self.neuro_avg_time*1000, 1)}ms]     [physics: {round(self.physics_avg_time*1000, 1)}ms]     [draw: {round(self.draw_avg_time*1000, 1)}ms]"
         pygame.display.set_caption(txt)
 
     def check_populatiom(self):
