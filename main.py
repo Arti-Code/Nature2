@@ -517,7 +517,7 @@ class Simulation():
 
         to_kill.clear()
 
-    def update_creatures(self, dt: float):
+    def update_creatures_death(self, dt: float):
         ### CHECK ENERGY ###
         for creature in self.creature_list:
             if creature.energy <= 0:
@@ -536,6 +536,7 @@ class Simulation():
                 creature.kill(self.space)
                 self.creature_list.remove(creature)
 
+    def update_creatures_analize(self):
         ### ANALIZE ###
         neuro_time = time()
         for creature in self.creature_list:
@@ -546,6 +547,7 @@ class Simulation():
             self.neuro_avg_time = mean(self.neuro_single_times)
             self.neuro_single_times = []
 
+    def update_creature_population(self, dt: float):
         ### REPRODUCE ###
         temp_list = []
         overpopulation = self.creatures_num-cfg.REP_TIME
@@ -570,6 +572,11 @@ class Simulation():
             self.creature_list.append(new_one)
         temp_list = []
         self.check_populatiom()
+
+    def update_creatures(self, dt: float):
+        self.update_creatures_death(dt)
+        self.update_creatures_analize()
+        self.update_creature_population(dt)
 
     def update_statistics(self):
         last = self.statistics.get_last_time('populations')
