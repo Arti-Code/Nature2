@@ -81,6 +81,7 @@ class Simulation():
         self.FPS = 30
         self.dt = 1/self.FPS
         self.running = True
+        self.render: bool=True
         self.show_network = True
         self.show_specie_name = True
         self.show_dist_and_ang = False
@@ -267,6 +268,8 @@ class Simulation():
             self.statistics.plot('fitness')
         if event.key == pygame.K_F9:
             self.follow = not self.follow
+        if event.key == pygame.K_F10:
+            self.render = not self.render
         if event.key == pygame.K_KP_PLUS:
             self.camera.zoom_out()
         if event.key == pygame.K_KP_MINUS:
@@ -397,16 +400,19 @@ class Simulation():
 
     def draw(self):
         draw_time: float=time()
-        if self.follow and self.selected != None:
-            self.camera.focus_camera(Vector2(int(self.selected.position.x), int(self.selected.position.y)))
-        self.screen.fill(Color('black'))
-        self.draw_rocks()
-        self.draw_meat()
-        self.draw_plants()
-        self.draw_creatures()
-        self.draw_interface()
-        if self.net:
-            self.screen.blit(self.net, (25, 25), special_flags=BLEND_ALPHA_SDL2)
+        if self.render:
+            if self.follow and self.selected != None:
+                self.camera.focus_camera(Vector2(int(self.selected.position.x), int(self.selected.position.y)))
+            self.screen.fill(Color('black'))
+            self.draw_rocks()
+            self.draw_meat()
+            self.draw_plants()
+            self.draw_creatures()
+            self.draw_interface()
+            if self.net:
+                self.screen.blit(self.net, (25, 25), special_flags=BLEND_ALPHA_SDL2)
+        else:
+            self.screen.fill(Color('black'))
         draw_time = time() - draw_time
         self.draw_single_times.append(draw_time)
         if len(self.draw_single_times) >= 150:
