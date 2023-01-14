@@ -1,4 +1,5 @@
 from enum import Enum, IntEnum
+from random import randrange, random
 
 def log_to_file(msg: str, filename: str):
     f = open(filename, 'a')
@@ -13,12 +14,13 @@ class Detection(IntEnum):
 
 class Timer():
 
-    def __init__(self, interval: float, one_shoot: bool=True, autostart: bool=False, label: str=None):
-        self.time = 0
+    def __init__(self, interval: float, one_shoot: bool=True, autostart: bool=False, label: str=None, random_start:bool=False):
         self.run: bool=autostart
         self.interval = interval
         self.one_shoot = one_shoot
         self.label = label
+        self.random: bool=random_start
+        self.reset_time()
 
     def timeout(self, delta: float) -> bool:
         if not self.run:
@@ -33,6 +35,12 @@ class Timer():
             self.time -= self.interval
         return True
 
+    def reset_time(self):
+        if self.random:
+            self.time = random()*self.interval
+        else:
+            self.time = 0
+
     def stop(self):
         self.run = False
 
@@ -40,7 +48,7 @@ class Timer():
         self.run = True
 
     def restart(self):
-        self.time = 0
+        self.reset_time()
         self.run = True
 
     def set_timer(self, interval: float, one_shoot: bool=True):

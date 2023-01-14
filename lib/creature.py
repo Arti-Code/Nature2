@@ -82,17 +82,19 @@ class Creature(Life):
         self.eng_lost = {'basic': 0.0, 'move': 0.0, 'neuro': 0.0, 'other': 0}
         self.ahead: Vec2d
         self.update_orientation()
-        #self.create_timers()
+        self.collide_time: bool=False
+        self.create_timers()
 
     def create_timers(self):
-        self.timer: dict[Timer] = {}
-        test_timer = Timer(randint(10, 60), False, True, "test")
-        self.timer["test"] = test_timer
+        self.timer: list[Timer] = []
+        collide_timer = Timer(random()*0.2, False, True, "collide", True)
+        self.timer.append(collide_timer)
 
     def update_timers(self, dt: float):
         for t in self.timer:
-            if self.timer[t].timeout(dt):
-                print("timeout")
+            if t.timeout(dt):
+                if t.label == "collide":
+                    self.collide_time=True
 
     def genome_build(self, genome: dict) -> list[tuple]:
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
@@ -286,7 +288,9 @@ class Creature(Life):
 
     def update(self, dt: float, selected: Body):
         super().update(dt, selected)
-        #self.update_timers(dt)
+        if self.collide_time:
+            self.collide_time = False
+        self.update_timers(dt)
         if random() <= 0.01:
             self.open_yaw = not self.open_yaw
         self.life_time += dt*0.1
