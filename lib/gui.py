@@ -158,15 +158,15 @@ class RankWindow(UIWindow):
             fit = UILabel(Rect((101, 11*i+1), (39, 10)), text=text, manager=manager, container=self, parent_element=self, object_id='#rank_label')
             self.labels.append([num, spec, gen, eat, fit])
 
-    def Update(self, ranking1: list, ranking2: list):
-        rank_count1 = len(ranking1)
-        for i in range(rank_count1):
+    def Update(self, ranking: list):
+        i: int=0
+        for agent in ranking:
             self.labels[i][0].set_text(str(i+1)+'.')
-            self.labels[i][1].set_text(ranking1[i]['name'])
-            self.labels[i][2].set_text('G' + str(ranking1[i]['gen']))
-            self.labels[i][3].set_text('E' + str(ranking1[i]['food']))
-            #self.labels[i][4].set_text('F' + str(round(ranking1[i]['fitness']/1000, 2)) + "k")
-            self.labels[i][4].set_text('F' + str(round(ranking1[i]['fitness'])))
+            self.labels[i][1].set_text(agent['name'])
+            self.labels[i][2].set_text('G' + str(agent['gen']))
+            self.labels[i][3].set_text('E' + str(agent['food']))
+            self.labels[i][4].set_text('F' + str(round(agent['fitness'])))
+            i += 1
         
 class InfoWindow(UIWindow):
 
@@ -263,7 +263,8 @@ class CreatureAdvanceWindow(UIWindow):
             "M": (0, 2, 2),
             "N": (1, 0, 2),
             "O": (1, 2, 2),
-            "T": (2, 0, 4)
+            "T": (2, 0, 2),
+            "V": (2, 2, 2)
         } 
         energy_data = data["C"]
         super().__init__(rect, manager=manager, window_display_title=f"{data['SPECIE']}", object_id="#creature_advance_win", resizable=True, visible=True)
@@ -504,7 +505,7 @@ class GUI():
         self.owner.enviro.project_name = new_name
         if not self.new_project_name(new_name):
             return
-        cfg.load_from_file2('saves/' + new_name + '/config.json')
+        cfg.load_from_file('saves/' + new_name + '/config.json')
         self.create_title(cfg.SCREEN)
         self.owner.enviro.create_enviro()
         self.create_info_win(text='Project created with name: ' + new_name, title=new_name)
@@ -550,8 +551,8 @@ class GUI():
         pos = Rect((self.cx*2-(w+10), 25), (w, h))
         self.rank_win = RankWindow(self, manager=self.ui_mgr, rect=pos)
 
-    def update_ranking(self, ranking1: list, ranking2: list) -> dict:
-        return [ranking1, ranking2]
+    def update_ranking(self, ranking: list) -> dict:
+        return [ranking]
 
     def create_title(self, scr_size: tuple):
         w = 350
@@ -693,7 +694,8 @@ class GUI():
                 "M": round(selected.eng_lost['move'], 1),
                 "N": round(selected.eng_lost['neuro'], 1),
                 "O": round(selected.eng_lost['other'], 1),
-                "T": total_eng_cost
+                "T": total_eng_cost,
+                "V": round(selected.eng_lost['velocity'], 1)
         }
         return data
 
@@ -848,17 +850,19 @@ class GUI():
 
     def reload_config(self):
         self.set_win.kill()
-        cfg.load_from_file2('saves/' + self.owner.enviro.project_name + '/config.json')
+        if self.rank_win:
+            self.rank_win.kill()
+        cfg.load_from_file('saves/' + self.owner.enviro.project_name + '/config.json')
 
-    def update(self, dT: float, ranking1: list, ranking2: list):
+    def update(self, dT: float, ranking: list):
         data: dict = {}
         self.ui_mgr.update(dT)
         if self.enviro_win:
             data = self.update_enviroment(dT)
             self.enviro_win.Update(data, dT)
         if self.rank_win:
-            data = self.update_ranking(ranking1, ranking2)
-            self.rank_win.Update(ranking1, ranking2)
+            data = self.update_ranking(ranking)
+            self.rank_win.Update(ranking)
         if self.creature_win and self.owner.enviro.selected:
             data = self.update_creature_win()
             self.creature_win.Update(data, dT)

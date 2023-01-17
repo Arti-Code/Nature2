@@ -11,22 +11,22 @@ from typing import Union
 
 import pygame
 import pymunk.pygame_util
-from pygame import Color, image
+from pygame import Color, image, Surface
 from pygame.constants import *
 from pygame.math import Vector2
 from pygame.time import Clock
 from pymunk import ShapeFilter, Space, Vec2d
 
+from lib.config import TITLE, cfg
 from lib.camera import Camera
 from lib.collisions import *
-from lib.config import TITLE, cfg
 from lib.creature import Creature
 from lib.manager import Manager
 from lib.math2 import flipy, set_world, world
 from lib.meat import Meat
 from lib.plant import Plant
 from lib.rock import Rock
-from lib.statistics import Statistics
+from lib.sim_stat import Statistics
 from lib.wall import Wall
 
 
@@ -34,7 +34,6 @@ class Simulation():
 
     def __init__(self):
         self.scale = 1
-        flags = pygame.OPENGL
         self.screen = pygame.display.set_mode(size=cfg.SCREEN, flags=0, vsync=1)
         self.space = Space()
         self.space.iterations = cfg.ITER
@@ -59,10 +58,14 @@ class Simulation():
         self.draw_time: float = 0.0
         self.neuro_time: float = 0.0
         self.physics_time: float = 0.0
+        self.net_timer: float=0.0
+        self.net: Surface=None
 
     def init_vars(self):
         self.neuro_single_times = []
         self.neuro_avg_time = 1
+        self.update_single_times = []
+        self.update_avg_time = 1
         self.draw_single_times = []
         self.draw_avg_time = 1
         self.physics_single_times = []
@@ -78,6 +81,7 @@ class Simulation():
         self.FPS = 30
         self.dt = 1/self.FPS
         self.running = True
+        self.render: bool=True
         self.show_network = True
         self.show_specie_name = True
         self.show_dist_and_ang = False
@@ -186,8 +190,6 @@ class Simulation():
         ranking = self.ranking1
         ranking.sort(key=sort_by_fitness, reverse=True)
         for rank in reversed(ranking):
-            rg = rank['genealogy'][len(rank['genealogy'])-1: -cfg.GENERATIONS_NUMBER]
-            cg = creature.genealogy[len(creature.genealogy)-1: -cfg.GENERATIONS_NUMBER]
             if rank['name'] == creature.name:
                 if creature.fitness >= rank['fitness']:
                     ranking.remove(rank)
@@ -225,6 +227,8 @@ class Simulation():
     def key_events(self, event):
         if event.key == pygame.K_ESCAPE:
             self.running = False
+        if event.key == pygame.K_KP_5:
+            self.camera.focus_camera(Vector2(cfg.WORLD[0]//2, cfg.WORLD[1]//2))
         if event.key == pygame.K_KP_8:
             self.camera.update(Vector2(0, -50))
         if event.key == pygame.K_KP_2:
@@ -264,6 +268,8 @@ class Simulation():
             self.statistics.plot('fitness')
         if event.key == pygame.K_F9:
             self.follow = not self.follow
+        if event.key == pygame.K_F10:
+            self.render = not self.render
         if event.key == pygame.K_KP_PLUS:
             self.camera.zoom_out()
         if event.key == pygame.K_KP_MINUS:
@@ -394,14 +400,19 @@ class Simulation():
 
     def draw(self):
         draw_time: float=time()
-        if self.follow and self.selected != None:
-            self.camera.focus_camera(Vector2(int(self.selected.position.x), int(self.selected.position.y)))
-        self.screen.fill(Color('black'))
-        self.draw_rocks()
-        self.draw_meat()
-        self.draw_plants()
-        self.draw_creatures()
-        self.draw_interface()
+        if self.render:
+            if self.follow and self.selected != None:
+                self.camera.focus_camera(Vector2(int(self.selected.position.x), int(self.selected.position.y)))
+            self.screen.fill(Color('black'))
+            self.draw_rocks()
+            self.draw_meat()
+            self.draw_plants()
+            self.draw_creatures()
+            self.draw_interface()
+            if self.net:
+                self.screen.blit(self.net, (25, 25), special_flags=BLEND_ALPHA_SDL2)
+        else:
+            self.screen.fill(Color('black'))
         draw_time = time() - draw_time
         self.draw_single_times.append(draw_time)
         if len(self.draw_single_times) >= 150:
@@ -417,7 +428,7 @@ class Simulation():
             if creature.draw(screen=self.screen, camera=self.camera, selected=self.selected):
                 if self.show_specie_name:
                     name, x, y = creature.draw_name(camera=self.camera)
-                    self.manager.add_text2(name, x, y, Color('skyblue'), False, False, True, False)
+                    self.manager.add_text2(name, x, y, Color('skyblue'), False, False, False, True)
 
     def draw_plants(self):
         for plant in self.plant_list:
@@ -435,6 +446,8 @@ class Simulation():
             rock.draw(screen=self.screen, camera=self.camera)
 
     def draw_interface(self):
+        #if self.net_timer >= cfg.MEM_TIME:
+        #    self.net_timer = self.net_timer%cfg.MEM_TIME
         self.draw_network()
         self.draw_texts()
         self.manager.draw_gui(screen=self.screen)
@@ -448,7 +461,7 @@ class Simulation():
         if self.show_network:
             if self.selected != None:
                 if isinstance(self.selected, Creature):
-                    self.manager.draw_net(self.selected.neuro)
+                    self.net = self.manager.draw_net(self.selected.neuro)
 
     def calc_time(self):
         self.time += self.dt*0.1
@@ -478,14 +491,18 @@ class Simulation():
         self.rocks_list = []
 
     def update(self):
+        update_time: float = time()
         self.calc_time()
-        #update_time = time()
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
         self.update_meat(self.dt)
-        self.manager.update_gui(self.dt, self.ranking1, self.ranking2)
+        self.manager.update_gui(self.dt, self.ranking1)
         self.update_statistics()
-        #update_time = time()-update_time
+        update_time = time()-update_time
+        self.update_single_times.append(update_time)
+        if len(self.update_single_times) >= 150:
+            self.update_avg_time = mean(self.update_single_times)-self.neuro_avg_time
+            self.update_single_times = []
 
     def update_meat(self, dT: float):
         to_kill: list[Meat]=[]
@@ -500,7 +517,7 @@ class Simulation():
 
         to_kill.clear()
 
-    def update_creatures(self, dt: float):
+    def update_creatures_death(self, dt: float):
         ### CHECK ENERGY ###
         for creature in self.creature_list:
             if creature.energy <= 0:
@@ -519,6 +536,7 @@ class Simulation():
                 creature.kill(self.space)
                 self.creature_list.remove(creature)
 
+    def update_creatures_analize(self):
         ### ANALIZE ###
         neuro_time = time()
         for creature in self.creature_list:
@@ -529,6 +547,7 @@ class Simulation():
             self.neuro_avg_time = mean(self.neuro_single_times)
             self.neuro_single_times = []
 
+    def update_creature_population(self, dt: float):
         ### REPRODUCE ###
         temp_list = []
         overpopulation = self.creatures_num-cfg.REP_TIME
@@ -536,6 +555,8 @@ class Simulation():
             overpopulation = 0
         for creature in self.creature_list:
             creature.update(dt=dt, selected=self.selected)
+            #if len(self.creature_list) >= cfg.CREATURE_MAX_NUM:
+            #    continue
             if creature.check_reproduction(dt):
                 for _ in range(cfg.CHILDS_NUM):
                     genome, position = creature.reproduce(screen=self.screen, space=self.space)
@@ -552,10 +573,18 @@ class Simulation():
         temp_list = []
         self.check_populatiom()
 
+    def update_creatures(self, dt: float):
+        self.update_creatures_death(dt)
+        self.update_creatures_analize()
+        self.update_creature_population(dt)
+
     def update_statistics(self):
         last = self.statistics.get_last_time('populations')
         t = int(self.get_time())
         if t >= int(last+cfg.STAT_PERIOD):
+            for key in self.populations:
+                if self.populations[key] == []:
+                    self.populations[key] = [0]
             p = round(mean(self.populations['plants']))
             h = round(mean(self.populations['herbivores']))
             c = round(mean(self.populations['carnivores']))
@@ -637,8 +666,8 @@ class Simulation():
             self.plant_list.append(plant)
 
     def physics_step(self, dt: float):
-        for _ in range(1):
-            self.space.step(dt)
+        #for _ in range(1):
+        self.space.step(dt)
 
     def clock_step(self):
         pygame.display.flip()
@@ -658,10 +687,7 @@ class Simulation():
         else:
             _fps = str(_fps)
         total: int = self.herbivores+self.carnivores
-        txt = f"\
-            {TITLE}     [TIME: {time}s]    [fps: {_fps}]    [dT: {_dt}ms]\
-            [herbivores: {self.herbivores}]     [hunters: {self.carnivores}]     [total: {total}]     [plants: {len(self.plant_list)}]     \
-            [neuro: {round(self.neuro_avg_time*1000, 1)}ms]     [physics: {round(self.physics_avg_time*1000, 1)}ms]     [draw: {round(self.draw_avg_time*1000, 1)}ms]"
+        txt = f"[{TITLE}]     [TIME: {time}s]     [fps: {_fps}]     [dT: {_dt}ms]     [herbs: {self.herbivores}]     [hunters: {self.carnivores}]     [all: {total}]     [plants: {len(self.plant_list)}]     [update: {round(self.update_avg_time*1000, 1)}ms]     [neuro: {round(self.neuro_avg_time*1000, 1)}ms]     [physics: {round(self.physics_avg_time*1000, 1)}ms]     [draw: {round(self.draw_avg_time*1000, 1)}ms]"
         pygame.display.set_caption(txt)
 
     def check_populatiom(self):
@@ -699,7 +725,7 @@ class Simulation():
         set_win_pos(20, 20)
         # self.init(cfg.WORLD)
         self.create_enviro()
-        self.set_icon('res/images/biosynth32.png')
+        self.set_icon('res\images\logo256.png')
         while self.running:
             self.auto_save()
             self.events()

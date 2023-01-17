@@ -3,7 +3,8 @@ from copy import deepcopy
 from enum import IntEnum
 from logging.config import listen
 from random import choice, gauss, randint, random
-
+from collections import deque
+from statistics import mean
 from lib.config import cfg
 from lib.math2 import (binary, clamp, linear, relu, rev_binary, sigmoid, tanh,
                        wide_binary)
@@ -35,22 +36,16 @@ class ACTIVATION(IntEnum):
 
 class Node():
 
-    def __init__(self, node_type, activation=ACTIVATION.TANH, bias = 0, recurrent=False, mem_weight=None):
+    def __init__(self, node_type, activation=ACTIVATION.TANH, bias = 0, recurrent=False, mem_weight=None, long_mem: bool=False):
         self.bias = bias
         self.value = 0
         self.to_links = []
         self.from_links = []
         self.type = node_type
         self.recurrent = recurrent
-        if self.recurrent:
-            self.mem = 0
-            if mem_weight:
-                self.mem_weight = mem_weight
-            else:
-                self.mem_weight = self.RandomGauss(0.7, 0.2)
-        else:
-            self.mem = None
-            self.mem_weight = None
+        self.long_mem: bool=long_mem
+        self.mean: float = 0
+
         self.activation = ACTIVATION.TANH
         self.recombined = False
         if activation == ACTIVATION.TANH:
@@ -75,6 +70,11 @@ class Node():
             self.activation = ACTIVATION.LINEAR
             self.func = linear
 
+        if self.recurrent:
+            self.set_as_memory(memory_weight=None, memory_size=10)
+        else:
+            self.remove_memory()
+
     def AddToLink(self, link_key):
         self.to_links.append(link_key)
 
@@ -92,7 +92,7 @@ class Node():
         n = clamp(gauss(0, 0.5), -1, 1)
         return n 
 
-    def RandomGauss(m: float, s: float) -> float:
+    def RandomGauss(self, m: float, s: float) -> float:
         n = clamp(gauss(m, s), -1, 1)
         return n
 
@@ -101,12 +101,33 @@ class Node():
         node['type'] = self.type
         node['recurrent'] = str(int(self.recurrent))
         node['mem_weight'] = self.mem_weight
+        node['long_mem'] = str(int(self.long_mem))
         node['bias'] = self.bias
         node['from_links'] = json.dumps(self.from_links)
         node['to_links'] = json.dumps(self.to_links)
         node['activation'] = self.activation
         return node
+
+    def memorize(self) -> float:
+        return self.mean*self.mem_weight
     
+    def remember(self, value: float):
+        self.memory.append(value)
+        self.mean = mean(self.memory)
+
+    def set_as_memory(self, memory_weight: float=None, memory_size: int=10):
+        self.memory: deque[float]=deque([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], memory_size)
+        if memory_weight:
+            self.mem_weight = memory_weight
+        else:
+            self.mem_weight = self.RandomGauss(0.7, 0.2)
+        self.mean: float = 0.0
+
+    def remove_memory(self):
+        self.mem_weight = 0
+        self.memory: deque[float] = deque([], 10)
+        self.mean = 0
+
 class Link():
 
     def __init__(self, from_node, to_node, weight):
@@ -364,10 +385,10 @@ class Network():
             for i in range(inp_count):
                 in_node_key = self.layers[0].nodes[i]
                 if self.nodes[in_node_key].recurrent:
-                    mem = self.nodes[in_node_key].mem
-                    mem_weight = self.nodes[in_node_key].mem_weight
-                    self.nodes[in_node_key].value = (inputs[i] + mem) / 2
-                    self.nodes[in_node_key].mem = self.nodes[in_node_key].value * mem_weight
+                    mem = self.nodes[in_node_key].memorize()
+                    val = clamp((inputs[i]+mem)/2, -1, 1)
+                    self.nodes[in_node_key].remember(val)
+                    self.nodes[in_node_key].value = val
                 else:
                     self.nodes[in_node_key].value = inputs[i]
         for lay1 in range(1, len(self.layers)):
@@ -384,21 +405,20 @@ class Network():
                     v = self.nodes[from_node_key].value
                     link: Link=self.links[link_key]
                     s: float=link.CalcSignal(v)
-                    #w = self.links[link_key].weight
-                    #dot = dot + ((v * w) * (abs(v * w)))
                     dot = dot + s
                 dot = dot + bias
 
                 recurrent = self.nodes[node_key].recurrent
+                val: float
                 if recurrent:
-                    mem = self.nodes[node_key].mem
-                    mem_weight = self.nodes[node_key].mem_weight
-                    dot = dot * mem_weight + mem
-                    dot = func(dot)
-                    self.nodes[node_key].mem = dot
+                    mem = self.nodes[node_key].memorize()
+                    val = dot + mem
+                    rem = func(val-bias)
+                    val = func(val)
+                    self.nodes[node_key].remember(rem)
                 else:
-                    dot = func(dot)   
-                self.nodes[node_key].value = dot
+                    val = func(dot)   
+                self.nodes[node_key].value = val
 
         out_layer = len(self.layers) - 1
         output = []
@@ -549,17 +569,16 @@ class Network():
         if (random()) < self.MUT_NODE_TYPE+self.MUT_NODE_TYPE*m:
             node_keys = self.GetNodeKeyList([TYPE.INPUT, TYPE.HIDDEN, TYPE.OUTPUT])
             n = choice(node_keys)
+            node: Node = self.nodes[n]
             n_type = choice(['tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'memory'])
             if n_type == 'memory':
-                self.nodes[n].recurrent = not self.nodes[n].recurrent
-                if self.nodes[n].recurrent:
-                    self.nodes[n].mem = 0
-                    self.nodes[n].mem_weight = self.nodes[n].RandomNormal()
+                node.recurrent = not node.recurrent
+                if node.recurrent:
+                    node.set_as_memory(memory_weight=None, memory_size=10)
                 else:
-                    self.nodes[n].mem = None
-                    self.nodes[n].mem_weight = None
+                    node.remove_memory()
             elif n_type == 'tanh':
-                self.nodes[n].activation = ACTIVATION.TANH
+                node.activation = ACTIVATION.TANH
 
     def MutateNodeMemory(self, m=0):
         if (random()) < self.MUT_MEM+self.MUT_MEM*m:
@@ -569,7 +588,9 @@ class Network():
             if self.nodes[n].recurrent:
                 self.nodes[n].mem = 0
                 mem = self.nodes[n].RandomNormal()
-                self.nodes[n].mem_weight = mem * abs(mem)
+                self.nodes[n].mem_weight = mem
+                if randint(0, 1) == 1: 
+                    self.nodes[n].long_mem = not self.nodes[n].long_mem
             else:
                 self.nodes[n].mem = None
                 self.nodes[n].mem_weight = None
@@ -675,7 +696,9 @@ class Network():
         self.nodes.clear()
         for n in nodes0:
             node_key = int(n)
-            node = Node(nodes0[n]['type'], nodes0[n]['activation'], nodes0[n]['bias'], bool(int(nodes0[n]['recurrent'])), nodes0[n]['mem_weight'])
+            if not 'long_mem' in nodes0[n].keys():
+                nodes0[n]['long_mem'] = False
+            node = Node(nodes0[n]['type'], nodes0[n]['activation'], nodes0[n]['bias'], bool(int(nodes0[n]['recurrent'])), nodes0[n]['mem_weight'], bool(int(nodes0[n]['long_mem'])))
             self.nodes[node_key] = node
             self.nodes[node_key].from_links = json.loads(nodes0[n]['from_links'])
             self.nodes[node_key].to_links = json.loads(nodes0[n]['to_links'])

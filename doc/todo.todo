@@ -1,15 +1,23 @@
-EVOLUTION v1.1:
-    ✔ thin ranging window
-    ✔ hp bar to front
-    ✔ ancestors window
-    ✔ caption display
-    ✔ eyes scale
-    ✔ yaw display
-    ☐ all-in-one charts
-    ☐ borders as rocks
-    ✘ exec with optional params
-    ✔ fix creature win size
-    ✔ fix danger observation
-    ✔ fix advance window update
-    ✔ fix danger
-    ✔ delete saved creatures
+EVOLUTION :
+
+    v1.2:
+        ☐ fix bokeh error
+        ☐ borders as rocks
+        ✔ fix on run ranking size chang
+        ✔ better hidding
+        ✔  better energy calculations
+        ✔ screen render on/off
+    v1.1:
+        ✔ thin ranging window
+        ✔ hp bar to front
+        ✔ ancestors window
+        ✔ caption display
+        ✔ eyes scale
+        ✔ yaw display
+        ✔ all-in-one charts
+        ✔ fix creature win size
+        ✔ fix danger observation
+        ✔ fix advance window update
+        ✔ fix danger
+        ✔ delete saved creatures
+
