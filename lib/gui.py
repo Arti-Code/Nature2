@@ -63,7 +63,7 @@ class MenuWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect):
         super().__init__(rect, manager=manager, window_display_title='Main Menu', object_id="#menu_win", visible=True)
         self.manager = manager
-        btn_list = [('Resume', '#btn_resume'), ('New Simulation', '#btn_sim'), ('Save Menu', '#save_menu'), ('Load Menu', '#btn_load'), ('Settings', '#btn_set'), ('Info', '#btn_info'), ('Quit', '#btn_quit')]
+        btn_list = [('Resume', '#btn_resume'), ('New Simulation', '#btn_sim'), ('Save Menu', '#save_menu'), ('Load Menu', '#btn_load'), ('Settings', '#btn_set'), ('Info', '#btn_info'), ('Statistics', '#btn_stats'), ('Quit', '#btn_quit')]
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
@@ -411,6 +411,10 @@ class GUI():
         self.test_win = None
         self.rebuild_ui(self.view)
 
+    def get_root(self):
+        return self.owner.enviro
+
+
     def rebuild_ui(self, new_size: tuple):         
         self.ui_mgr.set_window_resolution(new_size)
         self.ui_mgr.clear_and_reset()
@@ -585,13 +589,14 @@ class GUI():
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
             w = 110; h = 140
-            pos = Rect((self.cx*2-(w+10), 25), (w, h))
+            pos: Rect = Rect((5, 25), (w, h))
             self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=pos, data=data, dT=dT)
 
     def create_creature_advance_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_advance_win = CreatureAdvanceWindow(manager=self.ui_mgr, rect=Rect((115, 5), (110, 60)), data=data, dT=dT)
+            pos: Rect=Rect((115, 5), (110, 60))
+            self.creature_advance_win = CreatureAdvanceWindow(manager=self.ui_mgr, rect=pos, data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
@@ -745,6 +750,9 @@ class GUI():
                 elif event.ui_object_id == '#menu_win.#btn_info':
                     self.main_menu.kill()
                     self.create_info_menu()
+                elif event.ui_object_id == '#menu_win.#btn_stats':
+                    self.main_menu.kill()
+                    self.get_root().statistics.plot('population')
                 elif event.ui_object_id == '#menu_win.#btn_load':
                     self.main_menu.kill()
                     self.create_load_menu()

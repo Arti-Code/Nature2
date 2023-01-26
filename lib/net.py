@@ -86,10 +86,10 @@ class Node():
 
     def RandomMem(self):
         if self.recurrent:
-            self.mem_weight = self.RandomNormal()
+            self.mem_weight = clamp((self.mem_weight + self.RandomGauss(0.0, 0.5))/2, -1, 1)
             
     def RandomNormal(self) -> float:
-        n = clamp(gauss(0, 0.5), -1, 1)
+        n = clamp(gauss(0, 0.75), -1, 1)
         return n 
 
     def RandomGauss(self, m: float, s: float) -> float:
@@ -120,7 +120,7 @@ class Node():
         if memory_weight:
             self.mem_weight = memory_weight
         else:
-            self.mem_weight = self.RandomGauss(0.7, 0.2)
+            self.mem_weight = self.RandomGauss(0.0, 0.5)
         self.mean: float = 0.0
 
     def remove_memory(self):
@@ -143,7 +143,8 @@ class Link():
         return self.signal
 
     def RandomWeight(self):
-        self.weight = clamp(gauss(0, 0.5), -1, 1)
+        w = (gauss(0, 0.75)+self.weight)/2
+        self.weight = clamp(w, -1, 1)
 
     def ToJSON(self):
         link = {}
@@ -493,11 +494,11 @@ class Network():
         node_keys = self.GetNodeKeyList([TYPE.HIDDEN])
         if node_keys:
             if random() < (self.MUT_DEL_NODE+self.MUT_DEL_NODE*m):
-                l = listen(node_keys)
+                #l = listen(node_keys)
                 while node_keys:
                     n = choice(node_keys)
                     node_keys.remove(n)
-                    if not self.nodes[n].from_links and not self.nodes[n].to_links:
+                    if self.nodes[n].from_links==[] or not self.nodes[n].to_links==[]:
                         if not n in nodes_to_kill:
                             nodes_to_kill.append(n)
                             deleted += 1
@@ -587,7 +588,7 @@ class Network():
             self.nodes[n].recurrent = not self.nodes[n].recurrent
             if self.nodes[n].recurrent:
                 self.nodes[n].mem = 0
-                mem = self.nodes[n].RandomNormal()
+                mem = self.nodes[n].RandomGauss(0.0, 0.5)
                 self.nodes[n].mem_weight = mem
                 if randint(0, 1) == 1: 
                     self.nodes[n].long_mem = not self.nodes[n].long_mem

@@ -87,7 +87,7 @@ class Creature(Life):
 
     def create_timers(self):
         self.timer: list[Timer] = []
-        collide_timer = Timer(random()*0.2, False, True, "collide", True)
+        collide_timer = Timer(random()*cfg.COLLIDE_TIME, False, True, "collide", True)
         self.timer.append(collide_timer)
 
     def update_timers(self, dt: float):
@@ -319,7 +319,8 @@ class Creature(Life):
                 self.hide_ref_time = 0.0
 
     def check_reproduction(self, dt) -> bool:
-        self.reproduction_time -= dt
+        if not self.hidding:
+            self.reproduction_time -= dt
         if self.reproduction_time <= 0:
             self.reproduction_time = 0
             if self.energy >= (self.max_energy*(1-cfg.REP_ENERGY)):

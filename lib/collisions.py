@@ -87,7 +87,7 @@ def process_creatures_collisions(arbiter, space, data):
     target: Creature = arbiter.shapes[1].body
     if not agent.collide_time:
         return False
-    dt=0.2
+    dt=cfg.COLLIDE_TIME
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
     agent_tl = arbiter.normal*(size1/size0)*0.4
@@ -119,7 +119,7 @@ def process_creature_plant_collisions(arbiter, space, data):
     target: Plant = arbiter.shapes[1].body
     if not hunter.collide_time:
         return False
-    dt=0.2
+    dt=cfg.COLLIDE_TIME
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
     hunter_tl: float = 0.0
@@ -159,7 +159,7 @@ def process_creature_meat_collisions(arbiter, space, data):
     target = arbiter.shapes[1].body
     if not hunter.collide_time:
         return False
-    dt=0.2
+    dt=cfg.COLLIDE_TIME
     size0 = arbiter.shapes[0].radius
     size1 = arbiter.shapes[1].radius
     if size0 != 0:
@@ -191,7 +191,7 @@ def process_creatures_rock_collisions(arbiter, space, data):
     agent: Creature=arbiter.shapes[0].body
     if not agent.collide_time:
         return False
-    dt=0.2
+    dt=cfg.COLLIDE_TIME
     arbiter.shapes[0].body.position -= arbiter.normal * 1.5
     arbiter.shapes[0].body.collide_something = True
     arbiter.shapes[0].body.border = True
@@ -211,7 +211,11 @@ def process_meat_rock_collisions_end(arbiter, space, data):
 
 #?  [[[ROCK-PLANT CONTACT]]]
 def process_plant_rock_collisions(arbiter, space, data):
-    arbiter.shapes[0].body.position -= arbiter.normal
+    plant: Plant =  arbiter.shapes[0].body
+    if not plant.collide_time:
+        return False
+    dt=cfg.COLLIDE_TIME*5
+    plant.position -= arbiter.normal*dt
     return False
 
 def process_plant_rock_collisions_end(arbiter, space, data):

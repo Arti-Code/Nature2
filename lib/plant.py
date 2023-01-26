@@ -10,6 +10,7 @@ from lib.camera import Camera
 from lib.config import *
 from lib.life import Life
 from lib.math2 import clamp, flipy
+from lib.utils import Timer
 
 
 class Plant(Life):
@@ -30,6 +31,19 @@ class Plant(Life):
         self.shape.collision_type = collision_tag
         space.add(self.shape)
         self.new_plant = 2
+        self.collide_time: bool=False
+        self.create_timers()
+
+    def create_timers(self):
+        self.timer: list[Timer] = []
+        collide_timer = Timer(random()*cfg.COLLIDE_TIME*5, False, True, "collide", True)
+        self.timer.append(collide_timer)
+
+    def update_timers(self, dt: float):
+        for t in self.timer:
+            if t.timeout(dt):
+                if t.label == "collide":
+                    self.collide_time=True
 
     def life_time_calc(self, dt: int):
         self.life_time -= dt
@@ -39,6 +53,9 @@ class Plant(Life):
 
     def update(self, dt: float, selected: Body):
         super().update(dt, selected)
+        if self.collide_time:
+            self.collide_time = False
+        self.update_timers(dt)
         if self.energy < self.max_energy and self.energy > 0:
             self.energy += cfg.PLANT_GROWTH*dt
             new_size = floor(log2(self.energy))
