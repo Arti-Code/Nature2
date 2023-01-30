@@ -54,5 +54,9 @@ class Timer():
     def set_timer(self, interval: float, one_shoot: bool=True):
         self.interval = interval
         self.one_shoot = one_shoot
-        
+
+    def mod_time(self, time_change: float):
+        self.time -= time_change
+        if not self.run:
+            self.start()
 

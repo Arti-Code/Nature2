@@ -28,7 +28,7 @@ from lib.plant import Plant
 from lib.rock import Rock
 from lib.sim_stat import Statistics
 from lib.wall import Wall
-from lib.shoot import Shoot
+from lib.spike import Spike
 
 class Simulation():
 
@@ -75,7 +75,7 @@ class Simulation():
         self.plant_list:        list[Plant] = []
         self.meat_list:         list[Meat] = []
         self.rocks_list:        list[Rock] = []
-        self.shoot_list:        list[Shoot] = []
+        self.spike_list:        list[Spike] = []
         self.wall_list = []
         self.lands = []
         self.sel_idx = 0
@@ -409,7 +409,7 @@ class Simulation():
             self.draw_meat()
             self.draw_plants()
             self.draw_creatures()
-            self.draw_shoots()
+            self.draw_spikes()
             self.draw_interface()
             if self.net:
                 self.screen.blit(self.net, (25, 25), special_flags=BLEND_ALPHA_SDL2)
@@ -465,9 +465,9 @@ class Simulation():
                 if isinstance(self.selected, Creature):
                     self.net = self.manager.draw_net(self.selected.neuro)
 
-    def draw_shoots(self):
-        for shoot in self.shoot_list:
-            shoot.draw(self.screen, self.camera)
+    def draw_spikes(self):
+        for spike in self.spike_list:
+            spike.draw(self.screen, self.camera)
 
     def calc_time(self):
         self.time += self.dt*0.1
@@ -502,7 +502,7 @@ class Simulation():
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
         self.update_meat(self.dt)
-        self.update_shoots(self.dt)
+        self.update_spikes(self.dt)
         self.manager.update_gui(self.dt, self.ranking1)
         self.update_statistics()
         update_time = time()-update_time
@@ -562,10 +562,10 @@ class Simulation():
             overpopulation = 0
         for creature in self.creature_list:
             creature.update(dt=dt, selected=self.selected)
-            shoot: list[Shoot]|bool = creature.is_shooting(self.space)
-            if isinstance(shoot, list):
-                self.shoot_list.extend(shoot)
-                #self.shoot_list.append(shoot)
+            spike: list[Spike]|bool = creature.is_shooting(self.space)
+            if isinstance(spike, list):
+                self.spike_list.extend(spike)
+                #self.spike_list.append(spike)
             #if len(self.creature_list) >= cfg.CREATURE_MAX_NUM:
             #    continue
             if creature.check_reproduction(dt):
@@ -589,15 +589,15 @@ class Simulation():
         self.update_creatures_analize()
         self.update_creature_population(dt)
 
-    def update_shoots(self, dt: float):
-        kill_list: list[Shoot] = []
-        for shoot in self.shoot_list:
-            if not shoot.update(dt):
-                kill_list.append(shoot)
+    def update_spikes(self, dt: float):
+        kill_list: list[Spike] = []
+        for spike in self.spike_list:
+            if not spike.update(dt):
+                kill_list.append(spike)
 
-        for shoot in kill_list:
-            self.shoot_list.remove(shoot)
-            shoot.kill(self.space)
+        for spike in kill_list:
+            self.spike_list.remove(spike)
+            spike.kill(self.space)
 
         kill_list.clear()
 

@@ -18,7 +18,7 @@ from lib.net import Network
 from lib.species import modify_name, random_name
 from lib.vision import Vision
 from lib.utils import Timer
-from lib.shoot import Shoot
+from lib.spike import Spike
 
 
 class Creature(Life):
@@ -87,19 +87,25 @@ class Creature(Life):
         self.create_timers()
         self.spike_num: int = 1
         self.shooting: bool=False
+        self.stunt: bool = False
         if random() < 0.5:
             self.spike_num = choice([5, 6, 8, 12, 16])
 
     def create_timers(self):
         self.timer: list[Timer] = []
         collide_timer = Timer(random()*cfg.COLLIDE_TIME, False, True, "collide", True)
+        stunt_timer = Timer(1, True, False, "stunt", False)
         self.timer.append(collide_timer)
+        self.timer.append(stunt_timer)
 
     def update_timers(self, dt: float):
         for t in self.timer:
             if t.timeout(dt):
                 if t.label == "collide":
                     self.collide_time=True
+                elif t.label == "stunt":
+                    self.stunt = False
+
 
     def genome_build(self, genome: dict) -> list[tuple]:
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
@@ -171,9 +177,12 @@ class Creature(Life):
         ry = round(rel_pos.y)
         super().draw(screen, camera, selected)
         rot = self.rotation_vector
+        color0: Color; color1: Color; color2: Color; 
         color0 = self.color0
         color1 = self.color1
         color2 = self.color2
+        if self.stunt:
+            color2 = Color(100, 100, 100)  
         a = 255
         if self.hidding:
             color0.a = 40
@@ -191,7 +200,7 @@ class Creature(Life):
         self.draw_yaw(screen, rel_pos, size, self.open_yaw)
         gfxdraw.aacircle(screen, rx, ry, size, color2)
         gfxdraw.filled_circle(screen, rx, ry, size, color2)
-        gfxdraw.aacircle(screen, rx, ry, size-1, self.color2)
+        gfxdraw.aacircle(screen, rx, ry, size-1, color2)
         gfxdraw.filled_circle(screen, rx, ry, size-1, color2)
         if self.running:
             shadow = color2
@@ -222,8 +231,12 @@ class Creature(Life):
                 g +=50
                 r = clamp(r, 0, 255)
                 g = clamp(g, 0, 255)
-            gfxdraw.aacircle(screen, rx, ry, r2, Color(r, g, b, a))
-            gfxdraw.filled_circle(screen, rx, ry, r2, Color(r, g, b, a))
+            if self.stunt:
+                gfxdraw.aacircle(screen, rx, ry, r2, Color(50, 50, 50, a))
+                gfxdraw.filled_circle(screen, rx, ry, r2, Color(50, 50, 50, a))
+            else:
+                gfxdraw.aacircle(screen, rx, ry, r2, Color(r, g, b, a))
+                gfxdraw.filled_circle(screen, rx, ry, r2, Color(r, g, b, a))
         eyes_color: Color=self.NORMAL_EYES
         if self.hidding:
             eyes_color = self.HIDED_EYES
@@ -324,6 +337,8 @@ class Creature(Life):
                 self.hide_ref_time = 0.0
 
     def check_reproduction(self, dt) -> bool:
+        if self.stunt:
+            return False
         if not self.hidding:
             self.reproduction_time -= dt
         if self.reproduction_time <= 0:
@@ -349,6 +364,8 @@ class Creature(Life):
         return (genome, pos)
       
     def move(self, dt: float) -> None:
+        if self.stunt:
+            return 0
         move = 0
         speed = cfg.SPEED*((self.speed*2)+(cfg.CREATURE_MAX_SIZE-self.size))/3
         if self.running:
@@ -411,7 +428,7 @@ class Creature(Life):
         return input
 
     def analize(self):
-        if self.mem_time <= 0:
+        if self.mem_time <= 0 and not self.stunt:
             if not self.vision.new_observation():
                 self.update_orientation()
                 return
@@ -529,6 +546,8 @@ class Creature(Life):
             return True
 
     def eat(self, energy: float):
+        if self.stunt:
+            return
         self.energy += energy
         self.energy = clamp(self.energy, 0, self.max_energy)
 
@@ -577,18 +596,18 @@ class Creature(Life):
         else:
             return False
 
-    def is_shooting(self, space: Space) -> list[Shoot]|bool:
-        if self.shooting:
+    def is_shooting(self, space: Space) -> list[Spike]|bool:
+        if self.shooting and not self.stunt:
             self.shooting = False
             self.energy -= self.power*20
             num = self.spike_num
-            shoots: list[Shoot] = [] 
+            spikes: list[Spike] = [] 
             s = (2 * PI) / num
             for n in range(num):
                 a = self.angle + n*s
                 pos = self.position + Vec2d(cos(a), sin(a))*self.size*1.1
-                shoot: Shoot=Shoot(space, pos, 3, a, 1/num)
-                shoots.append(shoot)
-            return shoots
+                spike: Spike=Spike(space, self, pos, 3, a, 1.2/num)
+                spikes.append(spike)
+            return spikes
         else:
             return False

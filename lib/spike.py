@@ -10,18 +10,19 @@ from lib.camera import Camera
 from lib.config import cfg
 from lib.math2 import clamp
 from lib.utils import Timer
+from lib.life import Life
 
 
-
-class Shoot(Body):
+class Spike(Body):
 
     COLOR = (255, 255, 0)
     SPEED = 100
     LIFETIME = 1.0
     SIZE = 2
 
-    def __init__(self, space: Space, pos: Vec2d, pow: float, angle: float, life_time: float):
+    def __init__(self, space: Space, owner: Life, pos: Vec2d, pow: float, angle: float, life_time: float):
         super().__init__(self, body_type=Body.KINEMATIC)
+        self.owner = owner
         self.position = pos
         self.angle = angle
         self.power = pow
@@ -29,7 +30,7 @@ class Shoot(Body):
         self.shape: Segment = Segment(self, a=-b, b=b, radius=pow)
         self.shape.collision_type = 32
         space.add(self, self.shape)
-        self.lifetime:Timer = Timer(life_time, True, True, "shoot", False)
+        self.lifetime:Timer = Timer(life_time, True, True, "spike", False)
 
     def update(self, dt: float) -> bool:
         if self.lifetime.timeout(dt):

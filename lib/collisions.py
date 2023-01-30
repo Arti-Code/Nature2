@@ -7,6 +7,7 @@ from lib.vision import Target, TARGET_TYPE
 from lib.rock import Rock
 from lib.creature import Creature
 from lib.plant import Plant
+from lib.spike import Spike
 
 def line_of_sight(space: Space, start_vec: Vec2d, end_vec: Vec2d, filter: ShapeFilter) -> bool:
     query: SegmentQueryInfo=space.segment_query_first(start_vec, end_vec, 1.0, filter)
@@ -49,6 +50,10 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
 
     creature_meat_collisions_end = space.add_collision_handler(2, 10)
     creature_meat_collisions_end.separate = process_creatures_meat_collisions_end
+
+    creature_spike_collision = space.add_collision_handler(2, 32)
+    creature_spike_collision.pre_solve = process_creature_spike_collision
+    #creature_spike_collision.data['dt'] = dt
 
     meat_rock_collisions = space.add_collision_handler(10, 8)
     meat_rock_collisions.pre_solve = process_meat_rock_collisions
@@ -111,6 +116,15 @@ def process_creatures_collisions(arbiter, space, data):
 
 def process_creatures_collisions_end(arbiter, space, data):
     return False
+
+def process_creature_spike_collision(arbiter, space, data):
+    agent: Creature = arbiter.shapes[0].body
+    spike: Spike = arbiter.shapes[1].body
+    if agent == spike.owner:
+        return
+    agent.stunt=True
+    agent.timer[1].mod_time(spike.power)
+    spike.lifetime.mod_time(-spike.lifetime.interval)
 
 #?  [[[PLANT CONTACT]]]
 def process_creature_plant_collisions(arbiter, space, data):
