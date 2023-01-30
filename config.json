@@ -1,12 +1,12 @@
 {
-  "WORLD": [1800, 1000],
-  "SCREEN": [1800, 1000],
+  "WORLD": [2000, 2000],
+  "SCREEN": [800, 600],
   "ITER": 1,
   "FPS": 30,
-  "COLLIDE_TIME": 0.25,
+  "COLLIDE_TIME": 0.2,
   
   "PLANT_MIN_NUM": 5,
-  "PLANT_MAX_NUM": 180,
+  "PLANT_MAX_NUM": 160,
   "PLANT_INIT_NUM": 100,
   "PLANT_MAX_SIZE": 11,
   "PLANT_GROWTH": 20,
@@ -28,7 +28,7 @@
   "TURN": 2,
 
   "SENSOR_MAX_ANGLE": 5,
-  "SENSOR_RANGE": 400,
+  "SENSOR_RANGE": 500,
   "CLOSE_VISION": 25,
   "POWER_COST": 0.01,
   "MUTATIONS": 2,
@@ -70,16 +70,16 @@
   "STAT_PERIOD": 100,
   "TIME": 1,
   
-  "ROCK_NUM": 12,
+  "ROCK_NUM": 24,
   "ROCK_SIZE_MIN": 20,
-  "ROCK_SIZE_MAX": 80,
+  "ROCK_SIZE_MAX": 100,
   "ROCK_VERT_MIN": 5,
   "ROCK_VERT_MAX": 12,
   "NEURON_MOD": 50,
   "NEURO_COST": 0.04,
   "NET_BASE": 320,
-  "GRAPH_H": 30,
-  "GRAPH_V": 20,
+  "GRAPH_H": 15,
+  "GRAPH_V": 10,
   "GENERATIONS_NUMBER": 50,
   
   "NET": [16, 0, 0, 0, 0, 0, 0, 0, 5]

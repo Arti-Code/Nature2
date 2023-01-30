@@ -359,19 +359,19 @@ class Manager:
             base_line = []
 
             inp_desc = [
-                'ENEMY', 'PLANT', 'MEAT ',
-                'ENERG', 'INJUR',
-                'ENE-R', 'ENE-D', 
-                'FAMIL', 'DNGER',
-                'PLA-R', 'PLA-D',
-                'MEA-R', 'MEA-D',
-                'ROC-R', 'ROC-D',
-                'BORD'
+                'ENE', 'PLA', 'MEA ',
+                'ENG', 'HIT',
+                'E-R', 'E-D', 
+                'FAM', 'DNG',
+                'P-R', 'P-D',
+                'M-R', 'M-D',
+                'R-R', 'R-D',
+                'BOR'
             ]
             out_desc = [
-                "MOVE", "TURN",
-                "EAT", "ATAK",
-                "HIDE"
+                "MOV", "TUR",
+                "EAT", "ATK",
+                "HID"
             ]
 
             for layer in network.layers:
@@ -383,9 +383,9 @@ class Manager:
                 dists[layer] = dist_nn
                 n = 0
                 base_line.append(round((cfg.NET_BASE + max_nodes_num * v_space)/2))
-                back_box = Rect(4, cfg.SCREEN[1] - (max(base_line))-4, max_net_length+105, max_layer_size+6)
-                gfxdraw.aapolygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0, 255, 255))
-                pygame.draw.polygon(self.screen, Color(0, 255, 255), [(back_box.left+1, back_box.top+1), (back_box.right-2, back_box.top+1), (back_box.right-2, back_box.bottom-2), (back_box.left+1, back_box.bottom-2)], 1)
+                back_box = Rect(4, cfg.SCREEN[1] - (max(base_line))-4, max_net_length+115, max_layer_size+6)
+                #gfxdraw.aapolygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0, 255, 255, 50))
+                #pygame.draw.polygon(self.screen, Color(0, 255, 255, 50), [(back_box.left+1, back_box.top+1), (back_box.right-2, back_box.top+1), (back_box.right-2, back_box.bottom-2), (back_box.left+1, back_box.bottom-2)], 1)
                 gfxdraw.filled_polygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0,0,0, 75))
                 for node_key in network.layers[layer].nodes:
                     node: Node = network.nodes[node_key]
@@ -445,11 +445,11 @@ class Manager:
                     #gfxdraw.circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(mc-1), black_color)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
-                    text = "{:<2}  {:2> .1f}".format(inp_desc[n], val)
-                    self.add_text(text, 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    text = "{:<2}:{:2> .1f}".format(inp_desc[n], val)
+                    self.add_text(text, 4, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                 elif l == last_layer_idx:
                     val = self.enviro.selected.output[out]
-                    text = "{:<}:{:< .1f}".format(out_desc[out], val)
+                    text = "{:<}  {:< .1f}".format(out_desc[out], val)
                     self.add_text2(text, 90 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 2, Color('white'), False, False, False, True)
                     out += 1
                 else:
@@ -478,19 +478,19 @@ class Manager:
             base_line = []
             #black_box: Rect=None
             inp_desc = [
-                'ENEMY', 'PLANT', 'MEAT ',
-                'ENERG', 'INJUR',
-                'ENE-R', 'ENE-D', 
-                'FAMIL', 'DNGER',
-                'PLA-R', 'PLA-D',
-                'MEA-R', 'MEA-D',
-                'ROC-R', 'ROC-D',
-                'BORD'
+                'ENE', 'PLA', 'MEA ',
+                'ENG', 'HIT',
+                'E-R', 'E-D', 
+                'FAM', 'DNG',
+                'P-R', 'P-D',
+                'M-R', 'M-D',
+                'R-R', 'R-D',
+                'BOR'
             ]
             out_desc = [
-                "MOVE", "TURN",
-                "EAT", "ATAK",
-                "HIDE"
+                "MOV", "TUR",
+                "EAT", "ATK",
+                "HID"
             ]
 
             for layer in network.layers:
@@ -565,7 +565,7 @@ class Manager:
                     gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(cv/2), c)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
-                    text = "{:<2}  {:2> .1f}".format(inp_desc[n], val)
+                    text = "{:<2}:{:2> .1f}".format(inp_desc[n], val)
                     self.add_text(text, 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                 elif l == last_layer_idx:
                     val = self.enviro.selected.output[out]
