@@ -371,7 +371,7 @@ class Manager:
             out_desc = [
                 "MOV", "TUR",
                 "EAT", "ATK",
-                "HID"
+                "HID", "HIT"
             ]
 
             for layer in network.layers:

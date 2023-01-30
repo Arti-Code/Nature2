@@ -2,7 +2,7 @@
 from copy import copy, deepcopy
 from math import pi as PI
 from math import sqrt, sin, cos
-from random import randint, random
+from random import randint, random, choice
 from statistics import mean
 
 import pygame.gfxdraw as gfxdraw
@@ -18,6 +18,7 @@ from lib.net import Network
 from lib.species import modify_name, random_name
 from lib.vision import Vision
 from lib.utils import Timer
+from lib.shoot import Shoot
 
 
 class Creature(Life):
@@ -30,7 +31,7 @@ class Creature(Life):
     def __init__(self, screen: Surface, space: Space, time: int, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
         super().__init__(screen=screen, space=space, collision_tag=collision_tag, position=position)
         self.angle = random()*2*PI
-        self.output: list[float] = [0, 0, 0, 0, 0]
+        self.output: list[float] = [0, 0, 0, 0, 0, 0]
         self.generation = 0
         self.fitness = 0
         self.neuro = Network()
@@ -84,6 +85,10 @@ class Creature(Life):
         self.update_orientation()
         self.collide_time: bool=False
         self.create_timers()
+        self.spike_num: int = 1
+        self.shooting: bool=False
+        if random() < 0.5:
+            self.spike_num = choice([5, 6, 8, 12, 16])
 
     def create_timers(self):
         self.timer: list[Timer] = []
@@ -443,6 +448,10 @@ class Creature(Life):
             else:
                 self.hidding = False
                 self.vision.change_range(self.rng)
+            if self.output[5] >= 0.9:
+                self.shooting = True
+            else:
+                self.shooting = False
 
     def draw_energy_bar(self, screen: Surface, rx: int, ry: int, rel_size: int):
         bar_red = Color(255, 0, 0)
@@ -568,3 +577,18 @@ class Creature(Life):
         else:
             return False
 
+    def is_shooting(self, space: Space) -> list[Shoot]|bool:
+        if self.shooting:
+            self.shooting = False
+            self.energy -= self.power*20
+            num = self.spike_num
+            shoots: list[Shoot] = [] 
+            s = (2 * PI) / num
+            for n in range(num):
+                a = self.angle + n*s
+                pos = self.position + Vec2d(cos(a), sin(a))*self.size*1.1
+                shoot: Shoot=Shoot(space, pos, 3, a, 1/num)
+                shoots.append(shoot)
+            return shoots
+        else:
+            return False

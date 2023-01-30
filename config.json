@@ -1,6 +1,6 @@
 {
-  "WORLD": [2000, 2000],
-  "SCREEN": [800, 600],
+  "WORLD": [1800, 900],
+  "SCREEN": [1800, 900],
   "ITER": 1,
   "FPS": 30,
   "COLLIDE_TIME": 0.2,
@@ -77,10 +77,10 @@
   "ROCK_VERT_MAX": 12,
   "NEURON_MOD": 50,
   "NEURO_COST": 0.04,
-  "NET_BASE": 320,
-  "GRAPH_H": 15,
-  "GRAPH_V": 10,
+  "NET_BASE": 350,
+  "GRAPH_H": 30,
+  "GRAPH_V": 20,
   "GENERATIONS_NUMBER": 50,
   
-  "NET": [16, 0, 0, 0, 0, 0, 0, 0, 5]
+  "NET": [16, 0, 0, 0, 0, 0, 0, 0, 6]
 }
