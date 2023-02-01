@@ -194,6 +194,7 @@ class Manager:
         cr['color2'] = [creature.color2.r, creature.color2.g, creature.color2.b, creature.color2.a]
         cr['color3'] = [creature.color3.r, creature.color3.g, creature.color3.b, creature.color3.a]
         cr['neuro'] = creature.neuro.ToJSON()
+        cr['spike_num'] = creature.spike_num
         cr['signature'] = deepcopy(creature.signature)
         cr['genealogy'] = deepcopy(creature.genealogy)
         with open("saves/creatures/"+creature.name+".json", 'w+') as creature_file:

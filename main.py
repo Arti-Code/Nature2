@@ -562,7 +562,7 @@ class Simulation():
             overpopulation = 0
         for creature in self.creature_list:
             creature.update(dt=dt, selected=self.selected)
-            spike: list[Spike]|bool = creature.is_shooting(self.space)
+            spike = creature.is_shooting(self.space)
             if isinstance(spike, list):
                 self.spike_list.extend(spike)
                 #self.spike_list.append(spike)
