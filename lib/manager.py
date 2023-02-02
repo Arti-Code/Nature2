@@ -122,9 +122,11 @@ class Manager:
                 creature_to_save['color1'] = [creature.color1.r, creature.color1.g, creature.color1.b, creature.color1.a]
                 creature_to_save['color2'] = [creature.color2.r, creature.color2.g, creature.color2.b, creature.color2.a]
                 creature_to_save['color3'] = [creature.color3.r, creature.color3.g, creature.color3.b, creature.color3.a]
-                creature_to_save['neuro'] = creature.neuro.ToJSON()
                 creature_to_save['signature'] = deepcopy(creature.signature)
                 creature_to_save['genealogy'] = deepcopy(creature.genealogy)
+                creature_to_save['first_one'] = copy(creature.first_one)
+                creature_to_save['spike_num'] = creature.spike_num
+                creature_to_save['neuro'] = creature.neuro.ToJSON()
                 project['creatures'].append(creature_to_save)
             project['ranking1'] = []
             for rank in self.enviro.ranking1:
@@ -142,9 +144,11 @@ class Manager:
                 rank_to_save['color1'] = [rank['color1'][0], rank['color1'][1], rank['color1'][2], rank['color1'][3]]
                 rank_to_save['color2'] = [rank['color2'][0], rank['color2'][1], rank['color2'][2], rank['color2'][3]]
                 rank_to_save['color3'] = [rank['color3'][0], rank['color3'][1], rank['color3'][2], rank['color3'][3]]
-                rank_to_save['neuro'] = rank['neuro'].ToJSON()
                 rank_to_save['signature'] = deepcopy(rank['signature'])
                 rank_to_save['genealogy'] = deepcopy(rank['genealogy'])
+                rank_to_save['first_one'] = copy(rank['first_one'])
+                rank_to_save['spike_num'] = rank['spike_num']
+                rank_to_save['neuro'] = rank['neuro'].ToJSON()
                 project['ranking1'].append(rank_to_save)
             project['ranking2'] = []
             for rank in self.enviro.ranking2:
@@ -162,9 +166,11 @@ class Manager:
                 rank_to_save['color1'] = [rank['color1'][0], rank['color1'][1], rank['color1'][2], rank['color1'][3]]
                 rank_to_save['color2'] = [rank['color2'][0], rank['color2'][1], rank['color2'][2], rank['color2'][3]]
                 rank_to_save['color3'] = [rank['color3'][0], rank['color3'][1], rank['color3'][2], rank['color3'][3]]
-                rank_to_save['neuro'] = rank['neuro'].ToJSON()
                 rank_to_save['signature'] = deepcopy(rank['signature'])
                 rank_to_save['genealogy'] = deepcopy(rank['genealogy'])
+                rank_to_save['first_one'] = copy(rank['first_one'])
+                rank_to_save['spike_num'] = rank['spike_num']
+                rank_to_save['neuro'] = rank['neuro'].ToJSON()
                 project['ranking2'].append(rank_to_save)
             project['statistics'] = {}
             project['statistics']['populations'] = self.enviro.statistics.get_collection('populations')
@@ -193,10 +199,11 @@ class Manager:
         cr['color1'] = [creature.color1.r, creature.color1.g, creature.color1.b, creature.color1.a]
         cr['color2'] = [creature.color2.r, creature.color2.g, creature.color2.b, creature.color2.a]
         cr['color3'] = [creature.color3.r, creature.color3.g, creature.color3.b, creature.color3.a]
-        cr['neuro'] = creature.neuro.ToJSON()
-        cr['spike_num'] = creature.spike_num
         cr['signature'] = deepcopy(creature.signature)
         cr['genealogy'] = deepcopy(creature.genealogy)
+        cr['first_one'] = copy(creature.first_one)
+        cr['spike_num'] = creature.spike_num
+        cr['neuro'] = creature.neuro.ToJSON()
         with open("saves/creatures/"+creature.name+".json", 'w+') as creature_file:
             json.dump(cr, creature_file)
         creature_file.close()

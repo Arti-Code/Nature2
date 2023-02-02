@@ -22,7 +22,7 @@
   "CREATURES_SEP": 150,
 
   "EAT": 25,
-  "HIT": 250,
+  "HIT": 150,
   "SPEED": 2,
   "HIDE_SPEED": 0.2,
   "TURN": 2,
@@ -44,7 +44,7 @@
   "EAT_ENG": 0.01,
   "VEGE2ENG": 2,
   "MEAT2ENG": 14,
-  "DMG2ENG": 3,
+  "DMG2ENG": 2.5,
   "RUN_COST": 2,
   "RUN_TIME": 8,
 

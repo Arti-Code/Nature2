@@ -34,6 +34,7 @@ class Creature(Life):
         self.output: list[float] = [0, 0, 0, 0, 0, 0]
         self.generation = 0
         self.fitness = 0
+        self.spike_num: int = 1
         self.neuro = Network()
         self.normal: Vec2d=Vec2d(0, 0)
         self.signature: list=[]
@@ -85,7 +86,6 @@ class Creature(Life):
         self.update_orientation()
         self.collide_time: bool=False
         self.create_timers()
-        self.spike_num: int = 1
         self.shooting: bool=False
         self.stunt: bool = False
         
