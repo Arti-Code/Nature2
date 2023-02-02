@@ -39,7 +39,7 @@
   "BASE_ENERGY": 0.25,
   "MOVE_ENERGY": 0.015,
   "SIZE2ENG": 200,
-  "SIZE_COST": 2,
+  "SIZE_COST": 2.3,
   "ATK_ENG": 0.01,
   "EAT_ENG": 0.01,
   "VEGE2ENG": 2,

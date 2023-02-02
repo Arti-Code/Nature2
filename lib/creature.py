@@ -88,8 +88,7 @@ class Creature(Life):
         self.spike_num: int = 1
         self.shooting: bool=False
         self.stunt: bool = False
-        if random() < 0.5:
-            self.spike_num = choice([5, 6, 8, 12, 16])
+        
 
     def create_timers(self):
         self.timer: list[Timer] = []
@@ -137,6 +136,9 @@ class Creature(Life):
         self.nodes_num = self.neuro.GetNodesNum()
         self.links_num = self.neuro.GetLinksNum()
         self.signature = genome['signature']
+        self.spike_num = genome['spike_num']
+        if random() <= 0.1:
+            self.spike_num = choice([5, 6, 8, 12, 16])
         return mutations
 
     def random_build(self, color0: Color, color1: Color, color2: Color, color3: Color, time: int):
@@ -155,6 +157,8 @@ class Creature(Life):
         self.power = randint(1, 10)
         self.eyes = randint(1, 10)
         self.speed = randint(1, 10)
+        if random() <= 0.5:
+            self.spike_num = choice([5, 6, 8, 12, 16])
         self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
         self.neuro.BuildRandom(cfg.NET, cfg.LINKS_RATE)
         self.nodes_num = self.neuro.GetNodesNum()
@@ -367,6 +371,7 @@ class Creature(Life):
       
     def move(self, dt: float) -> None:
         if self.stunt:
+            self.velocity = (0, 0)
             return 0
         move = 0
         speed = cfg.SPEED*((self.speed*2)+(cfg.CREATURE_MAX_SIZE-self.size))/3
@@ -515,6 +520,7 @@ class Creature(Life):
         genome['signature'] = deepcopy(self.signature)
         genome['genealogy'] = copy(self.genealogy)
         genome['first_one'] = copy(self.first_one)
+        genome['spike_num'] = self.spike_num
         return genome
 
     def similar(self, parent_genome: dict, treashold: float) -> bool:
@@ -599,10 +605,10 @@ class Creature(Life):
         else:
             return False
 
-    def is_shooting(self, space: Space) -> list[Spike]|bool:
+    def is_shooting(self, space: Space):
         if self.shooting and not self.stunt:
             self.shooting = False
-            self.energy -= self.power*20
+            self.energy -= self.power*4
             num = self.spike_num
             spikes: list[Spike] = [] 
             s = (2 * PI) / num
