@@ -131,6 +131,7 @@ class Creature(Life):
         self.speed = clamp(self.speed, 1, 10)
         self.generation = genome['gen']+1
         self.genealogy = genome['genealogy']
+        self.first_one = genome['first_one']
         self.name = genome['name']
         mutations = self.neuro.Mutate(self.mutations)
         self.nodes_num = self.neuro.GetNodesNum()
@@ -159,6 +160,7 @@ class Creature(Life):
         self.nodes_num = self.neuro.GetNodesNum()
         self.links_num = self.neuro.GetLinksNum()
         self.name = random_name(3, True)
+        self.first_one = self.name
         self.add_specie(self.name, self.generation, time)
 
     def update_orientation(self):
@@ -512,6 +514,7 @@ class Creature(Life):
         genome['neuro'] = self.neuro.Replicate()
         genome['signature'] = deepcopy(self.signature)
         genome['genealogy'] = copy(self.genealogy)
+        genome['first_one'] = copy(self.first_one)
         return genome
 
     def similar(self, parent_genome: dict, treashold: float) -> bool:
