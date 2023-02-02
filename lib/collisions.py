@@ -121,10 +121,11 @@ def process_creature_spike_collision(arbiter, space, data):
     agent: Creature = arbiter.shapes[0].body
     spike: Spike = arbiter.shapes[1].body
     if agent == spike.owner:
-        return
+        return False
     agent.stunt=True
     agent.timer[1].mod_time(spike.power)
     spike.lifetime.mod_time(-spike.lifetime.interval)
+    return False
 
 #?  [[[PLANT CONTACT]]]
 def process_creature_plant_collisions(arbiter, space, data):
