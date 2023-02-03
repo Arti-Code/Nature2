@@ -223,7 +223,7 @@ class CreatureWindow(UIWindow):
                 "F": (3, 0, 2), "R": (3, 2, 2),
                 "B": (4, 0, 2), "K": (4, 2, 2), 
                 "L": (5, 0, 2), "S": (5, 2, 2),
-                "ENG": (6, 0, 4)
+                "ENG": (6, 0, 5)
         } 
         self.manager = manager
         self.labs = {}
@@ -292,8 +292,8 @@ class CreatureAdvanceWindow(UIWindow):
 
 class AncestorsWindow(UIWindow):
 
-    def __init__(self, manager: UIManager, rect: Rect, history: list):
-        super().__init__(rect, manager=manager, window_display_title='Ancestors', object_id="#genealogy_win", visible=True)
+    def __init__(self, manager: UIManager, rect: Rect, history: list, first_one:str=""):
+        super().__init__(rect, manager=manager, window_display_title=first_one, object_id="#genealogy_win", visible=True)
         self.manager = manager
         i=0
         self.labels = []
@@ -589,7 +589,7 @@ class GUI():
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
             w = 110; h = 140
-            pos: Rect = Rect((5, 25), (w, h))
+            pos: Rect = Rect((5, 5), (w, h))
             self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=pos, data=data, dT=dT)
 
     def create_creature_advance_win(self, dT: float):
@@ -603,9 +603,10 @@ class GUI():
             self.ancestors_win.kill()
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.owner.enviro.selected.genealogy
+            first = self.owner.enviro.selected.first_one
             count = len(data)
             height = 2 + 15 * count
-            self.ancestors_win = AncestorsWindow(manager=self.ui_mgr, rect=Rect((500, 0), (150, height)), history=data)
+            self.ancestors_win = AncestorsWindow(manager=self.ui_mgr, rect=Rect((500, 0), (150, height)), history=data, first_one=first)
 
     def create_history_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):

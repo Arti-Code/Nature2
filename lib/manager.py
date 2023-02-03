@@ -122,9 +122,11 @@ class Manager:
                 creature_to_save['color1'] = [creature.color1.r, creature.color1.g, creature.color1.b, creature.color1.a]
                 creature_to_save['color2'] = [creature.color2.r, creature.color2.g, creature.color2.b, creature.color2.a]
                 creature_to_save['color3'] = [creature.color3.r, creature.color3.g, creature.color3.b, creature.color3.a]
-                creature_to_save['neuro'] = creature.neuro.ToJSON()
                 creature_to_save['signature'] = deepcopy(creature.signature)
                 creature_to_save['genealogy'] = deepcopy(creature.genealogy)
+                creature_to_save['first_one'] = copy(creature.first_one)
+                creature_to_save['spike_num'] = creature.spike_num
+                creature_to_save['neuro'] = creature.neuro.ToJSON()
                 project['creatures'].append(creature_to_save)
             project['ranking1'] = []
             for rank in self.enviro.ranking1:
@@ -142,9 +144,11 @@ class Manager:
                 rank_to_save['color1'] = [rank['color1'][0], rank['color1'][1], rank['color1'][2], rank['color1'][3]]
                 rank_to_save['color2'] = [rank['color2'][0], rank['color2'][1], rank['color2'][2], rank['color2'][3]]
                 rank_to_save['color3'] = [rank['color3'][0], rank['color3'][1], rank['color3'][2], rank['color3'][3]]
-                rank_to_save['neuro'] = rank['neuro'].ToJSON()
                 rank_to_save['signature'] = deepcopy(rank['signature'])
                 rank_to_save['genealogy'] = deepcopy(rank['genealogy'])
+                rank_to_save['first_one'] = copy(rank['first_one'])
+                rank_to_save['spike_num'] = rank['spike_num']
+                rank_to_save['neuro'] = rank['neuro'].ToJSON()
                 project['ranking1'].append(rank_to_save)
             project['ranking2'] = []
             for rank in self.enviro.ranking2:
@@ -162,9 +166,11 @@ class Manager:
                 rank_to_save['color1'] = [rank['color1'][0], rank['color1'][1], rank['color1'][2], rank['color1'][3]]
                 rank_to_save['color2'] = [rank['color2'][0], rank['color2'][1], rank['color2'][2], rank['color2'][3]]
                 rank_to_save['color3'] = [rank['color3'][0], rank['color3'][1], rank['color3'][2], rank['color3'][3]]
-                rank_to_save['neuro'] = rank['neuro'].ToJSON()
                 rank_to_save['signature'] = deepcopy(rank['signature'])
                 rank_to_save['genealogy'] = deepcopy(rank['genealogy'])
+                rank_to_save['first_one'] = copy(rank['first_one'])
+                rank_to_save['spike_num'] = rank['spike_num']
+                rank_to_save['neuro'] = rank['neuro'].ToJSON()
                 project['ranking2'].append(rank_to_save)
             project['statistics'] = {}
             project['statistics']['populations'] = self.enviro.statistics.get_collection('populations')
@@ -193,9 +199,11 @@ class Manager:
         cr['color1'] = [creature.color1.r, creature.color1.g, creature.color1.b, creature.color1.a]
         cr['color2'] = [creature.color2.r, creature.color2.g, creature.color2.b, creature.color2.a]
         cr['color3'] = [creature.color3.r, creature.color3.g, creature.color3.b, creature.color3.a]
-        cr['neuro'] = creature.neuro.ToJSON()
         cr['signature'] = deepcopy(creature.signature)
         cr['genealogy'] = deepcopy(creature.genealogy)
+        cr['first_one'] = copy(creature.first_one)
+        cr['spike_num'] = creature.spike_num
+        cr['neuro'] = creature.neuro.ToJSON()
         with open("saves/creatures/"+creature.name+".json", 'w+') as creature_file:
             json.dump(cr, creature_file)
         creature_file.close()
@@ -359,19 +367,19 @@ class Manager:
             base_line = []
 
             inp_desc = [
-                'ENEMY', 'PLANT', 'MEAT ',
-                'ENERG', 'INJUR',
-                'ENE-R', 'ENE-D', 
-                'FAMIL', 'DNGER',
-                'PLA-R', 'PLA-D',
-                'MEA-R', 'MEA-D',
-                'ROC-R', 'ROC-D',
-                'BORD'
+                'ENE', 'PLA', 'MEA ',
+                'ENG', 'HIT',
+                'E-R', 'E-D', 
+                'FAM', 'DNG',
+                'P-R', 'P-D',
+                'M-R', 'M-D',
+                'R-R', 'R-D',
+                'BOR'
             ]
             out_desc = [
-                "MOVE", "TURN",
-                "EAT", "ATAK",
-                "HIDE"
+                "MOV", "TUR",
+                "EAT", "ATK",
+                "HID", "HIT"
             ]
 
             for layer in network.layers:
@@ -383,9 +391,9 @@ class Manager:
                 dists[layer] = dist_nn
                 n = 0
                 base_line.append(round((cfg.NET_BASE + max_nodes_num * v_space)/2))
-                back_box = Rect(4, cfg.SCREEN[1] - (max(base_line))-4, max_net_length+105, max_layer_size+6)
-                gfxdraw.aapolygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0, 255, 255))
-                pygame.draw.polygon(self.screen, Color(0, 255, 255), [(back_box.left+1, back_box.top+1), (back_box.right-2, back_box.top+1), (back_box.right-2, back_box.bottom-2), (back_box.left+1, back_box.bottom-2)], 1)
+                back_box = Rect(4, cfg.SCREEN[1] - (max(base_line))-4, max_net_length+115, max_layer_size+6)
+                #gfxdraw.aapolygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0, 255, 255, 50))
+                #pygame.draw.polygon(self.screen, Color(0, 255, 255, 50), [(back_box.left+1, back_box.top+1), (back_box.right-2, back_box.top+1), (back_box.right-2, back_box.bottom-2), (back_box.left+1, back_box.bottom-2)], 1)
                 gfxdraw.filled_polygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0,0,0, 75))
                 for node_key in network.layers[layer].nodes:
                     node: Node = network.nodes[node_key]
@@ -445,11 +453,11 @@ class Manager:
                     #gfxdraw.circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(mc-1), black_color)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
-                    text = "{:<2}  {:2> .1f}".format(inp_desc[n], val)
-                    self.add_text(text, 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    text = "{:<2}:{:2> .1f}".format(inp_desc[n], val)
+                    self.add_text(text, 4, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                 elif l == last_layer_idx:
                     val = self.enviro.selected.output[out]
-                    text = "{:<}:{:< .1f}".format(out_desc[out], val)
+                    text = "{:<}  {:< .1f}".format(out_desc[out], val)
                     self.add_text2(text, 90 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 2, Color('white'), False, False, False, True)
                     out += 1
                 else:
@@ -478,19 +486,19 @@ class Manager:
             base_line = []
             #black_box: Rect=None
             inp_desc = [
-                'ENEMY', 'PLANT', 'MEAT ',
-                'ENERG', 'INJUR',
-                'ENE-R', 'ENE-D', 
-                'FAMIL', 'DNGER',
-                'PLA-R', 'PLA-D',
-                'MEA-R', 'MEA-D',
-                'ROC-R', 'ROC-D',
-                'BORD'
+                'ENE', 'PLA', 'MEA ',
+                'ENG', 'HIT',
+                'E-R', 'E-D', 
+                'FAM', 'DNG',
+                'P-R', 'P-D',
+                'M-R', 'M-D',
+                'R-R', 'R-D',
+                'BOR'
             ]
             out_desc = [
-                "MOVE", "TURN",
-                "EAT", "ATAK",
-                "HIDE"
+                "MOV", "TUR",
+                "EAT", "ATK",
+                "HID"
             ]
 
             for layer in network.layers:
@@ -565,7 +573,7 @@ class Manager:
                     gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(cv/2), c)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
-                    text = "{:<2}  {:2> .1f}".format(inp_desc[n], val)
+                    text = "{:<2}:{:2> .1f}".format(inp_desc[n], val)
                     self.add_text(text, 6 + l * (h_space+10), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                 elif l == last_layer_idx:
                     val = self.enviro.selected.output[out]

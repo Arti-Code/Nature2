@@ -2,7 +2,7 @@
 from copy import copy, deepcopy
 from math import pi as PI
 from math import sqrt, sin, cos
-from random import randint, random
+from random import randint, random, choice
 from statistics import mean
 
 import pygame.gfxdraw as gfxdraw
@@ -18,6 +18,7 @@ from lib.net import Network
 from lib.species import modify_name, random_name
 from lib.vision import Vision
 from lib.utils import Timer
+from lib.spike import Spike
 
 
 class Creature(Life):
@@ -26,13 +27,15 @@ class Creature(Life):
     EAT_EYES: Color=Color('yellow')
     NORMAL_EYES: Color=Color('skyblue')
     HIDED_EYES: Color=Color(175,175,175,50)
+    STUNT_EYES: Color=Color('white')
 
     def __init__(self, screen: Surface, space: Space, time: int, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
         super().__init__(screen=screen, space=space, collision_tag=collision_tag, position=position)
         self.angle = random()*2*PI
-        self.output: list[float] = [0, 0, 0, 0, 0]
+        self.output: list[float] = [0, 0, 0, 0, 0, 0]
         self.generation = 0
         self.fitness = 0
+        self.spike_num: int = 1
         self.neuro = Network()
         self.normal: Vec2d=Vec2d(0, 0)
         self.signature: list=[]
@@ -84,17 +87,25 @@ class Creature(Life):
         self.update_orientation()
         self.collide_time: bool=False
         self.create_timers()
+        self.shooting: bool=False
+        self.stunt: bool = False
+        
 
     def create_timers(self):
         self.timer: list[Timer] = []
         collide_timer = Timer(random()*cfg.COLLIDE_TIME, False, True, "collide", True)
+        stunt_timer = Timer(1, True, False, "stunt", False)
         self.timer.append(collide_timer)
+        self.timer.append(stunt_timer)
 
     def update_timers(self, dt: float):
         for t in self.timer:
             if t.timeout(dt):
                 if t.label == "collide":
                     self.collide_time=True
+                elif t.label == "stunt":
+                    self.stunt = False
+
 
     def genome_build(self, genome: dict) -> list[tuple]:
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
@@ -120,11 +131,15 @@ class Creature(Life):
         self.speed = clamp(self.speed, 1, 10)
         self.generation = genome['gen']+1
         self.genealogy = genome['genealogy']
+        self.first_one = genome['first_one']
         self.name = genome['name']
         mutations = self.neuro.Mutate(self.mutations)
         self.nodes_num = self.neuro.GetNodesNum()
         self.links_num = self.neuro.GetLinksNum()
         self.signature = genome['signature']
+        self.spike_num = genome['spike_num']
+        if random() <= 0.1:
+            self.spike_num = choice([5, 6, 8, 12, 16])
         return mutations
 
     def random_build(self, color0: Color, color1: Color, color2: Color, color3: Color, time: int):
@@ -143,11 +158,14 @@ class Creature(Life):
         self.power = randint(1, 10)
         self.eyes = randint(1, 10)
         self.speed = randint(1, 10)
+        if random() <= 0.5:
+            self.spike_num = choice([5, 6, 8, 12, 16])
         self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
         self.neuro.BuildRandom(cfg.NET, cfg.LINKS_RATE)
         self.nodes_num = self.neuro.GetNodesNum()
         self.links_num = self.neuro.GetLinksNum()
         self.name = random_name(3, True)
+        self.first_one = self.name
         self.add_specie(self.name, self.generation, time)
 
     def update_orientation(self):
@@ -166,9 +184,12 @@ class Creature(Life):
         ry = round(rel_pos.y)
         super().draw(screen, camera, selected)
         rot = self.rotation_vector
+        color0: Color; color1: Color; color2: Color; 
         color0 = self.color0
         color1 = self.color1
         color2 = self.color2
+        if self.stunt:
+            color2 = Color(100, 100, 100)  
         a = 255
         if self.hidding:
             color0.a = 40
@@ -186,7 +207,7 @@ class Creature(Life):
         self.draw_yaw(screen, rel_pos, size, self.open_yaw)
         gfxdraw.aacircle(screen, rx, ry, size, color2)
         gfxdraw.filled_circle(screen, rx, ry, size, color2)
-        gfxdraw.aacircle(screen, rx, ry, size-1, self.color2)
+        gfxdraw.aacircle(screen, rx, ry, size-1, color2)
         gfxdraw.filled_circle(screen, rx, ry, size-1, color2)
         if self.running:
             shadow = color2
@@ -217,10 +238,16 @@ class Creature(Life):
                 g +=50
                 r = clamp(r, 0, 255)
                 g = clamp(g, 0, 255)
-            gfxdraw.aacircle(screen, rx, ry, r2, Color(r, g, b, a))
-            gfxdraw.filled_circle(screen, rx, ry, r2, Color(r, g, b, a))
+            if self.stunt:
+                gfxdraw.aacircle(screen, rx, ry, r2, Color(50, 50, 50, a))
+                gfxdraw.filled_circle(screen, rx, ry, r2, Color(50, 50, 50, a))
+            else:
+                gfxdraw.aacircle(screen, rx, ry, r2, Color(r, g, b, a))
+                gfxdraw.filled_circle(screen, rx, ry, r2, Color(r, g, b, a))
         eyes_color: Color=self.NORMAL_EYES
-        if self.hidding:
+        if self.stunt:
+            eyes_color = self.STUNT_EYES
+        elif self.hidding:
             eyes_color = self.HIDED_EYES
         elif self.attacking:
             eyes_color=self.ATTACK_EYES
@@ -319,6 +346,8 @@ class Creature(Life):
                 self.hide_ref_time = 0.0
 
     def check_reproduction(self, dt) -> bool:
+        if self.stunt:
+            return False
         if not self.hidding:
             self.reproduction_time -= dt
         if self.reproduction_time <= 0:
@@ -344,6 +373,9 @@ class Creature(Life):
         return (genome, pos)
       
     def move(self, dt: float) -> None:
+        if self.stunt:
+            self.velocity = (0, 0)
+            return 0
         move = 0
         speed = cfg.SPEED*((self.speed*2)+(cfg.CREATURE_MAX_SIZE-self.size))/3
         if self.running:
@@ -406,7 +438,7 @@ class Creature(Life):
         return input
 
     def analize(self):
-        if self.mem_time <= 0:
+        if self.mem_time <= 0 and not self.stunt:
             if not self.vision.new_observation():
                 self.update_orientation()
                 return
@@ -443,6 +475,10 @@ class Creature(Life):
             else:
                 self.hidding = False
                 self.vision.change_range(self.rng)
+            if self.output[5] >= 0.9:
+                self.shooting = True
+            else:
+                self.shooting = False
 
     def draw_energy_bar(self, screen: Surface, rx: int, ry: int, rel_size: int):
         bar_red = Color(255, 0, 0)
@@ -464,8 +500,10 @@ class Creature(Life):
 
     def add_specie(self, name: str, generation: int, time: int):
         data = (name, generation, time)
-        self.genealogy.append(data)
-        if len(self.genealogy) > cfg.GENERATIONS_NUMBER:
+        if len(self.genealogy) > 0:
+            if data[0] != self.genealogy[len(self.genealogy)-1][0]:
+                self.genealogy.append(data)
+        while len(self.genealogy) > cfg.GENERATIONS_NUMBER:
             self.genealogy.pop(0)
 
     def get_genome(self) -> dict:
@@ -486,6 +524,8 @@ class Creature(Life):
         genome['neuro'] = self.neuro.Replicate()
         genome['signature'] = deepcopy(self.signature)
         genome['genealogy'] = copy(self.genealogy)
+        genome['first_one'] = copy(self.first_one)
+        genome['spike_num'] = self.spike_num
         return genome
 
     def similar(self, parent_genome: dict, treashold: float) -> bool:
@@ -520,6 +560,8 @@ class Creature(Life):
             return True
 
     def eat(self, energy: float):
+        if self.stunt:
+            return
         self.energy += energy
         self.energy = clamp(self.energy, 0, self.max_energy)
 
@@ -568,3 +610,18 @@ class Creature(Life):
         else:
             return False
 
+    def is_shooting(self, space: Space):
+        if self.shooting and not self.stunt:
+            self.shooting = False
+            self.energy -= self.power*4
+            num = self.spike_num
+            spikes: list[Spike] = [] 
+            s = (2 * PI) / num
+            for n in range(num):
+                a = self.angle + n*s
+                pos = self.position + Vec2d(cos(a), sin(a))*self.size*1.1
+                spike: Spike=Spike(space, self, pos, 3, a, 1.2/num)
+                spikes.append(spike)
+            return spikes
+        else:
+            return False

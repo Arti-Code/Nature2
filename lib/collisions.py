@@ -7,6 +7,7 @@ from lib.vision import Target, TARGET_TYPE
 from lib.rock import Rock
 from lib.creature import Creature
 from lib.plant import Plant
+from lib.spike import Spike
 
 def line_of_sight(space: Space, start_vec: Vec2d, end_vec: Vec2d, filter: ShapeFilter) -> bool:
     query: SegmentQueryInfo=space.segment_query_first(start_vec, end_vec, 1.0, filter)
@@ -50,6 +51,10 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
     creature_meat_collisions_end = space.add_collision_handler(2, 10)
     creature_meat_collisions_end.separate = process_creatures_meat_collisions_end
 
+    creature_spike_collision = space.add_collision_handler(2, 32)
+    creature_spike_collision.pre_solve = process_creature_spike_collision
+    #creature_spike_collision.data['dt'] = dt
+
     meat_rock_collisions = space.add_collision_handler(10, 8)
     meat_rock_collisions.pre_solve = process_meat_rock_collisions
     meat_rock_collisions.data['dt'] = dt
@@ -77,6 +82,9 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
     rock_detection = space.add_collision_handler(4, 8)
     rock_detection.pre_solve = process_rocks_seeing
 
+    spike_rock_collision = space.add_collision_handler(32, 8)
+    spike_rock_collision.pre_solve = process_spike_rock_collision_begin
+
 
 #^      [[[====DIRECT CONTACTS====]]]
 
@@ -94,7 +102,7 @@ def process_creatures_collisions(arbiter, space, data):
     target_tl = arbiter.normal*(size0/size1)*0.4
     agent.position -= agent_tl + agent_tl*agent.running
     target.position += target_tl + target_tl*target.running
-    if agent.attacking:
+    if agent.attacking and not agent.stunt:
         if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             if (size0+randint(0, 6)) > (size1+randint(0, 6)):
                 dmg = cfg.HIT * ((agent.size+agent.power)/2) * dt
@@ -110,6 +118,16 @@ def process_creatures_collisions(arbiter, space, data):
     return False
 
 def process_creatures_collisions_end(arbiter, space, data):
+    return False
+
+def process_creature_spike_collision(arbiter, space, data):
+    agent: Creature = arbiter.shapes[0].body
+    spike: Spike = arbiter.shapes[1].body
+    if agent == spike.owner:
+        return False
+    agent.stunt=True
+    agent.timer[1].mod_time(spike.power)
+    spike.lifetime.mod_time(-spike.lifetime.interval)
     return False
 
 #?  [[[PLANT CONTACT]]]
@@ -137,7 +155,7 @@ def process_creature_plant_collisions(arbiter, space, data):
         target_tl = arbiter.normal*0.2
     target.position += target_tl
     
-    if hunter.eating:
+    if hunter.eating and not hunter.stunt:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             target.color0 = Color('yellow')
             eat = cfg.EAT * ((size0+6)/2) * dt
@@ -171,7 +189,7 @@ def process_creature_meat_collisions(arbiter, space, data):
         target.position += arbiter.normal*(size0/size1)*0.4
     else:
         target.position += arbiter.normal*0.2
-    if hunter.eating:
+    if hunter.eating and not hunter.stunt:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             target.color0 = Color('yellow')
             eat = cfg.EAT * ((size0+6)/2) * dt
@@ -221,7 +239,10 @@ def process_plant_rock_collisions(arbiter, space, data):
 def process_plant_rock_collisions_end(arbiter, space, data):
     return False
 
-
+def process_spike_rock_collision_begin(arbiter, space, data):
+    spike: Spike = arbiter.shapes[0].body
+    spike.free()
+    return False
 #^      [[[====SEEING DETECTION====]]]
 
 #?  [[[SEEING ENEMY]]]
