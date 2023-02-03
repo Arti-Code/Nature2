@@ -82,6 +82,9 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
     rock_detection = space.add_collision_handler(4, 8)
     rock_detection.pre_solve = process_rocks_seeing
 
+    spike_rock_collision = space.add_collision_handler(32, 8)
+    spike_rock_collision.pre_solve = process_spike_rock_collision_begin
+
 
 #^      [[[====DIRECT CONTACTS====]]]
 
@@ -99,7 +102,7 @@ def process_creatures_collisions(arbiter, space, data):
     target_tl = arbiter.normal*(size0/size1)*0.4
     agent.position -= agent_tl + agent_tl*agent.running
     target.position += target_tl + target_tl*target.running
-    if agent.attacking:
+    if agent.attacking and not agent.stunt:
         if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             if (size0+randint(0, 6)) > (size1+randint(0, 6)):
                 dmg = cfg.HIT * ((agent.size+agent.power)/2) * dt
@@ -152,7 +155,7 @@ def process_creature_plant_collisions(arbiter, space, data):
         target_tl = arbiter.normal*0.2
     target.position += target_tl
     
-    if hunter.eating:
+    if hunter.eating and not hunter.stunt:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             target.color0 = Color('yellow')
             eat = cfg.EAT * ((size0+6)/2) * dt
@@ -186,7 +189,7 @@ def process_creature_meat_collisions(arbiter, space, data):
         target.position += arbiter.normal*(size0/size1)*0.4
     else:
         target.position += arbiter.normal*0.2
-    if hunter.eating:
+    if hunter.eating and not hunter.stunt:
         if abs(hunter.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
             target.color0 = Color('yellow')
             eat = cfg.EAT * ((size0+6)/2) * dt
@@ -236,7 +239,10 @@ def process_plant_rock_collisions(arbiter, space, data):
 def process_plant_rock_collisions_end(arbiter, space, data):
     return False
 
-
+def process_spike_rock_collision_begin(arbiter, space, data):
+    spike: Spike = arbiter.shapes[0].body
+    spike.free()
+    return False
 #^      [[[====SEEING DETECTION====]]]
 
 #?  [[[SEEING ENEMY]]]

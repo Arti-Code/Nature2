@@ -27,6 +27,7 @@ class Creature(Life):
     EAT_EYES: Color=Color('yellow')
     NORMAL_EYES: Color=Color('skyblue')
     HIDED_EYES: Color=Color(175,175,175,50)
+    STUNT_EYES: Color=Color('white')
 
     def __init__(self, screen: Surface, space: Space, time: int, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
         super().__init__(screen=screen, space=space, collision_tag=collision_tag, position=position)
@@ -244,7 +245,9 @@ class Creature(Life):
                 gfxdraw.aacircle(screen, rx, ry, r2, Color(r, g, b, a))
                 gfxdraw.filled_circle(screen, rx, ry, r2, Color(r, g, b, a))
         eyes_color: Color=self.NORMAL_EYES
-        if self.hidding:
+        if self.stunt:
+            eyes_color = self.STUNT_EYES
+        elif self.hidding:
             eyes_color = self.HIDED_EYES
         elif self.attacking:
             eyes_color=self.ATTACK_EYES
@@ -497,8 +500,10 @@ class Creature(Life):
 
     def add_specie(self, name: str, generation: int, time: int):
         data = (name, generation, time)
-        self.genealogy.append(data)
-        if len(self.genealogy) > cfg.GENERATIONS_NUMBER:
+        if len(self.genealogy) > 0:
+            if data[0] != self.genealogy[len(self.genealogy)-1][0]:
+                self.genealogy.append(data)
+        while len(self.genealogy) > cfg.GENERATIONS_NUMBER:
             self.genealogy.pop(0)
 
     def get_genome(self) -> dict:

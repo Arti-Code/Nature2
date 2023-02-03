@@ -60,3 +60,5 @@ class Timer():
         if not self.run:
             self.start()
 
+    def overload(self):
+        self.time += self.interval

@@ -45,9 +45,12 @@ class Spike(Body):
         #rel_pos = camera.rel_pos(self.position)
         a = camera.rel_pos(self.position+self.shape.a)
         b = camera.rel_pos(self.position+self.shape.b)
-        draw.line(screen, self.COLOR, a, b, self.power)
+        draw.line(screen, self.COLOR, a, b, 2)
 
     def kill(self, space: Space):
         space.remove(self.shape)
         space.remove(self)
         del self
+
+    def free(self):
+        self.lifetime.overload()
