@@ -576,7 +576,7 @@ class Creature(Life):
 
     def get_signature(self) -> list:
         signature: list=[]
-        signature.append([self.size, self.power, self.food, self.eyes])
+        signature.append([self.size, self.power, self.food, self.eyes, self.speed, self.mutations])
         links_keys: list=[]
         for link_key in self.neuro.links:
             links_keys.append(link_key)
