@@ -31,6 +31,7 @@
   "SENSOR_RANGE": 500,
   "CLOSE_VISION": 25,
   "POWER_COST": 0.01,
+  "SPIKE_ENG": 1.0,
   "MUTATIONS": 2,
   "DEL_LINK": 0.0,
   "DEL_NODE": 0.0,

@@ -620,7 +620,7 @@ class Creature(Life):
     def is_shooting(self, space: Space):
         if self.shooting and not self.stunt:
             self.shooting = False
-            self.energy -= self.power*4
+            self.energy -= self.power*cfg.SPIKE_ENG
             num = self.spike_num
             spikes: list[Spike] = [] 
             s = (2 * PI) / num

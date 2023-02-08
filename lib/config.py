@@ -56,6 +56,7 @@ class Configuration():
         self.SIZE2ENG = None
         self.SIZE_COST = None
         self.POWER_COST = None
+        self.SPIKE_ENG = None
         self.CHILDS_NUM = None
         self.MEAT2ENG = None
         self.VEGE2ENG = None
