@@ -84,6 +84,7 @@ class Simulation():
         self.running = True
         self.render: bool=True
         self.show_network = True
+        self.net_redraw: bool = False
         self.show_specie_name = True
         self.show_dist_and_ang = False
         self.follow: bool=False
@@ -411,8 +412,8 @@ class Simulation():
             self.draw_creatures()
             self.draw_spikes()
             self.draw_interface()
-            if self.net:
-                self.screen.blit(self.net, (25, 25), special_flags=BLEND_ALPHA_SDL2)
+            #if self.net:
+            #    self.screen.blit(self.net, (5, 5), special_flags=BLEND_ALPHA_SDL2)
         else:
             self.screen.fill(Color('black'))
         draw_time = time() - draw_time
@@ -463,7 +464,7 @@ class Simulation():
         if self.show_network:
             if self.selected != None:
                 if isinstance(self.selected, Creature):
-                    self.net = self.manager.draw_net(self.selected.neuro)
+                    self.manager.draw_net(self.selected.neuro)
 
     def draw_spikes(self):
         for spike in self.spike_list:

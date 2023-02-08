@@ -498,7 +498,7 @@ class Manager:
             out_desc = [
                 "MOV", "TUR",
                 "EAT", "ATK",
-                "HID"
+                "HID", "HIT"
             ]
 
             for layer in network.layers:
@@ -569,8 +569,8 @@ class Manager:
                 gfxdraw.aacircle(net_surf, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color)
                 gfxdraw.filled_circle(net_surf, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color_alfa)
                 if r:
-                    gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(cv/2), black_color)
-                    gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(cv/2), c)
+                    gfxdraw.filled_circle(net_surf, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(cv/2), black_color)
+                    gfxdraw.aacircle(net_surf, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(cv/2), c)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
                     text = "{:<2}:{:2> .1f}".format(inp_desc[n], val)

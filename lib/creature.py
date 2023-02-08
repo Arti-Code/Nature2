@@ -41,14 +41,14 @@ class Creature(Life):
         self.signature: list=[]
         self.childs = 0
         self.kills = 0
-        self.genealogy = []
+        self.genealogy: list[(str, int, int)] = []
         self.mutations_num = [(0, 0), (0, 0)]
         self.open_yaw: bool=True
         if genome == None:
             self.random_build(color0, color1, color2, color3, time)
             self.signature = self.get_signature()
         else:
-            self.mutations_num = self.genome_build(genome)
+            self.mutations_num = self.genome_build(genome, time)
             if not self.compare_signature(self.get_signature(), genome['signature'], cfg.DIFF):
                 self.signature = self.get_signature()
                 self.name = modify_name(genome['name'])
@@ -89,6 +89,9 @@ class Creature(Life):
         self.create_timers()
         self.shooting: bool=False
         self.stunt: bool = False
+        if len(self.genealogy) == 0:
+            self.genealogy.append((self.name, self.generation, time))
+
         
 
     def create_timers(self):
@@ -107,7 +110,7 @@ class Creature(Life):
                     self.stunt = False
 
 
-    def genome_build(self, genome: dict) -> list[tuple]:
+    def genome_build(self, genome: dict, time: int) -> list[tuple]:
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
         self.color1 = Color(genome['color1'][0], genome['color1'][1], genome['color1'][2], genome['color1'][3])
         self.color2 = Color(genome['color2'][0], genome['color2'][1], genome['color2'][2], genome['color2'][3])
@@ -130,9 +133,9 @@ class Creature(Life):
         self.eyes = clamp(self.eyes, 1, 10)
         self.speed = clamp(self.speed, 1, 10)
         self.generation = genome['gen']+1
+        self.name = genome['name']
         self.genealogy = genome['genealogy']
         self.first_one = genome['first_one']
-        self.name = genome['name']
         mutations = self.neuro.Mutate(self.mutations)
         self.nodes_num = self.neuro.GetNodesNum()
         self.links_num = self.neuro.GetLinksNum()
@@ -441,7 +444,7 @@ class Creature(Life):
         if self.mem_time <= 0 and not self.stunt:
             if not self.vision.new_observation():
                 self.update_orientation()
-                return
+                return False
             input = self.get_input()
             self.vision.reset_observation()
             self.output = self.neuro.Calc(input)
@@ -479,6 +482,9 @@ class Creature(Life):
                 self.shooting = True
             else:
                 self.shooting = False
+            return True
+        else:
+            return False
 
     def draw_energy_bar(self, screen: Surface, rx: int, ry: int, rel_size: int):
         bar_red = Color(255, 0, 0)
@@ -500,9 +506,10 @@ class Creature(Life):
 
     def add_specie(self, name: str, generation: int, time: int):
         data = (name, generation, time)
-        if len(self.genealogy) > 0:
-            if data[0] != self.genealogy[len(self.genealogy)-1][0]:
-                self.genealogy.append(data)
+        if len(self.genealogy) == 0:
+            self.genealogy.append(data)
+        elif data[0] != self.genealogy[len(self.genealogy)-1][0]:
+            self.genealogy.append(data)
         while len(self.genealogy) > cfg.GENERATIONS_NUMBER:
             self.genealogy.pop(0)
 
@@ -590,7 +597,7 @@ class Creature(Life):
         neuro2 = signature2[1]
         fizjo_diff: list = []
         neuro_diff: int = 0
-        for f in range(len(fizjo1)):
+        for f in range(min([len(fizjo1), len(fizjo2)])):
             diff = abs(fizjo1[f]-fizjo2[f])
             fizjo_diff.append(diff)
         for n1 in neuro1:
