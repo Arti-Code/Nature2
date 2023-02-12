@@ -391,10 +391,10 @@ class Manager:
                 dists[layer] = dist_nn
                 n = 0
                 base_line.append(round((cfg.NET_BASE + max_nodes_num * v_space)/2))
-                back_box = Rect(4, cfg.SCREEN[1] - (max(base_line))-4, max_net_length+115, max_layer_size+6)
-                #gfxdraw.aapolygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0, 255, 255, 50))
+                back_box = Rect(1, cfg.SCREEN[1] - (max(base_line))-4, max_net_length+110, max_layer_size+4)
+                gfxdraw.aapolygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0, 255, 255, 75))
                 #pygame.draw.polygon(self.screen, Color(0, 255, 255, 50), [(back_box.left+1, back_box.top+1), (back_box.right-2, back_box.top+1), (back_box.right-2, back_box.bottom-2), (back_box.left+1, back_box.bottom-2)], 1)
-                gfxdraw.filled_polygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0,0,0, 75))
+                gfxdraw.filled_polygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0,0,0, 25))
                 for node_key in network.layers[layer].nodes:
                     node: Node = network.nodes[node_key]
                     v = node.value
