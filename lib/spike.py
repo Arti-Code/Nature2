@@ -15,7 +15,7 @@ from lib.life import Life
 
 class Spike(Body):
 
-    COLOR = (255, 255, 0)
+    COLOR = Color(255, 255, 0, 255)
     SPEED = 100
     LIFETIME = 1.0
     SIZE = 2
@@ -30,6 +30,7 @@ class Spike(Body):
         self.shape: Segment = Segment(self, a=-b, b=b, radius=pow)
         self.shape.collision_type = 32
         space.add(self, self.shape)
+        self.life_time = life_time 
         self.lifetime:Timer = Timer(life_time, True, True, "spike", False)
 
     def update(self, dt: float) -> bool:
@@ -45,7 +46,9 @@ class Spike(Body):
         #rel_pos = camera.rel_pos(self.position)
         a = camera.rel_pos(self.position+self.shape.a)
         b = camera.rel_pos(self.position+self.shape.b)
-        draw.line(screen, self.COLOR, a, b, 2)
+        color: Color = self.COLOR
+        color.a = int(255*(self.lifetime.time/self.lifetime.interval))
+        draw.aaline(screen, color, a, b, 1)
 
     def kill(self, space: Space):
         space.remove(self.shape)
