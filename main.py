@@ -1,5 +1,6 @@
 import os
 import sys
+from copy import copy, deepcopy
 from collections import deque
 from math import ceil, cos, floor, hypot
 from math import pi as PI
@@ -78,6 +79,8 @@ class Simulation():
         self.spike_list:        list[Spike] = []
         self.wall_list = []
         self.lands = []
+        self.rocks_checked: bool=False
+        self.first_run: bool=True
         self.sel_idx = 0
         self.FPS = 30
         self.dt = 1/self.FPS
@@ -109,16 +112,16 @@ class Simulation():
         self.map_time = 0.0
         self.follow_time: float = 0.0
         
-    def create_rock2(self, vert_num: int, size: int, position: Vec2d):
-        ang_step = (2*PI)/vert_num
-        vertices = []
-        for v in range(vert_num):
-            vert_ang = v*ang_step + (random()*2-1)*ang_step*0.4
-            x = sin(vert_ang)*size + (random()*2-1)*size*0.4
-            y = cos(vert_ang)*size + (random()*2-1)*size*0.4
-            vertices.append(Vec2d(x, y)+position)
-        rock = Rock(self.screen, self.space, vertices, 3, Color('grey40'), Color('grey'))
-        self.wall_list.append(rock)
+#    def create_rock2(self, vert_num: int, size: int, position: Vec2d):
+#        ang_step = (2*PI)/vert_num
+#        vertices = []
+#        for v in range(vert_num):
+#            vert_ang = v*ang_step + (random()*2-1)*ang_step*0.4
+#            x = sin(vert_ang)*size + (random()*2-1)*size*0.4
+#            y = cos(vert_ang)*size + (random()*2-1)*size*0.4
+#            vertices.append(Vec2d(x, y)+position)
+#        rock = Rock(self.screen, self.space, vertices, 3, Color('grey40'), Color('grey'))
+#        self.wall_list.append(rock)
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         rock: Rock=Rock(self.space, vert_num, size, position, 2)
@@ -127,6 +130,8 @@ class Simulation():
     def create_enviro(self):
         self.time = 0
         self.cycles = 0
+        self.rocks_checked=False
+        self.first_run=True
         self.kill_all_creatures()
         self.kill_all_plants()
         self.kill_things()
@@ -187,6 +192,15 @@ class Simulation():
         for v in to_remove:
             self.ranking1.remove(v)
         to_remove.clear()
+
+    def check_rocks(self):
+        if self.first_run:
+            return
+        self.rocks_checked=True
+        for rock in self.rocks_list:
+            if rock.collide_rock:
+                self.rocks_checked=False
+                rock.position=random_position(cfg.WORLD)
 
     def add_to_ranking(self, creature: Creature):
         ranking = self.ranking1
@@ -500,6 +514,8 @@ class Simulation():
     def update(self):
         update_time: float = time()
         self.calc_time()
+        if not self.rocks_checked:
+            self.check_rocks()
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
         self.update_meat(self.dt)
@@ -731,8 +747,8 @@ class Simulation():
             ranking = self.ranking1
             rank_size = len(ranking)
             rnd = randint(0, rank_size-1)
-            genome = ranking[rnd]
-            ranking[rnd]['fitness'] *= cfg.RANK_DECAY
+            genome = deepcopy(ranking[rnd])
+            ranking[rnd]['fitness'] -= round(ranking[rnd]['fitness']*cfg.RANK_DECAY)
             creature = self.add_creature(genome)
         return creature
 
@@ -765,6 +781,7 @@ class Simulation():
                 self.physics_avg_time = mean(self.physics_single_times)
                 self.physics_single_times = []
             self.clock_step()
+            self.first_run=False
 
 
 

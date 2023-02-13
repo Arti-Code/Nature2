@@ -69,6 +69,13 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
     plant_rock_collisions_end = space.add_collision_handler(6, 8)
     plant_rock_collisions_end.separate = process_plant_rock_collisions_end
 
+    spike_rock_collision = space.add_collision_handler(32, 8)
+    spike_rock_collision.pre_solve = process_spike_rock_collision_begin
+
+    rock_rock_collisions = space.add_collision_handler(8, 8)
+    rock_rock_collisions.pre_solve = process_rock_rock_collisions
+
+
     #DETECTIONS:
     creature_detection = space.add_collision_handler(4, 2)
     creature_detection.pre_solve = process_agents_seeing
@@ -82,8 +89,6 @@ def set_collision_calls(space: Space, dt: float, creatures_num: int):
     rock_detection = space.add_collision_handler(4, 8)
     rock_detection.pre_solve = process_rocks_seeing
 
-    spike_rock_collision = space.add_collision_handler(32, 8)
-    spike_rock_collision.pre_solve = process_spike_rock_collision_begin
 
 
 #^      [[[====DIRECT CONTACTS====]]]
@@ -126,6 +131,7 @@ def process_creature_spike_collision(arbiter, space, data):
     if agent == spike.owner:
         return False
     agent.stunt=True
+    agent.running=False
     agent.timer[1].mod_time(spike.power*(1.3-agent.size/cfg.CREATURE_MAX_SIZE))
     spike.lifetime.mod_time(-spike.lifetime.interval)
     return False
@@ -243,6 +249,15 @@ def process_spike_rock_collision_begin(arbiter, space, data):
     spike: Spike = arbiter.shapes[0].body
     spike.free()
     return False
+
+#?  [[[ROCK-ROCK CONTACT]]]
+def process_rock_rock_collisions(arbiter, space, data):
+    rock1: Rock = arbiter.shapes[0].body
+    rock2: Rock = arbiter.shapes[1].body
+    rock2.collide_rock=True
+    return False
+
+
 #^      [[[====SEEING DETECTION====]]]
 
 #?  [[[SEEING ENEMY]]]
