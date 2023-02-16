@@ -367,19 +367,19 @@ class Manager:
             base_line = []
 
             inp_desc = [
-                'ENE', 'PLA', 'MEA ',
+                'AGT', 'PLA', 'MEA',
                 'ENG', 'HIT',
-                'E-R', 'E-D', 
+                'AGR', 'AGD', 
                 'FAM', 'DNG',
-                'P-R', 'P-D',
-                'M-R', 'M-D',
-                'R-R', 'R-D',
-                'BOR'
+                'PLR', 'PLD',
+                'MER', 'MED',
+                'ROR', 'ROD',
+                'EDG'
             ]
             out_desc = [
-                "MOV", "TUR",
+                "MOV", "ROT",
                 "EAT", "ATK",
-                "HID", "HIT"
+                "HID", "SPK"
             ]
 
             for layer in network.layers:
@@ -394,7 +394,7 @@ class Manager:
                 back_box = Rect(1, cfg.SCREEN[1] - (max(base_line))-4, max_net_length+110, max_layer_size+4)
                 gfxdraw.aapolygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0, 255, 255, 75))
                 #pygame.draw.polygon(self.screen, Color(0, 255, 255, 50), [(back_box.left+1, back_box.top+1), (back_box.right-2, back_box.top+1), (back_box.right-2, back_box.bottom-2), (back_box.left+1, back_box.bottom-2)], 1)
-                gfxdraw.filled_polygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0,0,0, 25))
+                gfxdraw.filled_polygon(self.screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0,0,0, 75))
                 for node_key in network.layers[layer].nodes:
                     node: Node = network.nodes[node_key]
                     v = node.value
@@ -423,8 +423,8 @@ class Manager:
                                 g = 255
                         link_color = Color((r, g, b, a))
                         w = a//50
-                        p0 = (80 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2))
-                        p1 = (80 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2))
+                        p0 = (55 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2))
+                        p1 = (55 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2))
                         pygame.draw.line(self.screen, link_color, p0, p1, w)
                     desc = ''
                     nodes_to_draw.append((node_color, l, n, node.recurrent, dist_nn, desc, v, mem))
@@ -444,26 +444,26 @@ class Manager:
                 v_color = Color(rv, gv, bv)
                 v_color_alfa = Color(rv, gv, bv, 50)
                 black_color = Color(255, 255, 255, 255)
-                gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color)
-                gfxdraw.filled_circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color_alfa)
+                gfxdraw.aacircle(self.screen, 55 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color)
+                gfxdraw.filled_circle(self.screen, 55 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color_alfa)
                 if r:
                     mc = int(6*abs(mem))+2
-                    #gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(mc-1), black_color)
-                    gfxdraw.aacircle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(mc), black_color)
-                    #gfxdraw.circle(self.screen, 80 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(mc-1), black_color)
+                    #gfxdraw.aacircle(self.screen, 55 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(mc-1), black_color)
+                    gfxdraw.aacircle(self.screen, 55 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(mc), black_color)
+                    #gfxdraw.circle(self.screen, 55 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), int(mc-1), black_color)
                 if l == 0:
                     val = network.nodes[network.layers[l].nodes[n]].value
                     text = "{:<2}:{:2> .1f}".format(inp_desc[n], val)
                     self.add_text(text, 4, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
                 elif l == last_layer_idx:
                     val = self.enviro.selected.output[out]
-                    text = "{:<}  {:< .1f}".format(out_desc[out], val)
-                    self.add_text2(text, 90 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 2, Color('white'), False, False, False, True)
+                    text = " {:<}:{:< .1f}".format(out_desc[out], val)
+                    self.add_text2(text, 65 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 2, Color('white'), False, False, False, True)
                     out += 1
                 else:
                     val = network.nodes[network.layers[l].nodes[n]].value
                     text = "{:^1.1f}".format(val)
-                    self.add_text(text, 85 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 5, True, Color('white'))
+                    self.add_text(text, 48 + l * (h_space), cfg.SCREEN[1] - base_line[l] + d*n + round(d/2) - 16, True, Color('white'))
 
     def draw_net2(self, network: Network) -> Surface:
         if not network:
@@ -486,7 +486,7 @@ class Manager:
             base_line = []
             #black_box: Rect=None
             inp_desc = [
-                'ENE', 'PLA', 'MEA ',
+                'ENE', 'PLA', 'MEA',
                 'ENG', 'HIT',
                 'E-R', 'E-D', 
                 'FAM', 'DNG',

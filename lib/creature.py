@@ -27,7 +27,8 @@ class Creature(Life):
     EAT_EYES: Color=Color('yellow')
     NORMAL_EYES: Color=Color('skyblue')
     HIDED_EYES: Color=Color(175,175,175,50)
-    STUNT_EYES: Color=Color('white')
+    STUNT_EYES: Color=Color('limegreen')
+    SPIKES_NUM: list[int] = [0, 1, 1, 1, 3, 5, 7, 9, 13, 15]
 
     def __init__(self, screen: Surface, space: Space, time: int, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
         super().__init__(screen=screen, space=space, collision_tag=collision_tag, position=position)
@@ -142,7 +143,7 @@ class Creature(Life):
         self.signature = genome['signature']
         self.spike_num = genome['spike_num']
         if random() <= 0.1:
-            self.spike_num = choice([5, 6, 8, 12, 16])
+            self.spike_num = self.rand_spike_num()
         return mutations
 
     def random_build(self, color0: Color, color1: Color, color2: Color, color3: Color, time: int):
@@ -161,8 +162,7 @@ class Creature(Life):
         self.power = randint(1, 10)
         self.eyes = randint(1, 10)
         self.speed = randint(1, 10)
-        if random() <= 0.5:
-            self.spike_num = choice([5, 6, 8, 12, 16])
+        self.spike_num = self.rand_spike_num()
         self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
         self.neuro.BuildRandom(cfg.NET, cfg.LINKS_RATE)
         self.nodes_num = self.neuro.GetNodesNum()
@@ -170,6 +170,9 @@ class Creature(Life):
         self.name = random_name(3, True)
         self.first_one = self.name
         self.add_specie(self.name, self.generation, time)
+
+    def rand_spike_num(self) -> int:
+        return choice(self.SPIKES_NUM)
 
     def update_orientation(self):
         self.ahead = self.position+self.rotation_vector*self.size*1.2
@@ -618,6 +621,9 @@ class Creature(Life):
             return False
 
     def is_shooting(self, space: Space):
+        if self.spike_num==0:
+            self.shooting = False
+            return False
         if self.shooting and not self.stunt:
             self.shooting = False
             self.energy -= self.power*cfg.SPIKE_ENG
@@ -627,7 +633,7 @@ class Creature(Life):
             for n in range(num):
                 a = self.angle + n*s
                 pos = self.position + Vec2d(cos(a), sin(a))*self.size*1.1
-                spike: Spike=Spike(space, self, pos, self.power/num, a, 1.2/num)
+                spike: Spike=Spike(space, self, pos, 1.5*self.power/num, a, 1.2/num)
                 spikes.append(spike)
             return spikes
         else:

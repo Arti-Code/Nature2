@@ -16,7 +16,7 @@ class Meat(Life):
     def __init__(self, screen: Surface, space: Space, position: Vec2d, collision_tag: int, energy: int, color0: Color=Color('red'), color1: Color=Color('red4')):
         super().__init__(screen=screen, space=space, collision_tag=collision_tag, position=position)
         self.energy = int(energy/2)
-        self.radius = int(log2(self.energy))
+        self.radius = self.eng_to_radius(self.energy)
         self._color0 = color0
         self._color1 = color1
         self.color0 = color0
@@ -45,20 +45,23 @@ class Meat(Life):
     def update(self, dT: float, selected: Body):
         super().update(dT, selected)
         self.life_time -= dT
-        if self.life_time < 0:
+        if self.life_time <= 0:
             self.life_time = 0
-        if self.energy < 0:
+        if self.energy <= 0:
             self.energy = 0
         alfa = int(200*(self.life_time/cfg.MEAT_TIME))+55
         alfa = clamp(alfa, 0, 255)
         #self._color0.a = alfa
         self.color0 = self._color0
         if self.energy > 0:
-            new_size = clamp(floor(log2(self.energy)), 1, 20)
+            new_size = self.eng_to_radius(self.energy)
             if new_size != self.shape.radius:
                 self.shape.unsafe_set_radius(new_size)
-                self.radius = self.shape.radius
+                self.radius = new_size
 
     def kill(self, space: Space):
         space.remove(self.shape)
         space.remove(self)
+
+    def eng_to_radius(self, eng) -> int:
+        return clamp(floor(log2(eng)/2), 1, 10)
