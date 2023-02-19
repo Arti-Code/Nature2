@@ -229,3 +229,6 @@ lib/__pycache__/species.cpython-39.pyc
 main.html
 lib/__pycache__/camera.cpython-39.pyc
 .gitignore
+lib/__pycache__/sim_stat.cpython-310.pyc
+lib/__pycache__/spike.cpython-310.opt-1.pyc
+lib/__pycache__/spike.cpython-310.pyc

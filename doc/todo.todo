@@ -6,6 +6,7 @@ EVOLUTION :
         ✔ Timer class
         ✔ update hidding
         ✔ update genealogy
+        ✔ impr. memory nodes
     v1.2:
         ✘ fix bokeh error
         ✘ borders as rocks

@@ -10,6 +10,7 @@ __NEWS:__
 
 __UPDATES:__
 * collisions optimalizations
+* memory nodes
 _______________________________
 
 ## __v1.2:__

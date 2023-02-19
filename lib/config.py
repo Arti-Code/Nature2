@@ -1,7 +1,7 @@
 from json import loads
 
 TITLE = "NATURE"
-SUBTITLE = "v1.3.5" 
+SUBTITLE = "v1.3.6" 
 AUTHOR = "2019-2023 Artur Gwoździowski"
 
 class Configuration():
@@ -43,6 +43,8 @@ class Configuration():
         self.REP_TIME = None
         self.MEM_TIME = None
         self.MEAT_TIME = None
+
+        self.MEMORY_SIZE_MAX = None
 
         self.SENSOR_MAX_ANGLE = None
         self.CLOSE_VISION = None
