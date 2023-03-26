@@ -180,12 +180,12 @@ class Layer():
 class Network():
     """Neural Network created for Genetics Algorithms"""
 
-    MUT_BIAS        =   0.12 * cfg.MUTATIONS
-    MUT_WEIGHT      =   0.12 * cfg.MUTATIONS
-    MUT_DEL_LINK    =   0.02 * cfg.MUTATIONS + cfg.DEL_LINK
+    MUT_BIAS        =   0.08 * cfg.MUTATIONS
+    MUT_WEIGHT      =   0.08 * cfg.MUTATIONS
+    MUT_DEL_LINK    =   0.03 * cfg.MUTATIONS + cfg.DEL_LINK
     MUT_ADD_LINK    =   0.04 * cfg.MUTATIONS
-    MUT_DEL_NODE    =   0.03 * cfg.MUTATIONS + cfg.DEL_NODE
-    MUT_ADD_NODE    =   0.05 * cfg.MUTATIONS
+    MUT_DEL_NODE    =   0.04 * cfg.MUTATIONS + cfg.DEL_NODE
+    MUT_ADD_NODE    =   0.04 * cfg.MUTATIONS
     MUT_NODE_TYPE   =   0.08 * cfg.MUTATIONS
     MUT_MEM         =   0.08 * cfg.MUTATIONS
     ADD_NODE_NUM = 0
@@ -266,16 +266,6 @@ class Network():
             if self.nodes[n].type in node_types:
                 selected.append(n)
         return selected
-
-#    def FindBackConnections(self, node_sign: int) -> tuple(list[int|None], list[int|None]):
-#        findings = ([], [])
-#        master: Node = self.nodes[node_sign]
-#        links = master.to_links
-#        for l in links:
-#            findings[1].append(l)
-#            link: Link = self.links[l]
-#            node_key = link.from_node
-#            findings[0].append(node_key)
 
     def GetLayerKeyList(self, layer_types=[TYPE.HIDDEN]):
         selected = []
@@ -505,7 +495,7 @@ class Network():
                 while node_keys:
                     n = choice(node_keys)
                     node_keys.remove(n)
-                    if self.nodes[n].from_links==[] or not self.nodes[n].to_links==[]:
+                    if self.nodes[n].from_links==[] and not self.nodes[n].to_links==[]:
                         if not n in nodes_to_kill:
                             nodes_to_kill.append(n)
                             deleted += 1
@@ -516,48 +506,6 @@ class Network():
             n2key = choice(output_nodes)
             nodes_to_add.append((layer_key, n1key, n2key))
             added += 1
-
-        for l in links_to_kill:
-            self.DeleteLink(l)
-        
-        for n in nodes_to_kill:
-            self.DeleteNode(n)
-
-        for layer, n_from, n_to in nodes_to_add:
-            node_key = self.AddNewNode(layer)
-            self.AddNewLink(n_from, node_key)
-            self.AddNewLink(node_key, n_to)
-        
-        return (added, deleted)
-
-    def MutateNodes_old(self, m=0):
-        nodes_to_kill = []
-        nodes_to_add = []
-        links_to_kill = []
-        hidden_list = []
-        added = 0; deleted = 0
-        hidden_list = self.GetLayerKeyList([TYPE.HIDDEN])
-        input_nodes = self.GetNodeKeyList([TYPE.INPUT])
-        output_nodes = self.GetNodeKeyList([TYPE.OUTPUT])
-        node_keys = self.GetNodeKeyList([TYPE.INPUT, TYPE.HIDDEN, TYPE.OUTPUT])
-        for n in node_keys:
-            if random() < (self.MUT_DEL_NODE+self.MUT_DEL_NODE*m):
-                if self.nodes[n].type == TYPE.HIDDEN:
-                    if not n in nodes_to_kill:
-                        nodes_to_kill.append(n)
-                        deleted += 1
-                elif hidden_list != []:
-                    h = choice(hidden_list)
-                    if not h in nodes_to_kill: 
-                        nodes_to_kill.append(h)
-                        deleted += 1
-        for n in node_keys:
-            if random() < (self.MUT_ADD_NODE+self.MUT_ADD_NODE*m):
-                layer_key = choice(hidden_list)
-                n1key = choice(input_nodes)
-                n2key = choice(output_nodes)
-                nodes_to_add.append((layer_key, n1key, n2key))
-                added += 1
 
         for l in links_to_kill:
             self.DeleteLink(l)
@@ -705,7 +653,7 @@ class Network():
                     nodes0[n]['memory_size'] = 10
                 else:
                     nodes0[n]['memory_size'] = 0
-            node = Node(nodes0[n]['type'], nodes0[n]['activation'], nodes0[n]['bias'], bool(int(nodes0[n]['recurrent'])), nodes0[n]['memory_size'])
+            node = Node(nodes0[n]['type'], nodes0[n]['activation'], nodes0[n]['bias'], bool(int(nodes0[n]['recurrent'])), int(nodes0[n]['memory_size']))
             self.nodes[node_key] = node
             self.nodes[node_key].from_links = json.loads(nodes0[n]['from_links'])
             self.nodes[node_key].to_links = json.loads(nodes0[n]['to_links'])

@@ -326,9 +326,13 @@ class Creature(Life):
         self.update_timers(dt)
         if random() <= 0.01:
             self.open_yaw = not self.open_yaw
-        self.life_time += dt*0.1
+        
         if self.hidding:
+            self.life_time += dt*0.1*cfg.HIDE_MOD
             self.hide_time += dt*0.1
+        else:
+            self.life_time += dt*0.1
+
         if self.running:
             self.run_time -= dt
             if self.run_time < 0:
@@ -338,10 +342,12 @@ class Creature(Life):
             self.run_time += dt
             if self.run_time > cfg.RUN_TIME:
                 self.run_time = cfg.RUN_TIME
+        
         move = self.move(dt)
         self.calc_energy(dt, move)
         self.mem_time -= dt
         self.mem_time = clamp(self.mem_time, 0, cfg.MEM_TIME)
+        
         if self.run_ref_time != 0.0:
             self.run_ref_time -= dt
             if self.run_ref_time < 0.0:
@@ -354,8 +360,12 @@ class Creature(Life):
     def check_reproduction(self, dt) -> bool:
         if self.stunt:
             return False
-        if not self.hidding:
-            self.reproduction_time -= dt
+
+        if self.hidding:
+            self.reproduction_time -= dt*cfg.HIDE_MOD
+        else:
+            self.reproduction_time -= dt*cfg.HIDE_MOD
+
         if self.reproduction_time <= 0:
             self.reproduction_time = 0
             if self.energy >= (self.max_energy*(1-cfg.REP_ENERGY)):
@@ -474,13 +484,13 @@ class Creature(Life):
                         self.running = False
             else:
                 self.running = False
-            if self.output[4] >= 0.5 and self.moving <= cfg.HIDE_SPEED and not self.eating and not self.attacking:
+            if self.output[4] >= 0.5 and self.moving <= cfg.HIDE_SPEED and not self.attacking:
                 self.hidding = True
-                r=self.rng*cfg.HIDE_MOD
-                self.vision.change_range(round(r))
+                #r=self.rng*cfg.HIDE_MOD
+                #self.vision.change_range(round(r))
             else:
                 self.hidding = False
-                self.vision.change_range(self.rng)
+                #self.vision.change_range(self.rng)
             if self.output[5] >= 0.9:
                 self.shooting = True
             else:
@@ -496,7 +506,8 @@ class Creature(Life):
         gfxdraw.box(screen, Rect(rx-10, ry+rel_size+5, round(20*(self.energy/self.max_energy)), 1), bar_green)
   
     def life2fit(self):
-        self.fitness += (self.life_time-self.hide_time)
+        self.fitness += self.life_time
+        #self.fitness += (self.life_time-self.hide_time)
         self.fitness = round(self.fitness)
 
     def kill(self, space: Space):
@@ -633,7 +644,7 @@ class Creature(Life):
             for n in range(num):
                 a = self.angle + n*s
                 pos = self.position + Vec2d(cos(a), sin(a))*self.size*1.1
-                spike: Spike=Spike(space, self, pos, 1.5*self.power/num, a, 1.2/num)
+                spike: Spike=Spike(space, self, pos, 3*self.power/num, a, 1.2/num)
                 spikes.append(spike)
             return spikes
         else:

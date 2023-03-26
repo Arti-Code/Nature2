@@ -109,7 +109,7 @@ def process_creatures_collisions(arbiter, space, data):
     target.position += target_tl + target_tl*target.running
     if agent.attacking and not agent.stunt:
         if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
-            if (size0+randint(0, 6)) > (size1+randint(0, 6)):
+            if (agent.power + agent.size + randint(0, 10)) > (target.power + target.size + randint(0, 10)):
                 dmg = cfg.HIT * ((agent.size+agent.power)/2) * dt
                 target.hidding = False
                 if target.hit(dmg):
