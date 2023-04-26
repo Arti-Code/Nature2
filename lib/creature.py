@@ -90,24 +90,29 @@ class Creature(Life):
         self.create_timers()
         self.shooting: bool=False
         self.stunt: bool = False
+        self.spikes_ready: bool = True
         if len(self.genealogy) == 0:
             self.genealogy.append((self.name, self.generation, time))
         self.calc_color()
 
     def create_timers(self):
-        self.timer: list[Timer] = []
+        self.timer: dict[Timer] = {}
         collide_timer = Timer(random()*cfg.COLLIDE_TIME, False, True, "collide", True)
         stunt_timer = Timer(1, True, False, "stunt", False)
-        self.timer.append(collide_timer)
-        self.timer.append(stunt_timer)
+        spikes_reload = Timer(3, False, False, "spikes_reload", False)
+        self.timer["collisions"] = collide_timer
+        self.timer["stunt"] = stunt_timer
+        self.timer["spikes_reload"] = spikes_reload
 
     def update_timers(self, dt: float):
-        for t in self.timer:
+        for (k, t) in self.timer.items():
             if t.timeout(dt):
                 if t.label == "collide":
                     self.collide_time=True
                 elif t.label == "stunt":
                     self.stunt = False
+                elif t.label == "spikes_reload":
+                    self.spikes_ready = True
 
     def genome_build(self, genome: dict, time: int) -> list[tuple]:
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
@@ -492,7 +497,7 @@ class Creature(Life):
             else:
                 self.hidding = False
                 #self.vision.change_range(self.rng)
-            if self.output[5] >= 0.9:
+            if self.output[5] >= 0.7:
                 self.shooting = True
             else:
                 self.shooting = False
@@ -633,10 +638,12 @@ class Creature(Life):
             return False
 
     def is_shooting(self, space: Space):
-        if self.spike_num==0:
+        if self.spike_num==0 or not self.spikes_ready:
             self.shooting = False
             return False
         if self.shooting and not self.stunt:
+            self.spikes_ready = False
+            self.timer["spikes_reload"].restart()
             self.shooting = False
             self.energy -= self.power*cfg.SPIKE_ENG
             num = self.spike_num

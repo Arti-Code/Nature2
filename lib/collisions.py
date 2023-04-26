@@ -132,7 +132,7 @@ def process_creature_spike_collision(arbiter, space, data):
         return False
     agent.stunt=True
     agent.running=False
-    agent.timer[1].mod_time(spike.power*(1.6-agent.size/cfg.CREATURE_MAX_SIZE))
+    agent.timer["stunt"].mod_time(spike.power*(2.4-agent.size/cfg.CREATURE_MAX_SIZE))
     spike.lifetime.mod_time(-spike.lifetime.interval)
     return False
 
