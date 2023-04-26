@@ -92,8 +92,7 @@ class Creature(Life):
         self.stunt: bool = False
         if len(self.genealogy) == 0:
             self.genealogy.append((self.name, self.generation, time))
-
-        
+        self.calc_color()
 
     def create_timers(self):
         self.timer: list[Timer] = []
@@ -109,7 +108,6 @@ class Creature(Life):
                     self.collide_time=True
                 elif t.label == "stunt":
                     self.stunt = False
-
 
     def genome_build(self, genome: dict, time: int) -> list[tuple]:
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
@@ -177,6 +175,25 @@ class Creature(Life):
     def update_orientation(self):
         self.ahead = self.position+self.rotation_vector*self.size*1.2
 
+    def calc_color(self):
+        self.r: int; self.g: int; self.b: int
+        if self.food >= 6:
+            self.r = round(25.5*self.food)
+            self.g = round(255-25.5*self.food)
+            self.b = 0
+            self.r +=50
+            self.g -=50
+            self.r = clamp(self.r, 0, 255)
+            self.g = clamp(self.g, 0, 255)
+        else:
+            self.r = round(25.5*(self.food-1))
+            self.g = round(255-25.5*(self.food+1))
+            self.b = 0
+            self.r -=50
+            self.g +=50
+            self.r = clamp(self.r, 0, 255)
+            self.g = clamp(self.g, 0, 255)
+
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
         x = self.position.x; y = flipy(self.position.y)
         size = round(self.shape.radius / camera.scale)
@@ -213,8 +230,6 @@ class Creature(Life):
         self.draw_yaw(screen, rel_pos, size, self.open_yaw)
         gfxdraw.aacircle(screen, rx, ry, size, color2)
         gfxdraw.filled_circle(screen, rx, ry, size, color2)
-        gfxdraw.aacircle(screen, rx, ry, size-1, color2)
-        gfxdraw.filled_circle(screen, rx, ry, size-1, color2)
         if self.running:
             shadow = color2
             shadow.a = 80
@@ -227,29 +242,15 @@ class Creature(Life):
                 gfxdraw.filled_circle(screen, sx, sy, size-1, shadow)
         if size > 2:
             r2 = round(size/2)
-            r: int; g: int; b: int
-            if self.food >= 6:
-                r = round(25.5*self.food)
-                g = round(255-25.5*self.food)
-                b = 0
-                r +=50
-                g -=50
-                r = clamp(r, 0, 255)
-                g = clamp(g, 0, 255)
-            else:
-                r = round(25.5*(self.food-1))
-                g = round(255-25.5*(self.food+1))
-                b = 0
-                r -=50
-                g +=50
-                r = clamp(r, 0, 255)
-                g = clamp(g, 0, 255)
-            if self.stunt:
-                gfxdraw.aacircle(screen, rx, ry, r2, Color(50, 50, 50, a))
-                gfxdraw.filled_circle(screen, rx, ry, r2, Color(50, 50, 50, a))
-            else:
-                gfxdraw.aacircle(screen, rx, ry, r2, Color(r, g, b, a))
-                gfxdraw.filled_circle(screen, rx, ry, r2, Color(r, g, b, a))
+        else:
+            r2 = size
+        r: int=self.r; g: int=self.g; b: int=self.b
+        if self.stunt:
+            gfxdraw.aacircle(screen, rx, ry, r2, Color(50, 50, 50, a))
+            gfxdraw.filled_circle(screen, rx, ry, r2, Color(50, 50, 50, a))
+        else:
+            gfxdraw.aacircle(screen, rx, ry, r2, Color(r, g, b, a))
+            gfxdraw.filled_circle(screen, rx, ry, r2, Color(r, g, b, a))
         eyes_color: Color=self.NORMAL_EYES
         if self.stunt:
             eyes_color = self.STUNT_EYES
@@ -262,8 +263,6 @@ class Creature(Life):
         self.vision.draw(screen=screen, camera=camera, rel_position=rel_pos, selected=marked, eye_color=eyes_color)
         self.color0 = self._color0
         self.draw_energy_bar(screen, rx, ry, size)
-        #if self.rock_vec:
-        #    gfxdraw.line(screen, int(rx), int(ry), int(rx+self.rock_vec[0]), int(ry+self.rock_vec[1]), Color('red'))
         return True
 
     def draw_normal(self, screen):
@@ -294,6 +293,8 @@ class Creature(Life):
         return f"T:{(round(sqrt(self.vision.max_dist)))} | E:{(round(sqrt(self.vision.max_dist_enemy)))} | P:{(round(sqrt(self.vision.max_dist_plant)))} | M:{(round(sqrt(self.vision.max_dist_meat)))}", rpos.x, rpos.y
 
     def draw_yaw(self, screen: Surface, pos: Vector2, size: float, open: bool=True):
+        if size <= 3:
+            return
         s: float = size/2
         f: float = self.angle
         n = 24-open*14
