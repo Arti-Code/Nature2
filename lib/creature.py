@@ -644,7 +644,7 @@ class Creature(Life):
             for n in range(num):
                 a = self.angle + n*s
                 pos = self.position + Vec2d(cos(a), sin(a))*self.size*1.1
-                spike: Spike=Spike(space, self, pos, 3*self.power/num, a, 1.2/num)
+                spike: Spike=Spike(space, self, pos, 3*self.power/num, a, 2.0/num)
                 spikes.append(spike)
             return spikes
         else:
