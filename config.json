@@ -54,7 +54,7 @@
   "CHILDS_NUM": 1,
   "MEAT_TIME": 180,
   "DIET_MOD": 0.003,
-  "HIDE_MOD": 0.6,
+  "HIDE_MOD": 0.4,
   
   "MEM_TIME": 0.25,
   "MEMORY_SIZE_MAX": 10,
@@ -67,7 +67,7 @@
   "VEGE2FIT": 0.1,
   "BORN2FIT": 250,
 
-  "RANK_SIZE": 35,
+  "RANK_SIZE": 70,
   "RANK_DECAY": 0.4,
   "AUTO_SAVE_TIME": 500,
   "STAT_PERIOD": 100,

@@ -643,7 +643,7 @@ class GUI():
                 data['L'] = str(round(selected.life_time))
                 data['ENG'] = str(round(selected.energy))
                 data['O'] = str(round(selected.shape.radius))
-                #data['S'] = str(len(selected.plants_in_area))
+                data['R'] = str(round(selected.timer["repro"].get_eta()))
             elif isinstance(selected, Meat):
                 data['L'] = str(round(selected.life_time))
                 data['SPECIE'] = 'MEAT'
@@ -672,8 +672,8 @@ class GUI():
             states.append('A')
         if selected.running:
             states.append('R')
-        if selected.on_water:
-            states.append('W')
+        if selected.stunt:
+            states.append('S')
         if selected.eating:
             states.append('E')
         if selected.pain:

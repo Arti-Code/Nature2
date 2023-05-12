@@ -30,6 +30,7 @@ from lib.rock import Rock
 from lib.sim_stat import Statistics
 from lib.wall import Wall
 from lib.spike import Spike
+from lib.net_draw import draw_net, draw_net2
 
 class Simulation():
 
@@ -61,6 +62,7 @@ class Simulation():
         self.physics_time: float = 0.0
         self.net_timer: float=0.0
         self.net: Surface=None
+
 
     def init_vars(self):
         self.neuro_single_times = []
@@ -427,8 +429,8 @@ class Simulation():
             self.draw_creatures()
             self.draw_spikes()
             self.draw_interface()
-            #if self.net:
-            #    self.screen.blit(self.net, (5, 5), special_flags=BLEND_ALPHA_SDL2)
+            if self.net:
+                self.screen.blit(self.net, dest=(5, cfg.SCREEN[1]-self.net.get_height()-5), area=self.net.get_rect(), special_flags=BLEND_ALPHA_SDL2)
         else:
             self.screen.fill(Color('black'))
         draw_time = time() - draw_time
@@ -479,7 +481,9 @@ class Simulation():
         if self.show_network:
             if self.selected != None:
                 if isinstance(self.selected, Creature):
-                    self.manager.draw_net(self.selected.neuro)
+                    #self.manager.draw_net(self.selected.neuro)
+                    #if self.selected.brain_just_used:
+                    self.net = draw_net2(network=self.selected.neuro)
 
     def draw_spikes(self):
         for spike in self.spike_list:
@@ -565,6 +569,7 @@ class Simulation():
         ### ANALIZE ###
         neuro_time = time()
         for creature in self.creature_list:
+            creature.brain_just_used=False
             creature.analize()
         neuro_time = time()-neuro_time
         self.neuro_single_times.append(neuro_time)

@@ -1,12 +1,14 @@
 from json import loads
 
 TITLE = "NATURE"
-SUBTITLE = "v1.3.8" 
+SUBTITLE = "v1.3.9" 
 AUTHOR = "2019-2023 Artur Gwoździowski"
 
 class Configuration():
 
     def __init__(self, filename: str):
+        #self.norm_font = pygame.font.Font("res/fonts/fira.ttf", 12)
+        #self.small_font = pygame.font.Font("res/fonts/fira.ttf", 8)
         self.WORLD = None
         self.SCREEN = None
         self.ITER = None

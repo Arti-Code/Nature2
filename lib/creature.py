@@ -95,6 +95,7 @@ class Creature(Life):
         if len(self.genealogy) == 0:
             self.genealogy.append((self.name, self.generation, time))
         self.calc_color()
+        self.brain_just_used = False
 
     def create_timers(self):
         self.timer: dict[Timer] = {}
@@ -331,6 +332,7 @@ class Creature(Life):
         gfxdraw.filled_polygon(screen, points, color)
 
     def update(self, dt: float, selected: Body):
+        #self.brain_just_used = False
         super().update(dt, selected)
         if self.collide_time:
             self.collide_time = False
@@ -369,13 +371,10 @@ class Creature(Life):
                 self.hide_ref_time = 0.0
 
     def check_reproduction(self, dt) -> bool:
-        if self.stunt:
+        if self.stunt or self.hidding:
             return False
 
-        if self.hidding:
-            self.reproduction_time -= dt*cfg.HIDE_MOD
-        else:
-            self.reproduction_time -= dt*cfg.HIDE_MOD
+        self.reproduction_time -= dt
 
         if self.reproduction_time <= 0:
             self.reproduction_time = 0
@@ -472,6 +471,7 @@ class Creature(Life):
             input = self.get_input()
             self.vision.reset_observation()
             self.output = self.neuro.Calc(input)
+            self.brain_just_used = True
             self.mem_time = cfg.MEM_TIME
             for o in range(len(self.output)):
                 if o == 1:

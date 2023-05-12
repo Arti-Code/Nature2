@@ -7,6 +7,7 @@ EVOLUTION :
         ✔ update hidding
         ✔ update genealogy
         ✔ impr. memory nodes
+        ✔ improve drawing network performance
     v1.2:
         ✘ fix bokeh error
         ✘ borders as rocks
