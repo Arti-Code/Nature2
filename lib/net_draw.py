@@ -11,7 +11,7 @@ from lib.config import cfg
 from lib.creature import Creature
 from lib.gui import GUI
 from lib.math2 import clamp
-from lib.net import ACTIVATION, Link, Network, Node
+from lib.net import ACTIVATION, Link, Network, Node, MUTATIONS
 
 
 
@@ -41,7 +41,7 @@ def draw_net(screen: Surface, owner: object, network: Network):
             'PLR', 'PLD',
             'MER', 'MED',
             'ROR', 'ROD',
-            'EDG'
+            '???'
         ]
         out_desc = [
             "MOV", "ROT",
@@ -64,6 +64,11 @@ def draw_net(screen: Surface, owner: object, network: Network):
             gfxdraw.filled_polygon(screen, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(0,0,0, 75))
             for node_key in network.layers[layer].nodes:
                 node: Node = network.nodes[node_key]
+                added: bool=False; changed: bool=False
+                if MUTATIONS.ADDED in node.mutations:
+                    added = True
+                elif MUTATIONS.CHANGED in node.mutations:
+                    changed = True
                 v = node.value
                 mean = round(node.mean, 1)
                 mem_size = node.memory_size
@@ -78,41 +83,57 @@ def draw_net(screen: Surface, owner: object, network: Network):
                     (l0, n0) = network.FindNode(from_node_key)
                     g = 0
                     a = abs(round(200*link.signal))+55
-                    if link.signal >= 0:
-                        g = 0
-                        r = 100+155*link.signal
-                        b = 0
-                        if link.recombined:
-                            g = 255
-                    else:
-                        b = 100+abs(155*link.signal)
-                        r = 0
-                        if link.recombined:
-                            g = 255
-                    link_color = Color((r, g, b, a))
+                    link_color: Color
+                    if MUTATIONS.ADDED in link.mutations:
+                        link_color = Color(0, 255, 0, 255)
+                    elif MUTATIONS.CHANGED in link.mutations:
+                        link_color = Color(255, 255, 255, 255)
+                    else:    
+                        if link.signal >= 0:
+                            g = 0
+                            r = 100+155*link.signal
+                            b = 0
+                            if link.recombined:
+                                g = 255
+                        else:
+                            b = 100+abs(155*link.signal)
+                            r = 0
+                            if link.recombined:
+                                g = 255
+                        link_color = Color((r, g, b, a))
                     w = a//50
                     p0 = (55 + l0 * h_space, cfg.SCREEN[1] - base_line[l0] + (dists[l0] * n0) + round(dists[l0]/2))
                     p1 = (55 + l * h_space, cfg.SCREEN[1] - base_line[l] + (dist_nn * n) + round(dist_nn/2))
                     pygame.draw.line(screen, link_color, p0, p1, w)
                 desc = ''
-                nodes_to_draw.append((node_color, l, n, node.recurrent, dist_nn, desc, v, mean, mem_size))
+                nodes_to_draw.append((node_color, l, n, node.recurrent, dist_nn, desc, v, mean, mem_size, added, changed))
                 n += 1
             l += 1
         
         out = 0
         
-        for c, l, n, r, d, desc, v, mean, mem_size in nodes_to_draw:
-            v = clamp(v, -1.0, 1.0)
-            rv=0; gv = 0; bv=0
-            cv = int(6*abs(v))+2
-            if v >= 0:
-                gv = 255
+        for c, l, n, r, d, desc, v, mean, mem_size, added, changed in nodes_to_draw:
+            v_color: Color
+            v_color_alfa: Color
+
+            if MUTATIONS.ADDED in link.mutations:
+                v_color = Color(255, 255, 0, 255)
+                v_color_alfa = Color(0, 255, 0, 50)
+            elif MUTATIONS.CHANGED in link.mutations:
+                v_color = Color(255, 255, 255, 255)
+                v_color_alfa = Color(255, 255, 255, 50)
             else:
-                rv = 255
-                gv = 150
-                bv = 25
-            v_color = Color(rv, gv, bv)
-            v_color_alfa = Color(rv, gv, bv, 50)
+                v = clamp(v, -1.0, 1.0)
+                rv=0; gv = 0; bv=0
+                if v >= 0:
+                    gv = 255
+                else:
+                    rv = 255
+                    gv = 150
+                    bv = 25
+                v_color = Color(rv, gv, bv)
+                v_color_alfa = Color(rv, gv, bv, 50)
+            cv = int(6*abs(v))+2
             black_color = Color(255, 255, 255, 255)
             gfxdraw.aacircle(screen, 55 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color)
             gfxdraw.filled_circle(screen, 55 + l * h_space, cfg.SCREEN[1] - base_line[l] + d*n + round(d/2), cv, v_color_alfa)

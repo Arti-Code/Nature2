@@ -310,3 +310,527 @@ saves/M/303184.json
 saves/M/303684.json
 saves/M/304184.json
 saves/M/304684.json
+lib/__pycache__/camera.cpython-311.pyc
+lib/__pycache__/collisions.cpython-311.pyc
+lib/__pycache__/config.cpython-311.pyc
+lib/__pycache__/creature.cpython-311.pyc
+lib/__pycache__/gui.cpython-311.pyc
+lib/__pycache__/life.cpython-311.pyc
+lib/__pycache__/manager.cpython-311.pyc
+lib/__pycache__/math2.cpython-311.pyc
+lib/__pycache__/meat.cpython-311.pyc
+lib/__pycache__/net_draw.cpython-311.opt-1.pyc
+lib/__pycache__/net_draw.cpython-311.pyc
+lib/__pycache__/net.cpython-311.pyc
+lib/__pycache__/plant.cpython-311.pyc
+lib/__pycache__/rock.cpython-311.pyc
+lib/__pycache__/sim_stat.cpython-311.opt-1.pyc
+lib/__pycache__/sim_stat.cpython-311.pyc
+lib/__pycache__/species.cpython-311.pyc
+lib/__pycache__/spike.cpython-311.opt-1.pyc
+lib/__pycache__/spike.cpython-311.pyc
+lib/__pycache__/utils.cpython-311.opt-1.pyc
+lib/__pycache__/utils.cpython-311.pyc
+lib/__pycache__/vision.cpython-311.pyc
+lib/__pycache__/wall.cpython-311.pyc
+output/evo.exe
+saves/Universum/223.json
+saves/Universum/723.json
+saves/Universum/1099.json
+saves/Universum/1599.json
+saves/Universum/2066.json
+saves/Universum/2403.json
+saves/Universum/config.json
+saves/Universum/saves.json
+saves/Universum2/223.json
+saves/Universum2/723.json
+saves/Universum2/1099.json
+saves/Universum2/1599.json
+saves/Universum2/2066.json
+saves/Universum2/2403.json
+saves/Universum2/config.json
+saves/Universum2/saves.json
+saves/Universum3/500.json
+saves/Universum3/1000.json
+saves/Universum3/1500.json
+saves/Universum3/2000.json
+saves/Universum3/2500.json
+saves/Universum3/3000.json
+saves/Universum3/3500.json
+saves/Universum3/4000.json
+saves/Universum3/4500.json
+saves/Universum3/5000.json
+saves/Universum3/5500.json
+saves/Universum3/6000.json
+saves/Universum3/6500.json
+saves/Universum3/7000.json
+saves/Universum3/7500.json
+saves/Universum3/8000.json
+saves/Universum3/8500.json
+saves/Universum3/9000.json
+saves/Universum3/9500.json
+saves/Universum3/10000.json
+saves/Universum3/10500.json
+saves/Universum3/11000.json
+saves/Universum3/11500.json
+saves/Universum3/12000.json
+saves/Universum3/12500.json
+saves/Universum3/13000.json
+saves/Universum3/13500.json
+saves/Universum3/14000.json
+saves/Universum3/14500.json
+saves/Universum3/15000.json
+saves/Universum3/15500.json
+saves/Universum3/16000.json
+saves/Universum3/16500.json
+saves/Universum3/17000.json
+saves/Universum3/17500.json
+saves/Universum3/18000.json
+saves/Universum3/18500.json
+saves/Universum3/18687.json
+saves/Universum3/18922.json
+saves/Universum3/19422.json
+saves/Universum3/19922.json
+saves/Universum3/20422.json
+saves/Universum3/20922.json
+saves/Universum3/21422.json
+saves/Universum3/21922.json
+saves/Universum3/22422.json
+saves/Universum3/22922.json
+saves/Universum3/23422.json
+saves/Universum3/23922.json
+saves/Universum3/24422.json
+saves/Universum3/24922.json
+saves/Universum3/25422.json
+saves/Universum3/25922.json
+saves/Universum3/26422.json
+saves/Universum3/26922.json
+saves/Universum3/27422.json
+saves/Universum3/27922.json
+saves/Universum3/28422.json
+saves/Universum3/28922.json
+saves/Universum3/29422.json
+saves/Universum3/29922.json
+saves/Universum3/30422.json
+saves/Universum3/30922.json
+saves/Universum3/31422.json
+saves/Universum3/31922.json
+saves/Universum3/32422.json
+saves/Universum3/32922.json
+saves/Universum3/33422.json
+saves/Universum3/33922.json
+saves/Universum3/34422.json
+saves/Universum3/34922.json
+saves/Universum3/35422.json
+saves/Universum3/35922.json
+saves/Universum3/36422.json
+saves/Universum3/36922.json
+saves/Universum3/37422.json
+saves/Universum3/37922.json
+saves/Universum3/38422.json
+saves/Universum3/38922.json
+saves/Universum3/39422.json
+saves/Universum3/39922.json
+saves/Universum3/40422.json
+saves/Universum3/40922.json
+saves/Universum3/41422.json
+saves/Universum3/41922.json
+saves/Universum3/42422.json
+saves/Universum3/42922.json
+saves/Universum3/43422.json
+saves/Universum3/43553.json
+saves/Universum3/44053.json
+saves/Universum3/44553.json
+saves/Universum3/45053.json
+saves/Universum3/45553.json
+saves/Universum3/46053.json
+saves/Universum3/46553.json
+saves/Universum3/47053.json
+saves/Universum3/47553.json
+saves/Universum3/48053.json
+saves/Universum3/48553.json
+saves/Universum3/49053.json
+saves/Universum3/49553.json
+saves/Universum3/50053.json
+saves/Universum3/50553.json
+saves/Universum3/51053.json
+saves/Universum3/51553.json
+saves/Universum3/52053.json
+saves/Universum3/52553.json
+saves/Universum3/53053.json
+saves/Universum3/53553.json
+saves/Universum3/54053.json
+saves/Universum3/54553.json
+saves/Universum3/55053.json
+saves/Universum3/55553.json
+saves/Universum3/56053.json
+saves/Universum3/56553.json
+saves/Universum3/57053.json
+saves/Universum3/57553.json
+saves/Universum3/58053.json
+saves/Universum3/58553.json
+saves/Universum3/59053.json
+saves/Universum3/59553.json
+saves/Universum3/60053.json
+saves/Universum3/60553.json
+saves/Universum3/61053.json
+saves/Universum3/61553.json
+saves/Universum3/62053.json
+saves/Universum3/62553.json
+saves/Universum3/63053.json
+saves/Universum3/63553.json
+saves/Universum3/64053.json
+saves/Universum3/64553.json
+saves/Universum3/65053.json
+saves/Universum3/65553.json
+saves/Universum3/66053.json
+saves/Universum3/66553.json
+saves/Universum3/67054.json
+saves/Universum3/67554.json
+saves/Universum3/68055.json
+saves/Universum3/68556.json
+saves/Universum3/68639.json
+saves/Universum3/68686.json
+saves/Universum3/69139.json
+saves/Universum3/69548.json
+saves/Universum3/70048.json
+saves/Universum3/70548.json
+saves/Universum3/71048.json
+saves/Universum3/71548.json
+saves/Universum3/72048.json
+saves/Universum3/72548.json
+saves/Universum3/73048.json
+saves/Universum3/73136.json
+saves/Universum3/73196.json
+saves/Universum3/73696.json
+saves/Universum3/74196.json
+saves/Universum3/74696.json
+saves/Universum3/75196.json
+saves/Universum3/75696.json
+saves/Universum3/76196.json
+saves/Universum3/76696.json
+saves/Universum3/77196.json
+saves/Universum3/77696.json
+saves/Universum3/78196.json
+saves/Universum3/78696.json
+saves/Universum3/79196.json
+saves/Universum3/79696.json
+saves/Universum3/80196.json
+saves/Universum3/80696.json
+saves/Universum3/81196.json
+saves/Universum3/81696.json
+saves/Universum3/82196.json
+saves/Universum3/82696.json
+saves/Universum3/83196.json
+saves/Universum3/83696.json
+saves/Universum3/84196.json
+saves/Universum3/84696.json
+saves/Universum3/85196.json
+saves/Universum3/85696.json
+saves/Universum3/86196.json
+saves/Universum3/86696.json
+saves/Universum3/87196.json
+saves/Universum3/87696.json
+saves/Universum3/88196.json
+saves/Universum3/88696.json
+saves/Universum3/89196.json
+saves/Universum3/89696.json
+saves/Universum3/90196.json
+saves/Universum3/90696.json
+saves/Universum3/91196.json
+saves/Universum3/91696.json
+saves/Universum3/92196.json
+saves/Universum3/92696.json
+saves/Universum3/93196.json
+saves/Universum3/93696.json
+saves/Universum3/94196.json
+saves/Universum3/94696.json
+saves/Universum3/95196.json
+saves/Universum3/95696.json
+saves/Universum3/96196.json
+saves/Universum3/96696.json
+saves/Universum3/97196.json
+saves/Universum3/97696.json
+saves/Universum3/98196.json
+saves/Universum3/98696.json
+saves/Universum3/99196.json
+saves/Universum3/99696.json
+saves/Universum3/100196.json
+saves/Universum3/100696.json
+saves/Universum3/101196.json
+saves/Universum3/101696.json
+saves/Universum3/102196.json
+saves/Universum3/102343.json
+saves/Universum3/102843.json
+saves/Universum3/103343.json
+saves/Universum3/103843.json
+saves/Universum3/104343.json
+saves/Universum3/104843.json
+saves/Universum3/105343.json
+saves/Universum3/105843.json
+saves/Universum3/106343.json
+saves/Universum3/106843.json
+saves/Universum3/107343.json
+saves/Universum3/107843.json
+saves/Universum3/108343.json
+saves/Universum3/108843.json
+saves/Universum3/109343.json
+saves/Universum3/109843.json
+saves/Universum3/110343.json
+saves/Universum3/110843.json
+saves/Universum3/111343.json
+saves/Universum3/111843.json
+saves/Universum3/112343.json
+saves/Universum3/112843.json
+saves/Universum3/113343.json
+saves/Universum3/113843.json
+saves/Universum3/114343.json
+saves/Universum3/114843.json
+saves/Universum3/114883.json
+saves/Universum3/115383.json
+saves/Universum3/115883.json
+saves/Universum3/116383.json
+saves/Universum3/116883.json
+saves/Universum3/117383.json
+saves/Universum3/117883.json
+saves/Universum3/118383.json
+saves/Universum3/118883.json
+saves/Universum3/119383.json
+saves/Universum3/119883.json
+saves/Universum3/120383.json
+saves/Universum3/120883.json
+saves/Universum3/121383.json
+saves/Universum3/121883.json
+saves/Universum3/122383.json
+saves/Universum3/122883.json
+saves/Universum3/123383.json
+saves/Universum3/123883.json
+saves/Universum3/124383.json
+saves/Universum3/124883.json
+saves/Universum3/125383.json
+saves/Universum3/125883.json
+saves/Universum3/126169.json
+saves/Universum3/126669.json
+saves/Universum3/127169.json
+saves/Universum3/127669.json
+saves/Universum3/128169.json
+saves/Universum3/128213.json
+saves/Universum3/config.json
+saves/Universum3/saves.json
+.gitignore
+saves/Universum/config.json
+saves/Universum3 copy/500.json
+saves/Universum3 copy/1000.json
+saves/Universum3 copy/1500.json
+saves/Universum3 copy/2000.json
+saves/Universum3 copy/2500.json
+saves/Universum3 copy/3000.json
+saves/Universum3 copy/3500.json
+saves/Universum3 copy/4000.json
+saves/Universum3 copy/4500.json
+saves/Universum3 copy/5000.json
+saves/Universum3 copy/5500.json
+saves/Universum3 copy/6000.json
+saves/Universum3 copy/6500.json
+saves/Universum3 copy/7000.json
+saves/Universum3 copy/7500.json
+saves/Universum3 copy/8000.json
+saves/Universum3 copy/8500.json
+saves/Universum3 copy/9000.json
+saves/Universum3 copy/9500.json
+saves/Universum3 copy/10000.json
+saves/Universum3 copy/10500.json
+saves/Universum3 copy/11000.json
+saves/Universum3 copy/11500.json
+saves/Universum3 copy/12000.json
+saves/Universum3 copy/12500.json
+saves/Universum3 copy/13000.json
+saves/Universum3 copy/13500.json
+saves/Universum3 copy/14000.json
+saves/Universum3 copy/14500.json
+saves/Universum3 copy/15000.json
+saves/Universum3 copy/15500.json
+saves/Universum3 copy/16000.json
+saves/Universum3 copy/16500.json
+saves/Universum3 copy/17000.json
+saves/Universum3 copy/17500.json
+saves/Universum3 copy/18000.json
+saves/Universum3 copy/18500.json
+saves/Universum3 copy/18687.json
+saves/Universum3 copy/18922.json
+saves/Universum3 copy/19422.json
+saves/Universum3 copy/19922.json
+saves/Universum3 copy/20422.json
+saves/Universum3 copy/20922.json
+saves/Universum3 copy/21422.json
+saves/Universum3 copy/21922.json
+saves/Universum3 copy/22422.json
+saves/Universum3 copy/22922.json
+saves/Universum3 copy/23422.json
+saves/Universum3 copy/23922.json
+saves/Universum3 copy/24422.json
+saves/Universum3 copy/24922.json
+saves/Universum3 copy/25422.json
+saves/Universum3 copy/25922.json
+saves/Universum3 copy/26422.json
+saves/Universum3 copy/26922.json
+saves/Universum3 copy/27422.json
+saves/Universum3 copy/27922.json
+saves/Universum3 copy/28422.json
+saves/Universum3 copy/28922.json
+saves/Universum3 copy/29422.json
+saves/Universum3 copy/29922.json
+saves/Universum3 copy/30422.json
+saves/Universum3 copy/30922.json
+saves/Universum3 copy/31422.json
+saves/Universum3 copy/31922.json
+saves/Universum3 copy/32422.json
+saves/Universum3 copy/32922.json
+saves/Universum3 copy/33422.json
+saves/Universum3 copy/33922.json
+saves/Universum3 copy/34422.json
+saves/Universum3 copy/34922.json
+saves/Universum3 copy/35422.json
+saves/Universum3 copy/35922.json
+saves/Universum3 copy/36422.json
+saves/Universum3 copy/36922.json
+saves/Universum3 copy/37422.json
+saves/Universum3 copy/37922.json
+saves/Universum3 copy/38422.json
+saves/Universum3 copy/38922.json
+saves/Universum3 copy/39422.json
+saves/Universum3 copy/39922.json
+saves/Universum3 copy/40422.json
+saves/Universum3 copy/40922.json
+saves/Universum3 copy/41422.json
+saves/Universum3 copy/41922.json
+saves/Universum3 copy/42422.json
+saves/Universum3 copy/42922.json
+saves/Universum3 copy/43422.json
+saves/Universum3 copy/43553.json
+saves/Universum3 copy/44053.json
+saves/Universum3 copy/44553.json
+saves/Universum3 copy/45053.json
+saves/Universum3 copy/45553.json
+saves/Universum3 copy/46053.json
+saves/Universum3 copy/46553.json
+saves/Universum3 copy/47053.json
+saves/Universum3 copy/47553.json
+saves/Universum3 copy/48053.json
+saves/Universum3 copy/48553.json
+saves/Universum3 copy/49053.json
+saves/Universum3 copy/49553.json
+saves/Universum3 copy/50053.json
+saves/Universum3 copy/50553.json
+saves/Universum3 copy/51053.json
+saves/Universum3 copy/51553.json
+saves/Universum3 copy/52053.json
+saves/Universum3 copy/52553.json
+saves/Universum3 copy/53053.json
+saves/Universum3 copy/53553.json
+saves/Universum3 copy/54053.json
+saves/Universum3 copy/54553.json
+saves/Universum3 copy/55053.json
+saves/Universum3 copy/55553.json
+saves/Universum3 copy/56053.json
+saves/Universum3 copy/56553.json
+saves/Universum3 copy/57053.json
+saves/Universum3 copy/57553.json
+saves/Universum3 copy/58053.json
+saves/Universum3 copy/58553.json
+saves/Universum3 copy/59053.json
+saves/Universum3 copy/59553.json
+saves/Universum3 copy/60053.json
+saves/Universum3 copy/60553.json
+saves/Universum3 copy/61053.json
+saves/Universum3 copy/61553.json
+saves/Universum3 copy/62053.json
+saves/Universum3 copy/62553.json
+saves/Universum3 copy/63053.json
+saves/Universum3 copy/63553.json
+saves/Universum3 copy/64053.json
+saves/Universum3 copy/64553.json
+saves/Universum3 copy/65053.json
+saves/Universum3 copy/65553.json
+saves/Universum3 copy/66053.json
+saves/Universum3 copy/66553.json
+saves/Universum3 copy/67054.json
+saves/Universum3 copy/67554.json
+saves/Universum3 copy/68055.json
+saves/Universum3 copy/68556.json
+saves/Universum3 copy/68639.json
+saves/Universum3 copy/68686.json
+saves/Universum3 copy/69139.json
+saves/Universum3 copy/69548.json
+saves/Universum3 copy/70048.json
+saves/Universum3 copy/70548.json
+saves/Universum3 copy/71048.json
+saves/Universum3 copy/71548.json
+saves/Universum3 copy/72048.json
+saves/Universum3 copy/72548.json
+saves/Universum3 copy/73048.json
+saves/Universum3 copy/73136.json
+saves/Universum3 copy/73196.json
+saves/Universum3 copy/73696.json
+saves/Universum3 copy/74196.json
+saves/Universum3 copy/74696.json
+saves/Universum3 copy/75196.json
+saves/Universum3 copy/75696.json
+saves/Universum3 copy/76196.json
+saves/Universum3 copy/76696.json
+saves/Universum3 copy/77196.json
+saves/Universum3 copy/77696.json
+saves/Universum3 copy/78196.json
+saves/Universum3 copy/78696.json
+saves/Universum3 copy/79196.json
+saves/Universum3 copy/79696.json
+saves/Universum3 copy/80196.json
+saves/Universum3 copy/80696.json
+saves/Universum3 copy/81196.json
+saves/Universum3 copy/81696.json
+saves/Universum3 copy/82196.json
+saves/Universum3 copy/82696.json
+saves/Universum3 copy/83196.json
+saves/Universum3 copy/83696.json
+saves/Universum3 copy/84196.json
+saves/Universum3 copy/84696.json
+saves/Universum3 copy/85196.json
+saves/Universum3 copy/85696.json
+saves/Universum3 copy/86196.json
+saves/Universum3 copy/86696.json
+saves/Universum3 copy/87196.json
+saves/Universum3 copy/87696.json
+saves/Universum3 copy/88196.json
+saves/Universum3 copy/88696.json
+saves/Universum3 copy/89196.json
+saves/Universum3 copy/89696.json
+saves/Universum3 copy/90196.json
+saves/Universum3 copy/90696.json
+saves/Universum3 copy/91196.json
+saves/Universum3 copy/91696.json
+saves/Universum3 copy/92196.json
+saves/Universum3 copy/92696.json
+saves/Universum3 copy/93196.json
+saves/Universum3 copy/93696.json
+saves/Universum3 copy/94196.json
+saves/Universum3 copy/94696.json
+saves/Universum3 copy/95196.json
+saves/Universum3 copy/95696.json
+saves/Universum3 copy/96196.json
+saves/Universum3 copy/96696.json
+saves/Universum3 copy/97196.json
+saves/Universum3 copy/97696.json
+saves/Universum3 copy/98196.json
+saves/Universum3 copy/98696.json
+saves/Universum3 copy/99196.json
+saves/Universum3 copy/99696.json
+saves/Universum3 copy/100196.json
+saves/Universum3 copy/100696.json
+saves/Universum3 copy/101196.json
+saves/Universum3 copy/101696.json
+saves/Universum3 copy/102196.json
+saves/Universum3 copy/102343.json
+saves/Universum3 copy/config.json
+saves/Universum3 copy/saves.json
+saves/Universum/config.json
+saves/Universum/config.json

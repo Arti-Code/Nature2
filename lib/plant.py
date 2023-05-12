@@ -36,7 +36,7 @@ class Plant(Life):
 
     def create_timers(self):
         self.timer: list[Timer] = []
-        collide_timer = Timer(random()*cfg.COLLIDE_TIME*5, False, True, "collide", True)
+        collide_timer = Timer(random()*15, False, True, "collide", True)
         self.timer.append(collide_timer)
 
     def update_timers(self, dt: float):
@@ -53,8 +53,7 @@ class Plant(Life):
 
     def update(self, dt: float, selected: Body):
         super().update(dt, selected)
-        if self.collide_time:
-            self.collide_time = False
+        
         self.update_timers(dt)
         if self.energy < self.max_energy and self.energy > 0:
             self.energy += cfg.PLANT_GROWTH*dt
@@ -72,6 +71,9 @@ class Plant(Life):
         self.color1 = self._color1
 
     def check_reproduction(self) -> bool:
+        if not self.collide_time:
+            return False
+        self.collide_time = False
         if self.energy >= self.max_energy:
             return True
         else:

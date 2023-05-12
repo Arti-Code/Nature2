@@ -10,6 +10,10 @@ from lib.math2 import (binary, clamp, linear, relu, rev_binary, sigmoid, tanh,
                        wide_binary)
 
 
+class MUTATIONS(IntEnum):
+    ADDED        = 0
+    CHANGED      = 1
+
 class TYPE(IntEnum):
 
     INPUT = 0
@@ -45,6 +49,9 @@ class Node():
         self.recurrent = recurrent
         self.memory_size = 0
         self.mean: float = 0
+        self.mutations: list(MUTATIONS) = []
+        #self.mutations.append(MUTATIONS.BIAS)
+        #self.mutations.append(MUTATIONS.LINK_NEW)
 
         self.activation = ACTIVATION.TANH
         self.recombined = False
@@ -145,6 +152,7 @@ class Link():
         self.weight = weight
         self.recombined = False
         self.signal: float=0.0
+        self.mutations: list(MUTATIONS) = []
 
     def CalcSignal(self, input: float) -> float:
         self.signal = input * self.weight
@@ -182,7 +190,7 @@ class Network():
 
     MUT_BIAS        =   0.08 * cfg.MUTATIONS
     MUT_WEIGHT      =   0.08 * cfg.MUTATIONS
-    MUT_DEL_LINK    =   0.03 * cfg.MUTATIONS + cfg.DEL_LINK
+    MUT_DEL_LINK    =   0.04 * cfg.MUTATIONS + cfg.DEL_LINK
     MUT_ADD_LINK    =   0.04 * cfg.MUTATIONS
     MUT_DEL_NODE    =   0.04 * cfg.MUTATIONS + cfg.DEL_NODE
     MUT_ADD_NODE    =   0.04 * cfg.MUTATIONS
@@ -313,7 +321,7 @@ class Network():
         self.layers[layer_key].AddNode(node_key)
         return node_key
 
-    def AddNewLink(self, from_node, to_node):
+    def AddNewLink(self, from_node, to_node) -> int:
         link = Link(from_node, to_node, self.RandomWeight())
         link_key = self.NewSignature(4)
         while link_key in self.links:
@@ -431,9 +439,11 @@ class Network():
         n = choice(node_keys)
         if (random()) < self.MUT_BIAS+self.MUT_BIAS*m:
             self.nodes[n].RandomBias()
+            self.nodes[n].mutations.append(MUTATIONS.CHANGED)
         if self.nodes[n].recurrent:
             if (random()) < self.MUT_MEM+self.MUT_MEM*m:
                 self.nodes[n].change_memory_size()
+                self.nodes[n].mutations.append(MUTATIONS.CHANGED)
 
     def MutateLinks(self, m=0):
         links_to_kill = []
@@ -469,7 +479,8 @@ class Network():
             self.DeleteLink(l)
         links_to_kill.clear()
         for (node0, node1) in links_to_add:
-            self.AddNewLink(node0, node1)
+            link_key = self.AddNewLink(node0, node1)
+            self.links[link_key].mutations.append(MUTATIONS.ADDED)
         links_to_add.clear()
         return (added, deleted)
     
@@ -478,6 +489,7 @@ class Network():
             l = choice([*self.links.keys()])
             if (random()) < self.MUT_WEIGHT+self.MUT_WEIGHT*m:
                 self.links[l].RandomWeight()
+                self.links[l].mutations.append(MUTATIONS.CHANGED)
 
     def MutateNodes(self, m=0):
         nodes_to_kill = []
@@ -515,8 +527,11 @@ class Network():
 
         for layer, n_from, n_to in nodes_to_add:
             node_key = self.AddNewNode(layer)
-            self.AddNewLink(n_from, node_key)
-            self.AddNewLink(node_key, n_to)
+            self.nodes[node_key].mutations.append(MUTATIONS.ADDED)
+            l1 = self.AddNewLink(n_from, node_key)
+            l0 = self.AddNewLink(node_key, n_to)
+            self.links[l0].mutations.append(MUTATIONS.CHANGED)
+            self.links[l0].mutations.append(MUTATIONS.CHANGED)
         
         return (added, deleted)
     
@@ -526,6 +541,7 @@ class Network():
             node_keys = self.GetNodeKeyList([TYPE.INPUT, TYPE.HIDDEN, TYPE.OUTPUT])
             n = choice(node_keys)
             node: Node = self.nodes[n]
+            node.mutations.append(MUTATIONS.CHANGED)
             n_type = choice(['tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'memory'])
             if n_type == 'memory':
                 node.recurrent = not node.recurrent
@@ -541,6 +557,7 @@ class Network():
             node_keys = self.GetNodeKeyList([TYPE.INPUT, TYPE.HIDDEN, TYPE.OUTPUT])
             n = choice(node_keys)
             self.nodes[n].recurrent = not self.nodes[n].recurrent
+            self.nodes[n].mutations.append(MUTATIONS.CHANGED)
             if self.nodes[n].recurrent:
                 self.nodes[n].rand_memory_size()
                 self.nodes[n].set_as_memory(self.nodes[n].memory_size)
@@ -578,8 +595,10 @@ class Network():
         clone.links = deepcopy(self.links)
         for node_key in clone.nodes:
             clone.nodes[node_key].recombined = False
+            clone.nodes[node_key].mutations = []
         for link_key in clone.links:
             clone.links[link_key].recombined = False
+            clone.links[link_key].mutations = []
         clone.log = deepcopy(self.log)
         clone.log.append("___CLONE___")
         return clone

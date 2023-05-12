@@ -91,6 +91,7 @@ class Creature(Life):
         self.shooting: bool=False
         self.stunt: bool = False
         self.spikes_ready: bool = True
+        self.check_edges_needed: bool = False
         if len(self.genealogy) == 0:
             self.genealogy.append((self.name, self.generation, time))
         self.calc_color()
@@ -99,10 +100,12 @@ class Creature(Life):
         self.timer: dict[Timer] = {}
         collide_timer = Timer(random()*cfg.COLLIDE_TIME, False, True, "collide", True)
         stunt_timer = Timer(1, True, False, "stunt", False)
-        spikes_reload = Timer(3, False, False, "spikes_reload", False)
+        spikes_reload = Timer(8, False, False, "spikes_reload", False)
+        edges = Timer(2, False, True, "edges", True)
         self.timer["collisions"] = collide_timer
         self.timer["stunt"] = stunt_timer
         self.timer["spikes_reload"] = spikes_reload
+        self.timer["edges"] = edges
 
     def update_timers(self, dt: float):
         for (k, t) in self.timer.items():
@@ -113,6 +116,8 @@ class Creature(Life):
                     self.stunt = False
                 elif t.label == "spikes_reload":
                     self.spikes_ready = True
+                elif t.label == "edges":
+                    self.check_edges_needed = True
 
     def genome_build(self, genome: dict, time: int) -> list[tuple]:
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
@@ -454,7 +459,7 @@ class Creature(Life):
         input.append(md)
         input.append(rr)
         input.append(rd)
-        input.append(int(self.border))
+        #input.append(int(self.border))
         self.pain = False
         self.reset_collisions()
         return input
@@ -490,14 +495,14 @@ class Creature(Life):
                         self.running = False
             else:
                 self.running = False
-            if self.output[4] >= 0.5 and self.moving <= cfg.HIDE_SPEED and not self.attacking:
+            if self.output[4] >= 0.5 and self.moving <= cfg.HIDE_SPEED and not self.attacking and not self.eating:
                 self.hidding = True
                 #r=self.rng*cfg.HIDE_MOD
                 #self.vision.change_range(round(r))
             else:
                 self.hidding = False
                 #self.vision.change_range(self.rng)
-            if self.output[5] >= 0.7:
+            if self.output[5] >= 0.9:
                 self.shooting = True
             else:
                 self.shooting = False
@@ -512,7 +517,7 @@ class Creature(Life):
         gfxdraw.box(screen, Rect(rx-10, ry+rel_size+5, round(20*(self.energy/self.max_energy)), 1), bar_green)
   
     def life2fit(self):
-        self.fitness += self.life_time
+        #self.fitness += self.life_time
         #self.fitness += (self.life_time-self.hide_time)
         self.fitness = round(self.fitness)
 

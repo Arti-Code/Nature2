@@ -109,7 +109,7 @@ def process_creatures_collisions(arbiter, space, data):
     target.position += target_tl + target_tl*target.running
     if agent.attacking and not agent.stunt:
         if abs(agent.rotation_vector.get_angle_degrees_between(arbiter.normal)) < 60:
-            if (agent.power + agent.size + randint(0, 10)) > (target.power + target.size + randint(0, 10)):
+            if target.stunt or (agent.power + agent.size + randint(0, 10)) > (target.power + target.size + randint(0, 10)):
                 dmg = cfg.HIT * ((agent.size+agent.power)/2) * dt
                 target.hidding = False
                 if target.hit(dmg):
@@ -132,7 +132,7 @@ def process_creature_spike_collision(arbiter, space, data):
         return False
     agent.stunt=True
     agent.running=False
-    agent.timer["stunt"].mod_time(spike.power*(2.4-agent.size/cfg.CREATURE_MAX_SIZE))
+    agent.timer["stunt"].mod_time(spike.power*(1.4-agent.size/cfg.CREATURE_MAX_SIZE))
     spike.lifetime.mod_time(-spike.lifetime.interval)
     return False
 

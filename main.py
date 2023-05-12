@@ -77,7 +77,7 @@ class Simulation():
         self.meat_list:         list[Meat] = []
         self.rocks_list:        list[Rock] = []
         self.spike_list:        list[Spike] = []
-        self.wall_list = []
+        self.wall_list:         list[Wall] = []
         self.lands = []
         self.rocks_checked: bool=False
         self.first_run: bool=True
@@ -135,12 +135,13 @@ class Simulation():
         self.kill_all_creatures()
         self.kill_all_plants()
         self.kill_things()
-        edges = [(0, 0), (cfg.WORLD[0]-1, 0), (cfg.WORLD[0]-1, cfg.WORLD[1]-1), (0, cfg.WORLD[1]-1), (0, 0)]
+        """ edges = [(0, 0), (cfg.WORLD[0]-1, 0), (cfg.WORLD[0]-1, cfg.WORLD[1]-1), (0, cfg.WORLD[1]-1), (0, 0)]
         for e in range(4):
             p1 = edges[e]
             p2 = edges[e+1]
             wall = self.add_wall(p1, p2, 5)
-            self.wall_list.append(wall)
+            self.wall_list.append(wall) """
+        self.create_borders()
         self.create_rocks(cfg.ROCK_NUM)
 
         for c in range(cfg.CREATURE_INIT_NUM):
@@ -206,7 +207,8 @@ class Simulation():
         ranking = self.ranking1
         ranking.sort(key=sort_by_fitness, reverse=True)
         for rank in reversed(ranking):
-            if rank['name'] == creature.name or rank['name'] in creature.genealogy:
+            #if rank['name'] == creature.name or rank['name'] in creature.genealogy:
+            if rank['name'] == creature.name or rank['first_one'] in creature.first_one:
                 if creature.fitness >= rank['fitness']:
                     ranking.remove(rank)
                     ranking.append(creature.get_genome())
@@ -410,8 +412,7 @@ class Simulation():
         return plant
 
     def add_wall(self, point0: tuple, point1: tuple, thickness: float) -> Wall:
-        wall = Wall(self.screen, self.space, point0, point1,
-                    thickness, Color('gray'), Color('navy'))
+        wall = Wall(point0, point1, thickness, Color('yellow'), Color('navy'))
         return wall
 
     def draw(self):
@@ -505,7 +506,7 @@ class Simulation():
 
     def kill_things(self):
         for wall in self.wall_list:
-            wall.kill(self.space)
+            wall.kill()
         self.wall_list = []
         for rock in self.rocks_list:
             rock.kill(self.space)
@@ -571,6 +572,17 @@ class Simulation():
             self.neuro_avg_time = mean(self.neuro_single_times)
             self.neuro_single_times = []
 
+    def creature_edges_reach_check(self, creature: Creature):
+        if creature.position.x >= cfg.WORLD[0]+10:
+            creature.position.x = 0
+        elif creature.position.x <= -10:
+            creature.position.x = cfg.WORLD[0]
+
+        if creature.position.y >= cfg.WORLD[1]+10:
+            creature.position.y = 0
+        elif creature.position.y <= -10:
+            creature.position.y = cfg.WORLD[1]
+
     def update_creature_population(self, dt: float):
         ### REPRODUCE ###
         temp_list = []
@@ -605,6 +617,10 @@ class Simulation():
         self.update_creatures_death(dt)
         self.update_creatures_analize()
         self.update_creature_population(dt)
+        for creature in self.creature_list:
+            if creature.check_edges_needed:
+                creature.check_edges_needed = False
+                self.creature_edges_reach_check(creature)
 
     def update_spikes(self, dt: float):
         kill_list: list[Spike] = []
