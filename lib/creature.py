@@ -375,7 +375,7 @@ class Creature(Life):
 
         if self.reproduction_time <= 0:
             self.reproduction_time = 0
-            if self.energy >= (self.max_energy*(1-cfg.REP_ENERGY)):
+            if self.energy >= (self.max_energy*cfg.REP_ENERGY*2.5):
                 return True
         return False
 
@@ -392,7 +392,7 @@ class Creature(Life):
         genome['neuro'] = self.neuro.Replicate()
         self.reproduction_time = cfg.REP_TIME
         self.fitness += cfg.BORN2FIT
-        self.energy -= self.energy*cfg.REP_ENERGY
+        self.energy -= self.max_energy*cfg.REP_ENERGY
         return (genome, pos)
       
     def move(self, dt: float) -> None:

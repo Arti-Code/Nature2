@@ -1,7 +1,8 @@
-from bokeh.colors import RGB
-from bokeh.io import show
-from bokeh.plotting import figure  #, Figure
-from bokeh.layouts import gridplot
+""" from bokeh.colors import RGB
+    from bokeh.io import show
+    from bokeh.plotting import figure  #, Figure
+    from bokeh.layouts import gridplot 
+"""
 from lib.config import cfg
 
 
@@ -9,7 +10,7 @@ class Statistics():
 
     def __init__(self):
         self.data = {}
-        self.colors = {
+        """ self.colors = {
             'plants': RGB(0, 255, 0),
             'herbivores': RGB(0, 0, 255),
             'carnivores': RGB(255, 0, 0),
@@ -24,7 +25,7 @@ class Statistics():
             'links': RGB(0, 0, 255),
             'points': RGB(255, 0, 0, 255),
             'lifetime': RGB(0, 0, 255, 255)
-        }
+        } """
 
     def add_collection(self, collection_name: str, named_rows: list):
         collection = {}
@@ -48,7 +49,13 @@ class Statistics():
     def get_collection(self, collection_name: str) -> dict:
         return self.data[collection_name]
 
+    def load_statistics(self, collection_name: str, data: dict):
+        self.data[collection_name] = data
+
     def plot(self, collection_name: str):
+        pass
+
+"""     def plot(self, collection_name: str):
         #data = self.data[collection_name]
         last = self.data['neuros']['time'][len(self.data['neuros']['time'])-1]
         x_range = (max(0, last-8000), max(last, last-4000))
@@ -97,7 +104,6 @@ class Statistics():
         p3.legend.location = "top_left"
 
         grid = gridplot([[p3], [p1], [p2], [p0]])
-        show(grid)
+        show(grid) 
+"""
 
-    def load_statistics(self, collection_name: str, data: dict):
-        self.data[collection_name] = data
