@@ -25,7 +25,6 @@ class Life(Body):
             self.position = Vec2d(x, y)
         space.add(self)
         self.selection_time = 0
-        self.water_ahead = False
         self.border: bool = False
         self.collide_creature = False
         self.collide_plant = False

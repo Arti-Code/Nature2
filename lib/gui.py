@@ -63,7 +63,7 @@ class MenuWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect):
         super().__init__(rect, manager=manager, window_display_title='Main Menu', object_id="#menu_win", visible=True)
         self.manager = manager
-        btn_list = [('Resume', '#btn_resume'), ('New Simulation', '#btn_sim'), ('Save Menu', '#save_menu'), ('Load Menu', '#btn_load'), ('Settings', '#btn_set'), ('Info', '#btn_info'), ('Quit', '#btn_quit')]
+        btn_list = [('Resume', '#btn_resume'), ('New Simulation', '#btn_sim'), ('Save Menu', '#save_menu'), ('Load Menu', '#btn_load'), ('Settings', '#btn_set'), ('Info', '#btn_info'), ('Statistics', '#btn_stats'), ('Quit', '#btn_quit')]
         buttons = []
         i = 1
         for (txt, ident) in btn_list:
@@ -223,7 +223,7 @@ class CreatureWindow(UIWindow):
                 "F": (3, 0, 2), "R": (3, 2, 2),
                 "B": (4, 0, 2), "K": (4, 2, 2), 
                 "L": (5, 0, 2), "S": (5, 2, 2),
-                "ENG": (6, 0, 4)
+                "ENG": (6, 0, 5)
         } 
         self.manager = manager
         self.labs = {}
@@ -292,8 +292,8 @@ class CreatureAdvanceWindow(UIWindow):
 
 class AncestorsWindow(UIWindow):
 
-    def __init__(self, manager: UIManager, rect: Rect, history: list):
-        super().__init__(rect, manager=manager, window_display_title='Ancestors', object_id="#genealogy_win", visible=True)
+    def __init__(self, manager: UIManager, rect: Rect, history: list, first_one:str=""):
+        super().__init__(rect, manager=manager, window_display_title=first_one, object_id="#genealogy_win", visible=True)
         self.manager = manager
         i=0
         self.labels = []
@@ -410,6 +410,10 @@ class GUI():
         self.ancestors_win = None
         self.test_win = None
         self.rebuild_ui(self.view)
+
+    def get_root(self):
+        return self.owner.enviro
+
 
     def rebuild_ui(self, new_size: tuple):         
         self.ui_mgr.set_window_resolution(new_size)
@@ -585,22 +589,24 @@ class GUI():
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
             w = 110; h = 140
-            pos = Rect((self.cx*2-(w+10), 25), (w, h))
+            pos: Rect = Rect((5, 5), (w, h))
             self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=pos, data=data, dT=dT)
 
     def create_creature_advance_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            self.creature_advance_win = CreatureAdvanceWindow(manager=self.ui_mgr, rect=Rect((115, 5), (110, 60)), data=data, dT=dT)
+            pos: Rect=Rect((115, 5), (110, 60))
+            self.creature_advance_win = CreatureAdvanceWindow(manager=self.ui_mgr, rect=pos, data=data, dT=dT)
 
     def create_ancestors_win(self, dT: float):
         if self.ancestors_win:
             self.ancestors_win.kill()
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.owner.enviro.selected.genealogy
+            first = self.owner.enviro.selected.first_one
             count = len(data)
             height = 2 + 15 * count
-            self.ancestors_win = AncestorsWindow(manager=self.ui_mgr, rect=Rect((500, 0), (150, height)), history=data)
+            self.ancestors_win = AncestorsWindow(manager=self.ui_mgr, rect=Rect((500, 0), (150, height)), history=data, first_one=first)
 
     def create_history_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
@@ -637,7 +643,7 @@ class GUI():
                 data['L'] = str(round(selected.life_time))
                 data['ENG'] = str(round(selected.energy))
                 data['O'] = str(round(selected.shape.radius))
-                #data['S'] = str(len(selected.plants_in_area))
+                data['R'] = str(round(selected.timer["repro"].get_eta()))
             elif isinstance(selected, Meat):
                 data['L'] = str(round(selected.life_time))
                 data['SPECIE'] = 'MEAT'
@@ -666,8 +672,8 @@ class GUI():
             states.append('A')
         if selected.running:
             states.append('R')
-        if selected.on_water:
-            states.append('W')
+        if selected.stunt:
+            states.append('S')
         if selected.eating:
             states.append('E')
         if selected.pain:
@@ -745,6 +751,9 @@ class GUI():
                 elif event.ui_object_id == '#menu_win.#btn_info':
                     self.main_menu.kill()
                     self.create_info_menu()
+                elif event.ui_object_id == '#menu_win.#btn_stats':
+                    self.main_menu.kill()
+                    self.get_root().statistics.plot('population')
                 elif event.ui_object_id == '#menu_win.#btn_load':
                     self.main_menu.kill()
                     self.create_load_menu()

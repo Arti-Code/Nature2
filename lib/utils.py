@@ -20,7 +20,7 @@ class Timer():
         self.one_shoot = one_shoot
         self.label = label
         self.random: bool=random_start
-        self.reset_time()
+        self.reset_time(first_run=True)
 
     def timeout(self, delta: float) -> bool:
         if not self.run:
@@ -35,8 +35,8 @@ class Timer():
             self.time -= self.interval
         return True
 
-    def reset_time(self):
-        if self.random:
+    def reset_time(self, first_run: bool=False):
+        if self.random and first_run:
             self.time = random()*self.interval
         else:
             self.time = 0
@@ -48,11 +48,20 @@ class Timer():
         self.run = True
 
     def restart(self):
-        self.reset_time()
+        self.reset_time(first_run=False)
         self.run = True
 
     def set_timer(self, interval: float, one_shoot: bool=True):
         self.interval = interval
         self.one_shoot = one_shoot
-        
 
+    def mod_time(self, time_change: float):
+        self.time -= time_change
+        if not self.run:
+            self.start()
+
+    def overload(self):
+        self.time += self.interval
+
+    def get_eta(self) -> float:
+        return self.interval - self.time

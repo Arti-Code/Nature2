@@ -23,6 +23,7 @@ class Rock(Body):
         self.shape = Poly(self, self.vertices, None, thickness)
         self.shape.collision_type = 8
         self.points = []
+        self.collide_rock=False
         self.rect = self.create_bb()
         space.add(self, self.shape)
 

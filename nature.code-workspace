@@ -20,6 +20,10 @@
 			"rpos"
 		],
 		"todo-tree.tree.showBadges": true,
-		"esbonio.sphinx.confDir": ""
+		"esbonio.sphinx.confDir": "",
+		"[python]": {
+			"editor.defaultFormatter": "ms-python.python"
+		},
+		"python.formatting.provider": "none"
 	}
 }

@@ -1,16 +1,19 @@
 from json import loads
 
 TITLE = "NATURE"
-SUBTITLE = "v1.3" 
+SUBTITLE = "v1.3.10" 
 AUTHOR = "2019-2023 Artur Gwoździowski"
 
 class Configuration():
 
     def __init__(self, filename: str):
+        #self.norm_font = pygame.font.Font("res/fonts/fira.ttf", 12)
+        #self.small_font = pygame.font.Font("res/fonts/fira.ttf", 8)
         self.WORLD = None
         self.SCREEN = None
         self.ITER = None
         self.FPS = None
+        self.COLLIDE_TIME = None
 
         self.PLANT_MAX_SIZE = None
         self.PLANT_GROWTH = None
@@ -43,6 +46,8 @@ class Configuration():
         self.MEM_TIME = None
         self.MEAT_TIME = None
 
+        self.MEMORY_SIZE_MAX = None
+
         self.SENSOR_MAX_ANGLE = None
         self.CLOSE_VISION = None
 
@@ -55,6 +60,7 @@ class Configuration():
         self.SIZE2ENG = None
         self.SIZE_COST = None
         self.POWER_COST = None
+        self.SPIKE_ENG = None
         self.CHILDS_NUM = None
         self.MEAT2ENG = None
         self.VEGE2ENG = None

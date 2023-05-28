@@ -1,8 +1,16 @@
 EVOLUTION :
-
+    v1.3:
+        ✔ shooting spikes
+        ✔ collisions performance opt
+        ✔ stunt state
+        ✔ Timer class
+        ✔ update hidding
+        ✔ update genealogy
+        ✔ impr. memory nodes
+        ✔ improve drawing network performance
     v1.2:
-        ☐ fix bokeh error
-        ☐ borders as rocks
+        ✘ fix bokeh error
+        ✘ borders as rocks
         ✔ fix on run ranking size chang
         ✔ better hidding
         ✔  better energy calculations

@@ -1,0 +1,3 @@
+echo starting Nature...
+
+python -O main.py

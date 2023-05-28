@@ -2,7 +2,7 @@
 from copy import copy, deepcopy
 from math import pi as PI
 from math import sqrt, sin, cos
-from random import randint, random
+from random import randint, random, choice
 from statistics import mean
 
 import pygame.gfxdraw as gfxdraw
@@ -18,6 +18,7 @@ from lib.net import Network
 from lib.species import modify_name, random_name
 from lib.vision import Vision
 from lib.utils import Timer
+from lib.spike import Spike
 
 
 class Creature(Life):
@@ -26,26 +27,29 @@ class Creature(Life):
     EAT_EYES: Color=Color('yellow')
     NORMAL_EYES: Color=Color('skyblue')
     HIDED_EYES: Color=Color(175,175,175,50)
+    STUNT_EYES: Color=Color('limegreen')
+    SPIKES_NUM: list[int] = [0, 1, 1, 1, 3, 5, 7, 9, 13, 15]
 
     def __init__(self, screen: Surface, space: Space, time: int, collision_tag: int, position: Vec2d, genome: dict=None, color0: Color=Color('grey'), color1: Color=Color('skyblue'), color2: Color=Color('orange'), color3: Color=Color('red')):
         super().__init__(screen=screen, space=space, collision_tag=collision_tag, position=position)
         self.angle = random()*2*PI
-        self.output: list[float] = [0, 0, 0, 0, 0]
+        self.output: list[float] = [0, 0, 0, 0, 0, 0]
         self.generation = 0
         self.fitness = 0
+        self.spike_num: int = 1
         self.neuro = Network()
         self.normal: Vec2d=Vec2d(0, 0)
         self.signature: list=[]
         self.childs = 0
         self.kills = 0
-        self.genealogy = []
+        self.genealogy: list[(str, int, int)] = []
         self.mutations_num = [(0, 0), (0, 0)]
         self.open_yaw: bool=True
         if genome == None:
             self.random_build(color0, color1, color2, color3, time)
             self.signature = self.get_signature()
         else:
-            self.mutations_num = self.genome_build(genome)
+            self.mutations_num = self.genome_build(genome, time)
             if not self.compare_signature(self.get_signature(), genome['signature'], cfg.DIFF):
                 self.signature = self.get_signature()
                 self.name = modify_name(genome['name'])
@@ -75,7 +79,6 @@ class Creature(Life):
         self.hidding: bool=False
         self.hide_ref_time = 0.0
         self.run_ref_time = 0.0
-        self.on_water = False
         self.neuro.CalcNodeMutMod()
         self.rock_vec: Vec2d=None
         self.rock_dist = 0
@@ -84,19 +87,39 @@ class Creature(Life):
         self.update_orientation()
         self.collide_time: bool=False
         self.create_timers()
+        self.shooting: bool=False
+        self.stunt: bool = False
+        self.spikes_ready: bool = True
+        self.check_edges_needed: bool = False
+        if len(self.genealogy) == 0:
+            self.genealogy.append((self.name, self.generation, time))
+        self.calc_color()
+        self.brain_just_used = False
 
     def create_timers(self):
-        self.timer: list[Timer] = []
-        collide_timer = Timer(random()*0.2, False, True, "collide", True)
-        self.timer.append(collide_timer)
+        self.timer: dict[Timer] = {}
+        collide_timer = Timer(random()*cfg.COLLIDE_TIME, False, True, "collide", True)
+        stunt_timer = Timer(1, True, False, "stunt", False)
+        spikes_reload = Timer(8, False, False, "spikes_reload", False)
+        edges = Timer(2, False, True, "edges", True)
+        self.timer["collisions"] = collide_timer
+        self.timer["stunt"] = stunt_timer
+        self.timer["spikes_reload"] = spikes_reload
+        self.timer["edges"] = edges
 
     def update_timers(self, dt: float):
-        for t in self.timer:
+        for (k, t) in self.timer.items():
             if t.timeout(dt):
                 if t.label == "collide":
                     self.collide_time=True
+                elif t.label == "stunt":
+                    self.stunt = False
+                elif t.label == "spikes_reload":
+                    self.spikes_ready = True
+                elif t.label == "edges":
+                    self.check_edges_needed = True
 
-    def genome_build(self, genome: dict) -> list[tuple]:
+    def genome_build(self, genome: dict, time: int) -> list[tuple]:
         self.color0 = Color(genome['color0'][0], genome['color0'][1], genome['color0'][2], genome['color0'][3])
         self.color1 = Color(genome['color1'][0], genome['color1'][1], genome['color1'][2], genome['color1'][3])
         self.color2 = Color(genome['color2'][0], genome['color2'][1], genome['color2'][2], genome['color2'][3])
@@ -119,12 +142,16 @@ class Creature(Life):
         self.eyes = clamp(self.eyes, 1, 10)
         self.speed = clamp(self.speed, 1, 10)
         self.generation = genome['gen']+1
-        self.genealogy = genome['genealogy']
         self.name = genome['name']
+        self.genealogy = genome['genealogy']
+        self.first_one = genome['first_one']
         mutations = self.neuro.Mutate(self.mutations)
         self.nodes_num = self.neuro.GetNodesNum()
         self.links_num = self.neuro.GetLinksNum()
         self.signature = genome['signature']
+        self.spike_num = genome['spike_num']
+        if random() <= 0.1:
+            self.spike_num = self.rand_spike_num()
         return mutations
 
     def random_build(self, color0: Color, color1: Color, color2: Color, color3: Color, time: int):
@@ -143,15 +170,39 @@ class Creature(Life):
         self.power = randint(1, 10)
         self.eyes = randint(1, 10)
         self.speed = randint(1, 10)
+        self.spike_num = self.rand_spike_num()
         self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
         self.neuro.BuildRandom(cfg.NET, cfg.LINKS_RATE)
         self.nodes_num = self.neuro.GetNodesNum()
         self.links_num = self.neuro.GetLinksNum()
         self.name = random_name(3, True)
+        self.first_one = self.name
         self.add_specie(self.name, self.generation, time)
+
+    def rand_spike_num(self) -> int:
+        return choice(self.SPIKES_NUM)
 
     def update_orientation(self):
         self.ahead = self.position+self.rotation_vector*self.size*1.2
+
+    def calc_color(self):
+        self.r: int; self.g: int; self.b: int
+        if self.food >= 6:
+            self.r = round(25.5*self.food)
+            self.g = round(255-25.5*self.food)
+            self.b = 0
+            self.r +=50
+            self.g -=50
+            self.r = clamp(self.r, 0, 255)
+            self.g = clamp(self.g, 0, 255)
+        else:
+            self.r = round(25.5*(self.food-1))
+            self.g = round(255-25.5*(self.food+1))
+            self.b = 0
+            self.r -=50
+            self.g +=50
+            self.r = clamp(self.r, 0, 255)
+            self.g = clamp(self.g, 0, 255)
 
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
         x = self.position.x; y = flipy(self.position.y)
@@ -166,9 +217,12 @@ class Creature(Life):
         ry = round(rel_pos.y)
         super().draw(screen, camera, selected)
         rot = self.rotation_vector
+        color0: Color; color1: Color; color2: Color; 
         color0 = self.color0
         color1 = self.color1
         color2 = self.color2
+        if self.stunt:
+            color2 = Color(100, 100, 100)  
         a = 255
         if self.hidding:
             color0.a = 40
@@ -186,8 +240,6 @@ class Creature(Life):
         self.draw_yaw(screen, rel_pos, size, self.open_yaw)
         gfxdraw.aacircle(screen, rx, ry, size, color2)
         gfxdraw.filled_circle(screen, rx, ry, size, color2)
-        gfxdraw.aacircle(screen, rx, ry, size-1, self.color2)
-        gfxdraw.filled_circle(screen, rx, ry, size-1, color2)
         if self.running:
             shadow = color2
             shadow.a = 80
@@ -200,27 +252,19 @@ class Creature(Life):
                 gfxdraw.filled_circle(screen, sx, sy, size-1, shadow)
         if size > 2:
             r2 = round(size/2)
-            r: int; g: int; b: int
-            if self.food >= 6:
-                r = round(25.5*self.food)
-                g = round(255-25.5*self.food)
-                b = 0
-                r +=50
-                g -=50
-                r = clamp(r, 0, 255)
-                g = clamp(g, 0, 255)
-            else:
-                r = round(25.5*(self.food-1))
-                g = round(255-25.5*(self.food+1))
-                b = 0
-                r -=50
-                g +=50
-                r = clamp(r, 0, 255)
-                g = clamp(g, 0, 255)
+        else:
+            r2 = size
+        r: int=self.r; g: int=self.g; b: int=self.b
+        if self.stunt:
+            gfxdraw.aacircle(screen, rx, ry, r2, Color(50, 50, 50, a))
+            gfxdraw.filled_circle(screen, rx, ry, r2, Color(50, 50, 50, a))
+        else:
             gfxdraw.aacircle(screen, rx, ry, r2, Color(r, g, b, a))
             gfxdraw.filled_circle(screen, rx, ry, r2, Color(r, g, b, a))
         eyes_color: Color=self.NORMAL_EYES
-        if self.hidding:
+        if self.stunt:
+            eyes_color = self.STUNT_EYES
+        elif self.hidding:
             eyes_color = self.HIDED_EYES
         elif self.attacking:
             eyes_color=self.ATTACK_EYES
@@ -229,8 +273,6 @@ class Creature(Life):
         self.vision.draw(screen=screen, camera=camera, rel_position=rel_pos, selected=marked, eye_color=eyes_color)
         self.color0 = self._color0
         self.draw_energy_bar(screen, rx, ry, size)
-        #if self.rock_vec:
-        #    gfxdraw.line(screen, int(rx), int(ry), int(rx+self.rock_vec[0]), int(ry+self.rock_vec[1]), Color('red'))
         return True
 
     def draw_normal(self, screen):
@@ -242,13 +284,11 @@ class Creature(Life):
             detector.draw(screen=screen, rel_pos=rel_pos)
         self.collide_creature = False
         self.collide_plant = False
-        self.collide_water = False
         self.collide_meat = False
 
     def reset_collisions(self):
         self.collide_creature = False
         self.collide_plant = False
-        self.collide_water = False
         self.collide_meat = False
         self.border = False
         
@@ -261,6 +301,8 @@ class Creature(Life):
         return f"T:{(round(sqrt(self.vision.max_dist)))} | E:{(round(sqrt(self.vision.max_dist_enemy)))} | P:{(round(sqrt(self.vision.max_dist_plant)))} | M:{(round(sqrt(self.vision.max_dist_meat)))}", rpos.x, rpos.y
 
     def draw_yaw(self, screen: Surface, pos: Vector2, size: float, open: bool=True):
+        if size <= 3:
+            return
         s: float = size/2
         f: float = self.angle
         n = 24-open*14
@@ -287,15 +329,20 @@ class Creature(Life):
         gfxdraw.filled_polygon(screen, points, color)
 
     def update(self, dt: float, selected: Body):
+        #self.brain_just_used = False
         super().update(dt, selected)
         if self.collide_time:
             self.collide_time = False
         self.update_timers(dt)
         if random() <= 0.01:
             self.open_yaw = not self.open_yaw
-        self.life_time += dt*0.1
+        
         if self.hidding:
+            self.life_time += dt*0.1*cfg.HIDE_MOD
             self.hide_time += dt*0.1
+        else:
+            self.life_time += dt*0.1
+
         if self.running:
             self.run_time -= dt
             if self.run_time < 0:
@@ -305,10 +352,12 @@ class Creature(Life):
             self.run_time += dt
             if self.run_time > cfg.RUN_TIME:
                 self.run_time = cfg.RUN_TIME
+        
         move = self.move(dt)
         self.calc_energy(dt, move)
         self.mem_time -= dt
         self.mem_time = clamp(self.mem_time, 0, cfg.MEM_TIME)
+        
         if self.run_ref_time != 0.0:
             self.run_ref_time -= dt
             if self.run_ref_time < 0.0:
@@ -319,7 +368,11 @@ class Creature(Life):
                 self.hide_ref_time = 0.0
 
     def check_reproduction(self, dt) -> bool:
+        if self.stunt or self.hidding:
+            return False
+
         self.reproduction_time -= dt
+
         if self.reproduction_time <= 0:
             self.reproduction_time = 0
             if self.energy >= (self.max_energy*(1-cfg.REP_ENERGY)):
@@ -343,6 +396,9 @@ class Creature(Life):
         return (genome, pos)
       
     def move(self, dt: float) -> None:
+        if self.stunt:
+            self.velocity = (0, 0)
+            return 0
         move = 0
         speed = cfg.SPEED*((self.speed*2)+(cfg.CREATURE_MAX_SIZE-self.size))/3
         if self.running:
@@ -399,19 +455,20 @@ class Creature(Life):
         input.append(md)
         input.append(rr)
         input.append(rd)
-        input.append(int(self.border))
+        #input.append(int(self.border))
         self.pain = False
         self.reset_collisions()
         return input
 
     def analize(self):
-        if self.mem_time <= 0:
+        if self.mem_time <= 0 and not self.stunt:
             if not self.vision.new_observation():
                 self.update_orientation()
-                return
+                return False
             input = self.get_input()
             self.vision.reset_observation()
             self.output = self.neuro.Calc(input)
+            self.brain_just_used = True
             self.mem_time = cfg.MEM_TIME
             for o in range(len(self.output)):
                 if o == 1:
@@ -435,13 +492,20 @@ class Creature(Life):
                         self.running = False
             else:
                 self.running = False
-            if self.output[4] >= 0.5 and self.moving <= cfg.HIDE_SPEED and not self.eating and not self.attacking:
+            if self.output[4] >= 0.5 and self.moving <= cfg.HIDE_SPEED and not self.attacking and not self.eating:
                 self.hidding = True
-                r=self.rng*cfg.HIDE_MOD
-                self.vision.change_range(round(r))
+                #r=self.rng*cfg.HIDE_MOD
+                #self.vision.change_range(round(r))
             else:
                 self.hidding = False
-                self.vision.change_range(self.rng)
+                #self.vision.change_range(self.rng)
+            if self.output[5] >= 0.9:
+                self.shooting = True
+            else:
+                self.shooting = False
+            return True
+        else:
+            return False
 
     def draw_energy_bar(self, screen: Surface, rx: int, ry: int, rel_size: int):
         bar_red = Color(255, 0, 0)
@@ -450,7 +514,8 @@ class Creature(Life):
         gfxdraw.box(screen, Rect(rx-10, ry+rel_size+5, round(20*(self.energy/self.max_energy)), 1), bar_green)
   
     def life2fit(self):
-        self.fitness += (self.life_time-self.hide_time)
+        #self.fitness += self.life_time
+        #self.fitness += (self.life_time-self.hide_time)
         self.fitness = round(self.fitness)
 
     def kill(self, space: Space):
@@ -463,8 +528,11 @@ class Creature(Life):
 
     def add_specie(self, name: str, generation: int, time: int):
         data = (name, generation, time)
-        self.genealogy.append(data)
-        if len(self.genealogy) > cfg.GENERATIONS_NUMBER:
+        if len(self.genealogy) == 0:
+            self.genealogy.append(data)
+        elif data[0] != self.genealogy[len(self.genealogy)-1][0]:
+            self.genealogy.append(data)
+        while len(self.genealogy) > cfg.GENERATIONS_NUMBER:
             self.genealogy.pop(0)
 
     def get_genome(self) -> dict:
@@ -485,6 +553,8 @@ class Creature(Life):
         genome['neuro'] = self.neuro.Replicate()
         genome['signature'] = deepcopy(self.signature)
         genome['genealogy'] = copy(self.genealogy)
+        genome['first_one'] = copy(self.first_one)
+        genome['spike_num'] = self.spike_num
         return genome
 
     def similar(self, parent_genome: dict, treashold: float) -> bool:
@@ -519,6 +589,8 @@ class Creature(Life):
             return True
 
     def eat(self, energy: float):
+        if self.stunt:
+            return
         self.energy += energy
         self.energy = clamp(self.energy, 0, self.max_energy)
 
@@ -533,7 +605,7 @@ class Creature(Life):
 
     def get_signature(self) -> list:
         signature: list=[]
-        signature.append([self.size, self.power, self.food, self.eyes])
+        signature.append([self.size, self.power, self.food, self.eyes, self.speed, self.mutations])
         links_keys: list=[]
         for link_key in self.neuro.links:
             links_keys.append(link_key)
@@ -547,7 +619,7 @@ class Creature(Life):
         neuro2 = signature2[1]
         fizjo_diff: list = []
         neuro_diff: int = 0
-        for f in range(len(fizjo1)):
+        for f in range(min([len(fizjo1), len(fizjo2)])):
             diff = abs(fizjo1[f]-fizjo2[f])
             fizjo_diff.append(diff)
         for n1 in neuro1:
@@ -567,3 +639,23 @@ class Creature(Life):
         else:
             return False
 
+    def is_shooting(self, space: Space):
+        if self.spike_num==0 or not self.spikes_ready:
+            self.shooting = False
+            return False
+        if self.shooting and not self.stunt:
+            self.spikes_ready = False
+            self.timer["spikes_reload"].restart()
+            self.shooting = False
+            self.energy -= self.power*cfg.SPIKE_ENG
+            num = self.spike_num
+            spikes: list[Spike] = [] 
+            s = (2 * PI) / num
+            for n in range(num):
+                a = self.angle + n*s
+                pos = self.position + Vec2d(cos(a), sin(a))*self.size*1.1
+                spike: Spike=Spike(space, self, pos, 3*self.power/num, a, 2.0/num)
+                spikes.append(spike)
+            return spikes
+        else:
+            return False

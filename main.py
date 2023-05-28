@@ -1,5 +1,6 @@
 import os
 import sys
+from copy import copy, deepcopy
 from collections import deque
 from math import ceil, cos, floor, hypot
 from math import pi as PI
@@ -28,7 +29,8 @@ from lib.plant import Plant
 from lib.rock import Rock
 from lib.sim_stat import Statistics
 from lib.wall import Wall
-
+from lib.spike import Spike
+from lib.net_draw import draw_net, draw_net2
 
 class Simulation():
 
@@ -61,6 +63,7 @@ class Simulation():
         self.net_timer: float=0.0
         self.net: Surface=None
 
+
     def init_vars(self):
         self.neuro_single_times = []
         self.neuro_avg_time = 1
@@ -75,14 +78,18 @@ class Simulation():
         self.plant_list:        list[Plant] = []
         self.meat_list:         list[Meat] = []
         self.rocks_list:        list[Rock] = []
-        self.wall_list = []
+        self.spike_list:        list[Spike] = []
+        self.wall_list:         list[Wall] = []
         self.lands = []
+        self.rocks_checked: bool=False
+        self.first_run: bool=True
         self.sel_idx = 0
         self.FPS = 30
         self.dt = 1/self.FPS
         self.running = True
         self.render: bool=True
         self.show_network = True
+        self.net_redraw: bool = False
         self.show_specie_name = True
         self.show_dist_and_ang = False
         self.follow: bool=False
@@ -107,16 +114,16 @@ class Simulation():
         self.map_time = 0.0
         self.follow_time: float = 0.0
         
-    def create_rock2(self, vert_num: int, size: int, position: Vec2d):
-        ang_step = (2*PI)/vert_num
-        vertices = []
-        for v in range(vert_num):
-            vert_ang = v*ang_step + (random()*2-1)*ang_step*0.4
-            x = sin(vert_ang)*size + (random()*2-1)*size*0.4
-            y = cos(vert_ang)*size + (random()*2-1)*size*0.4
-            vertices.append(Vec2d(x, y)+position)
-        rock = Rock(self.screen, self.space, vertices, 3, Color('grey40'), Color('grey'))
-        self.wall_list.append(rock)
+#    def create_rock2(self, vert_num: int, size: int, position: Vec2d):
+#        ang_step = (2*PI)/vert_num
+#        vertices = []
+#        for v in range(vert_num):
+#            vert_ang = v*ang_step + (random()*2-1)*ang_step*0.4
+#            x = sin(vert_ang)*size + (random()*2-1)*size*0.4
+#            y = cos(vert_ang)*size + (random()*2-1)*size*0.4
+#            vertices.append(Vec2d(x, y)+position)
+#        rock = Rock(self.screen, self.space, vertices, 3, Color('grey40'), Color('grey'))
+#        self.wall_list.append(rock)
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         rock: Rock=Rock(self.space, vert_num, size, position, 2)
@@ -125,15 +132,18 @@ class Simulation():
     def create_enviro(self):
         self.time = 0
         self.cycles = 0
+        self.rocks_checked=False
+        self.first_run=True
         self.kill_all_creatures()
         self.kill_all_plants()
         self.kill_things()
-        edges = [(0, 0), (cfg.WORLD[0]-1, 0), (cfg.WORLD[0]-1, cfg.WORLD[1]-1), (0, cfg.WORLD[1]-1), (0, 0)]
+        """ edges = [(0, 0), (cfg.WORLD[0]-1, 0), (cfg.WORLD[0]-1, cfg.WORLD[1]-1), (0, cfg.WORLD[1]-1), (0, 0)]
         for e in range(4):
             p1 = edges[e]
             p2 = edges[e+1]
             wall = self.add_wall(p1, p2, 5)
-            self.wall_list.append(wall)
+            self.wall_list.append(wall) """
+        self.create_borders()
         self.create_rocks(cfg.ROCK_NUM)
 
         for c in range(cfg.CREATURE_INIT_NUM):
@@ -186,11 +196,21 @@ class Simulation():
             self.ranking1.remove(v)
         to_remove.clear()
 
+    def check_rocks(self):
+        if self.first_run:
+            return
+        self.rocks_checked=True
+        for rock in self.rocks_list:
+            if rock.collide_rock:
+                self.rocks_checked=False
+                rock.position=random_position(cfg.WORLD)
+
     def add_to_ranking(self, creature: Creature):
         ranking = self.ranking1
         ranking.sort(key=sort_by_fitness, reverse=True)
         for rank in reversed(ranking):
-            if rank['name'] == creature.name:
+            #if rank['name'] == creature.name or rank['name'] in creature.genealogy:
+            if rank['name'] == creature.name or rank['first_one'] in creature.first_one:
                 if creature.fitness >= rank['fitness']:
                     ranking.remove(rank)
                     ranking.append(creature.get_genome())
@@ -394,8 +414,7 @@ class Simulation():
         return plant
 
     def add_wall(self, point0: tuple, point1: tuple, thickness: float) -> Wall:
-        wall = Wall(self.screen, self.space, point0, point1,
-                    thickness, Color('gray'), Color('navy'))
+        wall = Wall(point0, point1, thickness, Color('yellow'), Color('navy'))
         return wall
 
     def draw(self):
@@ -408,9 +427,10 @@ class Simulation():
             self.draw_meat()
             self.draw_plants()
             self.draw_creatures()
+            self.draw_spikes()
             self.draw_interface()
-            if self.net:
-                self.screen.blit(self.net, (25, 25), special_flags=BLEND_ALPHA_SDL2)
+            if self.net!=None and self.show_network:
+                self.screen.blit(self.net, dest=(5, cfg.SCREEN[1]-self.net.get_height()-5), area=self.net.get_rect(), special_flags=BLEND_ALPHA_SDL2)
         else:
             self.screen.fill(Color('black'))
         draw_time = time() - draw_time
@@ -461,7 +481,17 @@ class Simulation():
         if self.show_network:
             if self.selected != None:
                 if isinstance(self.selected, Creature):
-                    self.net = self.manager.draw_net(self.selected.neuro)
+                    #self.manager.draw_net(self.selected.neuro)
+                    if self.selected.brain_just_used:
+                        self.net = draw_net2(network=self.selected.neuro)
+                else:
+                    self.net=None
+            else:
+                self.net=None
+
+    def draw_spikes(self):
+        for spike in self.spike_list:
+            spike.draw(self.screen, self.camera)
 
     def calc_time(self):
         self.time += self.dt*0.1
@@ -484,7 +514,7 @@ class Simulation():
 
     def kill_things(self):
         for wall in self.wall_list:
-            wall.kill(self.space)
+            wall.kill()
         self.wall_list = []
         for rock in self.rocks_list:
             rock.kill(self.space)
@@ -493,9 +523,12 @@ class Simulation():
     def update(self):
         update_time: float = time()
         self.calc_time()
+        if not self.rocks_checked:
+            self.check_rocks()
         self.update_creatures(self.dt)
         self.update_plants(self.dt)
         self.update_meat(self.dt)
+        self.update_spikes(self.dt)
         self.manager.update_gui(self.dt, self.ranking1)
         self.update_statistics()
         update_time = time()-update_time
@@ -525,14 +558,13 @@ class Simulation():
                 self.fitness['points'].append(creature.fitness)
                 self.fitness['lifetime'].append(creature.life_time)
                 self.add_to_ranking(creature)
-                if not creature.on_water:
-                    pos = creature.position
-                    size = ceil(creature.size)
-                    eng = round(creature.max_energy)
-                    for _ in range(1):
-                        new_pos = self.free_random_position(pos, Vec2d(0, 0))
-                        meat = Meat(screen=self.screen, space=self.space, position=new_pos, collision_tag=10, energy=int(eng))
-                        self.meat_list.append(meat)
+                pos = creature.position
+                size = ceil(creature.size)
+                eng = round(creature.max_energy)
+                for _ in range(1):
+                    new_pos = self.free_random_position(pos, Vec2d(0, 0))
+                    meat = Meat(screen=self.screen, space=self.space, position=new_pos, collision_tag=10, energy=int(eng))
+                    self.meat_list.append(meat)
                 creature.kill(self.space)
                 self.creature_list.remove(creature)
 
@@ -540,12 +572,24 @@ class Simulation():
         ### ANALIZE ###
         neuro_time = time()
         for creature in self.creature_list:
+            creature.brain_just_used=False
             creature.analize()
         neuro_time = time()-neuro_time
         self.neuro_single_times.append(neuro_time)
         if len(self.neuro_single_times) >= 150:
             self.neuro_avg_time = mean(self.neuro_single_times)
             self.neuro_single_times = []
+
+    def creature_edges_reach_check(self, creature: Creature):
+        if creature.position.x >= cfg.WORLD[0]+10:
+            creature.position.x = 0
+        elif creature.position.x <= -10:
+            creature.position.x = cfg.WORLD[0]
+
+        if creature.position.y >= cfg.WORLD[1]+10:
+            creature.position.y = 0
+        elif creature.position.y <= -10:
+            creature.position.y = cfg.WORLD[1]
 
     def update_creature_population(self, dt: float):
         ### REPRODUCE ###
@@ -555,6 +599,10 @@ class Simulation():
             overpopulation = 0
         for creature in self.creature_list:
             creature.update(dt=dt, selected=self.selected)
+            spike = creature.is_shooting(self.space)
+            if isinstance(spike, list):
+                self.spike_list.extend(spike)
+                #self.spike_list.append(spike)
             #if len(self.creature_list) >= cfg.CREATURE_MAX_NUM:
             #    continue
             if creature.check_reproduction(dt):
@@ -577,6 +625,22 @@ class Simulation():
         self.update_creatures_death(dt)
         self.update_creatures_analize()
         self.update_creature_population(dt)
+        for creature in self.creature_list:
+            if creature.check_edges_needed:
+                creature.check_edges_needed = False
+                self.creature_edges_reach_check(creature)
+
+    def update_spikes(self, dt: float):
+        kill_list: list[Spike] = []
+        for spike in self.spike_list:
+            if not spike.update(dt):
+                kill_list.append(spike)
+
+        for spike in kill_list:
+            self.spike_list.remove(spike)
+            spike.kill(self.space)
+
+        kill_list.clear()
 
     def update_statistics(self):
         last = self.statistics.get_last_time('populations')
@@ -707,8 +771,8 @@ class Simulation():
             ranking = self.ranking1
             rank_size = len(ranking)
             rnd = randint(0, rank_size-1)
-            genome = ranking[rnd]
-            ranking[rnd]['fitness'] *= cfg.RANK_DECAY
+            genome = deepcopy(ranking[rnd])
+            ranking[rnd]['fitness'] -= round(ranking[rnd]['fitness']*cfg.RANK_DECAY)
             creature = self.add_creature(genome)
         return creature
 
@@ -741,6 +805,7 @@ class Simulation():
                 self.physics_avg_time = mean(self.physics_single_times)
                 self.physics_single_times = []
             self.clock_step()
+            self.first_run=False
 
 
 

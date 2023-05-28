@@ -1,2864 +1,982 @@
-hs_err_pid6080.log
-replay_pid6080.log
-lib/__pycache__/life.cpython-39.pyc
-lib/__pycache__/math2.cpython-39.pyc
-lib/__pycache__/wall.cpython-39.pyc
-__pycache__/main.cpython-38.pyc
-lib/__pycache__/config.cpython-39.pyc
-lib/__pycache__/net.cpython-39.pyc
-lib/__pycache__/sensor.cpython-39.pyc
 __pycache__/main.cpython-39.pyc
+__pycache__/test.cpython-39.pyc
+__pycache__/main.cpython-39.pyc
+__pycache__/test.cpython-39.pyc
+lib/__pycache__/__init__.cpython-39.opt-1.pyc
 lib/__pycache__/__init__.cpython-39.pyc
-lib/__pycache__/test.cpython-39.pyc
-lib/__pycache__/__init__.cpython-38.pyc
-lib/__pycache__/config.cpython-38.pyc
-lib/__pycache__/life.cpython-38.pyc
-lib/__pycache__/math2.cpython-38.pyc
-lib/__pycache__/net.cpython-38.pyc
-lib/__pycache__/sensor.cpython-38.pyc
-lib/__pycache__/wall.cpython-38.pyc
-lib/__pycache__/manager.cpython-38.pyc
-lib/__pycache__/gui.cpython-39.pyc
-lib/__pycache__/manager.cpython-39.pyc
-lib/__pycache__/collisions.cpython-38.pyc
-lib/__pycache__/gui.cpython-38.pyc
-lib/__pycache__/collisions.cpython-39.pyc
-env.rar
+lib/__pycache__/__init__.cpython-310.opt-1.pyc
+lib/__pycache__/__init__.cpython-310.pyc
+lib/__pycache__/__init__.cpython-311.opt-1.pyc
+lib/__pycache__/__init__.cpython-311.pyc
 lib/__pycache__/autoterrain.cpython-39.pyc
-main.py
+lib/__pycache__/camera.cpython-39.opt-1.pyc
+lib/__pycache__/camera.cpython-39.pyc
+lib/__pycache__/camera.cpython-310.opt-1.pyc
+lib/__pycache__/camera.cpython-310.pyc
+lib/__pycache__/camera.cpython-311.opt-1.pyc
+lib/__pycache__/collisions.cpython-39.opt-1.pyc
+lib/__pycache__/collisions.cpython-39.pyc
+lib/__pycache__/collisions.cpython-310.opt-1.pyc
+lib/__pycache__/collisions.cpython-310.pyc
+lib/__pycache__/collisions.cpython-311.opt-1.pyc
+lib/__pycache__/config.cpython-39.opt-1.pyc
+lib/__pycache__/config.cpython-39.pyc
+lib/__pycache__/config.cpython-310.opt-1.pyc
+lib/__pycache__/config.cpython-310.pyc
+lib/__pycache__/config.cpython-311.opt-1.pyc
+lib/__pycache__/creature.cpython-39.opt-1.pyc
 lib/__pycache__/creature.cpython-39.pyc
-lib/__pycache__/object.cpython-39.pyc
-lib/__pycache__/plant.cpython-39.pyc
+lib/__pycache__/creature.cpython-310.opt-1.pyc
+lib/__pycache__/creature.cpython-310.pyc
+lib/__pycache__/creature.cpython-311.opt-1.pyc
+lib/__pycache__/f
+lib/__pycache__/gui.cpython-39.opt-1.pyc
+lib/__pycache__/gui.cpython-39.pyc
+lib/__pycache__/gui.cpython-310.opt-1.pyc
+lib/__pycache__/gui.cpython-310.pyc
+lib/__pycache__/gui.cpython-311.opt-1.pyc
+lib/__pycache__/life.cpython-39.opt-1.pyc
+lib/__pycache__/life.cpython-39.pyc
+lib/__pycache__/life.cpython-310.opt-1.pyc
+lib/__pycache__/life.cpython-310.pyc
+lib/__pycache__/life.cpython-311.opt-1.pyc
+lib/__pycache__/manager.cpython-39.opt-1.pyc
+lib/__pycache__/manager.cpython-39.pyc
+lib/__pycache__/manager.cpython-310.opt-1.pyc
+lib/__pycache__/manager.cpython-310.pyc
+lib/__pycache__/manager.cpython-311.opt-1.pyc
+lib/__pycache__/math2.cpython-39.opt-1.pyc
+lib/__pycache__/math2.cpython-39.pyc
+lib/__pycache__/math2.cpython-310.opt-1.pyc
+lib/__pycache__/math2.cpython-310.pyc
+lib/__pycache__/math2.cpython-311.opt-1.pyc
+lib/__pycache__/meat.cpython-39.opt-1.pyc
 lib/__pycache__/meat.cpython-39.pyc
-lib/__pycache__/rock.cpython-39.pyc
-saves/Sim02/836.7.json
-saves/Sim02/857.8.json
-saves/Sim02/938.7.json
-saves/Sim02/1046.9.json
-saves/Sim02/1088.1.json
-saves/Sim02/1942.9.json
-saves/Sim02/1993.7.json
-saves/Sim02/2008.3.json
-saves/Sim02/2427.4.json
-saves/Sim02/saves.json
-saves/Sim04/553.3.json
-saves/Sim04/saves.json
-saves/Simulation03/1.1.json
-saves/Simulation03/saves.json
-saves/SimWorld/5.8.json
-saves/SimWorld/36.2.json
-saves/SimWorld/109.2.json
-saves/SimWorld/246.3.json
-saves/SimWorld/292.1.json
-saves/SimWorld/saves.json
-saves/SimWorld05/32.0.json
-saves/SimWorld05/saves.json
-test0.py
-saves/NewWorld01/138.8.json
-saves/NewWorld01/saves.json
-saves/Planet01/0.8.json
-saves/Planet01/saves.json
-saves/Planet01/0.8.json
-saves/Planet01/saves.json
-saves/World03/7.7.json
-saves/World03/15.1.json
-saves/World03/saves.json
-saves/Planet01/0.8.json
-saves/Planet01/saves.json
+lib/__pycache__/meat.cpython-310.opt-1.pyc
+lib/__pycache__/meat.cpython-310.pyc
+lib/__pycache__/meat.cpython-311.opt-1.pyc
 lib/__pycache__/names.cpython-39.pyc
+lib/__pycache__/net.cpython-39.opt-1.pyc
+lib/__pycache__/net.cpython-39.pyc
+lib/__pycache__/net.cpython-310.opt-1.pyc
+lib/__pycache__/net.cpython-310.pyc
+lib/__pycache__/net.cpython-311.opt-1.pyc
+lib/__pycache__/object.cpython-39.opt-1.pyc
+lib/__pycache__/object.cpython-39.pyc
+lib/__pycache__/object.cpython-310.opt-1.pyc
+lib/__pycache__/object.cpython-310.pyc
+lib/__pycache__/plant.cpython-39.opt-1.pyc
+lib/__pycache__/plant.cpython-39.pyc
+lib/__pycache__/plant.cpython-310.opt-1.pyc
+lib/__pycache__/plant.cpython-310.pyc
+lib/__pycache__/plant.cpython-311.opt-1.pyc
+lib/__pycache__/rock.cpython-39.opt-1.pyc
+lib/__pycache__/rock.cpython-39.pyc
+lib/__pycache__/rock.cpython-310.opt-1.pyc
+lib/__pycache__/rock.cpython-310.pyc
+lib/__pycache__/rock.cpython-311.opt-1.pyc
+lib/__pycache__/sensor.cpython-39.opt-1.pyc
+lib/__pycache__/sensor.cpython-39.pyc
+lib/__pycache__/sensor.cpython-310.opt-1.pyc
+lib/__pycache__/sensor.cpython-310.pyc
+lib/__pycache__/sim_stat.cpython-39.opt-1.pyc
+lib/__pycache__/sim_stat.cpython-39.pyc
+lib/__pycache__/sim_stat.cpython-310.opt-1.pyc
+lib/__pycache__/species.cpython-39.opt-1.pyc
 lib/__pycache__/species.cpython-39.pyc
-lib/__pycache__/species.cpython-39.pyc
-lib/__pycache__/species.cpython-39.pyc
-lib/__pycache__/species.cpython-39.pyc
-
+lib/__pycache__/species.cpython-310.opt-1.pyc
+lib/__pycache__/species.cpython-310.pyc
+lib/__pycache__/species.cpython-311.opt-1.pyc
+lib/__pycache__/spike.cpython-39.opt-1.pyc
+lib/__pycache__/spike.cpython-39.pyc
+lib/__pycache__/statistics.cpython-39.opt-1.pyc
+lib/__pycache__/statistics.cpython-310.opt-1.pyc
+lib/__pycache__/statistics.cpython-310.pyc
+lib/__pycache__/statistics.cpython-311.opt-1.pyc
+lib/__pycache__/terrain.cpython-39.opt-1.pyc
+lib/__pycache__/terrain.cpython-39.pyc
+lib/__pycache__/terrain.cpython-310.opt-1.pyc
+lib/__pycache__/terrain.cpython-310.pyc
+lib/__pycache__/utils.cpython-39.opt-1.pyc
 lib/__pycache__/utils.cpython-39.pyc
-log.txt
-saves/World01/142.7.json
-saves/World01/276.2.json
-saves/World01/813.3.json
-saves/World01/1264.4.json
-saves/World01/2382.0.json
-saves/World01/5106.0.json
-saves/World01/saves.json
-log.txt
+lib/__pycache__/utils.cpython-310.opt-1.pyc
+lib/__pycache__/utils.cpython-310.pyc
+lib/__pycache__/vision.cpython-39.opt-1.pyc
+lib/__pycache__/vision.cpython-39.pyc
+lib/__pycache__/vision.cpython-310.opt-1.pyc
+lib/__pycache__/vision.cpython-310.pyc
+lib/__pycache__/vision.cpython-311.opt-1.pyc
+lib/__pycache__/wall.cpython-39.opt-1.pyc
+lib/__pycache__/wall.cpython-39.pyc
+lib/__pycache__/wall.cpython-310.opt-1.pyc
+lib/__pycache__/wall.cpython-310.pyc
+lib/__pycache__/wall.cpython-311.opt-1.pyc
+lib/__pycache__/__init__.cpython-39.opt-1.pyc
+lib/__pycache__/__init__.cpython-39.pyc
+lib/__pycache__/__init__.cpython-310.opt-1.pyc
+lib/__pycache__/__init__.cpython-310.pyc
+lib/__pycache__/__init__.cpython-311.opt-1.pyc
+lib/__pycache__/__init__.cpython-311.pyc
+lib/__pycache__/autoterrain.cpython-39.pyc
+lib/__pycache__/camera.cpython-39.opt-1.pyc
+lib/__pycache__/camera.cpython-39.pyc
+lib/__pycache__/camera.cpython-310.opt-1.pyc
+lib/__pycache__/camera.cpython-310.pyc
+lib/__pycache__/camera.cpython-311.opt-1.pyc
+lib/__pycache__/collisions.cpython-39.opt-1.pyc
+lib/__pycache__/collisions.cpython-39.pyc
+lib/__pycache__/collisions.cpython-310.opt-1.pyc
+lib/__pycache__/collisions.cpython-310.pyc
+lib/__pycache__/collisions.cpython-311.opt-1.pyc
+lib/__pycache__/config.cpython-39.opt-1.pyc
+lib/__pycache__/config.cpython-39.pyc
+lib/__pycache__/config.cpython-310.opt-1.pyc
+lib/__pycache__/config.cpython-310.pyc
+lib/__pycache__/config.cpython-311.opt-1.pyc
+lib/__pycache__/creature.cpython-39.opt-1.pyc
+lib/__pycache__/creature.cpython-39.pyc
+lib/__pycache__/creature.cpython-310.opt-1.pyc
+lib/__pycache__/creature.cpython-310.pyc
+lib/__pycache__/creature.cpython-311.opt-1.pyc
+lib/__pycache__/f
+lib/__pycache__/gui.cpython-39.opt-1.pyc
+lib/__pycache__/gui.cpython-39.pyc
+lib/__pycache__/gui.cpython-310.opt-1.pyc
+lib/__pycache__/gui.cpython-310.pyc
+lib/__pycache__/gui.cpython-311.opt-1.pyc
+lib/__pycache__/life.cpython-39.opt-1.pyc
+lib/__pycache__/life.cpython-39.pyc
+lib/__pycache__/life.cpython-310.opt-1.pyc
+lib/__pycache__/life.cpython-310.pyc
+lib/__pycache__/life.cpython-311.opt-1.pyc
+lib/__pycache__/manager.cpython-39.opt-1.pyc
+lib/__pycache__/manager.cpython-39.pyc
+lib/__pycache__/manager.cpython-310.opt-1.pyc
+lib/__pycache__/manager.cpython-310.pyc
+lib/__pycache__/manager.cpython-311.opt-1.pyc
+lib/__pycache__/math2.cpython-39.opt-1.pyc
+lib/__pycache__/math2.cpython-39.pyc
+lib/__pycache__/math2.cpython-310.opt-1.pyc
+lib/__pycache__/math2.cpython-310.pyc
+lib/__pycache__/math2.cpython-311.opt-1.pyc
+lib/__pycache__/meat.cpython-39.opt-1.pyc
+lib/__pycache__/meat.cpython-39.pyc
+lib/__pycache__/meat.cpython-310.opt-1.pyc
+lib/__pycache__/meat.cpython-310.pyc
+lib/__pycache__/meat.cpython-311.opt-1.pyc
+lib/__pycache__/names.cpython-39.pyc
+lib/__pycache__/net.cpython-39.opt-1.pyc
+lib/__pycache__/net.cpython-39.pyc
+lib/__pycache__/net.cpython-310.opt-1.pyc
+lib/__pycache__/net.cpython-310.pyc
+lib/__pycache__/net.cpython-311.opt-1.pyc
+lib/__pycache__/object.cpython-39.opt-1.pyc
+lib/__pycache__/object.cpython-39.pyc
+lib/__pycache__/object.cpython-310.opt-1.pyc
+lib/__pycache__/object.cpython-310.pyc
+lib/__pycache__/plant.cpython-39.opt-1.pyc
+lib/__pycache__/plant.cpython-39.pyc
+lib/__pycache__/plant.cpython-310.opt-1.pyc
+lib/__pycache__/plant.cpython-310.pyc
+lib/__pycache__/plant.cpython-311.opt-1.pyc
+lib/__pycache__/rock.cpython-39.opt-1.pyc
+lib/__pycache__/rock.cpython-39.pyc
+lib/__pycache__/rock.cpython-310.opt-1.pyc
+lib/__pycache__/rock.cpython-310.pyc
+lib/__pycache__/rock.cpython-311.opt-1.pyc
+lib/__pycache__/sensor.cpython-39.opt-1.pyc
+lib/__pycache__/sensor.cpython-39.pyc
+lib/__pycache__/sensor.cpython-310.opt-1.pyc
+lib/__pycache__/sensor.cpython-310.pyc
+lib/__pycache__/sim_stat.cpython-39.opt-1.pyc
+lib/__pycache__/sim_stat.cpython-39.pyc
+lib/__pycache__/sim_stat.cpython-310.opt-1.pyc
+lib/__pycache__/species.cpython-39.opt-1.pyc
 lib/__pycache__/species.cpython-39.pyc
+lib/__pycache__/species.cpython-310.opt-1.pyc
+lib/__pycache__/species.cpython-310.pyc
+lib/__pycache__/species.cpython-311.opt-1.pyc
+lib/__pycache__/spike.cpython-39.opt-1.pyc
+lib/__pycache__/spike.cpython-39.pyc
+lib/__pycache__/statistics.cpython-39.opt-1.pyc
+lib/__pycache__/statistics.cpython-310.opt-1.pyc
+lib/__pycache__/statistics.cpython-310.pyc
+lib/__pycache__/statistics.cpython-311.opt-1.pyc
+lib/__pycache__/terrain.cpython-39.opt-1.pyc
+lib/__pycache__/terrain.cpython-39.pyc
+lib/__pycache__/terrain.cpython-310.opt-1.pyc
+lib/__pycache__/terrain.cpython-310.pyc
+lib/__pycache__/utils.cpython-39.opt-1.pyc
 lib/__pycache__/utils.cpython-39.pyc
-lib/__pycache__/species.cpython-39.pyc
-lib/__pycache__/species.cpython-39.pyc
-
-config.json
-saves/NewSim/1352.6.json
-saves/NewSim/saves.json
-saves/NewLand2/6437.8.json
-saves/NewLand2/saves.json
-log.txt
-log.txt
-log.txt
-saves/GyeyLand/10.0.json
-saves/GyeyLand/20.0.json
-saves/GyeyLand/30.0.json
-saves/GyeyLand/40.0.json
-saves/GyeyLand/50.0.json
-saves/GyeyLand/60.0.json
-saves/GyeyLand/70.0.json
-saves/GyeyLand/80.0.json
-saves/GyeyLand/90.0.json
-saves/GyeyLand/100.0.json
-saves/GyeyLand/110.0.json
-saves/GyeyLand/120.0.json
-saves/GyeyLand/saves.json
-saves/Time/10.0.json
-saves/Time/20.0.json
-saves/Time/30.0.json
-saves/Time/40.0.json
-saves/Time/50.0.json
-saves/Time/60.0.json
-saves/Time/70.0.json
-saves/Time/80.0.json
-saves/Time/90.0.json
-saves/Time/100.0.json
-saves/Time/110.0.json
-saves/Time/120.0.json
-saves/Time/130.0.json
-saves/Time/140.0.json
-saves/Time/150.0.json
-saves/Time/160.0.json
-saves/Time/170.0.json
-saves/Time/180.0.json
-saves/Time/190.0.json
-saves/Time/200.0.json
-saves/Time/210.0.json
-saves/Time/220.0.json
-saves/Time/230.0.json
-saves/Time/240.0.json
-saves/Time/250.0.json
-saves/Time/260.0.json
-saves/Time/270.0.json
-saves/Time/280.0.json
-saves/Time/290.0.json
-saves/Time/300.0.json
-saves/Time/310.0.json
-saves/Time/320.0.json
-saves/Time/330.0.json
-saves/Time/340.0.json
-saves/Time/350.0.json
-saves/Time/360.0.json
-saves/Time/370.0.json
-saves/Time/380.0.json
-saves/Time/390.0.json
-saves/Time/400.0.json
-saves/Time/410.0.json
-saves/Time/420.0.json
-saves/Time/430.0.json
-saves/Time/440.0.json
-saves/Time/450.0.json
-saves/Time/460.0.json
-saves/Time/470.0.json
-saves/Time/480.0.json
-saves/Time/490.0.json
-saves/Time/500.0.json
-saves/Time/510.0.json
-saves/Time/520.0.json
-saves/Time/530.0.json
-saves/Time/540.0.json
-saves/Time/550.0.json
-saves/Time/560.0.json
-saves/Time/570.0.json
-saves/Time/580.0.json
-saves/Time/590.0.json
-saves/Time/600.0.json
-saves/Time/610.0.json
-saves/Time/620.0.json
-saves/Time/630.0.json
-saves/Time/640.0.json
-saves/Time/650.0.json
-saves/Time/660.0.json
-saves/Time/670.0.json
-saves/Time/676.8.json
-saves/Time/saves.json
-saves/TimeUniverse/59.5.json
-saves/TimeUniverse/saves.json
-output/saves/FractureWorld/10.0.json
-output/saves/FractureWorld/60.0.json
-output/saves/FractureWorld/110.0.json
-output/saves/FractureWorld/160.0.json
-output/saves/FractureWorld/190.0.json
-output/saves/FractureWorld/saves.json
-output/saves/World/6.7.json
-output/saves/World/saves.json
-output1/evo.exe
-saves/New/10.0.json
-saves/New/20.0.json
-saves/New/30.0.json
-saves/New/40.0.json
-saves/New/45.6.json
-saves/New/50.0.json
-saves/New/60.0.json
-saves/New/70.0.json
-saves/New/86.6.json
-saves/New/97.0.json
-saves/New/197.0.json
-saves/New/saves.json
-lib/__pycache__/species.cpython-39.pyc
-output/planet32.png
-output/res/map.png
-output/res/map2.png
-output/res/v0.1.tar
-output/res/fonts/fira.ttf
-output/res/icons/planet01.ico
-output/res/icons/planet03.ico
-output/res/icons/planet04.ico
-output/res/icons/planet05-128.ico
-output/res/icons/planet05.ico
-output/res/images/map.bmp
-output/res/images/map.png
-output/res/images/planet01.png
-output/res/images/planet03.png
-output/res/images/planet04.png
-output/res/images/planet05.png
-output/res/images/splash.jpg
-output/res/images/water.png
-output/res/images/water2.png
-output/res/images/water3.png
-output/res/themes/blue.json
-output/res/themes/green.json
-output/res/themes/window.json
-output/saves/projects.json
-log.txt
-log.txt
-log.txt
-log.txt
-output/evo2.exe
-output/evolution.exe
-output/saves/Big2/100.0.json
-output/saves/Big2/200.0.json
-output/saves/Big2/300.0.json
-output/saves/Big2/400.0.json
-output/saves/Big2/500.0.json
-output/saves/Big2/600.0.json
-output/saves/Big2/651.6.json
-output/saves/Big2/saves.json
-output/saves/BigLand/200.0.json
-output/saves/BigLand/400.0.json
-output/saves/BigLand/600.0.json
-output/saves/BigLand/800.0.json
-output/saves/BigLand/1000.0.json
-output/saves/BigLand/1200.0.json
-output/saves/BigLand/1400.0.json
-output/saves/BigLand/1600.0.json
-output/saves/BigLand/1784.2.json
-output/saves/BigLand/saves.json
-log.txt
-
-# Byte-compiled / optimized / DLL files
-__pycache__/
-lib/__pycache__/
-*.py[cod]
-*$py.class
-
-# C extensions
-*.so
-
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-cover/
-
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-.pybuilder/
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-#   For a library or package, you might want to ignore these files since the code is
-#   intended to run in multiple environments; otherwise, check them in:
-# .python-version
-
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
-
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
-
-# pytype static type analyzer
-.pytype/
-
-# Cython debug symbols
-cython_debug/
-lib/__pycache__/
-lib/__pycache__/*.pyc
-lib/__pycache__
+lib/__pycache__/utils.cpython-310.opt-1.pyc
+lib/__pycache__/utils.cpython-310.pyc
+lib/__pycache__/vision.cpython-39.opt-1.pyc
+lib/__pycache__/vision.cpython-39.pyc
+lib/__pycache__/vision.cpython-310.opt-1.pyc
+lib/__pycache__/vision.cpython-310.pyc
+lib/__pycache__/vision.cpython-311.opt-1.pyc
+lib/__pycache__/wall.cpython-39.opt-1.pyc
+lib/__pycache__/wall.cpython-39.pyc
+lib/__pycache__/wall.cpython-310.opt-1.pyc
+lib/__pycache__/wall.cpython-310.pyc
+lib/__pycache__/wall.cpython-311.opt-1.pyc
 lib/__pycache__/camera.cpython-39.pyc
 lib/__pycache__/species.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
 lib/__pycache__/camera.cpython-39.pyc
 lib/__pycache__/species.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
-saves/Land04/300.0.json
-saves/Land04/saves.json
-saves/S02/3900.0.json
-saves/S02/4000.0.json
-saves/S02/4100.0.json
-saves/S02/4200.0.json
-saves/S02/4300.0.json
-saves/S02/4400.0.json
-saves/S02/4500.0.json
-saves/S02/4600.0.json
-saves/S02/4700.0.json
-saves/S02/4726.9.json
-saves/S02/4800.0.json
-saves/S02/4900.0.json
-saves/S02/5000.0.json
-saves/S02/5100.0.json
-saves/S02/5200.0.json
-saves/S02/5300.0.json
-saves/S02/5400.0.json
-saves/S02/5500.0.json
-saves/S02/5600.0.json
-saves/S02/5700.0.json
-saves/S02/5800.0.json
-saves/S02/5900.0.json
-saves/S02/6000.0.json
-saves/S02/6100.0.json
-saves/S02/6200.0.json
-saves/S02/6300.0.json
-saves/S02/6400.0.json
-saves/S02/6500.0.json
-saves/S02/6600.0.json
-saves/S02/6700.0.json
-saves/S02/6800.0.json
-saves/S02/6900.0.json
-saves/S02/7000.0.json
-saves/S02/7100.0.json
-saves/S02/7200.0.json
-saves/S02/7300.0.json
-saves/S02/7400.0.json
-saves/S02/7500.0.json
-saves/S02/7600.0.json
-saves/S02/7700.0.json
-saves/S02/7800.0.json
-saves/S02/7900.0.json
-saves/S02/8000.0.json
-saves/S02/8100.0.json
-saves/S02/8200.0.json
-saves/S02/8300.0.json
-saves/S02/8400.0.json
-saves/S02/8500.0.json
-saves/S02/8600.0.json
-saves/S02/8700.0.json
-saves/S02/8800.0.json
-saves/S02/8900.0.json
-saves/S02/9000.0.json
-saves/S02/9100.0.json
-saves/S02/9200.0.json
-saves/S02/9300.0.json
-saves/S02/9400.0.json
-saves/S02/9500.0.json
-saves/S02/9600.0.json
-saves/S02/9700.0.json
-saves/S02/9800.0.json
-saves/S02/9900.0.json
-saves/S02/10000.0.json
-saves/S02/10100.0.json
-saves/S02/10200.0.json
-saves/S02/10300.0.json
-saves/S02/10400.0.json
-saves/S02/10500.0.json
-saves/S02/10600.0.json
-saves/S02/10700.0.json
-saves/S02/10800.0.json
-saves/S02/10900.0.json
-saves/S02/11000.0.json
-saves/S02/11100.0.json
-saves/S02/11200.0.json
-saves/S02/11300.0.json
-saves/S02/11400.0.json
-saves/S02/11500.0.json
-saves/S02/11600.0.json
-saves/S02/11700.0.json
-saves/S02/11800.0.json
-saves/S02/11900.0.json
-saves/S02/12000.0.json
-saves/S02/12100.0.json
-saves/S02/12200.0.json
-saves/S02/12300.0.json
-saves/S02/12400.0.json
-saves/S02/12500.0.json
-saves/S02/12600.0.json
-saves/S02/12700.0.json
-saves/S02/12800.0.json
-saves/S02/12900.0.json
-saves/S02/13000.0.json
-saves/S02/13100.0.json
-saves/S02/13200.0.json
-saves/S02/13300.0.json
-saves/S02/13400.0.json
-saves/S02/13500.0.json
-saves/S02/13600.0.json
-saves/S02/13700.0.json
-saves/S02/13800.0.json
-saves/S02/13900.0.json
-saves/S02/14000.0.json
-saves/S02/14100.0.json
-saves/S02/14200.0.json
-saves/S02/14300.0.json
-saves/S02/14400.0.json
-saves/S02/14500.0.json
-saves/S02/14600.0.json
-saves/S02/14700.0.json
-saves/S02/14742.2.json
-saves/S02/14800.0.json
-saves/S02/14900.0.json
-saves/S02/14936.5.json
-saves/S02/saves.json
-saves/S02/saves.json
-saves/S02/saves.json
-saves/S03/0.0.json
-saves/S03/saves.json
-saves/S04/100.0.json
-saves/S04/200.0.json
-saves/S04/300.0.json
-saves/S04/400.0.json
-saves/S04/500.0.json
-saves/S04/600.0.json
-saves/S04/700.0.json
-saves/S04/752.2.json
-saves/S04/800.0.json
-saves/S04/saves.json
+lib/__pycache__/camera.cpython-39.pyc
+lib/__pycache__/species.cpython-39.pyc
 main.html
-saves/S02/saves.json
-saves/projects.json
-saves/A06/100.0.json
-saves/A06/saves.json
-saves/S04/900.0.json
-saves/S04/1000.0.json
-saves/S04/1100.0.json
-saves/S04/1116.4.json
-main.html
-saves/A06/200.0.json
-saves/A06/300.0.json
-saves/A06/400.0.json
-saves/A06/500.0.json
-saves/A06/600.0.json
-saves/A06/700.0.json
-saves/A06/800.0.json
-saves/A06/900.0.json
-saves/A06/1000.0.json
-saves/A06/1100.0.json
-saves/A06/1200.0.json
-saves/A06/1300.0.json
-saves/A06/1400.0.json
-saves/A06/1500.0.json
-saves/A06/1600.0.json
-saves/A06/1700.0.json
-saves/A06/1800.0.json
-saves/A06/1900.0.json
-saves/A06/2000.0.json
-saves/A06/2100.0.json
-saves/A06/2200.0.json
-saves/A06/2300.0.json
-saves/A06/2312.3.json
-saves/A06/2400.0.json
-saves/A06/2500.0.json
-saves/A06/2600.0.json
-saves/A06/2700.0.json
-saves/A06/2800.0.json
-saves/A06/2900.0.json
-saves/A06/3000.0.json
-saves/A06/3100.0.json
-saves/A06/3200.0.json
-saves/A06/3300.0.json
-saves/A06/3400.0.json
-saves/A06/3500.0.json
-saves/A06/3600.0.json
-saves/A06/3700.0.json
-saves/A06/3800.0.json
-saves/A06/3900.0.json
-saves/A06/4000.0.json
-saves/A06/4100.0.json
-saves/A06/4200.0.json
-saves/A06/4300.0.json
-saves/A06/4317.1.json
-main.html
-output/saves/P01/100.0.json
-output/saves/P01/200.0.json
-output/saves/P01/300.0.json
-output/saves/P01/400.0.json
-output/saves/P01/500.0.json
-output/saves/P01/600.0.json
-output/saves/P01/700.0.json
-output/saves/P01/770.3.json
-output/saves/P01/800.0.json
-output/saves/P01/900.0.json
-output/saves/P01/1000.0.json
-output/saves/P01/1100.0.json
-output/saves/P01/1200.0.json
-output/saves/P01/1237.1.json
-output/saves/P01/1300.0.json
-output/saves/P01/1337.0.json
-output/saves/P01/1400.0.json
-output/saves/P01/1437.0.json
-output/saves/P01/1500.0.json
-output/saves/P01/1537.0.json
-output/saves/P01/1600.0.json
-output/saves/P01/1637.0.json
-output/saves/P01/1700.0.json
-output/saves/P01/1737.0.json
-output/saves/P01/1800.0.json
-output/saves/P01/1837.0.json
-output/saves/P01/1900.0.json
-output/saves/P01/1937.0.json
-output/saves/P01/1982.0.json
-output/saves/P01/2000.0.json
-output/saves/P01/2082.0.json
-output/saves/P01/2100.0.json
-output/saves/P01/2182.0.json
-output/saves/P01/2200.0.json
-output/saves/P01/2255.0.json
-output/saves/P01/2282.0.json
-output/saves/P01/2300.0.json
-output/saves/P01/2382.0.json
-output/saves/P01/2400.0.json
-output/saves/P01/2482.0.json
-output/saves/P01/2500.0.json
-output/saves/P01/2582.0.json
-output/saves/P01/2600.0.json
-output/saves/P01/2682.0.json
-output/saves/P01/2700.0.json
-output/saves/P01/2782.0.json
-output/saves/P01/2800.0.json
-output/saves/P01/2882.0.json
-output/saves/P01/2900.0.json
-output/saves/P01/2982.0.json
-output/saves/P01/3000.0.json
-output/saves/P01/3082.0.json
-output/saves/P01/3100.0.json
-output/saves/P01/3182.0.json
-output/saves/P01/3200.0.json
-output/saves/P01/3282.0.json
-output/saves/P01/3300.0.json
-output/saves/P01/3382.1.json
-output/saves/P01/3400.0.json
-output/saves/P01/3482.2.json
-output/saves/P01/3500.0.json
-output/saves/P01/3582.3.json
-output/saves/P01/3600.0.json
-output/saves/P01/3682.3.json
-output/saves/P01/3700.0.json
-output/saves/P01/3782.4.json
-output/saves/P01/3800.0.json
-output/saves/P01/3882.4.json
-output/saves/P01/3900.0.json
-output/saves/P01/3982.4.json
-output/saves/P01/4000.0.json
-output/saves/P01/4082.5.json
-output/saves/P01/4100.0.json
-output/saves/P01/4182.6.json
-output/saves/P01/4200.0.json
-output/saves/P01/4282.6.json
-output/saves/P01/4300.0.json
-output/saves/P01/4382.6.json
-output/saves/P01/4400.0.json
-output/saves/P01/4482.7.json
-output/saves/P01/4500.0.json
-output/saves/P01/4582.8.json
-output/saves/P01/4600.0.json
-output/saves/P01/4682.8.json
-output/saves/P01/4700.0.json
-output/saves/P01/4782.9.json
-output/saves/P01/4800.0.json
-output/saves/P01/4882.9.json
-output/saves/P01/4900.0.json
-output/saves/P01/4982.9.json
-output/saves/P01/5000.0.json
-output/saves/P01/5083.0.json
-output/saves/P01/5100.0.json
-output/saves/P01/5183.1.json
-output/saves/P01/5200.0.json
-output/saves/P01/5283.2.json
-output/saves/P01/5300.0.json
-output/saves/P01/5383.2.json
-output/saves/P01/5400.0.json
-output/saves/P01/5483.2.json
-output/saves/P01/5500.0.json
-output/saves/P01/5583.3.json
-output/saves/P01/5600.0.json
-output/saves/P01/5683.4.json
-output/saves/P01/5700.0.json
-output/saves/P01/5783.4.json
-output/saves/P01/5800.0.json
-output/saves/P01/5883.5.json
-output/saves/P01/5900.0.json
-output/saves/P01/5983.7.json
-output/saves/P01/6000.0.json
-output/saves/P01/6083.8.json
-output/saves/P01/6100.0.json
-output/saves/P01/6183.9.json
-output/saves/P01/6200.0.json
-output/saves/P01/6283.9.json
-output/saves/P01/6300.0.json
-output/saves/P01/6384.0.json
-output/saves/P01/6400.0.json
-output/saves/P01/6484.0.json
-output/saves/P01/6500.0.json
-output/saves/P01/6584.1.json
-output/saves/P01/6600.0.json
-output/saves/P01/6684.2.json
-output/saves/P01/6700.0.json
-output/saves/P01/6784.3.json
-output/saves/P01/6800.0.json
-output/saves/P01/6884.4.json
-output/saves/P01/6900.0.json
-output/saves/P01/6923.8.json
-output/saves/P01/6984.5.json
-output/saves/P01/7024.0.json
-output/saves/P01/7084.6.json
-output/saves/P01/7124.0.json
-output/saves/P01/7184.7.json
-output/saves/P01/7224.0.json
-output/saves/P01/7284.9.json
-output/saves/P01/7324.0.json
-output/saves/P01/7385.0.json
-output/saves/P01/7424.0.json
-output/saves/P01/7485.0.json
-output/saves/P01/7524.0.json
-output/saves/P01/7585.2.json
-output/saves/P01/7624.0.json
-output/saves/P01/7685.4.json
-output/saves/P01/7724.0.json
-output/saves/P01/7785.5.json
-output/saves/P01/7824.0.json
-output/saves/P01/7885.6.json
-output/saves/P01/7924.0.json
-output/saves/P01/7985.8.json
-output/saves/P01/8024.0.json
-output/saves/P01/8085.9.json
-output/saves/P01/8124.0.json
-output/saves/P01/8186.0.json
-output/saves/P01/8224.0.json
-output/saves/P01/8286.0.json
-output/saves/P01/8324.0.json
-output/saves/P01/8386.1.json
-output/saves/P01/8424.0.json
-output/saves/P01/8486.2.json
-output/saves/P01/8524.0.json
-output/saves/P01/8528.3.json
-output/saves/P01/8586.2.json
-output/saves/P01/8686.3.json
-output/saves/P01/8786.4.json
-output/saves/P01/8886.4.json
-output/saves/P01/8986.5.json
-output/saves/P01/9086.6.json
-output/saves/P01/9186.7.json
-output/saves/P01/9286.7.json
-output/saves/P01/9386.8.json
-output/saves/P01/9486.9.json
-output/saves/P01/9587.0.json
-output/saves/P01/9687.1.json
-output/saves/P01/9787.2.json
-output/saves/P01/9887.3.json
-output/saves/P01/9987.4.json
-output/saves/P01/10087.4.json
-output/saves/P01/10187.4.json
-output/saves/P01/10287.4.json
-output/saves/P01/10387.5.json
-output/saves/P01/10487.6.json
-output/saves/P01/saves.json
-output/saves/P01/Untitled-1.json
-output/saves/S01/500.0.json
-output/saves/S01/1000.0.json
-output/saves/S01/1500.0.json
-output/saves/S01/2000.0.json
-output/saves/S01/2500.0.json
-output/saves/S01/2600.0.json
-output/saves/S01/2700.0.json
-output/saves/S01/2738.4.json
-output/saves/S01/saves.json
-output/saves/S02/500.0.json
-output/saves/S02/1000.0.json
-output/saves/S02/1500.0.json
-output/saves/S02/2000.0.json
-output/saves/S02/2500.0.json
-output/saves/S02/3000.0.json
-output/saves/S02/3100.0.json
-output/saves/S02/3200.0.json
-output/saves/S02/3300.0.json
-output/saves/S02/3400.0.json
-output/saves/S02/3500.0.json
-output/saves/S02/3600.0.json
-output/saves/S02/3700.0.json
-output/saves/S02/3800.0.json
-output/saves/S02/saves.json
-saves/projects.json
-saves/Evo02/2.6.json
-saves/Evo02/9.0.json
-saves/Evo02/saves.json
-saves/P01/100.0.json
-saves/P01/200.0.json
-saves/P01/300.0.json
-saves/P01/400.0.json
-saves/P01/500.0.json
-saves/P01/600.0.json
-saves/P01/700.0.json
-saves/P01/770.3.json
-saves/P01/800.0.json
-saves/P01/900.0.json
-saves/P01/1000.0.json
-saves/P01/1100.0.json
-saves/P01/1200.0.json
-saves/P01/1237.1.json
-saves/P01/saves.json
-saves/S01/500.0.json
-saves/S01/1000.0.json
-saves/S01/1500.0.json
-saves/S01/2000.0.json
-saves/S01/2500.0.json
-saves/S01/2600.0.json
-saves/S01/2700.0.json
-saves/S01/2738.4.json
-saves/S01/saves.json
-saves/S02/500.0.json
-saves/S02/1000.0.json
-saves/S02/1500.0.json
-saves/S02/2000.0.json
-saves/S02/2500.0.json
-saves/S02/3000.0.json
-saves/S02/3100.0.json
-saves/S02/3200.0.json
-saves/S02/3300.0.json
-saves/S02/3400.0.json
-saves/S02/3500.0.json
-saves/S02/3600.0.json
-saves/S02/3700.0.json
-saves/S02/3800.0.json
-saves/S02/saves.json
-saves/projects.json
-saves/Equal03/100.0.json
-saves/Equal03/200.0.json
-saves/Equal03/300.0.json
-saves/Equal03/400.0.json
-saves/Equal03/500.0.json
-saves/Equal03/600.0.json
-saves/Equal03/700.0.json
-saves/Equal03/800.0.json
-saves/Equal03/900.0.json
-saves/Equal03/1000.0.json
-saves/Equal03/1100.0.json
-saves/Equal03/1200.0.json
-saves/Equal03/1300.0.json
-saves/Equal03/1400.0.json
-saves/Equal03/1500.0.json
-saves/Equal03/1600.0.json
-saves/Equal03/1700.0.json
-saves/Equal03/1800.0.json
-saves/Equal03/1900.0.json
-saves/Equal03/2000.0.json
-saves/Equal03/2100.0.json
-saves/Equal03/2200.0.json
-saves/Equal03/2300.0.json
-saves/Equal03/2400.0.json
-saves/Equal03/2500.0.json
-saves/Equal03/2600.0.json
-saves/Equal03/2700.0.json
-saves/Equal03/2800.0.json
-saves/Equal03/2900.0.json
-saves/Equal03/3000.0.json
-saves/Equal03/3100.0.json
-saves/Equal03/3200.0.json
-saves/Equal03/3300.0.json
-saves/Equal03/3400.0.json
-saves/Equal03/3500.0.json
-saves/Equal03/3600.0.json
-saves/Equal03/3700.0.json
-saves/Equal03/3800.0.json
-saves/Equal03/3900.0.json
-saves/Equal03/4000.0.json
-saves/Equal03/4100.0.json
-saves/Equal03/4200.0.json
-saves/Equal03/4300.0.json
-saves/Equal03/4400.0.json
-saves/Equal03/4500.0.json
-saves/Equal03/saves.json
-saves/Univ01/100.0.json
-saves/Univ01/200.0.json
-saves/Univ01/300.0.json
-saves/Univ01/400.0.json
-saves/Univ01/500.0.json
-saves/Univ01/600.0.json
-saves/Univ01/700.0.json
-saves/Univ01/800.0.json
-saves/Univ01/900.0.json
-saves/Univ01/1000.0.json
-saves/Univ01/1100.0.json
-saves/Univ01/1200.0.json
-saves/Univ01/1300.0.json
-saves/Univ01/1400.0.json
-saves/Univ01/1500.0.json
-saves/Univ01/1600.0.json
-saves/Univ01/1700.0.json
-saves/Univ01/1800.0.json
-saves/Univ01/1900.0.json
-saves/Univ01/2000.0.json
-saves/Univ01/2100.0.json
-saves/Univ01/2200.0.json
-saves/Univ01/2300.0.json
-saves/Univ01/2400.0.json
-saves/Univ01/2500.0.json
-saves/Univ01/2600.0.json
-saves/Univ01/2700.0.json
-saves/Univ01/2800.0.json
-saves/Univ01/2900.0.json
-saves/Univ01/3000.0.json
-saves/Univ01/3100.0.json
-saves/Univ01/3200.0.json
-saves/Univ01/3300.0.json
-saves/Univ01/3400.0.json
-saves/Univ01/3500.0.json
-saves/Univ01/3600.0.json
-saves/Univ01/3700.0.json
-saves/Univ01/3800.0.json
-saves/Univ01/3900.0.json
-saves/Univ01/4000.0.json
-saves/Univ01/4100.0.json
-saves/Univ01/4200.0.json
-saves/Univ01/4300.0.json
-saves/Univ01/4400.0.json
-saves/Univ01/4500.0.json
-saves/Univ01/4600.0.json
-saves/Univ01/4700.0.json
-saves/Univ01/4800.0.json
-saves/Univ01/4824.1.json
-saves/Univ01/saves.json
 lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
+.gitignore
+lib/__pycache__/sim_stat.cpython-310.pyc
+lib/__pycache__/spike.cpython-310.opt-1.pyc
+lib/__pycache__/spike.cpython-310.pyc
 lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
+lib/__pycache__/net_draw.cpython-39.opt-1.pyc
+lib/__pycache__/species.cpython-39.pyc
+saves/M/55347.json
+saves/M/79466.json
+saves/M/91966.json
+saves/M/95466.json
+saves/M/98966.json
+saves/M/102466.json
+saves/M/105966.json
+saves/M/109466.json
+saves/M/112966.json
+saves/M/116466.json
+saves/M/119966.json
+saves/M/123466.json
+saves/M/126643.json
+saves/M/130143.json
+saves/M/133643.json
+saves/M/137143.json
+saves/M/140643.json
+saves/M/144143.json
+saves/M/147643.json
+saves/M/151143.json
+saves/M/154643.json
+saves/M/158143.json
+saves/M/158643.json
+saves/M/159143.json
+saves/M/159643.json
+saves/M/160143.json
+saves/M/160643.json
+saves/M/161143.json
+saves/M/161643.json
+saves/M/162143.json
+saves/M/162643.json
+saves/M/163143.json
+saves/M/163609.json
+saves/M/164109.json
+saves/M/164609.json
+saves/M/165109.json
+saves/M/165609.json
+saves/M/166109.json
+saves/M/166579.json
+saves/M/167079.json
+saves/M/167579.json
+saves/M/168079.json
+saves/M/168579.json
+saves/M/169079.json
+saves/M/169579.json
+saves/M/170079.json
+saves/M/170579.json
+saves/M/171079.json
+saves/M/171579.json
+saves/M/172079.json
+saves/M/config.json
+saves/M/saves.json
 lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
-.vscode/.todo
+lib/__pycache__/species.cpython-39.pyc
+39516.json
+.vcpkgbootstrap-vcpkg.bat
+git
+saves/M/209435.json
+saves/M/233684.json
+saves/M/258184.json
+saves/M/264684.json
+saves/M/268184.json
+saves/M/271684.json
+saves/M/275184.json
+saves/M/278684.json
+saves/M/282184.json
+saves/M/285684.json
+saves/M/289184.json
+saves/M/292684.json
+saves/M/296184.json
+saves/M/299684.json
+saves/M/303184.json
+saves/M/303684.json
+saves/M/304184.json
+saves/M/304684.json
+lib/__pycache__/camera.cpython-311.pyc
+lib/__pycache__/collisions.cpython-311.pyc
+lib/__pycache__/config.cpython-311.pyc
+lib/__pycache__/creature.cpython-311.pyc
+lib/__pycache__/gui.cpython-311.pyc
+lib/__pycache__/life.cpython-311.pyc
+lib/__pycache__/manager.cpython-311.pyc
+lib/__pycache__/math2.cpython-311.pyc
+lib/__pycache__/meat.cpython-311.pyc
+lib/__pycache__/net_draw.cpython-311.opt-1.pyc
+lib/__pycache__/net_draw.cpython-311.pyc
+lib/__pycache__/net.cpython-311.pyc
+lib/__pycache__/plant.cpython-311.pyc
+lib/__pycache__/rock.cpython-311.pyc
+lib/__pycache__/sim_stat.cpython-311.opt-1.pyc
+lib/__pycache__/sim_stat.cpython-311.pyc
+lib/__pycache__/species.cpython-311.pyc
+lib/__pycache__/spike.cpython-311.opt-1.pyc
+lib/__pycache__/spike.cpython-311.pyc
+lib/__pycache__/utils.cpython-311.opt-1.pyc
+lib/__pycache__/utils.cpython-311.pyc
+lib/__pycache__/vision.cpython-311.pyc
+lib/__pycache__/wall.cpython-311.pyc
 output/evo.exe
-output/evo.exe
-output/evo.exe
-output/res/images/land.png
-output/res/images/land2400.png
-output/res/images/land3200.png
-output/res/images/map3.png
-output/res/images/map3b.png
-output/res/images/map25.png
-output/res/images/map2700.png
-output/res/images/rocks.png
-output/res/images/terra.png
-output/res/images/terra2.png
-output/saves/Enviro/100.0.json
-output/saves/Enviro/200.0.json
-output/saves/Enviro/300.0.json
-output/saves/Enviro/400.0.json
-output/saves/Enviro/500.0.json
-output/saves/Enviro/600.0.json
-output/saves/Enviro/700.0.json
-output/saves/Enviro/800.0.json
-output/saves/Enviro/900.0.json
-output/saves/Enviro/1000.0.json
-output/saves/Enviro/1100.0.json
-output/saves/Enviro/1200.0.json
-output/saves/Enviro/1300.0.json
-output/saves/Enviro/1400.0.json
-output/saves/Enviro/1500.0.json
-output/saves/Enviro/1600.0.json
-output/saves/Enviro/1700.0.json
-output/saves/Enviro/1719.4.json
-output/saves/Enviro/2119.0.json
-output/saves/Enviro/2180.5.json
-output/saves/Enviro/saves.json
-output/saves/Enviroment/1500.0.json
-output/saves/Enviroment/2000.0.json
-output/saves/Enviroment/2500.0.json
-output/saves/Enviroment/3000.0.json
-output/saves/Enviroment/3500.0.json
-output/saves/Enviroment/4000.0.json
-output/saves/Enviroment/4500.0.json
-output/saves/Enviroment/5000.0.json
-output/saves/Enviroment/5500.0.json
-output/saves/Enviroment/5700.0.json
-output/saves/Enviroment/6000.0.json
-output/saves/Enviroment/6139.3.json
-output/saves/Enviroment/6300.0.json
-output/saves/Enviroment/6500.0.json
-output/saves/Enviroment/6700.0.json
-output/saves/Enviroment/7000.0.json
-output/saves/Enviroment/7200.0.json
-output/saves/Enviroment/7300.0.json
-output/saves/Enviroment/7400.0.json
-output/saves/Enviroment/7500.0.json
-output/saves/Enviroment/7600.0.json
-output/saves/Enviroment/7700.0.json
-output/saves/Enviroment/7800.0.json
-output/saves/Enviroment/7900.0.json
-output/saves/Enviroment/8000.0.json
-output/saves/Enviroment/saves.json
-output/saves/Exec/1.8.json
-output/saves/Exec/100.0.json
-output/saves/Exec/162.4.json
-output/saves/Exec/saves.json
-output/saves/New/100.0.json
-output/saves/New/300.0.json
-output/saves/New/400.0.json
-output/saves/New/500.0.json
-output/saves/New/600.0.json
-output/saves/New/700.0.json
-output/saves/New/800.0.json
-output/saves/New/900.0.json
-output/saves/New/1000.0.json
-output/saves/New/1057.7.json
-output/saves/New/saves.json
-output/saves/NewHope/51.9.json
-output/saves/NewHope/100.0.json
-output/saves/NewHope/200.0.json
-output/saves/NewHope/300.0.json
-output/saves/NewHope/400.0.json
-output/saves/NewHope/500.0.json
-output/saves/NewHope/600.0.json
-output/saves/NewHope/700.0.json
-output/saves/NewHope/800.0.json
-output/saves/NewHope/900.0.json
-output/saves/NewHope/1000.0.json
-output/saves/NewHope/1100.0.json
-output/saves/NewHope/1200.0.json
-output/saves/NewHope/1300.0.json
-output/saves/NewHope/1400.0.json
-output/saves/NewHope/1500.0.json
-output/saves/NewHope/1600.0.json
-output/saves/NewHope/1700.0.json
-output/saves/NewHope/1800.0.json
-output/saves/NewHope/1900.0.json
-output/saves/NewHope/2000.0.json
-output/saves/NewHope/saves.json
-output/saves/NewLand/100.0.json
-output/saves/NewLand/132.8.json
-output/saves/NewLand/200.0.json
-output/saves/NewLand/300.0.json
-output/saves/NewLand/400.0.json
-output/saves/NewLand/500.0.json
-output/saves/NewLand/600.0.json
-output/saves/NewLand/700.0.json
-output/saves/NewLand/800.0.json
-output/saves/NewLand/900.0.json
-output/saves/NewLand/1000.0.json
-output/saves/NewLand/1036.1.json
-output/saves/NewLand/1100.0.json
-output/saves/NewLand/1200.0.json
-output/saves/NewLand/1300.0.json
-output/saves/NewLand/1400.0.json
-output/saves/NewLand/1421.5.json
-output/saves/NewLand/saves.json
-output/saves/NewMap/70.5.json
-output/saves/NewMap/saves.json
-output/saves/T/100.0.json
-output/saves/T/200.0.json
-output/saves/T/221.7.json
-output/saves/T/300.0.json
-output/saves/T/400.0.json
-output/saves/T/500.0.json
-output/saves/T/600.0.json
-output/saves/T/700.0.json
-output/saves/T/800.0.json
-output/saves/T/900.0.json
-output/saves/T/1000.0.json
-output/saves/T/1100.0.json
-output/saves/T/1200.0.json
-output/saves/T/1300.0.json
-output/saves/T/1400.0.json
-output/saves/T/1500.0.json
-output/saves/T/1600.0.json
-output/saves/T/1700.0.json
-output/saves/T/1800.0.json
-output/saves/T/1900.0.json
-output/saves/T/2000.0.json
-output/saves/T/2100.0.json
-output/saves/T/2200.0.json
-output/saves/T/2300.0.json
-output/saves/T/2400.0.json
-output/saves/T/2500.0.json
-output/saves/T/2600.0.json
-output/saves/T/2700.0.json
-output/saves/T/2800.0.json
-output/saves/T/2900.0.json
-output/saves/T/3000.0.json
-output/saves/T/3100.0.json
-output/saves/T/3200.0.json
-output/saves/T/3300.0.json
-output/saves/T/3313.1.json
-output/saves/T/saves.json
-output/saves/World02/8237.6.json
-output/saves/World02/8245.4.json
-output/saves/World02/8358.0.json
-output/saves/World02/8858.0.json
-output/saves/World02/9358.0.json
-output/saves/World02/9858.0.json
-output/saves/World02/10358.0.json
-output/saves/World02/10858.0.json
-output/saves/World02/11358.0.json
-output/saves/World02/11858.0.json
-output/saves/World02/12358.0.json
-output/saves/World02/12858.0.json
-output/saves/World02/13358.0.json
-output/saves/World02/13858.0.json
-output/saves/World02/14137.7.json
-output/saves/World02/saves.json
-output/saves/World3/29.2.json
-output/saves/World3/201.8.json
-output/saves/World3/529.0.json
-output/saves/World3/1029.0.json
-output/saves/World3/1529.0.json
-output/saves/World3/2029.0.json
-output/saves/World3/2529.0.json
-output/saves/World3/3029.0.json
-output/saves/World3/3340.6.json
-output/saves/World3/saves.json
-saves/projects.json
-saves/creatures/VVXTZL.json
-saves/A/100.0.json
-saves/A/200.0.json
-saves/A/300.0.json
-saves/A/400.0.json
-saves/A/500.0.json
-saves/A/600.0.json
-saves/A/700.0.json
-saves/A/800.0.json
-saves/A/900.0.json
-saves/A/1000.0.json
-saves/A/1100.0.json
-saves/A/1200.0.json
-saves/A/1300.0.json
-saves/A/1400.0.json
-saves/A/1500.0.json
-saves/A/1600.0.json
-saves/A/1700.0.json
-saves/A/1700.6.json
-saves/A/saves.json
-saves/MEat/100.0.json
-saves/MEat/saves.json
-saves/Simulation01/100.0.json
-saves/Simulation01/200.0.json
-saves/Simulation01/300.0.json
-saves/Simulation01/400.0.json
-saves/Simulation01/500.0.json
-saves/Simulation01/600.0.json
-saves/Simulation01/700.0.json
-saves/Simulation01/800.0.json
-saves/Simulation01/900.0.json
-saves/Simulation01/1000.0.json
-saves/Simulation01/1100.0.json
-saves/Simulation01/1200.0.json
-saves/Simulation01/1300.0.json
-saves/Simulation01/1400.0.json
-saves/Simulation01/1500.0.json
-saves/Simulation01/1600.0.json
-saves/Simulation01/1700.0.json
-saves/Simulation01/1800.0.json
-saves/Simulation01/1900.0.json
-saves/Simulation01/2000.0.json
-saves/Simulation01/2100.0.json
-saves/Simulation01/2200.0.json
-saves/Simulation01/2300.0.json
-saves/Simulation01/2400.0.json
-saves/Simulation01/2488.5.json
-saves/Simulation01/saves.json
-main.html
-lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/species.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
-output/evo.exe
-output/res/images/planet64b.png
-output/saves/T5/100.0.json
-output/saves/T5/200.0.json
-output/saves/T5/300.0.json
-output/saves/T5/400.0.json
-output/saves/T5/500.0.json
-output/saves/T5/600.0.json
-output/saves/T5/700.0.json
-output/saves/T5/800.0.json
-output/saves/T5/900.0.json
-output/saves/T5/1000.0.json
-output/saves/T5/1100.0.json
-output/saves/T5/1200.0.json
-output/saves/T5/1300.0.json
-output/saves/T5/1400.0.json
-output/saves/T5/1500.0.json
-output/saves/T5/1600.0.json
-output/saves/T5/1700.0.json
-output/saves/T5/1800.0.json
-output/saves/T5/1900.0.json
-output/saves/T5/2000.0.json
-output/saves/T5/2071.6.json
-output/saves/T5/2172.0.json
-output/saves/T5/2272.0.json
-output/saves/T5/2372.0.json
-output/saves/T5/2472.0.json
-output/saves/T5/2572.0.json
-output/saves/T5/2672.0.json
-output/saves/T5/2772.0.json
-output/saves/T5/2872.0.json
-output/saves/T5/2876.1.json
-output/saves/T5/2946.8.json
-output/saves/T5/saves.json
-saves/projects.json
-saves/T2/100.0.json
-saves/T2/139.0.json
-saves/T2/200.0.json
-saves/T2/300.0.json
-saves/T2/400.0.json
-saves/T2/500.0.json
-saves/T2/600.0.json
-saves/T2/700.0.json
-saves/T2/800.0.json
-saves/T2/900.0.json
-saves/T2/1000.0.json
-saves/T2/1100.0.json
-saves/T2/1200.0.json
-saves/T2/1300.0.json
-saves/T2/1400.0.json
-saves/T2/1500.0.json
-saves/T2/1600.0.json
-saves/T2/1700.0.json
-saves/T2/1800.0.json
-saves/T2/saves.json
-saves/T3/100.0.json
-saves/T3/122.4.json
-saves/T3/222.0.json
-saves/T3/322.0.json
-saves/T3/422.0.json
-saves/T3/522.0.json
-saves/T3/622.0.json
-saves/T3/722.0.json
-saves/T3/822.0.json
-saves/T3/saves.json
-saves/T4/100.0.json
-saves/T4/saves.json
-saves/T5/100.0.json
-saves/T5/200.0.json
-saves/T5/300.0.json
-saves/T5/400.0.json
-saves/T5/500.0.json
-saves/T5/600.0.json
-saves/T5/700.0.json
-saves/T5/800.0.json
-saves/T5/900.0.json
-saves/T5/1000.0.json
-saves/T5/1100.0.json
-saves/T5/1200.0.json
-saves/T5/1300.0.json
-saves/T5/1400.0.json
-saves/T5/1500.0.json
-saves/T5/1600.0.json
-saves/T5/1700.0.json
-saves/T5/1800.0.json
-saves/T5/1900.0.json
-saves/T5/2000.0.json
-saves/T5/2071.6.json
-saves/T5/2172.0.json
-saves/T5/2272.0.json
-saves/T5/2372.0.json
-saves/T5/2472.0.json
-saves/T5/2572.0.json
-saves/T5/2672.0.json
-saves/T5/2772.0.json
-saves/T5/2872.0.json
-saves/T5/2876.1.json
-saves/T5/2946.8.json
-saves/T5/saves.json
-saves/World02/500.0.json
-saves/World02/1000.0.json
-saves/World02/2000.0.json
-saves/World02/3000.0.json
-saves/World02/4000.0.json
-saves/World02/5000.0.json
-saves/World02/6000.0.json
-saves/World02/6500.0.json
-saves/World02/7000.0.json
-saves/World02/7200.0.json
-saves/World02/7300.0.json
-saves/World02/7400.0.json
-saves/World02/7476.3.json
-saves/World02/7485.3.json
-saves/World02/7637.2.json
-saves/World02/7770.0.json
-saves/World02/7857.6.json
-saves/World02/saves.json
-output/evo.exe
-output/res/images/planet64b.png
-output/evo.exe
-output/res/images/planet64b.png
-output/saves/T5/3047.0.json
-output/saves/T5/3147.0.json
-output/saves/T5/3247.0.json
-output/saves/T5/3347.0.json
-output/saves/T5/3447.0.json
-output/saves/T5/3547.0.json
-saves/projects.json
-saves/PLANT/100.0.json
-saves/PLANT/200.0.json
-saves/PLANT/300.0.json
-saves/PLANT/400.0.json
-saves/PLANT/500.0.json
-saves/PLANT/600.0.json
-saves/PLANT/700.0.json
-saves/PLANT/800.0.json
-saves/PLANT/900.0.json
-saves/PLANT/1000.0.json
-saves/PLANT/1100.0.json
-saves/PLANT/1200.0.json
-saves/PLANT/1300.0.json
-saves/PLANT/1400.0.json
-saves/PLANT/1500.0.json
-saves/PLANT/1600.0.json
-saves/PLANT/1700.0.json
-saves/PLANT/1800.0.json
-saves/PLANT/1900.0.json
-saves/PLANT/2000.0.json
-saves/PLANT/2100.0.json
-saves/PLANT/2200.0.json
-saves/PLANT/2300.0.json
-saves/PLANT/2400.0.json
-saves/PLANT/2500.0.json
-saves/PLANT/2600.0.json
-saves/PLANT/2700.0.json
-saves/PLANT/2800.0.json
-saves/PLANT/2900.0.json
-saves/PLANT/3000.0.json
-saves/PLANT/3100.0.json
-saves/PLANT/3200.0.json
-saves/PLANT/3300.0.json
-saves/PLANT/3400.0.json
-saves/PLANT/3500.0.json
-saves/PLANT/3600.0.json
-saves/PLANT/3700.0.json
-saves/PLANT/3800.0.json
-saves/PLANT/3900.0.json
-saves/PLANT/4000.0.json
-saves/PLANT/4100.0.json
-saves/PLANT/4200.0.json
-saves/PLANT/4300.0.json
-saves/PLANT/4400.0.json
-saves/PLANT/4500.0.json
-saves/PLANT/4600.0.json
-saves/PLANT/4700.0.json
-saves/PLANT/4800.0.json
-saves/PLANT/4900.0.json
-saves/PLANT/saves.json
-saves/T7/257.0.json
-saves/T7/357.0.json
-saves/T7/saves.json
-saves/T9/100.0.json
-saves/T9/200.0.json
-saves/T9/300.0.json
-saves/T9/400.0.json
-saves/T9/500.0.json
-saves/T9/600.0.json
-saves/T9/700.0.json
-saves/T9/800.0.json
-saves/T9/900.0.json
-saves/T9/1000.0.json
-saves/T9/1100.0.json
-saves/T9/1200.0.json
-saves/T9/1300.0.json
-saves/T9/1400.0.json
-saves/T9/1500.0.json
-saves/T9/1600.0.json
-saves/T9/1700.0.json
-saves/T9/1800.0.json
-saves/T9/1900.0.json
-saves/T9/2000.0.json
-saves/T9/2100.0.json
-saves/T9/2200.0.json
-saves/T9/2300.0.json
-saves/T9/2400.0.json
-saves/T9/2500.0.json
-saves/T9/2600.0.json
-saves/T9/2700.0.json
-saves/T9/2800.0.json
-saves/T9/2900.0.json
-saves/T9/3000.0.json
-saves/T9/3100.0.json
-saves/T9/3200.0.json
-saves/T9/3300.0.json
-saves/T9/3400.0.json
-saves/T9/3500.0.json
-saves/T9/3600.0.json
-saves/T9/3700.0.json
-saves/T9/3800.0.json
-saves/T9/3900.0.json
-saves/T9/4000.0.json
-saves/T9/4100.0.json
-saves/T9/4200.0.json
-saves/T9/4300.0.json
-saves/T9/4400.0.json
-saves/T9/4500.0.json
-saves/T9/4600.0.json
-saves/T9/4700.0.json
-saves/T9/4800.0.json
-saves/T9/4815.0.json
-saves/T9/4915.0.json
-saves/T9/5015.0.json
-saves/T9/5115.0.json
-saves/T9/5215.0.json
-saves/T9/5315.0.json
-saves/T9/5415.0.json
-saves/T9/5515.0.json
-saves/T9/5615.0.json
-saves/T9/5715.0.json
-saves/T9/5815.0.json
-saves/T9/5915.0.json
-saves/T9/6015.0.json
-saves/T9/6115.0.json
-saves/T9/6215.0.json
-saves/T9/6315.0.json
-saves/T9/6415.0.json
-saves/T9/6515.0.json
-saves/T9/6615.0.json
-saves/T9/6715.0.json
-saves/T9/6815.0.json
-saves/T9/6915.0.json
-saves/T9/7015.0.json
-saves/T9/7115.0.json
-saves/T9/7215.0.json
-saves/T9/7315.0.json
-saves/T9/7415.0.json
-saves/T9/7515.0.json
-saves/T9/7615.0.json
-saves/T9/7715.0.json
-saves/T9/7815.0.json
-saves/T9/7915.0.json
-saves/T9/8015.0.json
-saves/T9/8115.0.json
-saves/T9/8163.8.json
-saves/T9/8215.0.json
-saves/T9/8315.0.json
-saves/T9/8415.0.json
-saves/T9/8515.0.json
-saves/T9/8615.0.json
-saves/T9/8715.0.json
-saves/T9/8815.0.json
-saves/T9/8881.5.json
-saves/T9/8915.0.json
-saves/T9/8981.0.json
-saves/T9/saves.json
-saves/World02/500.0.json
-saves/World02/1000.0.json
-saves/World02/2000.0.json
-saves/World02/3000.0.json
-saves/World02/4000.0.json
-saves/World02/5000.0.json
-saves/World02/6000.0.json
-saves/World02/6500.0.json
-saves/World02/7000.0.json
-saves/World02/7200.0.json
-saves/World02/7300.0.json
-saves/World02/7400.0.json
-saves/World02/7476.3.json
-saves/World02/7485.3.json
-saves/World02/7637.2.json
-saves/World02/7770.0.json
-saves/World02/7857.6.json
-saves/World02/saves.json
-saves/projects.json
-saves/T7/saves.json
-saves/World02/500.0.json
-saves/World02/1000.0.json
-saves/World02/2000.0.json
-saves/World02/3000.0.json
-saves/World02/4000.0.json
-saves/World02/5000.0.json
-saves/World02/6000.0.json
-saves/World02/6500.0.json
-saves/World02/7000.0.json
-saves/World02/7200.0.json
-saves/World02/7300.0.json
-saves/World02/7400.0.json
-saves/World02/7476.3.json
-saves/World02/7485.3.json
-saves/World02/7637.2.json
-saves/World02/7770.0.json
-saves/World02/7857.6.json
-saves/World02/saves.json
-output/evo.exe
-output/res/images/planet64b.png
-lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
-lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
-lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
-output/evo.exe
-output/res/images/planet64b.png
-output/res/images/planet64b.png
-output/res/images/planet64b.png
-output/evo.exe
-lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
-lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
-saves/Univ/100.0.json
-saves/Univ/saves.json
-saves/Univ02/100.0.json
-saves/Univ02/200.0.json
-saves/Univ02/300.0.json
-saves/Univ02/366.9.json
-saves/Univ02/saves.json
-saves/Eye05/100.0.json
-saves/Eye05/200.0.json
-saves/Eye05/300.0.json
-saves/Eye05/400.0.json
-saves/Eye05/500.0.json
-saves/Eye05/600.2.json
-saves/Eye05/700.3.json
-saves/Eye05/saves.json
-saves/Eye2/100.0.json
-saves/Eye2/saves.json
-main.html
-main.html
-saves/No14/5500.0.json
-saves/No14/6000.0.json
-saves/No14/6500.0.json
-saves/No14/7000.0.json
-saves/No14/7500.0.json
-saves/No14/8000.0.json
-saves/No14/8500.0.json
-saves/No14/9000.0.json
-saves/No14/9500.0.json
-saves/No14/10000.0.json
-saves/No14/10500.0.json
-saves/No14/11000.0.json
-saves/No14/11500.0.json
-saves/No14/12000.0.json
-saves/No14/12500.0.json
-saves/No14/13000.0.json
-saves/No14/13500.0.json
-saves/No14/14000.0.json
-saves/No14/saves.json
-saves/No14/5500.0.json
-saves/No14/6000.0.json
-saves/No14/6500.0.json
-saves/No14/7000.0.json
-saves/No14/7500.0.json
-saves/No14/8000.0.json
-saves/No14/8500.0.json
-saves/No14/9000.0.json
-saves/No14/9500.0.json
-saves/No14/10000.0.json
-saves/No14/10500.0.json
-saves/No14/11000.0.json
-saves/No14/11500.0.json
-saves/No14/12000.0.json
-saves/No14/12500.0.json
-saves/No14/13000.0.json
-saves/No14/13500.0.json
-saves/No14/14000.0.json
-main.html
-saves/Univ00/1342.1.json
-saves/Univ00/saves.json
-saves/Univ00/1342.1.json
-saves/Univ00/saves.json
-saves/Univ02/400.0.json
-saves/Univ02/500.0.json
-saves/Univ02/600.0.json
-saves/Univ02/700.0.json
-saves/Univ02/800.0.json
-saves/Univ02/900.0.json
-saves/Univ02/1000.0.json
-saves/Univ02/1100.0.json
-saves/Univ02/1200.0.json
-saves/Univ02/1300.0.json
-saves/Univ02/1400.0.json
-saves/Univ02/1500.0.json
-saves/Univ02/1600.0.json
-saves/Univ02/1700.0.json
-saves/Univ02/1800.0.json
-saves/Univ02/1900.0.json
-saves/Univ02/2000.0.json
-saves/Univ02/2100.0.json
-saves/Univ02/2200.0.json
-saves/Univ02/2300.0.json
-saves/Univ02/2400.0.json
-saves/Univ02/2500.0.json
-saves/Univ02/2600.0.json
-saves/Univ02/2700.0.json
-saves/Univ02/2800.0.json
-saves/Univ02/2900.0.json
-saves/Univ02/3000.0.json
-saves/Univ02/3100.0.json
-saves/Univ02/3200.0.json
-saves/Univ02/3300.0.json
-saves/Univ02/3400.0.json
-saves/Univ02/3500.0.json
-saves/Univ02/3600.0.json
-saves/Univ02/3700.0.json
-saves/Univ02/3800.0.json
-saves/Univ02/3900.0.json
-saves/Univ02/4000.0.json
-saves/Univ02/4100.0.json
-saves/Univ02/4200.0.json
-saves/Univ02/4300.0.json
-saves/Univ02/4400.0.json
-saves/Univ02/4500.0.json
-saves/Univ02/4600.0.json
-saves/Univ02/4700.0.json
-saves/Univ02/4800.0.json
-saves/Univ02/4900.0.json
-saves/Univ02/5000.0.json
-saves/Univ02/5100.0.json
-saves/Univ02/5200.0.json
-saves/Univ02/5300.0.json
-saves/Univ02/5400.0.json
-saves/Univ02/5500.0.json
-saves/Univ02/5600.0.json
-saves/Univ02/5700.0.json
-saves/Univ02/5800.0.json
-saves/Univ02/5900.0.json
-saves/Univ02/6000.0.json
-saves/Univ02/6100.0.json
-saves/Univ02/6200.0.json
-saves/Univ02/6300.0.json
-saves/Univ02/6400.0.json
-saves/Univ02/6500.0.json
-saves/Univ02/6600.0.json
-saves/Univ02/6700.0.json
-saves/Univ02/6800.0.json
-saves/Univ02/6900.0.json
-saves/Univ02/7000.0.json
-saves/Univ02/7100.0.json
-saves/Univ02/7200.0.json
-saves/Univ02/7300.0.json
-saves/Univ02/7400.0.json
-saves/Univ02/7500.0.json
-saves/Univ02/7600.0.json
-saves/Univ02/7700.0.json
-saves/Univ02/7800.0.json
-saves/Univ02/7900.0.json
-saves/Univ02/8000.0.json
-saves/Univ02/8100.0.json
-saves/Univ02/8200.0.json
-saves/Univ02/8300.0.json
-saves/Univ02/8400.0.json
-saves/Univ02/8500.0.json
-saves/Univ02/8600.0.json
-saves/Univ02/8700.0.json
-saves/Univ02/8800.0.json
-saves/Univ02/8900.0.json
-saves/Univ02/9000.0.json
-saves/Univ02/9100.0.json
-saves/Univ02/9200.0.json
-saves/Univ02/9300.0.json
-saves/Univ02/9400.0.json
-saves/Univ02/9500.0.json
-saves/Univ02/9600.0.json
-saves/Univ02/9700.0.json
-saves/Univ02/9800.0.json
-saves/Univ02/9900.0.json
-saves/Univ02/10000.0.json
-saves/Univ02/10100.0.json
-saves/Univ02/10200.0.json
-saves/Univ02/10300.0.json
-saves/Univ02/10400.0.json
-saves/Univ02/10500.0.json
-saves/Univ02/10600.0.json
-saves/Univ02/10700.0.json
-saves/Univ02/10800.0.json
-saves/Univ02/10900.0.json
-saves/Univ02/11000.0.json
-saves/Univ02/11100.0.json
-saves/Univ02/11200.0.json
-saves/Univ02/11300.0.json
-saves/Univ02/11400.0.json
-saves/Univ02/11500.0.json
-saves/Univ02/11600.0.json
-saves/Univ02/11700.0.json
-saves/Univ02/11800.0.json
-saves/Univ02/11900.0.json
-saves/Univ02/12000.0.json
-saves/Univ02/12100.0.json
-saves/Univ02/12200.0.json
-saves/Univ02/12300.0.json
-saves/Univ02/12400.0.json
-saves/Univ02/12500.0.json
-saves/Univ02/12600.0.json
-saves/Univ02/12700.0.json
-saves/Univ02/12800.0.json
-saves/Univ02/12900.0.json
-saves/Univ02/13000.0.json
-saves/Univ02/13100.0.json
-saves/Univ02/13200.0.json
-saves/Univ02/13300.0.json
-saves/Univ02/13400.0.json
-saves/Univ02/13500.0.json
-saves/Univ02/13600.0.json
-saves/Univ02/13700.0.json
-saves/Univ02/13800.0.json
-saves/Univ02/13818.2.json
-saves/Univ05/100.0.json
-saves/Univ05/200.0.json
-saves/Univ05/300.0.json
-saves/Univ05/400.0.json
-saves/Univ05/500.0.json
-saves/Univ05/600.0.json
-saves/Univ05/700.0.json
-saves/Univ05/799.9.json
-saves/Univ05/800.0.json
-saves/Univ05/900.0.json
-saves/Univ05/1000.0.json
-saves/Univ05/1100.0.json
-saves/Univ05/1200.0.json
-saves/Univ05/1300.0.json
-saves/Univ05/1400.0.json
-saves/Univ05/1500.0.json
-saves/Univ05/1600.0.json
-saves/Univ05/1700.0.json
-saves/Univ05/1773.5.json
-saves/Univ05/saves.json
-saves/Univ00/saves.json
-saves/Univ00/saves.json
-saves/Univ00/saves.json
-main.html
-saves/Univ00/saves.json
-main.html
-saves/Univ00/1300.0.json
-saves/Univ00/saves.json
-saves/Univ06/100.0.json
-saves/Univ06/200.0.json
-saves/Univ06/300.0.json
-saves/Univ06/400.0.json
-saves/Univ06/500.0.json
-saves/Univ06/600.0.json
-saves/Univ06/700.0.json
-saves/Univ06/800.0.json
-saves/Univ06/900.0.json
-saves/Univ06/1000.0.json
-saves/Univ06/1100.0.json
-saves/Univ06/1200.0.json
-saves/Univ06/1300.0.json
-saves/Univ06/1400.0.json
-saves/Univ06/1500.0.json
-saves/Univ06/1600.0.json
-saves/Univ06/1700.0.json
-saves/Univ06/1800.0.json
-saves/Univ06/1900.0.json
-saves/Univ06/2000.0.json
-saves/Univ06/2100.0.json
-saves/Univ06/2200.0.json
-saves/Univ06/2300.0.json
-saves/Univ06/2400.0.json
-saves/Univ06/2500.0.json
-saves/Univ06/2600.0.json
-saves/Univ06/2700.0.json
-saves/Univ06/2800.0.json
-saves/Univ06/2900.0.json
-saves/Univ06/3000.0.json
-saves/Univ06/saves.json
-saves/Univ14/100.0.json
-saves/Univ14/200.0.json
-saves/Univ14/300.0.json
-saves/Univ14/400.0.json
-saves/Univ14/500.0.json
-saves/Univ14/600.0.json
-saves/Univ14/700.0.json
-saves/Univ14/800.0.json
-saves/Univ14/900.0.json
-saves/Univ14/1000.0.json
-saves/Univ14/1100.0.json
-saves/Univ14/1200.0.json
-saves/Univ14/1300.0.json
-saves/Univ14/1400.0.json
-saves/Univ14/1500.0.json
-saves/Univ14/1600.0.json
-saves/Univ14/1700.0.json
-saves/Univ14/1800.0.json
-saves/Univ14/1900.0.json
-saves/Univ14/2000.0.json
-saves/Univ14/2100.0.json
-saves/Univ14/2200.0.json
-saves/Univ14/2300.0.json
-saves/Univ14/2400.0.json
-saves/Univ14/2500.0.json
-saves/Univ14/2565.7.json
-saves/Univ14/saves.json
-saves/Univ14/100.0.json
-saves/Univ14/200.0.json
-saves/Univ14/300.0.json
-saves/Univ14/400.0.json
-saves/Univ14/500.0.json
-saves/Univ14/600.0.json
-saves/Univ14/700.0.json
-saves/Univ14/800.0.json
-saves/Univ14/900.0.json
-saves/Univ14/1000.0.json
-saves/Univ14/1100.0.json
-saves/Univ14/1200.0.json
-saves/Univ14/1300.0.json
-saves/Univ14/1400.0.json
-saves/Univ14/1500.0.json
-saves/Univ14/1600.0.json
-saves/Univ14/1700.0.json
-saves/Univ14/1800.0.json
-saves/Univ14/1900.0.json
-saves/Univ14/2000.0.json
-saves/Univ14/2100.0.json
-saves/Univ14/2200.0.json
-saves/Univ14/2300.0.json
-saves/Univ14/2400.0.json
-saves/Univ14/2500.0.json
-saves/Univ14/2565.7.json
-saves/Univ14/saves.json
-saves/Univ12/4263.0.json
-saves/Univ12/4363.0.json
-saves/Univ12/4463.0.json
-saves/Univ12/4529.7.json
-saves/Univ12/saves.json
-saves/Univ12/4263.0.json
-saves/Univ12/4363.0.json
-saves/Univ12/4463.0.json
-saves/Univ12/4529.7.json
-saves/Univ12/saves.json
-saves/Univ12/saves.json
-saves/Univ12/saves.json
-lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
-lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
-lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
-saves/Univ40/106.5.json
-saves/Univ40/163.5.json
-saves/Univ40/663.0.json
-saves/Univ40/1163.0.json
-saves/Univ40/1663.0.json
-saves/Univ40/2163.0.json
-saves/Univ40/2663.0.json
-saves/Univ40/3163.0.json
-saves/Univ40/3663.0.json
-saves/Univ40/4163.0.json
-saves/Univ40/saves.json
-saves/Univ38/29.2.json
-saves/Univ38/saves.json
-saves/Univ37/928.4.json
-saves/Univ37/saves.json
-saves/Univ37/saves.json
-saves/Univ37/saves.json
-saves/Univ37/saves.json
-lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
-lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
-output/res/icons/planet2-32.ico
-output/res/icons/planet2-128.ico
-output/res/icons/planet2-256.ico
-output/res/icons/planet3-32.ico
-output/res/icons/planet3-128.ico
-output/res/icons/planet05c.ico
-output/res/icons/planet32.ico
-output/res/icons/planet64.ico
-output/res/icons/planet64b.ico
-output/res/icons/planet96.ico
-output/res/icons/planet128.ico
-output/res/images/map2 — kopia (2).png
-output/res/images/map2 — kopia.png
-output/res/images/map2.png
-output/res/images/planet2-128.png
-output/res/images/planet2-256.png
-output/res/images/planet3-32_.png
-output/res/images/planet3-32.png
-output/res/images/planet3-128.png
-output/res/images/planet3-256.png
-output/res/images/planet32.png
-output/res/images/planet64.png
-output/res/images/planet96.png
-output/res/images/planet128.png
-output/res/themes/__blue.json
-output/saves/NewLand/100.json
-output/saves/NewLand/200.json
-output/saves/NewLand/296.json
-output/saves/NewLand/300.json
-output/saves/NewLand/400.json
-output/saves/NewLand/500.json
-output/saves/NewLand/600.json
-output/saves/NewLand/700.json
-output/saves/NewLand/800.json
-output/saves/NewLand/900.json
-output/saves/NewLand/1000.json
-output/saves/NewLand/1053.json
-output/saves/creatures/IFBUNA.json
-output/saves/creatures/NUVUPJ.json
-output/saves/creatures/SULLFK.json
-output/saves/creatures/ZUTOXF.json
-output/evo5.exe
-main.html
-main.html
-perf.py
-output/res/icons/biosynth32.ico
-output/res/icons/biosynth64.ico
-output/res/icons/biosynth128.ico
-output/res/icons/biosynth256.ico
-output/res/images/biosynth32.png
-output/res/images/biosynth64.png
-output/res/images/biosynth128.png
-output/res/images/biosynth256.png
-output/res/images/planet2-32.png
-output/saves/UNIVERSE/100.json
-output/saves/UNIVERSE/40316.json
-output/saves/UNIVERSE/50316.json
-output/saves/UNIVERSE/60197.json
-output/saves/UNIVERSE/70097.json
-output/saves/UNIVERSE/73797.json
-output/saves/UNIVERSE/74797.json
-output/saves/UNIVERSE/75797.json
-output/saves/UNIVERSE/76797.json
-output/saves/UNIVERSE/77797.json
-output/saves/UNIVERSE/78797.json
-output/saves/UNIVERSE/79797.json
-output/saves/UNIVERSE/80797.json
-output/saves/UNIVERSE/80897.json
-output/saves/UNIVERSE/81097.json
-output/saves/UNIVERSE/81297.json
-output/saves/UNIVERSE/81497.json
-output/saves/UNIVERSE/81597.json
-output/saves/UNIVERSE/81797.json
-output/saves/UNIVERSE/81897.json
-output/saves/UNIVERSE/81997.json
-output/saves/UNIVERSE/82197.json
-output/saves/UNIVERSE/82297.json
-output/saves/UNIVERSE/82397.json
-output/saves/UNIVERSE/saves.json
-output/saves/WORLD01/40.json
-output/saves/WORLD01/140.json
-output/saves/WORLD01/saves.json
-output/saves/creatures/BFNOWO.json
-output/saves/creatures/BIMLJY.json
-output/saves/creatures/BPZJWF.json
-output/saves/creatures/FVQOKS.json
-output/saves/creatures/HPWWIR.json
-output/saves/creatures/ILSRST.json
-output/saves/creatures/IWQJLP.json
-output/saves/creatures/LEJJPU.json
-output/saves/creatures/LEREPU.json
-output/saves/creatures/LETAXO.json
-output/saves/creatures/MYMDKY.json
-output/saves/creatures/NFHFVF.json
-output/saves/creatures/NONUIE.json
-output/saves/creatures/NONUTO.json
-output/saves/creatures/NOQQIE.json
-output/saves/creatures/NOSTKW.json
-output/saves/creatures/NOSTNO.json
-output/saves/creatures/NOSTPL.json
-output/saves/creatures/NOSTTU.json
-output/saves/creatures/NOTWPU.json
-output/saves/creatures/ODSRST.json
-output/saves/creatures/OISTKS.json
-output/saves/creatures/PLLJIR.json
-output/saves/creatures/PUNOPU.json
-output/saves/creatures/PUNOWO.json
-output/saves/creatures/PUQWWO.json
-output/saves/creatures/PUSJWO.json
-output/saves/creatures/QUSURP.json
-output/saves/creatures/SKRIMI.json
-output/saves/creatures/TUTUSP.json
-output/saves/creatures/TZRJST.json
-output/saves/creatures/UKRJWW.json
-output/saves/creatures/VWODRU.json
-output/saves/creatures/ZYNUQD.json
-output/res/icons/biosynth32.ico
-output/res/icons/biosynth64.ico
-output/res/icons/biosynth128.ico
-output/res/icons/biosynth256.ico
-output/res/images/biosynth32.png
-output/res/images/biosynth64.png
-output/res/images/biosynth128.png
-output/res/images/biosynth256.png
-output/res/images/planet2-32.png
-output/res/icons/biosynth32.ico
-output/res/icons/biosynth64.ico
-output/res/icons/biosynth128.ico
-output/res/icons/biosynth256.ico
-output/res/icons/biosynth32.ico
-output/res/icons/biosynth64.ico
-output/res/icons/biosynth128.ico
-output/res/icons/biosynth256.ico
-output/res/images/biosynth32.png
-output/res/images/biosynth64.png
-output/res/images/biosynth128.png
-output/res/images/biosynth256.png
-output/res/images/planet2-32.png
-output/res/images/biosynth32.png
-output/res/images/biosynth64.png
-output/res/images/biosynth128.png
-output/res/images/biosynth256.png
-output/res/images/planet2-32.png
-output/saves/UNIVERSE/100.json
-output/saves/UNIVERSE/40316.json
-output/saves/UNIVERSE/50316.json
-output/saves/UNIVERSE/60197.json
-output/saves/UNIVERSE/70097.json
-output/saves/UNIVERSE/73797.json
-output/saves/UNIVERSE/74797.json
-output/saves/UNIVERSE/75797.json
-output/saves/UNIVERSE/76797.json
-output/saves/UNIVERSE/77797.json
-output/saves/UNIVERSE/78797.json
-output/saves/UNIVERSE/79797.json
-output/saves/UNIVERSE/80797.json
-output/saves/UNIVERSE/80897.json
-output/saves/UNIVERSE/81097.json
-output/saves/UNIVERSE/81297.json
-output/saves/UNIVERSE/81497.json
-output/saves/UNIVERSE/81597.json
-output/saves/UNIVERSE/81797.json
-output/saves/UNIVERSE/81897.json
-output/saves/UNIVERSE/81997.json
-output/saves/UNIVERSE/82197.json
-output/saves/UNIVERSE/82297.json
-output/saves/UNIVERSE/82397.json
-output/saves/UNIVERSE/saves.json
-output/saves/WORLD01/40.json
-output/saves/WORLD01/140.json
-output/saves/WORLD01/saves.json
-output/saves/creatures/BFNOWO.json
-output/saves/creatures/BIMLJY.json
-output/saves/creatures/BPZJWF.json
-output/saves/creatures/FVQOKS.json
-output/saves/creatures/HPWWIR.json
-output/saves/creatures/ILSRST.json
-output/saves/creatures/IWQJLP.json
-output/saves/creatures/LEJJPU.json
-output/saves/creatures/LEREPU.json
-output/saves/creatures/LETAXO.json
-output/saves/creatures/MYMDKY.json
-output/saves/creatures/NFHFVF.json
-output/saves/creatures/NONUIE.json
-output/saves/creatures/NONUTO.json
-output/saves/creatures/NOQQIE.json
-output/saves/creatures/NOSTKW.json
-output/saves/creatures/NOSTNO.json
-output/saves/creatures/NOSTPL.json
-output/saves/creatures/NOSTTU.json
-output/saves/creatures/NOTWPU.json
-output/saves/creatures/ODSRST.json
-output/saves/creatures/OISTKS.json
-output/saves/creatures/PLLJIR.json
-output/saves/creatures/PUNOPU.json
-output/saves/creatures/PUNOWO.json
-output/saves/creatures/PUQWWO.json
-output/saves/creatures/PUSJWO.json
-output/saves/creatures/QUSURP.json
-output/saves/creatures/SKRIMI.json
-output/saves/creatures/TUTUSP.json
-output/saves/creatures/TZRJST.json
-output/saves/creatures/UKRJWW.json
-output/saves/creatures/VWODRU.json
-output/saves/creatures/ZYNUQD.json
-output/saves/creatures/BFNOWO.json
-output/saves/creatures/BIMLJY.json
-output/saves/creatures/BPZJWF.json
-output/saves/creatures/FVQOKS.json
-output/saves/creatures/HPWWIR.json
-output/saves/creatures/ILSRST.json
-output/saves/creatures/IWQJLP.json
-output/saves/creatures/LEJJPU.json
-output/saves/creatures/LEREPU.json
-output/saves/creatures/LETAXO.json
-output/saves/creatures/MYMDKY.json
-output/saves/creatures/NFHFVF.json
-output/saves/creatures/NONUIE.json
-output/saves/creatures/NONUTO.json
-output/saves/creatures/NOQQIE.json
-output/saves/creatures/NOSTKW.json
-output/saves/creatures/NOSTNO.json
-output/saves/creatures/NOSTPL.json
-output/saves/creatures/NOSTTU.json
-output/saves/creatures/NOTWPU.json
-output/saves/creatures/ODSRST.json
-output/saves/creatures/OISTKS.json
-output/saves/creatures/PLLJIR.json
-output/saves/creatures/PUNOPU.json
-output/saves/creatures/PUNOWO.json
-output/saves/creatures/PUQWWO.json
-output/saves/creatures/PUSJWO.json
-output/saves/creatures/QUSURP.json
-output/saves/creatures/SKRIMI.json
-output/saves/creatures/TUTUSP.json
-output/saves/creatures/TZRJST.json
-output/saves/creatures/UKRJWW.json
-output/saves/creatures/VWODRU.json
-output/saves/creatures/ZYNUQD.json
-output/saves/creatures/BFNOWO.json
-output/saves/creatures/BIMLJY.json
-output/saves/creatures/BPZJWF.json
-output/saves/creatures/FVQOKS.json
-output/saves/creatures/HPWWIR.json
-output/saves/creatures/ILSRST.json
-output/saves/creatures/IWQJLP.json
-output/saves/creatures/LEJJPU.json
-output/saves/creatures/LEREPU.json
-output/saves/creatures/LETAXO.json
-output/saves/creatures/MYMDKY.json
-output/saves/creatures/NFHFVF.json
-output/saves/creatures/NONUIE.json
-output/saves/creatures/NONUTO.json
-output/saves/creatures/NOQQIE.json
-output/saves/creatures/NOSTKW.json
-output/saves/creatures/NOSTNO.json
-output/saves/creatures/NOSTPL.json
-output/saves/creatures/NOSTTU.json
-output/saves/creatures/NOTWPU.json
-output/saves/creatures/ODSRST.json
-output/saves/creatures/OISTKS.json
-output/saves/creatures/PLLJIR.json
-output/saves/creatures/PUNOPU.json
-output/saves/creatures/PUNOWO.json
-output/saves/creatures/PUQWWO.json
-output/saves/creatures/PUSJWO.json
-output/saves/creatures/QUSURP.json
-output/saves/creatures/SKRIMI.json
-output/saves/creatures/TUTUSP.json
-output/saves/creatures/TZRJST.json
-output/saves/creatures/UKRJWW.json
-output/saves/creatures/VWODRU.json
-output/saves/creatures/ZYNUQD.json
-output/saves/UNIVERSE/100.json
-output/saves/UNIVERSE/40316.json
-output/saves/UNIVERSE/50316.json
-output/saves/UNIVERSE/60197.json
-output/saves/UNIVERSE/70097.json
-output/saves/UNIVERSE/73797.json
-output/saves/UNIVERSE/74797.json
-output/saves/UNIVERSE/75797.json
-output/saves/UNIVERSE/76797.json
-output/saves/UNIVERSE/77797.json
-output/saves/UNIVERSE/78797.json
-output/saves/UNIVERSE/79797.json
-output/saves/UNIVERSE/80797.json
-output/saves/UNIVERSE/80897.json
-output/saves/UNIVERSE/81097.json
-output/saves/UNIVERSE/81297.json
-output/saves/UNIVERSE/81497.json
-output/saves/UNIVERSE/81597.json
-output/saves/UNIVERSE/81797.json
-output/saves/UNIVERSE/81897.json
-output/saves/UNIVERSE/81997.json
-output/saves/UNIVERSE/82197.json
-output/saves/UNIVERSE/82297.json
-output/saves/UNIVERSE/82397.json
-output/saves/UNIVERSE/saves.json
-output/saves/UNIVERSE/100.json
-output/saves/UNIVERSE/40316.json
-output/saves/UNIVERSE/50316.json
-output/saves/UNIVERSE/60197.json
-output/saves/UNIVERSE/70097.json
-output/saves/UNIVERSE/73797.json
-output/saves/UNIVERSE/74797.json
-output/saves/UNIVERSE/75797.json
-output/saves/UNIVERSE/76797.json
-output/saves/UNIVERSE/77797.json
-output/saves/UNIVERSE/78797.json
-output/saves/UNIVERSE/79797.json
-output/saves/UNIVERSE/80797.json
-output/saves/UNIVERSE/80897.json
-output/saves/UNIVERSE/81097.json
-output/saves/UNIVERSE/81297.json
-output/saves/UNIVERSE/81497.json
-output/saves/UNIVERSE/81597.json
-output/saves/UNIVERSE/81797.json
-output/saves/UNIVERSE/81897.json
-output/saves/UNIVERSE/81997.json
-output/saves/UNIVERSE/82197.json
-output/saves/UNIVERSE/82297.json
-output/saves/UNIVERSE/82397.json
-output/saves/UNIVERSE/saves.json
-output/saves/WORLD01/40.json
-output/saves/WORLD01/140.json
-output/saves/WORLD01/saves.json
-output/saves/WORLD01/40.json
-output/saves/WORLD01/140.json
-output/saves/WORLD01/saves.json
-output/_evo.exe
-lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/species.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
-lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/species.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
-lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/species.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
-lib/__pycache__/camera.cpython-39.pyc
-lib/__pycache__/species.cpython-39.pyc
-lib/__pycache__/statistics.cpython-39.pyc
-output/saves/NEW/100.json
-output/saves/NEW/1500.json
-output/saves/NEW/2900.json
-output/saves/NEW/4300.json
-output/saves/NEW/5672.json
-output/saves/NEW/7072.json
-output/saves/NEW/8435.json
-output/saves/NEW/9835.json
-output/saves/NEW/11235.json
-output/saves/NEW/12635.json
-output/saves/NEW/14035.json
-output/saves/NEW/15435.json
-output/saves/NEW/16835.json
-output/saves/NEW/18235.json
-output/evo_no_stat.exe
-output/saves/NEW RULES/100.json
-output/saves/NEW RULES/200.json
-output/saves/NEW RULES/300.json
-output/saves/NEW RULES/400.json
-output/saves/NEW RULES/500.json
-output/saves/NEW RULES/600.json
-output/saves/NEW RULES/700.json
-output/saves/NEW RULES/716.json
-output/saves/NEW RULES/729.json
-output/saves/NEW RULES/829.json
-output/saves/NEW RULES/929.json
-output/saves/NEW RULES/1029.json
-output/saves/NEW RULES/1129.json
-output/saves/NEW RULES/1229.json
-output/saves/NEW RULES/1329.json
-output/saves/NEW RULES/1429.json
-output/saves/NEW RULES/1529.json
-output/saves/NEW RULES/1629.json
-output/saves/NEW RULES/1729.json
-output/saves/NEW RULES/1829.json
-output/saves/NEW RULES/1929.json
-output/saves/NEW RULES/2029.json
-output/saves/NEW RULES/2129.json
-output/saves/NEW RULES/2229.json
-output/saves/NEW RULES/2329.json
-output/saves/NEW RULES/2429.json
-output/saves/NEW RULES/2529.json
-output/saves/NEW RULES/2629.json
-output/saves/NEW RULES/2729.json
-output/saves/NEW RULES/2829.json
-output/saves/NEW RULES/2929.json
-output/saves/NEW RULES/3029.json
-output/saves/NEW RULES/3129.json
-output/saves/NEW RULES/3229.json
-output/saves/NEW RULES/3329.json
-output/saves/NEW RULES/3429.json
-output/saves/NEW RULES/3529.json
-output/saves/NEW RULES/3629.json
-output/saves/NEW RULES/3729.json
-output/saves/NEW RULES/3829.json
-output/saves/NEW RULES/3929.json
-output/saves/NEW RULES/4029.json
-output/saves/NEW RULES/4129.json
-output/saves/NEW RULES/4229.json
-output/saves/NEW RULES/4329.json
-output/saves/NEW RULES/4429.json
-output/saves/NEW RULES/4529.json
-output/saves/NEW RULES/4629.json
-output/saves/NEW RULES/4729.json
-output/saves/NEW RULES/4829.json
-output/saves/NEW RULES/4929.json
-output/saves/NEW RULES/5029.json
-output/saves/NEW RULES/5129.json
-output/saves/NEW RULES/5229.json
-output/saves/NEW RULES/5329.json
-output/saves/NEW RULES/5429.json
-output/saves/NEW RULES/5529.json
-output/saves/NEW RULES/5629.json
-output/saves/NEW RULES/5729.json
-output/saves/NEW RULES/5829.json
-output/saves/NEW RULES/5929.json
-output/saves/NEW RULES/6029.json
-output/saves/NEW RULES/6129.json
-output/saves/NEW RULES/6229.json
-output/saves/NEW RULES/6329.json
-output/saves/NEW RULES/6429.json
-output/saves/NEW RULES/6529.json
-output/saves/NEW RULES/6629.json
-output/saves/NEW RULES/6729.json
-output/saves/NEW RULES/6829.json
-output/saves/NEW RULES/6929.json
-output/saves/NEW RULES/7029.json
-output/saves/NEW RULES/saves.json
-output/saves/NextHope/54.json
-output/saves/NextHope/3036.json
-output/saves/NextHope/6233.json
-output/saves/NextHope/9733.json
-output/saves/NextHope/13233.json
-output/saves/NextHope/16733.json
-output/saves/NextHope/20233.json
-output/saves/NextHope/23733.json
-output/saves/NextHope/27233.json
-output/saves/NextHope/30733.json
-output/saves/NextHope/33549.json
-output/saves/NextHope/34049.json
-output/saves/NextHope/34549.json
-output/saves/NextHope/35049.json
-output/saves/NextHope/35549.json
-output/saves/NextHope/36049.json
-output/saves/NextHope/36052.json
-output/saves/NextHope/saves.json
-output/saves/creatures/DODJMK.json
-output/saves/creatures/DOQAVU.json
-output/saves/creatures/IICEPD.json
-output/saves/creatures/IOJSFE.json
-output/saves/creatures/IOMEXU.json
-output/saves/creatures/IUDFMK.json
-output/saves/creatures/IUMMMK.json
-output/saves/creatures/IUZYMK.json
-output/saves/creatures/JRTPXU.json
-output/saves/creatures/JRTVXZ.json
-output/saves/creatures/JSIFPZ.json
-output/saves/creatures/PUIEDT.json
-output/saves/creatures/SFHUDK.json
-output/saves/creatures/SOARBU.json
-output/saves/creatures/TJUONF.json
-output/saves/creatures/USBFJJ.json
-output/saves/creatures/USBRJJ.json
-output/saves/creatures/USBRPJ.json
-output/saves/creatures/XXBTKF.json
-output/saves/NEW/100.json
-output/saves/NEW/200.json
-output/saves/NEW/300.json
-output/saves/NEW/400.json
-output/saves/NEW/500.json
-output/saves/NEW/600.json
-output/saves/NEW/700.json
-output/saves/NEW/800.json
-output/saves/NEW/900.json
-output/saves/NEW/1000.json
-output/saves/NEW/1100.json
-output/saves/NEW/1200.json
-output/saves/NEW/1300.json
-output/saves/NEW/1400.json
-output/saves/NEW/1500.json
-output/saves/NEW/1600.json
-output/saves/NEW/1700.json
-output/saves/NEW/1800.json
-output/saves/NEW/1900.json
-output/saves/NEW/2000.json
-output/saves/NEW/2100.json
-output/saves/NEW/2200.json
-output/saves/NEW/2300.json
-output/saves/NEW/2400.json
-output/saves/NEW/2500.json
-output/saves/NEW/2600.json
-output/saves/NEW/2700.json
-output/saves/NEW/2800.json
-output/saves/NEW/2900.json
-output/saves/NEW/3000.json
-output/saves/NEW/3100.json
-output/saves/NEW/3200.json
-output/saves/NEW/3300.json
-output/saves/NEW/3400.json
-output/saves/NEW/3500.json
-output/saves/NEW/3600.json
-output/saves/NEW/3700.json
-output/saves/NEW/3800.json
-output/saves/NEW/3900.json
-output/saves/NEW/4000.json
-output/saves/NEW/4100.json
-output/saves/NEW/4200.json
-output/saves/NEW/4300.json
-output/saves/NEW/4400.json
-output/saves/NEW/4500.json
-output/saves/NEW/4600.json
-output/saves/NEW/4672.json
-output/saves/NEW/4772.json
-output/saves/NEW/4872.json
-output/saves/NEW/4972.json
-output/saves/NEW/5072.json
-output/saves/NEW/5172.json
-output/saves/NEW/5272.json
-output/saves/NEW/5372.json
-output/saves/NEW/5472.json
-output/saves/NEW/5572.json
-output/saves/NEW/5672.json
-output/saves/NEW/5772.json
-output/saves/NEW/5872.json
-output/saves/NEW/5972.json
-output/saves/NEW/6072.json
-output/saves/NEW/6172.json
-output/saves/NEW/6272.json
-output/saves/NEW/6372.json
-output/saves/NEW/6472.json
-output/saves/NEW/6572.json
-output/saves/NEW/6672.json
-output/saves/NEW/6772.json
-output/saves/NEW/6872.json
-output/saves/NEW/6972.json
-output/saves/NEW/7072.json
-output/saves/NEW/7172.json
-output/saves/NEW/7272.json
-output/saves/NEW/7372.json
-output/saves/NEW/7472.json
-output/saves/NEW/7572.json
-output/saves/NEW/7672.json
-output/saves/NEW/7772.json
-output/saves/NEW/7872.json
-output/saves/NEW/7972.json
-output/saves/NEW/8072.json
-output/saves/NEW/8172.json
-output/saves/NEW/8272.json
-output/saves/NEW/8372.json
-output/saves/NEW/8435.json
-output/saves/NEW/8535.json
-output/saves/NEW/8635.json
-output/saves/NEW/8735.json
-output/saves/NEW/8835.json
-output/saves/NEW/8935.json
-output/saves/NEW/9035.json
-output/saves/NEW/9135.json
-output/saves/NEW/9235.json
-output/saves/NEW/9335.json
-output/saves/NEW/9435.json
-output/saves/NEW/9535.json
-output/saves/NEW/9635.json
-output/saves/NEW/9735.json
-output/saves/NEW/9835.json
-output/saves/NEW/9935.json
-output/saves/NEW/10035.json
-output/saves/NEW/10135.json
-output/saves/NEW/10235.json
-output/saves/NEW/10335.json
-output/saves/NEW/10435.json
-output/saves/NEW/10535.json
-output/saves/NEW/10635.json
-output/saves/NEW/10735.json
-output/saves/NEW/10835.json
-output/saves/NEW/10935.json
-output/saves/NEW/11035.json
-output/saves/NEW/11135.json
-output/saves/NEW/11235.json
-output/saves/NEW/11335.json
-output/saves/NEW/11435.json
-output/saves/NEW/11535.json
-output/saves/NEW/11635.json
-output/saves/NEW/11735.json
-output/saves/NEW/11835.json
-output/saves/NEW/11935.json
-output/saves/NEW/12035.json
-output/saves/NEW/12135.json
-output/saves/NEW/12235.json
-output/saves/NEW/12335.json
-output/saves/NEW/12435.json
-output/saves/NEW/12535.json
-output/saves/NEW/12635.json
-output/saves/NEW/12735.json
-output/saves/NEW/12835.json
-output/saves/NEW/12935.json
-output/saves/NEW/13035.json
-output/saves/NEW/13135.json
-output/saves/NEW/13235.json
-output/saves/NEW/13335.json
-output/saves/NEW/13435.json
-output/saves/NEW/13535.json
-output/saves/NEW/13635.json
-output/saves/NEW/13735.json
-output/saves/NEW/13835.json
-output/saves/NEW/13935.json
-output/saves/NEW/14035.json
-output/saves/NEW/14135.json
-output/saves/NEW/14235.json
-output/saves/NEW/14335.json
-output/saves/NEW/14435.json
-output/saves/NEW/14535.json
-output/saves/NEW/14635.json
-output/saves/NEW/14735.json
-output/saves/NEW/14835.json
-output/saves/NEW/14935.json
-output/saves/NEW/15035.json
-output/saves/NEW/15135.json
-output/saves/NEW/15235.json
-output/saves/NEW/15335.json
-output/saves/NEW/15435.json
-output/saves/NEW/15535.json
-output/saves/NEW/15635.json
-output/saves/NEW/15735.json
-output/saves/NEW/15835.json
-output/saves/NEW/15935.json
-output/saves/NEW/16035.json
-output/saves/NEW/16135.json
-output/saves/NEW/16235.json
-output/saves/NEW/16335.json
-output/saves/NEW/16435.json
-output/saves/NEW/16535.json
-output/saves/NEW/16635.json
-output/saves/NEW/16735.json
-output/saves/NEW/16835.json
-output/saves/NEW/16935.json
-output/saves/NEW/17035.json
-output/saves/NEW/17135.json
-output/saves/NEW/17235.json
-output/saves/NEW/17335.json
-output/saves/NEW/17435.json
-output/saves/NEW/17535.json
-output/saves/NEW/17635.json
-output/saves/NEW/17735.json
-output/saves/NEW/17835.json
-output/saves/NEW/17935.json
-output/saves/NEW/18035.json
-output/saves/NEW/18135.json
-output/saves/NEW/18235.json
-output/saves/NEW/18335.json
-output/saves/NEW/18435.json
-output/saves/NEW/18535.json
-output/saves/NEW/18635.json
-output/saves/NEW/18735.json
-saves/NEW/100.json
-saves/NEW/200.json
-saves/NEW/300.json
-saves/NEW/400.json
-saves/NEW/500.json
-saves/NEW/600.json
-saves/NEW/700.json
-saves/NEW/800.json
-saves/NEW/900.json
-saves/NEW/1000.json
-saves/NEW/1100.json
-saves/NEW/1200.json
-saves/NEW/1300.json
-saves/NEW/1400.json
-saves/NEW/1500.json
-saves/NEW/1600.json
-saves/NEW/1700.json
-saves/NEW/1800.json
-saves/NEW/1900.json
-saves/NEW/2000.json
-saves/NEW/2100.json
-saves/NEW/2200.json
-saves/NEW/2300.json
-saves/NEW/2400.json
-saves/NEW/2500.json
-saves/NEW/2600.json
-saves/NEW/2700.json
-saves/NEW/2800.json
-saves/NEW/2900.json
-saves/NEW/3000.json
-saves/NEW/3100.json
-saves/NEW/3200.json
-saves/NEW/3300.json
-saves/NEW/3400.json
-saves/NEW/3500.json
-saves/NEW/3600.json
-saves/NEW/3700.json
-saves/NEW/3800.json
-saves/NEW/3900.json
-saves/NEW/4000.json
-saves/NEW/4100.json
-saves/NEW/4200.json
-saves/NEW/4300.json
-saves/NEW/4400.json
-saves/NEW/4500.json
-saves/NEW/4600.json
-saves/NEW/4672.json
-saves/NEW/4772.json
-saves/NEW/4872.json
-saves/NEW/4972.json
-saves/NEW/5072.json
-saves/NEW/5172.json
-saves/NEW/5272.json
-saves/NEW/5372.json
-saves/NEW/5472.json
-saves/NEW/5572.json
-saves/NEW/5672.json
-saves/NEW/5772.json
-saves/NEW/5872.json
-saves/NEW/5972.json
-saves/NEW/6072.json
-saves/NEW/6172.json
-saves/NEW/6272.json
-saves/NEW/6372.json
-saves/NEW/6472.json
-saves/NEW/6572.json
-saves/NEW/6672.json
-saves/NEW/6772.json
-saves/NEW/6872.json
-saves/NEW/6972.json
-saves/NEW/7072.json
-saves/NEW/7172.json
-saves/NEW/7272.json
-saves/NEW/7372.json
-saves/NEW/7472.json
-saves/NEW/7572.json
-saves/NEW/7672.json
-saves/NEW/7772.json
-saves/NEW/7872.json
-saves/NEW/7972.json
-saves/NEW/8072.json
-saves/NEW/8172.json
-saves/NEW/8272.json
-saves/NEW/8372.json
-saves/NEW/8435.json
-saves/NEW/8535.json
-saves/NEW/8635.json
-saves/NEW/8664.json
-saves/NEW/8735.json
-saves/NEW RULES/1229.json
-saves/NEW RULES/2629.json
-saves/NEW RULES/4029.json
-saves/NEW RULES/5429.json
-saves/NEW RULES/6829.json
-saves/NEW RULES/6929.json
-saves/NEW RULES/7029.json
-saves/NEW RULES/7129.json
-saves/NEW RULES/7137.json
-saves/NEW RULES/7237.json
-saves/NEW RULES/7298.json
-saves/NEW RULES/saves.json
-output/saves/NEW/19635.json
-output/saves/NEW/19735.json
-output/saves/NEW/19835.json
-output/saves/NEW/19935.json
-output/saves/NEW/20035.json
-output/saves/NEW/20135.json
-output/saves/NEW/20235.json
-output/saves/NEW/20335.json
-output/saves/NEW/20435.json
-output/saves/NEW/20535.json
-output/saves/NEW/20635.json
-output/saves/NEW/20735.json
-output/saves/NEW/20835.json
-output/saves/NEW/20935.json
-output/saves/NEW/21035.json
-output/saves/NEW/21135.json
-output/saves/NEW/21235.json
-output/saves/NEW/21335.json
-output/saves/NEW/21435.json
-output/saves/NEW/21535.json
-output/saves/NEW/21635.json
-output/saves/NEW/21735.json
-output/saves/NEW/21835.json
-output/saves/NEW/21935.json
-output/saves/NEW/22035.json
-output/saves/NEW/22135.json
-output/saves/NEW/22235.json
-output/saves/NEW/22335.json
-output/saves/NEW/22435.json
-output/saves/NEW/22535.json
-output/saves/NEW/22635.json
-output/saves/NEW/22735.json
-output/saves/NEW/22835.json
-output/saves/NEW/22935.json
-output/saves/NEW/23035.json
-output/saves/NEW/23135.json
-output/saves/NEW/23235.json
-output/saves/NEW/23335.json
-output/saves/NEW/23435.json
-output/saves/NEW/23535.json
-output/saves/NEW/23635.json
-output/saves/NEW/23735.json
-output/saves/NEW/23835.json
-output/saves/NEW/23935.json
-output/saves/NEW/24035.json
-output/saves/NEW/24135.json
-output/saves/NEW/24235.json
-output/saves/NEW/24335.json
-output/saves/NEW/24435.json
-output/saves/NEW/24535.json
-output/saves/NEW/24635.json
-output/saves/NEW/24735.json
-output/saves/NEW/24835.json
-output/saves/NEW/24935.json
-output/saves/NEW/25035.json
-output/saves/NEW/25135.json
-output/saves/NEW/25235.json
-output/saves/NEW/25335.json
-output/saves/NEW/25435.json
-output/saves/NEW/25535.json
-output/saves/NEW/25635.json
-output/saves/NEW/25735.json
-output/saves/NEW/25835.json
-output/saves/NEW/25935.json
-output/saves/NEW/26035.json
-output/saves/NEW/26135.json
-output/saves/NEW/26235.json
-output/saves/NEW/26335.json
-output/saves/NEW/26435.json
-Untitled-1.ipynb
-output/saves/NEW/26473.json
-output/saves/NEW/26573.json
-output/saves/NEW/26673.json
-output/saves/NEW/26773.json
-output/saves/NEW/26873.json
-output/saves/NEW/26973.json
-output/saves/NEW/27073.json
-output/saves/NEW/27173.json
-output/saves/NEW/27273.json
-output/saves/NEW/27373.json
-output/saves/NEW/27473.json
-output/saves/NEW/27573.json
-output/saves/NEW/27673.json
-output/saves/NEW/27773.json
-output/saves/NEW/27873.json
-output/saves/NEW/27973.json
-output/saves/NEW/28073.json
-output/saves/NEW/28173.json
-output/saves/NEW/28178.json
-output/saves/NEW RULES/1229.json
-output/saves/NEW RULES/2629.json
-output/saves/NEW RULES/4029.json
-output/saves/NEW RULES/5429.json
-output/saves/NEW RULES/6829.json
-output/saves/NEW RULES/6929.json
-output/saves/NEW RULES/7029.json
-output/saves/NEW RULES/saves.json
-output/saves/creatures/DOQAVU.json
-output/saves/creatures/JRTPXU.json
-output/saves/creatures/JRTVXZ.json
-output/saves/creatures/SFHUDK.json
-saves/NEW WORLD/100.json
-saves/NEW WORLD/2900.json
-saves/NEW WORLD/5000.json
-saves/NEW WORLD/7800.json
-saves/NEW WORLD/9900.json
-saves/NEW WORLD/12700.json
-saves/NEW WORLD/14800.json
-saves/NEW WORLD/17600.json
-saves/NEW WORLD/19700.json
-saves/NEW WORLD/22500.json
-saves/NEW WORLD/24600.json
-saves/NEW WORLD/27400.json
-saves/NEW WORLD/29400.json
-saves/NEW WORLD/32200.json
-saves/NEW WORLD/34300.json
-saves/NEW WORLD/37100.json
-saves/NEW WORLD/39200.json
-saves/NEW WORLD/42000.json
-saves/NEW WORLD/44100.json
-saves/NEW WORLD/46900.json
-saves/NEW WORLD/49000.json
-saves/NEW WORLD/51800.json
-saves/NEW WORLD/53900.json
-saves/NEW WORLD/56700.json
-saves/NEW WORLD/58800.json
-saves/NEW WORLD/59500.json
-saves/NEW WORLD/60200.json
-saves/NEW WORLD/60900.json
-saves/NEW WORLD/61600.json
-saves/NEW WORLD/62300.json
-saves/NEW WORLD/63000.json
-saves/NEW WORLD/63700.json
-saves/NEW WORLD/64400.json
-saves/NEW WORLD/65100.json
-saves/NEW WORLD/65800.json
-saves/NEW WORLD/66100.json
-saves/NEW WORLD/66400.json
-saves/NEW WORLD/66484.json
-saves/NEW WORLD/saves.json
-saves/NEW WORLD/66584.json
-saves/NEW WORLD/66684.json
-saves/NEW WORLD/66765.json
-saves/NEW WORLD/66865.json
-saves/NEW WORLD/66965.json
-saves/NEW WORLD/67065.json
-saves/NEW WORLD/67165.json
-saves/NEW WORLD/67265.json
-saves/NEW WORLD/67365.json
-saves/NEW WORLD/67465.json
-saves/NEW WORLD/67565.json
-saves/NEW WORLD/67665.json
-saves/NEW WORLD/67765.json
-saves/NEW WORLD/67865.json
-saves/NEW WORLD/67965.json
-saves/NEW WORLD/68065.json
-saves/NEW WORLD/68165.json
-saves/NEW WORLD/68265.json
-saves/NEW WORLD/68365.json
-saves/NEW WORLD/68465.json
-saves/NEW WORLD/68565.json
-saves/NEW WORLD/68665.json
-saves/NEW WORLD/68765.json
-saves/NEW WORLD/68865.json
-saves/NEW WORLD/68965.json
-saves/NEW WORLD/69065.json
-saves/NEW WORLD/69165.json
-saves/NEW WORLD/69265.json
-saves/NEW WORLD/69365.json
-saves/NEW WORLD/69465.json
-saves/NEW WORLD/69565.json
-saves/NEW WORLD/69665.json
-saves/NEW WORLD/69765.json
-saves/NEW WORLD/69865.json
-saves/NEW WORLD/69965.json
-saves/NEW WORLD/70065.json
-saves/NEW WORLD/70165.json
-saves/NEW WORLD/70265.json
-saves/NEW WORLD/70365.json
-saves/NEW WORLD/70465.json
-saves/NEW WORLD/70565.json
-saves/NEW WORLD/70665.json
-saves/NEW WORLD/70765.json
-saves/NEW WORLD/70865.json
-saves/NEW WORLD/70965.json
-saves/NEW WORLD/71065.json
-saves/NEW WORLD/71165.json
-saves/NEW WORLD/71265.json
-saves/NEW WORLD/71365.json
-saves/NEW WORLD/71465.json
-saves/NEW WORLD/71565.json
-saves/NEW WORLD/71665.json
-saves/NEW WORLD/71765.json
-saves/NEW WORLD/71865.json
-saves/NEW WORLD/71965.json
-saves/NEW WORLD/72065.json
-saves/NEW WORLD/72165.json
-saves/NEW WORLD/72265.json
-saves/NEW WORLD/72365.json
-saves/NEW WORLD/72465.json
-saves/NEW WORLD/72565.json
-saves/NEW WORLD/72665.json
-saves/NEW WORLD/72765.json
-saves/NEW WORLD/72865.json
-saves/NEW WORLD/72965.json
-saves/NEW WORLD/73065.json
-saves/NEW WORLD/73165.json
-saves/NEW WORLD/73265.json
-saves/NEW WORLD/73365.json
-saves/NEW WORLD/73465.json
-saves/NEW WORLD/73565.json
-saves/NEW WORLD/73665.json
-saves/NEW WORLD/73765.json
-saves/NEW WORLD/73865.json
-saves/NEW WORLD/73965.json
-saves/NEW WORLD/74065.json
-saves/NEW WORLD/74165.json
-saves/NEW WORLD/74265.json
-saves/NEW WORLD/74365.json
-saves/NEW WORLD/74465.json
-saves/NEW WORLD/74565.json
-saves/NEW WORLD/74665.json
-saves/NEW WORLD/74765.json
-saves/NEW WORLD/74865.json
-saves/NEW WORLD/74965.json
-saves/NEW WORLD/75065.json
-saves/NEW WORLD/75165.json
-saves/NEW WORLD/75265.json
-saves/NEW WORLD/75365.json
-saves/NEW WORLD/75465.json
-saves/NEW WORLD/75565.json
-saves/NEW WORLD/75665.json
-saves/NEW WORLD/75765.json
-saves/NEW WORLD/75865.json
-saves/NEW WORLD/75965.json
-saves/NEW WORLD/76065.json
-saves/NEW WORLD/76165.json
-saves/NEW WORLD/76265.json
-saves/NEW WORLD/76365.json
-saves/NEW WORLD/76465.json
-saves/NEW WORLD/76565.json
-saves/NEW WORLD/76665.json
-saves/NEW WORLD/76765.json
-saves/NEW WORLD/76865.json
-saves/NEW WORLD/76965.json
-saves/NEW WORLD/77065.json
-saves/NEW WORLD/77165.json
-saves/NEW WORLD/77265.json
-saves/NEW WORLD/77365.json
-saves/NEW WORLD/77465.json
-saves/NEW WORLD/77565.json
-saves/NEW WORLD/77665.json
-saves/NEW WORLD/77672.json
+saves/Universum/223.json
+saves/Universum/723.json
+saves/Universum/1099.json
+saves/Universum/1599.json
+saves/Universum/2066.json
+saves/Universum/2403.json
+saves/Universum/config.json
+saves/Universum/saves.json
+saves/Universum2/223.json
+saves/Universum2/723.json
+saves/Universum2/1099.json
+saves/Universum2/1599.json
+saves/Universum2/2066.json
+saves/Universum2/2403.json
+saves/Universum2/config.json
+saves/Universum2/saves.json
+saves/Universum3/500.json
+saves/Universum3/1000.json
+saves/Universum3/1500.json
+saves/Universum3/2000.json
+saves/Universum3/2500.json
+saves/Universum3/3000.json
+saves/Universum3/3500.json
+saves/Universum3/4000.json
+saves/Universum3/4500.json
+saves/Universum3/5000.json
+saves/Universum3/5500.json
+saves/Universum3/6000.json
+saves/Universum3/6500.json
+saves/Universum3/7000.json
+saves/Universum3/7500.json
+saves/Universum3/8000.json
+saves/Universum3/8500.json
+saves/Universum3/9000.json
+saves/Universum3/9500.json
+saves/Universum3/10000.json
+saves/Universum3/10500.json
+saves/Universum3/11000.json
+saves/Universum3/11500.json
+saves/Universum3/12000.json
+saves/Universum3/12500.json
+saves/Universum3/13000.json
+saves/Universum3/13500.json
+saves/Universum3/14000.json
+saves/Universum3/14500.json
+saves/Universum3/15000.json
+saves/Universum3/15500.json
+saves/Universum3/16000.json
+saves/Universum3/16500.json
+saves/Universum3/17000.json
+saves/Universum3/17500.json
+saves/Universum3/18000.json
+saves/Universum3/18500.json
+saves/Universum3/18687.json
+saves/Universum3/18922.json
+saves/Universum3/19422.json
+saves/Universum3/19922.json
+saves/Universum3/20422.json
+saves/Universum3/20922.json
+saves/Universum3/21422.json
+saves/Universum3/21922.json
+saves/Universum3/22422.json
+saves/Universum3/22922.json
+saves/Universum3/23422.json
+saves/Universum3/23922.json
+saves/Universum3/24422.json
+saves/Universum3/24922.json
+saves/Universum3/25422.json
+saves/Universum3/25922.json
+saves/Universum3/26422.json
+saves/Universum3/26922.json
+saves/Universum3/27422.json
+saves/Universum3/27922.json
+saves/Universum3/28422.json
+saves/Universum3/28922.json
+saves/Universum3/29422.json
+saves/Universum3/29922.json
+saves/Universum3/30422.json
+saves/Universum3/30922.json
+saves/Universum3/31422.json
+saves/Universum3/31922.json
+saves/Universum3/32422.json
+saves/Universum3/32922.json
+saves/Universum3/33422.json
+saves/Universum3/33922.json
+saves/Universum3/34422.json
+saves/Universum3/34922.json
+saves/Universum3/35422.json
+saves/Universum3/35922.json
+saves/Universum3/36422.json
+saves/Universum3/36922.json
+saves/Universum3/37422.json
+saves/Universum3/37922.json
+saves/Universum3/38422.json
+saves/Universum3/38922.json
+saves/Universum3/39422.json
+saves/Universum3/39922.json
+saves/Universum3/40422.json
+saves/Universum3/40922.json
+saves/Universum3/41422.json
+saves/Universum3/41922.json
+saves/Universum3/42422.json
+saves/Universum3/42922.json
+saves/Universum3/43422.json
+saves/Universum3/43553.json
+saves/Universum3/44053.json
+saves/Universum3/44553.json
+saves/Universum3/45053.json
+saves/Universum3/45553.json
+saves/Universum3/46053.json
+saves/Universum3/46553.json
+saves/Universum3/47053.json
+saves/Universum3/47553.json
+saves/Universum3/48053.json
+saves/Universum3/48553.json
+saves/Universum3/49053.json
+saves/Universum3/49553.json
+saves/Universum3/50053.json
+saves/Universum3/50553.json
+saves/Universum3/51053.json
+saves/Universum3/51553.json
+saves/Universum3/52053.json
+saves/Universum3/52553.json
+saves/Universum3/53053.json
+saves/Universum3/53553.json
+saves/Universum3/54053.json
+saves/Universum3/54553.json
+saves/Universum3/55053.json
+saves/Universum3/55553.json
+saves/Universum3/56053.json
+saves/Universum3/56553.json
+saves/Universum3/57053.json
+saves/Universum3/57553.json
+saves/Universum3/58053.json
+saves/Universum3/58553.json
+saves/Universum3/59053.json
+saves/Universum3/59553.json
+saves/Universum3/60053.json
+saves/Universum3/60553.json
+saves/Universum3/61053.json
+saves/Universum3/61553.json
+saves/Universum3/62053.json
+saves/Universum3/62553.json
+saves/Universum3/63053.json
+saves/Universum3/63553.json
+saves/Universum3/64053.json
+saves/Universum3/64553.json
+saves/Universum3/65053.json
+saves/Universum3/65553.json
+saves/Universum3/66053.json
+saves/Universum3/66553.json
+saves/Universum3/67054.json
+saves/Universum3/67554.json
+saves/Universum3/68055.json
+saves/Universum3/68556.json
+saves/Universum3/68639.json
+saves/Universum3/68686.json
+saves/Universum3/69139.json
+saves/Universum3/69548.json
+saves/Universum3/70048.json
+saves/Universum3/70548.json
+saves/Universum3/71048.json
+saves/Universum3/71548.json
+saves/Universum3/72048.json
+saves/Universum3/72548.json
+saves/Universum3/73048.json
+saves/Universum3/73136.json
+saves/Universum3/73196.json
+saves/Universum3/73696.json
+saves/Universum3/74196.json
+saves/Universum3/74696.json
+saves/Universum3/75196.json
+saves/Universum3/75696.json
+saves/Universum3/76196.json
+saves/Universum3/76696.json
+saves/Universum3/77196.json
+saves/Universum3/77696.json
+saves/Universum3/78196.json
+saves/Universum3/78696.json
+saves/Universum3/79196.json
+saves/Universum3/79696.json
+saves/Universum3/80196.json
+saves/Universum3/80696.json
+saves/Universum3/81196.json
+saves/Universum3/81696.json
+saves/Universum3/82196.json
+saves/Universum3/82696.json
+saves/Universum3/83196.json
+saves/Universum3/83696.json
+saves/Universum3/84196.json
+saves/Universum3/84696.json
+saves/Universum3/85196.json
+saves/Universum3/85696.json
+saves/Universum3/86196.json
+saves/Universum3/86696.json
+saves/Universum3/87196.json
+saves/Universum3/87696.json
+saves/Universum3/88196.json
+saves/Universum3/88696.json
+saves/Universum3/89196.json
+saves/Universum3/89696.json
+saves/Universum3/90196.json
+saves/Universum3/90696.json
+saves/Universum3/91196.json
+saves/Universum3/91696.json
+saves/Universum3/92196.json
+saves/Universum3/92696.json
+saves/Universum3/93196.json
+saves/Universum3/93696.json
+saves/Universum3/94196.json
+saves/Universum3/94696.json
+saves/Universum3/95196.json
+saves/Universum3/95696.json
+saves/Universum3/96196.json
+saves/Universum3/96696.json
+saves/Universum3/97196.json
+saves/Universum3/97696.json
+saves/Universum3/98196.json
+saves/Universum3/98696.json
+saves/Universum3/99196.json
+saves/Universum3/99696.json
+saves/Universum3/100196.json
+saves/Universum3/100696.json
+saves/Universum3/101196.json
+saves/Universum3/101696.json
+saves/Universum3/102196.json
+saves/Universum3/102343.json
+saves/Universum3/102843.json
+saves/Universum3/103343.json
+saves/Universum3/103843.json
+saves/Universum3/104343.json
+saves/Universum3/104843.json
+saves/Universum3/105343.json
+saves/Universum3/105843.json
+saves/Universum3/106343.json
+saves/Universum3/106843.json
+saves/Universum3/107343.json
+saves/Universum3/107843.json
+saves/Universum3/108343.json
+saves/Universum3/108843.json
+saves/Universum3/109343.json
+saves/Universum3/109843.json
+saves/Universum3/110343.json
+saves/Universum3/110843.json
+saves/Universum3/111343.json
+saves/Universum3/111843.json
+saves/Universum3/112343.json
+saves/Universum3/112843.json
+saves/Universum3/113343.json
+saves/Universum3/113843.json
+saves/Universum3/114343.json
+saves/Universum3/114843.json
+saves/Universum3/114883.json
+saves/Universum3/115383.json
+saves/Universum3/115883.json
+saves/Universum3/116383.json
+saves/Universum3/116883.json
+saves/Universum3/117383.json
+saves/Universum3/117883.json
+saves/Universum3/118383.json
+saves/Universum3/118883.json
+saves/Universum3/119383.json
+saves/Universum3/119883.json
+saves/Universum3/120383.json
+saves/Universum3/120883.json
+saves/Universum3/121383.json
+saves/Universum3/121883.json
+saves/Universum3/122383.json
+saves/Universum3/122883.json
+saves/Universum3/123383.json
+saves/Universum3/123883.json
+saves/Universum3/124383.json
+saves/Universum3/124883.json
+saves/Universum3/125383.json
+saves/Universum3/125883.json
+saves/Universum3/126169.json
+saves/Universum3/126669.json
+saves/Universum3/127169.json
+saves/Universum3/127669.json
+saves/Universum3/128169.json
+saves/Universum3/128213.json
+saves/Universum3/config.json
+saves/Universum3/saves.json
+.gitignore
+saves/Universum/config.json
+saves/Universum3 copy/500.json
+saves/Universum3 copy/1000.json
+saves/Universum3 copy/1500.json
+saves/Universum3 copy/2000.json
+saves/Universum3 copy/2500.json
+saves/Universum3 copy/3000.json
+saves/Universum3 copy/3500.json
+saves/Universum3 copy/4000.json
+saves/Universum3 copy/4500.json
+saves/Universum3 copy/5000.json
+saves/Universum3 copy/5500.json
+saves/Universum3 copy/6000.json
+saves/Universum3 copy/6500.json
+saves/Universum3 copy/7000.json
+saves/Universum3 copy/7500.json
+saves/Universum3 copy/8000.json
+saves/Universum3 copy/8500.json
+saves/Universum3 copy/9000.json
+saves/Universum3 copy/9500.json
+saves/Universum3 copy/10000.json
+saves/Universum3 copy/10500.json
+saves/Universum3 copy/11000.json
+saves/Universum3 copy/11500.json
+saves/Universum3 copy/12000.json
+saves/Universum3 copy/12500.json
+saves/Universum3 copy/13000.json
+saves/Universum3 copy/13500.json
+saves/Universum3 copy/14000.json
+saves/Universum3 copy/14500.json
+saves/Universum3 copy/15000.json
+saves/Universum3 copy/15500.json
+saves/Universum3 copy/16000.json
+saves/Universum3 copy/16500.json
+saves/Universum3 copy/17000.json
+saves/Universum3 copy/17500.json
+saves/Universum3 copy/18000.json
+saves/Universum3 copy/18500.json
+saves/Universum3 copy/18687.json
+saves/Universum3 copy/18922.json
+saves/Universum3 copy/19422.json
+saves/Universum3 copy/19922.json
+saves/Universum3 copy/20422.json
+saves/Universum3 copy/20922.json
+saves/Universum3 copy/21422.json
+saves/Universum3 copy/21922.json
+saves/Universum3 copy/22422.json
+saves/Universum3 copy/22922.json
+saves/Universum3 copy/23422.json
+saves/Universum3 copy/23922.json
+saves/Universum3 copy/24422.json
+saves/Universum3 copy/24922.json
+saves/Universum3 copy/25422.json
+saves/Universum3 copy/25922.json
+saves/Universum3 copy/26422.json
+saves/Universum3 copy/26922.json
+saves/Universum3 copy/27422.json
+saves/Universum3 copy/27922.json
+saves/Universum3 copy/28422.json
+saves/Universum3 copy/28922.json
+saves/Universum3 copy/29422.json
+saves/Universum3 copy/29922.json
+saves/Universum3 copy/30422.json
+saves/Universum3 copy/30922.json
+saves/Universum3 copy/31422.json
+saves/Universum3 copy/31922.json
+saves/Universum3 copy/32422.json
+saves/Universum3 copy/32922.json
+saves/Universum3 copy/33422.json
+saves/Universum3 copy/33922.json
+saves/Universum3 copy/34422.json
+saves/Universum3 copy/34922.json
+saves/Universum3 copy/35422.json
+saves/Universum3 copy/35922.json
+saves/Universum3 copy/36422.json
+saves/Universum3 copy/36922.json
+saves/Universum3 copy/37422.json
+saves/Universum3 copy/37922.json
+saves/Universum3 copy/38422.json
+saves/Universum3 copy/38922.json
+saves/Universum3 copy/39422.json
+saves/Universum3 copy/39922.json
+saves/Universum3 copy/40422.json
+saves/Universum3 copy/40922.json
+saves/Universum3 copy/41422.json
+saves/Universum3 copy/41922.json
+saves/Universum3 copy/42422.json
+saves/Universum3 copy/42922.json
+saves/Universum3 copy/43422.json
+saves/Universum3 copy/43553.json
+saves/Universum3 copy/44053.json
+saves/Universum3 copy/44553.json
+saves/Universum3 copy/45053.json
+saves/Universum3 copy/45553.json
+saves/Universum3 copy/46053.json
+saves/Universum3 copy/46553.json
+saves/Universum3 copy/47053.json
+saves/Universum3 copy/47553.json
+saves/Universum3 copy/48053.json
+saves/Universum3 copy/48553.json
+saves/Universum3 copy/49053.json
+saves/Universum3 copy/49553.json
+saves/Universum3 copy/50053.json
+saves/Universum3 copy/50553.json
+saves/Universum3 copy/51053.json
+saves/Universum3 copy/51553.json
+saves/Universum3 copy/52053.json
+saves/Universum3 copy/52553.json
+saves/Universum3 copy/53053.json
+saves/Universum3 copy/53553.json
+saves/Universum3 copy/54053.json
+saves/Universum3 copy/54553.json
+saves/Universum3 copy/55053.json
+saves/Universum3 copy/55553.json
+saves/Universum3 copy/56053.json
+saves/Universum3 copy/56553.json
+saves/Universum3 copy/57053.json
+saves/Universum3 copy/57553.json
+saves/Universum3 copy/58053.json
+saves/Universum3 copy/58553.json
+saves/Universum3 copy/59053.json
+saves/Universum3 copy/59553.json
+saves/Universum3 copy/60053.json
+saves/Universum3 copy/60553.json
+saves/Universum3 copy/61053.json
+saves/Universum3 copy/61553.json
+saves/Universum3 copy/62053.json
+saves/Universum3 copy/62553.json
+saves/Universum3 copy/63053.json
+saves/Universum3 copy/63553.json
+saves/Universum3 copy/64053.json
+saves/Universum3 copy/64553.json
+saves/Universum3 copy/65053.json
+saves/Universum3 copy/65553.json
+saves/Universum3 copy/66053.json
+saves/Universum3 copy/66553.json
+saves/Universum3 copy/67054.json
+saves/Universum3 copy/67554.json
+saves/Universum3 copy/68055.json
+saves/Universum3 copy/68556.json
+saves/Universum3 copy/68639.json
+saves/Universum3 copy/68686.json
+saves/Universum3 copy/69139.json
+saves/Universum3 copy/69548.json
+saves/Universum3 copy/70048.json
+saves/Universum3 copy/70548.json
+saves/Universum3 copy/71048.json
+saves/Universum3 copy/71548.json
+saves/Universum3 copy/72048.json
+saves/Universum3 copy/72548.json
+saves/Universum3 copy/73048.json
+saves/Universum3 copy/73136.json
+saves/Universum3 copy/73196.json
+saves/Universum3 copy/73696.json
+saves/Universum3 copy/74196.json
+saves/Universum3 copy/74696.json
+saves/Universum3 copy/75196.json
+saves/Universum3 copy/75696.json
+saves/Universum3 copy/76196.json
+saves/Universum3 copy/76696.json
+saves/Universum3 copy/77196.json
+saves/Universum3 copy/77696.json
+saves/Universum3 copy/78196.json
+saves/Universum3 copy/78696.json
+saves/Universum3 copy/79196.json
+saves/Universum3 copy/79696.json
+saves/Universum3 copy/80196.json
+saves/Universum3 copy/80696.json
+saves/Universum3 copy/81196.json
+saves/Universum3 copy/81696.json
+saves/Universum3 copy/82196.json
+saves/Universum3 copy/82696.json
+saves/Universum3 copy/83196.json
+saves/Universum3 copy/83696.json
+saves/Universum3 copy/84196.json
+saves/Universum3 copy/84696.json
+saves/Universum3 copy/85196.json
+saves/Universum3 copy/85696.json
+saves/Universum3 copy/86196.json
+saves/Universum3 copy/86696.json
+saves/Universum3 copy/87196.json
+saves/Universum3 copy/87696.json
+saves/Universum3 copy/88196.json
+saves/Universum3 copy/88696.json
+saves/Universum3 copy/89196.json
+saves/Universum3 copy/89696.json
+saves/Universum3 copy/90196.json
+saves/Universum3 copy/90696.json
+saves/Universum3 copy/91196.json
+saves/Universum3 copy/91696.json
+saves/Universum3 copy/92196.json
+saves/Universum3 copy/92696.json
+saves/Universum3 copy/93196.json
+saves/Universum3 copy/93696.json
+saves/Universum3 copy/94196.json
+saves/Universum3 copy/94696.json
+saves/Universum3 copy/95196.json
+saves/Universum3 copy/95696.json
+saves/Universum3 copy/96196.json
+saves/Universum3 copy/96696.json
+saves/Universum3 copy/97196.json
+saves/Universum3 copy/97696.json
+saves/Universum3 copy/98196.json
+saves/Universum3 copy/98696.json
+saves/Universum3 copy/99196.json
+saves/Universum3 copy/99696.json
+saves/Universum3 copy/100196.json
+saves/Universum3 copy/100696.json
+saves/Universum3 copy/101196.json
+saves/Universum3 copy/101696.json
+saves/Universum3 copy/102196.json
+saves/Universum3 copy/102343.json
+saves/Universum3 copy/config.json
+saves/Universum3 copy/saves.json
+saves/Universum/config.json
+saves/Universum/config.json
+saves/UNIVERSUM I/105.json
+saves/UNIVERSUM I/251.json
+saves/UNIVERSUM I/418.json
+saves/UNIVERSUM I/918.json
+saves/UNIVERSUM I/1077.json
+saves/UNIVERSUM I/1098.json
+saves/UNIVERSUM I/1598.json
+saves/UNIVERSUM I/2098.json
+saves/UNIVERSUM I/config.json
+saves/UNIVERSUM I/saves.json
+saves/Universum/config.json
+saves/UNIVERSUM I/66543.json
+saves/UNIVERSUM I/67043.json
+saves/UNIVERSUM I/67543.json
+saves/UNIVERSUM I/68043.json
+saves/UNIVERSUM I/68543.json
+saves/UNIVERSUM I/69043.json
+saves/UNIVERSUM I/69543.json
+saves/UNIVERSUM I/70043.json
+saves/UNIVERSUM I/70543.json
+saves/UNIVERSUM I/71043.json
+saves/UNIVERSUM I/71543.json
+saves/UNIVERSUM I/72043.json
+saves/UNIVERSUM I/72543.json
+saves/UNIVERSUM I/73043.json
+saves/UNIVERSUM I/73543.json
+saves/UNIVERSUM I/74043.json
+saves/UNIVERSUM I/74543.json
+saves/UNIVERSUM I/75043.json
+saves/UNIVERSUM I/75543.json
+saves/UNIVERSUM I/76043.json
+saves/UNIVERSUM I/76543.json
+saves/UNIVERSUM I/77043.json
+saves/UNIVERSUM I/77543.json
+saves/UNIVERSUM I/78043.json
+saves/UNIVERSUM I/78543.json
+saves/UNIVERSUM I/79043.json
+saves/UNIVERSUM I/79543.json
+saves/UNIVERSUM I/80043.json
+saves/UNIVERSUM I/80543.json
+saves/UNIVERSUM I/81043.json
+saves/UNIVERSUM I/81543.json
+saves/UNIVERSUM I/82043.json
+saves/UNIVERSUM I/82543.json
+saves/UNIVERSUM I/83043.json
+saves/UNIVERSUM I/83543.json
+saves/UNIVERSUM I/84043.json
+saves/UNIVERSUM I/84543.json
+saves/UNIVERSUM I/85043.json
+saves/UNIVERSUM I/85543.json
+saves/UNIVERSUM I/86043.json
+saves/UNIVERSUM I/86543.json
+saves/UNIVERSUM I/87043.json
+saves/UNIVERSUM I/87543.json
+saves/UNIVERSUM I/88043.json
+saves/UNIVERSUM I/88543.json
+saves/UNIVERSUM I/89043.json
+saves/UNIVERSUM I/89543.json
+saves/UNIVERSUM I/90043.json
+saves/UNIVERSUM I/90543.json
+saves/UNIVERSUM I/91043.json
+saves/UNIVERSUM I/91543.json
+saves/UNIVERSUM I/92043.json
+saves/UNIVERSUM I/92543.json
+saves/UNIVERSUM I/93043.json
+saves/UNIVERSUM I/93543.json
+saves/UNIVERSUM I/94043.json
+saves/UNIVERSUM I/94543.json
+saves/UNIVERSUM I/95043.json
+saves/UNIVERSUM I/95543.json
+saves/UNIVERSUM I/96043.json
+saves/UNIVERSUM I/96543.json
+saves/UNIVERSUM I/97043.json
+saves/UNIVERSUM I/97543.json
+saves/UNIVERSUM I/98043.json
+saves/UNIVERSUM I/98543.json
+saves/UNIVERSUM I/99043.json
+saves/UNIVERSUM I/99543.json
+saves/UNIVERSUM I/100043.json
+saves/UNIVERSUM I/100543.json
+saves/UNIVERSUM I/101043.json
+saves/UNIVERSUM I/101543.json
+saves/UNIVERSUM I/102043.json
+saves/UNIVERSUM I/102543.json
+saves/UNIVERSUM I/103043.json
+saves/UNIVERSUM I/103543.json
+saves/UNIVERSUM I/104043.json
+saves/UNIVERSUM I/104543.json
+saves/UNIVERSUM I/105043.json
+saves/UNIVERSUM I/105543.json
+saves/UNIVERSUM I/106043.json
+saves/UNIVERSUM I/106543.json
+saves/UNIVERSUM I/107043.json
+saves/UNIVERSUM I/107543.json
+saves/UNIVERSUM I/108043.json
+saves/UNIVERSUM I/108543.json
+saves/UNIVERSUM I/109043.json
+saves/UNIVERSUM I/109543.json
+saves/UNIVERSUM I/110043.json
+saves/UNIVERSUM I/110543.json
+saves/UNIVERSUM I/111043.json
+saves/UNIVERSUM I/111543.json
+saves/UNIVERSUM I/112043.json
+saves/UNIVERSUM I/112543.json
+saves/UNIVERSUM I/113043.json
+saves/UNIVERSUM I/113543.json
+saves/UNIVERSUM I/114043.json
+saves/UNIVERSUM I/114543.json
+saves/UNIVERSUM I/115043.json
+saves/UNIVERSUM I/115543.json
+saves/UNIVERSUM I/116043.json
+saves/UNIVERSUM I/116543.json
+saves/UNIVERSUM I/117043.json
+saves/UNIVERSUM I/117543.json
+saves/UNIVERSUM I/118043.json
+saves/UNIVERSUM I/118543.json
+saves/UNIVERSUM I/119043.json
+saves/UNIVERSUM I/119543.json
+saves/UNIVERSUM I/120043.json
+saves/UNIVERSUM I/120543.json
+saves/UNIVERSUM I/121043.json
+saves/UNIVERSUM I/121543.json
+saves/UNIVERSUM I/122043.json
+saves/UNIVERSUM I/122543.json
+saves/UNIVERSUM I/123043.json
+saves/UNIVERSUM I/123543.json
+saves/UNIVERSUM I/124043.json
+saves/UNIVERSUM I/124543.json
+saves/UNIVERSUM I/125043.json
+saves/UNIVERSUM I/125543.json
+saves/UNIVERSUM I/126043.json
+saves/UNIVERSUM I/126543.json
+saves/UNIVERSUM I/127043.json
+saves/UNIVERSUM I/127543.json
+saves/UNIVERSUM I/128043.json
+saves/UNIVERSUM I/128543.json
+saves/UNIVERSUM I/129043.json
+saves/UNIVERSUM I/129543.json
+saves/UNIVERSUM I/130043.json
+saves/UNIVERSUM I/130543.json
+saves/UNIVERSUM I/131043.json
+saves/UNIVERSUM I/131543.json
+saves/UNIVERSUM I/132043.json
+saves/UNIVERSUM I/132543.json
+saves/UNIVERSUM I/133043.json
+saves/UNIVERSUM I/133543.json

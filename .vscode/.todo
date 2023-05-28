@@ -49,7 +49,7 @@ NATURE: {  {c}
         ✔ fix: dt {cm}
     0.5:    
         ✔ health and energy
-        ✘ water needs
+        ✘ water needs @cancelled(23-05-15 19:14)
         ✔ save single creature
         ✔ load single creature
         ☐ save single network
