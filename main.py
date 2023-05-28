@@ -429,7 +429,7 @@ class Simulation():
             self.draw_creatures()
             self.draw_spikes()
             self.draw_interface()
-            if self.net:
+            if self.net!=None and self.show_network:
                 self.screen.blit(self.net, dest=(5, cfg.SCREEN[1]-self.net.get_height()-5), area=self.net.get_rect(), special_flags=BLEND_ALPHA_SDL2)
         else:
             self.screen.fill(Color('black'))
@@ -482,8 +482,12 @@ class Simulation():
             if self.selected != None:
                 if isinstance(self.selected, Creature):
                     #self.manager.draw_net(self.selected.neuro)
-                    #if self.selected.brain_just_used:
-                    self.net = draw_net2(network=self.selected.neuro)
+                    if self.selected.brain_just_used:
+                        self.net = draw_net2(network=self.selected.neuro)
+                else:
+                    self.net=None
+            else:
+                self.net=None
 
     def draw_spikes(self):
         for spike in self.spike_list:
@@ -554,14 +558,13 @@ class Simulation():
                 self.fitness['points'].append(creature.fitness)
                 self.fitness['lifetime'].append(creature.life_time)
                 self.add_to_ranking(creature)
-                if not creature.on_water:
-                    pos = creature.position
-                    size = ceil(creature.size)
-                    eng = round(creature.max_energy)
-                    for _ in range(1):
-                        new_pos = self.free_random_position(pos, Vec2d(0, 0))
-                        meat = Meat(screen=self.screen, space=self.space, position=new_pos, collision_tag=10, energy=int(eng))
-                        self.meat_list.append(meat)
+                pos = creature.position
+                size = ceil(creature.size)
+                eng = round(creature.max_energy)
+                for _ in range(1):
+                    new_pos = self.free_random_position(pos, Vec2d(0, 0))
+                    meat = Meat(screen=self.screen, space=self.space, position=new_pos, collision_tag=10, energy=int(eng))
+                    self.meat_list.append(meat)
                 creature.kill(self.space)
                 self.creature_list.remove(creature)
 

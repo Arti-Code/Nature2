@@ -79,7 +79,6 @@ class Creature(Life):
         self.hidding: bool=False
         self.hide_ref_time = 0.0
         self.run_ref_time = 0.0
-        self.on_water = False
         self.neuro.CalcNodeMutMod()
         self.rock_vec: Vec2d=None
         self.rock_dist = 0
@@ -285,13 +284,11 @@ class Creature(Life):
             detector.draw(screen=screen, rel_pos=rel_pos)
         self.collide_creature = False
         self.collide_plant = False
-        self.collide_water = False
         self.collide_meat = False
 
     def reset_collisions(self):
         self.collide_creature = False
         self.collide_plant = False
-        self.collide_water = False
         self.collide_meat = False
         self.border = False
         

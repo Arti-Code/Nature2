@@ -180,9 +180,9 @@ def process_creatures_collisions(arbiter, space, data):
 
     size1 = arbiter.shapes[1].radius
 
-    agent_tl = arbiter.normal*(size1/size0)*0.4
+    agent_tl = arbiter.normal*(size1/size0)*0.5
 
-    target_tl = arbiter.normal*(size0/size1)*0.4
+    target_tl = arbiter.normal*(size0/size1)*0.5
 
     agent.position -= agent_tl + agent_tl*agent.running
 
@@ -270,22 +270,22 @@ def process_creature_plant_collisions(arbiter, space, data):
 
     if size0 != 0:
 
-        hunter_tl = arbiter.normal*(size1/size0)*0.4
+        hunter_tl = arbiter.normal*(size1/size0)*0.8
 
     else:
 
-        hunter_tl = arbiter.normal*0.2
+        hunter_tl = arbiter.normal*0.4
 
     hunter.position -= hunter_tl + hunter_tl*hunter.running
 
 
     if size1 != 0:
 
-        target_tl = arbiter.normal*(size0/size1)*0.4
+        target_tl = arbiter.normal*(size0/size1)*0.8
 
     else:
 
-        target_tl = arbiter.normal*0.2
+        target_tl = arbiter.normal*0.4
 
     target.position += target_tl
     
@@ -339,22 +339,24 @@ def process_creature_meat_collisions(arbiter, space, data):
     size1 = arbiter.shapes[1].radius
 
     if size0 != 0:
-
-        hunter.position -= arbiter.normal*(size1/size0)*0.4
+        if hunter.running:
+            hunter.position -= arbiter.normal*(size1/size0)*0.8 + (arbiter.normal*(size1/size0)*0.8)*hunter.running
+        else:
+            hunter.position -= arbiter.normal*(size1/size0)*0.8
 
     else:
 
-        hunter.position -= arbiter.normal*0.2
+        hunter.position -= arbiter.normal*0.4 + arbiter.normal*0.4*hunter.running
 
     size1 = arbiter.shapes[1].radius
 
     if size1 != 0:
 
-        target.position += arbiter.normal*(size0/size1)*0.4
+        target.position += arbiter.normal*(size0/size1)*0.8
 
     else:
 
-        target.position += arbiter.normal*0.2
+        target.position += arbiter.normal*0.4
 
     if hunter.eating and not hunter.stunt:
 
