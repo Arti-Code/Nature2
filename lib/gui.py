@@ -753,7 +753,7 @@ class GUI():
                     self.create_info_menu()
                 elif event.ui_object_id == '#menu_win.#btn_stats':
                     self.main_menu.kill()
-                    self.get_root().statistics.plot('population')
+                    self.get_root().statistics.plot()
                 elif event.ui_object_id == '#menu_win.#btn_load':
                     self.main_menu.kill()
                     self.create_load_menu()

@@ -25,7 +25,7 @@ class Creature(Life):
 
     ATTACK_EYES: Color=Color('red')
     EAT_EYES: Color=Color('yellow')
-    NORMAL_EYES: Color=Color('skyblue')
+    NORMAL_EYES: Color=Color('white')
     HIDED_EYES: Color=Color(175,175,175,50)
     STUNT_EYES: Color=Color('limegreen')
     SPIKES_NUM: list[int] = [0, 1, 1, 1, 3, 5, 7, 9, 13, 15]
@@ -189,19 +189,20 @@ class Creature(Life):
         self.r: int; self.g: int; self.b: int
         if self.food >= 6:
             self.r = round(25.5*self.food)
-            self.g = round(255-25.5*self.food)
-            self.b = 0
-            self.r +=50
-            self.g -=50
+            self.b = round(255-25.5*self.food)
+            self.g = 0
+            #self.r +=50
+            #self.b -=50
             self.r = clamp(self.r, 0, 255)
-            self.g = clamp(self.g, 0, 255)
+            self.b = clamp(self.b, 0, 255)
         else:
-            self.r = round(25.5*(self.food-1))
-            self.g = round(255-25.5*(self.food+1))
-            self.b = 0
-            self.r -=50
-            self.g +=50
+            self.r = round(20*(self.food-1))
+            self.b = round(255-25.5*(self.food-1))
+            self.g = round(255-10*(self.food-1))
+            #self.r -=50
+            #self.b +=50
             self.r = clamp(self.r, 0, 255)
+            self.b = clamp(self.b, 0, 255)
             self.g = clamp(self.g, 0, 255)
 
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
@@ -256,8 +257,8 @@ class Creature(Life):
             r2 = size
         r: int=self.r; g: int=self.g; b: int=self.b
         if self.stunt:
-            gfxdraw.aacircle(screen, rx, ry, r2, Color(50, 50, 50, a))
-            gfxdraw.filled_circle(screen, rx, ry, r2, Color(50, 50, 50, a))
+            gfxdraw.aacircle(screen, rx, ry, r2, Color(0, 150, 255, a))
+            gfxdraw.filled_circle(screen, rx, ry, r2, Color(0, 150, 255, a))
         else:
             gfxdraw.aacircle(screen, rx, ry, r2, Color(r, g, b, a))
             gfxdraw.filled_circle(screen, rx, ry, r2, Color(r, g, b, a))
@@ -325,6 +326,8 @@ class Creature(Life):
         if self.hidding:
             alfa=25
         color: Color=Color(150,150,150,alfa)
+        if self.attacking:
+            color = self.ATTACK_EYES
         gfxdraw.aapolygon(screen, points, color)
         gfxdraw.filled_polygon(screen, points, color)
 
@@ -375,7 +378,7 @@ class Creature(Life):
 
         if self.reproduction_time <= 0:
             self.reproduction_time = 0
-            if self.energy >= (self.max_energy*(1-cfg.REP_ENERGY)):
+            if self.energy >= (self.max_energy*cfg.REP_ENERGY*2.5):
                 return True
         return False
 
@@ -392,7 +395,7 @@ class Creature(Life):
         genome['neuro'] = self.neuro.Replicate()
         self.reproduction_time = cfg.REP_TIME
         self.fitness += cfg.BORN2FIT
-        self.energy -= self.energy*cfg.REP_ENERGY
+        self.energy -= self.max_energy*cfg.REP_ENERGY
         return (genome, pos)
       
     def move(self, dt: float) -> None:

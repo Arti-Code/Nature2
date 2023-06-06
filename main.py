@@ -279,13 +279,13 @@ class Simulation():
         if event.key == pygame.K_F8:
             self.show_dist_and_ang = not self.show_dist_and_ang
         if event.key == pygame.K_F4:
-            self.statistics.plot('populations')
-        if event.key == pygame.K_F5:
-            self.statistics.plot('creatures')
-        if event.key == pygame.K_F6:
-            self.statistics.plot('neuros')
-        if event.key == pygame.K_F7:
-            self.statistics.plot('fitness')
+            self.statistics.plot()
+#        if event.key == pygame.K_F5:
+#            self.statistics.plot('creatures')
+#        if event.key == pygame.K_F6:
+#            self.statistics.plot('neuros')
+#        if event.key == pygame.K_F7:
+#            self.statistics.plot('fitness')
         if event.key == pygame.K_F9:
             self.follow = not self.follow
         if event.key == pygame.K_F10:
@@ -360,7 +360,7 @@ class Simulation():
         else:
             cpos = pos
         if genome is None:
-            creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, color0=Color('white'), color1=Color('skyblue'), color2=Color('blue'), color3=Color('red'))
+            creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, color0=Color('white'), color1=Color('skyblue'), color2=Color(125, 125, 125, 255), color3=Color('red'))
         else:
             creature = Creature(screen=self.screen, space=self.space, time=self.get_time(), collision_tag=2, position=cpos, genome=genome)
             [(an, dn), (al, dl)] = creature.mutations_num
