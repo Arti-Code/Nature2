@@ -1,8 +1,8 @@
-""" from bokeh.colors import RGB
-    from bokeh.io import show
-    from bokeh.plotting import figure  #, Figure
-    from bokeh.layouts import gridplot 
-"""
+from bokeh.colors import RGB
+from bokeh.io import show
+from bokeh.plotting import figure  #, Figure
+from bokeh.layouts import gridplot 
+
 from lib.config import cfg
 
 
@@ -10,7 +10,7 @@ class Statistics():
 
     def __init__(self):
         self.data = {}
-        """ self.colors = {
+        self.colors = {
             'plants': RGB(0, 255, 0),
             'herbivores': RGB(0, 0, 255),
             'carnivores': RGB(255, 0, 0),
@@ -25,7 +25,7 @@ class Statistics():
             'links': RGB(0, 0, 255),
             'points': RGB(255, 0, 0, 255),
             'lifetime': RGB(0, 0, 255, 255)
-        } """
+        }
 
     def add_collection(self, collection_name: str, named_rows: list):
         collection = {}
@@ -52,10 +52,7 @@ class Statistics():
     def load_statistics(self, collection_name: str, data: dict):
         self.data[collection_name] = data
 
-    def plot(self, collection_name: str):
-        pass
-
-"""     def plot(self, collection_name: str):
+    def plot(self):
         #data = self.data[collection_name]
         last = self.data['neuros']['time'][len(self.data['neuros']['time'])-1]
         x_range = (max(0, last-8000), max(last, last-4000))
@@ -64,7 +61,7 @@ class Statistics():
         #    w = int(data['time'][len(data['time'])-1]/10)
         #if collection_name == 'creatures':
         y_range0 = (1, cfg.CREATURE_MAX_SIZE+1)
-        p0=figure(width=w, height=350, y_range=y_range0, x_range=x_range)
+        p0=figure(width=w, height=250, y_range=y_range0, x_range=x_range)
         for data_key in self.data['creatures']:
             if data_key != 'time':
                 d = self.data['creatures'][data_key]
@@ -74,7 +71,7 @@ class Statistics():
         #elif collection_name == 'neuros':
 
         y_range1 = (0, max([max(self.data['neuros']['nodes']), max(self.data['neuros']['links'])])+5)
-        p1=figure(width=w, height=350, y_range=y_range1, x_range=x_range)
+        p1=figure(width=w, height=250, y_range=y_range1, x_range=x_range)
         for data_key in self.data['neuros']:
             if data_key != 'time':
                 d = self.data['neuros'][data_key]
@@ -84,7 +81,7 @@ class Statistics():
         #elif collection_name == 'fitness':
 
         y_range2 = (0, max([max(self.data['fitness']['points']), max(self.data['fitness']['lifetime'])]))
-        p2=figure(width=w, height=350, y_range=y_range2, x_range=x_range)
+        p2=figure(width=w, height=250, y_range=y_range2, x_range=x_range)
         for data_key in self.data['fitness']:
             if data_key != 'time':
                 d = self.data['fitness'][data_key]
@@ -95,7 +92,7 @@ class Statistics():
 
         cr_num = max(self.data['populations']['all'])
         y_range3 = (0, max([cfg.PLANT_MAX_NUM, cr_num])+5)
-        p3=figure(width=w, height=350, y_range=y_range3, x_range=x_range)
+        p3=figure(width=w, height=250, y_range=y_range3, x_range=x_range)
         for data_key in self.data['populations']:
             if data_key != 'time':
                 d = self.data['populations'][data_key]
@@ -105,5 +102,5 @@ class Statistics():
 
         grid = gridplot([[p3], [p1], [p2], [p0]])
         show(grid) 
-"""
+
 

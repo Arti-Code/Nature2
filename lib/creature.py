@@ -23,7 +23,7 @@ from lib.spike import Spike
 
 class Creature(Life):
 
-    ATTACK_EYES: Color=Color('orange')
+    ATTACK_EYES: Color=Color('red')
     EAT_EYES: Color=Color('yellow')
     NORMAL_EYES: Color=Color('white')
     HIDED_EYES: Color=Color(175,175,175,50)
@@ -196,13 +196,14 @@ class Creature(Life):
             self.r = clamp(self.r, 0, 255)
             self.b = clamp(self.b, 0, 255)
         else:
-            self.r = round(25.5*(self.food-1))
-            self.b = round(255-25.5*(self.food+1))
-            self.g = 0
+            self.r = round(20*(self.food-1))
+            self.b = round(255-25.5*(self.food-1))
+            self.g = round(255-10*(self.food-1))
             #self.r -=50
             #self.b +=50
             self.r = clamp(self.r, 0, 255)
             self.b = clamp(self.b, 0, 255)
+            self.g = clamp(self.g, 0, 255)
 
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
         x = self.position.x; y = flipy(self.position.y)
@@ -266,8 +267,8 @@ class Creature(Life):
             eyes_color = self.STUNT_EYES
         elif self.hidding:
             eyes_color = self.HIDED_EYES
-#        elif self.attacking:
-#            eyes_color=self.ATTACK_EYES
+        elif self.attacking:
+            eyes_color=self.ATTACK_EYES
         elif self.eating:
             eyes_color=self.EAT_EYES
         self.vision.draw(screen=screen, camera=camera, rel_position=rel_pos, selected=marked, eye_color=eyes_color)

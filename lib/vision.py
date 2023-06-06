@@ -216,8 +216,8 @@ class Vision(Circle):
                 gfxdraw.line(screen, x0+int(v3[0]), y0+int(v3[1]), xt, yt, Color(175, 175, 175, 150))
         if s <= 3:
             return
-        draw.circle(screen, eye_color, (x0+int(v2[0]), y0+int(v2[1])), int(s/3), ceil(1/camera.scale))
-        draw.circle(screen, eye_color, (x0+int(v3[0]), y0+int(v3[1])), int(s/3), ceil(1/camera.scale))
+        draw.circle(screen, eye_color, (x0+int(v2[0]), y0+int(v2[1])), int(s/3), 0)
+        draw.circle(screen, eye_color, (x0+int(v3[0]), y0+int(v3[1])), int(s/3), 0)
         #draw.circle(screen, eye_color, (x0+int(v2[0]), y0+int(v2[1])), int((s+2)/(10*camera.scale)), 2)
         #draw.circle(screen, eye_color, (x0+int(v3[0]), y0+int(v3[1])), int((s+2)/(10*camera.scale)), 2)
         #gfxdraw.aacircle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/(10*camera.scale)+1), eye_color)
