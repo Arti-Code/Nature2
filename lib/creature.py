@@ -23,7 +23,7 @@ from lib.spike import Spike
 
 class Creature(Life):
 
-    ATTACK_EYES: Color=Color('orange')
+    ATTACK_EYES: Color=Color('red')
     EAT_EYES: Color=Color('yellow')
     NORMAL_EYES: Color=Color('white')
     HIDED_EYES: Color=Color(175,175,175,50)
@@ -266,8 +266,8 @@ class Creature(Life):
             eyes_color = self.STUNT_EYES
         elif self.hidding:
             eyes_color = self.HIDED_EYES
-#        elif self.attacking:
-#            eyes_color=self.ATTACK_EYES
+        elif self.attacking:
+            eyes_color=self.ATTACK_EYES
         elif self.eating:
             eyes_color=self.EAT_EYES
         self.vision.draw(screen=screen, camera=camera, rel_position=rel_pos, selected=marked, eye_color=eyes_color)
