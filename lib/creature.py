@@ -196,13 +196,14 @@ class Creature(Life):
             self.r = clamp(self.r, 0, 255)
             self.b = clamp(self.b, 0, 255)
         else:
-            self.r = round(25.5*(self.food-1))
-            self.b = round(255-25.5*(self.food+1))
-            self.g = 0
+            self.r = round(20*(self.food-1))
+            self.b = round(255-25.5*(self.food-1))
+            self.g = round(255-10*(self.food-1))
             #self.r -=50
             #self.b +=50
             self.r = clamp(self.r, 0, 255)
             self.b = clamp(self.b, 0, 255)
+            self.g = clamp(self.g, 0, 255)
 
     def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
         x = self.position.x; y = flipy(self.position.y)

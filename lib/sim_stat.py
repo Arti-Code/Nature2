@@ -102,5 +102,3 @@ class Statistics():
 
         grid = gridplot([[p3], [p1], [p2], [p0]])
         show(grid) 
-
-

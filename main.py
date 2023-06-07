@@ -280,12 +280,12 @@ class Simulation():
             self.show_dist_and_ang = not self.show_dist_and_ang
         if event.key == pygame.K_F4:
             self.statistics.plot()
-        if event.key == pygame.K_F5:
-            self.statistics.plot()
-        if event.key == pygame.K_F6:
-            self.statistics.plot()
-        if event.key == pygame.K_F7:
-            self.statistics.plot()
+#        if event.key == pygame.K_F5:
+#            self.statistics.plot('creatures')
+#        if event.key == pygame.K_F6:
+#            self.statistics.plot('neuros')
+#        if event.key == pygame.K_F7:
+#            self.statistics.plot('fitness')
         if event.key == pygame.K_F9:
             self.follow = not self.follow
         if event.key == pygame.K_F10:
