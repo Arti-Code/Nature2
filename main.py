@@ -113,17 +113,6 @@ class Simulation():
         self.fitness = {'points': [], 'lifetime': []}
         self.map_time = 0.0
         self.follow_time: float = 0.0
-        
-#    def create_rock2(self, vert_num: int, size: int, position: Vec2d):
-#        ang_step = (2*PI)/vert_num
-#        vertices = []
-#        for v in range(vert_num):
-#            vert_ang = v*ang_step + (random()*2-1)*ang_step*0.4
-#            x = sin(vert_ang)*size + (random()*2-1)*size*0.4
-#            y = cos(vert_ang)*size + (random()*2-1)*size*0.4
-#            vertices.append(Vec2d(x, y)+position)
-#        rock = Rock(self.screen, self.space, vertices, 3, Color('grey40'), Color('grey'))
-#        self.wall_list.append(rock)
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         rock: Rock=Rock(self.space, vert_num, size, position, 2)
@@ -280,12 +269,7 @@ class Simulation():
             self.show_dist_and_ang = not self.show_dist_and_ang
         if event.key == pygame.K_F4:
             self.statistics.plot()
-#        if event.key == pygame.K_F5:
-#            self.statistics.plot('creatures')
-#        if event.key == pygame.K_F6:
-#            self.statistics.plot('neuros')
-#        if event.key == pygame.K_F7:
-#            self.statistics.plot('fitness')
+
         if event.key == pygame.K_F9:
             self.follow = not self.follow
         if event.key == pygame.K_F10:
