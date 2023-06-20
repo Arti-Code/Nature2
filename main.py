@@ -11,8 +11,9 @@ from time import time
 from typing import Union
 
 import pygame
+import pygame.draw as draw
 import pymunk.pygame_util
-from pygame import Color, image, Surface
+from pygame import Color, image, Surface, Rect
 from pygame.constants import *
 from pygame.math import Vector2
 from pygame.time import Clock
@@ -23,7 +24,7 @@ from lib.camera import Camera
 from lib.collisions import *
 from lib.creature import Creature
 from lib.manager import Manager
-from lib.math2 import flipy, set_world, world
+from lib.math2 import flipy, set_world, world, clamp
 from lib.meat import Meat
 from lib.plant import Plant
 from lib.rock import Rock
@@ -31,6 +32,7 @@ from lib.sim_stat import Statistics
 from lib.wall import Wall
 from lib.spike import Spike
 from lib.net_draw import draw_net, draw_net2
+from perlin_noise import PerlinNoise
 
 class Simulation():
 
@@ -62,6 +64,8 @@ class Simulation():
         self.physics_time: float = 0.0
         self.net_timer: float=0.0
         self.net: Surface=None
+        #self.grid: Surface = self.draw_grid(35)
+        #self.grid.subsurface.
 
 
     def init_vars(self):
@@ -407,6 +411,8 @@ class Simulation():
             if self.follow and self.selected != None:
                 self.camera.focus_camera(Vector2(int(self.selected.position.x), int(self.selected.position.y)))
             self.screen.fill(Color('black'))
+            coords=self.camera.get_offset_tuple()
+            #self.screen.blit(self.grid, [-coords[0], -coords[1]])
             self.draw_rocks()
             self.draw_meat()
             self.draw_plants()
@@ -791,7 +797,35 @@ class Simulation():
             self.clock_step()
             self.first_run=False
 
+    def draw_grid(self, cell_size: int) -> Surface:
+        grid: Surface=Surface([cfg.WORLD[0], cfg.WORLD[1]])
+        col_num = round(cfg.WORLD[0]/cell_size)
+        row_num = round(cfg.WORLD[1]/cell_size)
+        pic=self.perlin(col_num, row_num)
+        for col in range(col_num):
+            for row in range(row_num):
+                r = int(255*pic[col][row])
+                draw.rect(grid, Color(r,r,r), Rect(cell_size*col, cell_size*row, cell_size-1, cell_size-1), 0)
+        return grid
 
+    def perlin(self, col_num: int, row_num: int) -> []:
+        noise1 = PerlinNoise(octaves=4)
+        noise2 = PerlinNoise(octaves=8)
+        noise3 = PerlinNoise(octaves=16)
+        noise4 = PerlinNoise(octaves=24)
+
+        xpix, ypix = col_num, row_num
+        pic = []
+        for i in range(xpix):
+            row = []
+            for j in range(ypix):
+                noise_val = noise1([i/xpix, j/ypix])
+                noise_val += 0.5 * noise2([i/xpix, j/ypix])
+                noise_val += 0.25 * noise3([i/xpix, j/ypix])
+                noise_val += 0.125 * noise4([i/xpix, j/ypix])
+                row.append(clamp(noise_val, 0, 1))
+            pic.append(row)
+        return pic
 
 def set_win_pos(x: int = 20, y: int = 20):
     x_winpos = x

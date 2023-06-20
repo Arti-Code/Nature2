@@ -24,7 +24,7 @@ from lib.spike import Spike
 class Creature(Life):
 
     ATTACK_EYES: Color=Color('red')
-    EAT_EYES: Color=Color('yellow')
+    EAT_EYES: Color=Color('blue')
     NORMAL_EYES: Color=Color('white')
     HIDED_EYES: Color=Color(175,175,175,50)
     STUNT_EYES: Color=Color('limegreen')

@@ -219,7 +219,8 @@ def draw_net2(network: Network) -> Surface:
         back_box = Rect(4, cfg.SCREEN[1] - (max(base_line))-4, max_net_length+105, max_layer_size+6)
 
         net_surf: Surface = Surface((back_box.w, back_box.h))
-        net_surf.fill(Color(0, 0, 0))
+        net_surf = Surface.convert_alpha(net_surf)
+        net_surf.fill(Color(0, 0, 0, 200))
         #gfxdraw.circle(net_surf, 100, 100, 50, Color(0,255,0))
         gfxdraw.aapolygon(net_surf, [back_box.topleft, back_box.topright, back_box.bottomright, back_box.bottomleft], Color(25, 100, 255, 150))
         pygame.draw.polygon(net_surf, Color(25, 100, 255, 150), [(back_box.left+1, back_box.top+1), (back_box.right-2, back_box.top+1), (back_box.right-2, back_box.bottom-2), (back_box.left+1, back_box.bottom-2)], 1)
@@ -238,7 +239,7 @@ def draw_net2(network: Network) -> Surface:
                 from_node_key = link.from_node
                 (l0, n0) = network.FindNode(from_node_key)
                 g = 0
-                a = abs(round(200*link.signal))+55
+                a = abs(round(100*link.signal))+155
                 if link.signal >= 0:
                     g = 0
                     r = 100+155*link.signal
@@ -272,7 +273,7 @@ def draw_net2(network: Network) -> Surface:
             gv = 150
             bv = 25
         v_color = Color(rv, gv, bv)
-        v_color_alfa = Color(rv, gv, bv, 50)
+        v_color_alfa = Color(rv, gv, bv, 255)
         black_color = Color(255, 255, 255, 255)
         gfxdraw.aacircle(net_surf, 80 + l * h_space, back_box.height - base_line[l] + d*n + round(d/2), cv, v_color)
         gfxdraw.filled_circle(net_surf, 80 + l * h_space, back_box.height - base_line[l] + d*n + round(d/2), cv, v_color_alfa)
