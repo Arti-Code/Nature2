@@ -31,7 +31,7 @@ from lib.rock import Rock
 from lib.sim_stat import Statistics
 from lib.wall import Wall
 from lib.spike import Spike
-from lib.net_draw import draw_net, draw_net2
+#from lib.net_draw import draw_net, draw_net2
 from perlin_noise import PerlinNoise
 
 class Simulation():
@@ -473,7 +473,7 @@ class Simulation():
                 if isinstance(self.selected, Creature):
                     #self.manager.draw_net(self.selected.neuro)
                     if self.selected.brain_just_used:
-                        self.net = draw_net2(network=self.selected.neuro)
+                        self.net = self.manager.draw_net(network=self.selected.neuro)
                 else:
                     self.net=None
             else:

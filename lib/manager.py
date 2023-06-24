@@ -349,5 +349,5 @@ class Manager:
         finally:
             return res
 
-    def draw_net(self, network: Network):
-        draw_net(self.screen, self, network)
+    def draw_net(self, network: Network) -> Surface:
+        return draw_net(network, self.small_font, self.norm_font)
