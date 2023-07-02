@@ -116,6 +116,7 @@ class Manager:
                 creature_to_save['power'] = creature.power
                 creature_to_save['food'] = creature.food
                 creature_to_save['speed'] = creature.speed
+                creature_to_save['brainx'] = creature.brainx
                 creature_to_save['eyes'] = creature.eyes
                 creature_to_save['x'] = round(creature.position.x)
                 creature_to_save['y'] = round(creature.position.y)
@@ -136,6 +137,7 @@ class Manager:
                 rank_to_save['gen'] = rank['gen']
                 rank_to_save['food'] = rank['food']
                 rank_to_save['speed'] = rank['speed']
+                rank_to_save['brainx'] = rank['brainx']
                 rank_to_save['eyes'] = rank['eyes']
                 rank_to_save['mutations'] = rank['mutations']
                 rank_to_save['size'] = rank['size']
@@ -158,6 +160,7 @@ class Manager:
                 rank_to_save['gen'] = rank['gen']
                 rank_to_save['food'] = rank['food']
                 rank_to_save['speed'] = rank['speed']
+                rank_to_save['brainx'] = rank['brainx']
                 rank_to_save['eyes'] = rank['eyes']
                 rank_to_save['mutations'] = rank['mutations']
                 rank_to_save['size'] = rank['size']
@@ -195,6 +198,7 @@ class Manager:
         cr['power'] = creature.power
         cr['food'] = creature.food
         cr['speed'] = creature.speed
+        cr['brainx'] = creature.brainx
         cr['eyes'] = creature.eyes
         cr['color0'] = [creature.color0.r, creature.color0.g, creature.color0.b, creature.color0.a]
         cr['color1'] = [creature.color1.r, creature.color1.g, creature.color1.b, creature.color1.a]
