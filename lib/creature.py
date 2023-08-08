@@ -54,6 +54,7 @@ class Creature(Life):
                 self.signature = self.get_signature()
                 self.name = modify_name(genome['name'])
                 self.add_specie(self.name, self.generation, time)
+            self.first_one = self.genealogy[0][0]
         self.shape = Circle(self, self.size)
         self.shape.collision_type = collision_tag
         space.add(self.shape)
@@ -149,7 +150,8 @@ class Creature(Life):
         self.generation = genome['gen']+1
         self.name = genome['name']
         self.genealogy = genome['genealogy']
-        self.first_one = genome['first_one']
+
+        #self.first_one = genome['first_one']
         mutations = self.neuro.Mutate(self.mutations)
         self.nodes_num = self.neuro.GetNodesNum()
         self.links_num = self.neuro.GetLinksNum()

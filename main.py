@@ -485,12 +485,12 @@ class Simulation():
 
     def calc_time(self):
         self.time += self.dt*0.1
-        if self.time > 6000:
+        if self.time > 100000:
             self.cycles += 1
-            self.time = self.time % 6000
+            self.time = self.time % 100000
 
     def get_time(self, digits: int = None):
-        return self.cycles*6000 + round(self.time, digits)
+        return self.cycles*100000 + round(self.time, digits)
 
     def kill_all_creatures(self):
         for creature in self.creature_list:
@@ -726,7 +726,7 @@ class Simulation():
     def clock_step(self):
         pygame.display.flip()
         self.dt = self.clock.tick(cfg.FPS)/1000*cfg.TIME
-        time = self.cycles*6000 + round(self.time)
+        time = self.cycles*100000 + round(self.time)
         self.display_caption(time)
 
     def display_caption(self, time):
@@ -767,9 +767,9 @@ class Simulation():
         return creature
 
     def auto_save(self):
-        if floor((self.cycles*6000+self.time)-self.last_save_time) >= cfg.AUTO_SAVE_TIME:
+        if floor((self.cycles*100000+self.time)-self.last_save_time) >= cfg.AUTO_SAVE_TIME:
             self.manager.save_project()
-            self.last_save_time = round((self.cycles*6000+self.time), 1)
+            self.last_save_time = round((self.cycles*100000+self.time), 1)
     
     def set_icon(self, icon_file: str):
         img = image.load(icon_file)
