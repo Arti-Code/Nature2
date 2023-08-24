@@ -61,7 +61,7 @@ class Creature(Life):
         self.eye_colors = {}
         self.visual_range = cfg.SENSOR_RANGE
         self.sensors = []
-        self.rng = int(cfg.SENSOR_RANGE*0.4 + cfg.SENSOR_RANGE*(1-(self.eyes/10))*0.6)
+        self.rng = int(cfg.SENSOR_RANGE*0.25 + cfg.SENSOR_RANGE*(1-(self.eyes/10))*0.75)
         self.vision: Vision = Vision(self, self.rng, cfg.SENSOR_MAX_ANGLE*(self.eyes/10), (0.0, 0.0), "vision")
         space.add(self.vision)
         self.mem_time = 0
@@ -213,7 +213,7 @@ class Creature(Life):
             self.b = clamp(self.b, 0, 255)
             self.g = clamp(self.g, 0, 255)
 
-    def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
+    def draw(self, screen: Surface, camera: Camera, selected: Body, draw_eng_bars: bool=True) -> bool:
         x = self.position.x; y = flipy(self.position.y)
         size = round(self.shape.radius / camera.scale)
         rect = Rect(x-size, y-size, 2*size, 2*size)
@@ -281,7 +281,8 @@ class Creature(Life):
             eyes_color=self.EAT_EYES
         self.vision.draw(screen=screen, camera=camera, rel_position=rel_pos, selected=marked, eye_color=eyes_color)
         self.color0 = self._color0
-        self.draw_energy_bar(screen, rx, ry, size)
+        if draw_eng_bars or selected==self:
+            self.draw_energy_bar(screen, rx, ry, size)
         return True
 
     def draw_normal(self, screen):

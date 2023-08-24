@@ -52,6 +52,7 @@ class Simulation():
         self.options = pymunk.pygame_util.DrawOptions(self.screen)
         self.space.debug_draw(self.options)
         self.draw_debug: bool=False
+        self.draw_eng_bars: bool=True
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores', 'all'])
@@ -278,6 +279,8 @@ class Simulation():
             self.follow = not self.follow
         if event.key == pygame.K_F10:
             self.render = not self.render
+        if event.key == pygame.K_F11:
+            self.draw_eng_bars = not self.draw_eng_bars
         if event.key == pygame.K_KP_PLUS:
             self.camera.zoom_out()
         if event.key == pygame.K_KP_MINUS:
@@ -435,7 +438,7 @@ class Simulation():
                 if self.show_dist_and_ang:
                     dist, x, y = creature.draw_dist(camera=self.camera)
                     self.manager.add_text2(dist, x, y, Color('orange'), False, False, False, True)
-            if creature.draw(screen=self.screen, camera=self.camera, selected=self.selected):
+            if creature.draw(screen=self.screen, camera=self.camera, selected=self.selected, draw_eng_bars=self.draw_eng_bars):
                 if self.show_specie_name:
                     name, x, y = creature.draw_name(camera=self.camera)
                     self.manager.add_text2(name, x, y, Color('skyblue'), False, False, False, True)
