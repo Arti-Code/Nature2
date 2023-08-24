@@ -1,6 +1,6 @@
 from enum import Enum
-from math import cos, degrees, sin, sqrt
-
+from math import cos, degrees, sin, sqrt, ceil
+import pygame.draw as draw
 import pygame.gfxdraw as gfxdraw
 from pygame import Color, Surface
 from pygame.math import Vector2
@@ -216,10 +216,14 @@ class Vision(Circle):
                 gfxdraw.line(screen, x0+int(v3[0]), y0+int(v3[1]), xt, yt, Color(175, 175, 175, 150))
         if s <= 3:
             return
-        gfxdraw.aacircle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/(10*camera.scale)+1), eye_color)
-        gfxdraw.filled_circle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/(10*camera.scale)+1), eye_color)
-        gfxdraw.aacircle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/(10*camera.scale)+1), eye_color)
-        gfxdraw.filled_circle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/(10*camera.scale)+1), eye_color)
+        draw.circle(screen, eye_color, (x0+int(v2[0]), y0+int(v2[1])), int(s/3), 0)
+        draw.circle(screen, eye_color, (x0+int(v3[0]), y0+int(v3[1])), int(s/3), 0)
+        #draw.circle(screen, eye_color, (x0+int(v2[0]), y0+int(v2[1])), int((s+2)/(10*camera.scale)), 2)
+        #draw.circle(screen, eye_color, (x0+int(v3[0]), y0+int(v3[1])), int((s+2)/(10*camera.scale)), 2)
+        #gfxdraw.aacircle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/(10*camera.scale)+1), eye_color)
+        #gfxdraw.filled_circle(screen, x0+int(v2[0]), y0+int(v2[1]), int(s/(10*camera.scale)+1), eye_color)
+        #gfxdraw.aacircle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/(10*camera.scale)+1), eye_color)
+        #gfxdraw.filled_circle(screen, x0+int(v3[0]), y0+int(v3[1]), int(s/(10*camera.scale)+1), eye_color)
 
     def new_observation(self) -> bool:
         if not self.observe:

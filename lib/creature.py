@@ -24,8 +24,8 @@ from lib.spike import Spike
 class Creature(Life):
 
     ATTACK_EYES: Color=Color('red')
-    EAT_EYES: Color=Color('yellow')
-    NORMAL_EYES: Color=Color('skyblue')
+    EAT_EYES: Color=Color('blue')
+    NORMAL_EYES: Color=Color('white')
     HIDED_EYES: Color=Color(175,175,175,50)
     STUNT_EYES: Color=Color('limegreen')
     SPIKES_NUM: list[int] = [0, 1, 1, 1, 3, 5, 7, 9, 13, 15]
@@ -54,13 +54,14 @@ class Creature(Life):
                 self.signature = self.get_signature()
                 self.name = modify_name(genome['name'])
                 self.add_specie(self.name, self.generation, time)
+            self.first_one = self.genealogy[0][0]
         self.shape = Circle(self, self.size)
         self.shape.collision_type = collision_tag
         space.add(self.shape)
         self.eye_colors = {}
         self.visual_range = cfg.SENSOR_RANGE
         self.sensors = []
-        self.rng = int(cfg.SENSOR_RANGE*0.4 + cfg.SENSOR_RANGE*(1-(self.eyes/10))*0.6)
+        self.rng = int(cfg.SENSOR_RANGE*0.25 + cfg.SENSOR_RANGE*(1-(self.eyes/10))*0.75)
         self.vision: Vision = Vision(self, self.rng, cfg.SENSOR_MAX_ANGLE*(self.eyes/10), (0.0, 0.0), "vision")
         space.add(self.vision)
         self.mem_time = 0
@@ -135,16 +136,22 @@ class Creature(Life):
         self.food = genome['food'] + randint(-1, 1)
         self.eyes = genome['eyes'] + randint(-1, 1)
         self.speed = genome['speed'] + randint(-1, 1)
+        if genome["brainx"] != None:
+            self.brainx = genome['brainx'] + randint(-1, 1)
+        else:
+            self.brainx = 5
         self.size = clamp(self.size, cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
         self.mutations = clamp(self.mutations, 1, 10)
         self.power = clamp(self.power, 1, 10)
         self.food = clamp(self.food, 1, 10)
         self.eyes = clamp(self.eyes, 1, 10)
         self.speed = clamp(self.speed, 1, 10)
+        self.brainx = clamp(self.brainx, 1, 10)
         self.generation = genome['gen']+1
         self.name = genome['name']
         self.genealogy = genome['genealogy']
-        self.first_one = genome['first_one']
+
+        #self.first_one = genome['first_one']
         mutations = self.neuro.Mutate(self.mutations)
         self.nodes_num = self.neuro.GetNodesNum()
         self.links_num = self.neuro.GetLinksNum()
@@ -170,6 +177,7 @@ class Creature(Life):
         self.power = randint(1, 10)
         self.eyes = randint(1, 10)
         self.speed = randint(1, 10)
+        self.brainx = randint(1, 10)
         self.spike_num = self.rand_spike_num()
         self.size = randint(cfg.CREATURE_MIN_SIZE, cfg.CREATURE_MAX_SIZE)
         self.neuro.BuildRandom(cfg.NET, cfg.LINKS_RATE)
@@ -189,22 +197,23 @@ class Creature(Life):
         self.r: int; self.g: int; self.b: int
         if self.food >= 6:
             self.r = round(25.5*self.food)
-            self.g = round(255-25.5*self.food)
-            self.b = 0
-            self.r +=50
-            self.g -=50
+            self.b = round(255-25.5*self.food)
+            self.g = 0
+            #self.r +=50
+            #self.b -=50
             self.r = clamp(self.r, 0, 255)
-            self.g = clamp(self.g, 0, 255)
+            self.b = clamp(self.b, 0, 255)
         else:
-            self.r = round(25.5*(self.food-1))
-            self.g = round(255-25.5*(self.food+1))
-            self.b = 0
-            self.r -=50
-            self.g +=50
+            self.r = round(20*(self.food-1))
+            self.b = round(255-25.5*(self.food-1))
+            self.g = round(255-10*(self.food-1))
+            #self.r -=50
+            #self.b +=50
             self.r = clamp(self.r, 0, 255)
+            self.b = clamp(self.b, 0, 255)
             self.g = clamp(self.g, 0, 255)
 
-    def draw(self, screen: Surface, camera: Camera, selected: Body) -> bool:
+    def draw(self, screen: Surface, camera: Camera, selected: Body, draw_eng_bars: bool=True) -> bool:
         x = self.position.x; y = flipy(self.position.y)
         size = round(self.shape.radius / camera.scale)
         rect = Rect(x-size, y-size, 2*size, 2*size)
@@ -256,8 +265,8 @@ class Creature(Life):
             r2 = size
         r: int=self.r; g: int=self.g; b: int=self.b
         if self.stunt:
-            gfxdraw.aacircle(screen, rx, ry, r2, Color(50, 50, 50, a))
-            gfxdraw.filled_circle(screen, rx, ry, r2, Color(50, 50, 50, a))
+            gfxdraw.aacircle(screen, rx, ry, r2, Color(0, 150, 255, a))
+            gfxdraw.filled_circle(screen, rx, ry, r2, Color(0, 150, 255, a))
         else:
             gfxdraw.aacircle(screen, rx, ry, r2, Color(r, g, b, a))
             gfxdraw.filled_circle(screen, rx, ry, r2, Color(r, g, b, a))
@@ -272,7 +281,8 @@ class Creature(Life):
             eyes_color=self.EAT_EYES
         self.vision.draw(screen=screen, camera=camera, rel_position=rel_pos, selected=marked, eye_color=eyes_color)
         self.color0 = self._color0
-        self.draw_energy_bar(screen, rx, ry, size)
+        if draw_eng_bars or selected==self:
+            self.draw_energy_bar(screen, rx, ry, size)
         return True
 
     def draw_normal(self, screen):
@@ -325,6 +335,8 @@ class Creature(Life):
         if self.hidding:
             alfa=25
         color: Color=Color(150,150,150,alfa)
+        if self.attacking:
+            color = self.ATTACK_EYES
         gfxdraw.aapolygon(screen, points, color)
         gfxdraw.filled_polygon(screen, points, color)
 
@@ -356,7 +368,7 @@ class Creature(Life):
         move = self.move(dt)
         self.calc_energy(dt, move)
         self.mem_time -= dt
-        self.mem_time = clamp(self.mem_time, 0, cfg.MEM_TIME)
+        #self.mem_time = clamp(self.mem_time, 0, cfg.MEM_TIME)
         
         if self.run_ref_time != 0.0:
             self.run_ref_time -= dt
@@ -375,7 +387,7 @@ class Creature(Life):
 
         if self.reproduction_time <= 0:
             self.reproduction_time = 0
-            if self.energy >= (self.max_energy*(1-cfg.REP_ENERGY)):
+            if self.energy >= (self.max_energy*cfg.REP_ENERGY*2.5):
                 return True
         return False
 
@@ -392,7 +404,7 @@ class Creature(Life):
         genome['neuro'] = self.neuro.Replicate()
         self.reproduction_time = cfg.REP_TIME
         self.fitness += cfg.BORN2FIT
-        self.energy -= self.energy*cfg.REP_ENERGY
+        self.energy -= self.max_energy*cfg.REP_ENERGY
         return (genome, pos)
       
     def move(self, dt: float) -> None:
@@ -416,7 +428,7 @@ class Creature(Life):
         size_cost = self.size * cfg.SIZE_COST
         move_energy = move * cfg.MOVE_ENERGY * size_cost
         base_energy = cfg.BASE_ENERGY * size_cost
-        neuro_energy = (self.nodes_num+self.links_num)*cfg.NEURO_COST
+        neuro_energy = (self.nodes_num+self.links_num)*cfg.NEURO_COST*(self.brainx/10)
         if self.running:
             move_energy *= cfg.RUN_COST
         rest_energy = self.power * cfg.POWER_COST
@@ -469,7 +481,7 @@ class Creature(Life):
             self.vision.reset_observation()
             self.output = self.neuro.Calc(input)
             self.brain_just_used = True
-            self.mem_time = cfg.MEM_TIME
+            self.mem_time = 2/self.brainx
             for o in range(len(self.output)):
                 if o == 1:
                     self.output[o] = clamp(self.output[1], -1, 1)
@@ -546,6 +558,7 @@ class Creature(Life):
         genome['power'] = self.power
         genome['eyes'] = self.eyes
         genome['speed'] = self.speed
+        genome['brainx'] = self.brainx
         genome['color0'] = self._color0
         genome['color1'] = self._color1
         genome['color2'] = self._color2
@@ -566,8 +579,9 @@ class Creature(Life):
         power_diff = abs(self.power-parent_genome['power'])
         food_diff = abs(self.food-parent_genome['food'])
         speed_diff = abs(self.speed-parent_genome['speed'])
+        brainx_diff = abs(self.brainx-parent_genome['brainx'])
         eyes_diff = abs(self.eyes-parent_genome['eyes'])
-        physionomy = mean([size_diff, power_diff,food_diff, speed_diff, mutations_diff, eyes_diff])/10
+        physionomy = mean([size_diff, power_diff,food_diff, speed_diff, mutations_diff, eyes_diff, brainx_diff])/10
         for node_sign in self.neuro.nodes:
             if not node_sign in parent_genome['neuro'].nodes:
                 nodes.append(node_sign)
@@ -605,7 +619,7 @@ class Creature(Life):
 
     def get_signature(self) -> list:
         signature: list=[]
-        signature.append([self.size, self.power, self.food, self.eyes, self.speed, self.mutations])
+        signature.append([self.size, self.power, self.food, self.eyes, self.speed, self.mutations, self.brainx])
         links_keys: list=[]
         for link_key in self.neuro.links:
             links_keys.append(link_key)

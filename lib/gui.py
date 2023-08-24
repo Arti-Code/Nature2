@@ -217,12 +217,12 @@ class CreatureWindow(UIWindow):
     def __init__(self, manager: UIManager, rect: Rect, data: dict, dT: float):
         super().__init__(rect=rect, manager=manager, window_display_title=data['SPECIE'] + ' ['+data['G']+']', object_id="#creature_win", resizable=True, visible=True)
         grid: dict[tuple]={
-                "D": (0, 0, 2), "O": (0, 2, 2), 
-                "M": (1, 0, 2), "V": (1, 2, 2), 
-                "P": (2, 0, 2), "X": (2, 2, 2), 
-                "F": (3, 0, 2), "R": (3, 2, 2),
+                "D": (0, 0, 2), "O": (0, 2, 2), "N": (0, 4, 2),
+                "M": (1, 0, 2), "V": (1, 2, 2), "X": (1, 4, 2),
+                "P": (2, 0, 2), "R": (2, 2, 2),
+                "F": (3, 0, 3), "L": (3, 3, 3), 
                 "B": (4, 0, 2), "K": (4, 2, 2), 
-                "L": (5, 0, 2), "S": (5, 2, 2),
+                "S": (5, 0, 5),
                 "ENG": (6, 0, 5)
         } 
         self.manager = manager
@@ -588,7 +588,7 @@ class GUI():
     def create_creature_win(self, dT: float):
         if self.owner.enviro.selected and isinstance(self.owner.enviro.selected, Creature):
             data = self.update_creature_win()
-            w = 110; h = 140
+            w = 140; h = 140
             pos: Rect = Rect((5, 5), (w, h))
             self.creature_win = CreatureWindow(manager=self.ui_mgr, rect=pos, data=data, dT=dT)
 
@@ -631,6 +631,7 @@ class GUI():
             data['V'] = ''
             data['O'] = ''
             data['X'] = ''
+            data['N'] = ''
             data['B'] = ''
             data['K'] = ''
             data['F'] = ''
@@ -660,6 +661,7 @@ class GUI():
         data['V'] = str(selected.eyes)
         data['O'] = str(selected.size)
         data['X'] = f"{selected.mutations}"
+        data['N'] = str(selected.brainx)
         data['B'] = str(selected.childs)
         data['K'] = str(selected.kills)
         data['F'] = str(round(selected.fitness))
@@ -753,7 +755,7 @@ class GUI():
                     self.create_info_menu()
                 elif event.ui_object_id == '#menu_win.#btn_stats':
                     self.main_menu.kill()
-                    self.get_root().statistics.plot('population')
+                    self.get_root().statistics.plot()
                 elif event.ui_object_id == '#menu_win.#btn_load':
                     self.main_menu.kill()
                     self.create_load_menu()
