@@ -11,8 +11,9 @@ from time import time
 from typing import Union
 
 import pygame
+import pygame.draw as draw
 import pymunk.pygame_util
-from pygame import Color, image, Surface
+from pygame import Color, image, Surface, Rect
 from pygame.constants import *
 from pygame.math import Vector2
 from pygame.time import Clock
@@ -23,14 +24,15 @@ from lib.camera import Camera
 from lib.collisions import *
 from lib.creature import Creature
 from lib.manager import Manager
-from lib.math2 import flipy, set_world, world
+from lib.math2 import flipy, set_world, world, clamp
 from lib.meat import Meat
 from lib.plant import Plant
 from lib.rock import Rock
 from lib.sim_stat import Statistics
 from lib.wall import Wall
 from lib.spike import Spike
-from lib.net_draw import draw_net, draw_net2
+#from lib.net_draw import draw_net, draw_net2
+from perlin_noise import PerlinNoise
 
 class Simulation():
 
@@ -50,6 +52,7 @@ class Simulation():
         self.options = pymunk.pygame_util.DrawOptions(self.screen)
         self.space.debug_draw(self.options)
         self.draw_debug: bool=False
+        self.draw_eng_bars: bool=True
         self.camera = Camera(Vector2(int(cfg.SCREEN[0]/2), int(cfg.SCREEN[1]/2)), Vector2(cfg.SCREEN[0], cfg.SCREEN[1]))
         self.statistics = Statistics()
         self.statistics.add_collection('populations', ['plants', 'herbivores', 'carnivores', 'all'])
@@ -62,6 +65,8 @@ class Simulation():
         self.physics_time: float = 0.0
         self.net_timer: float=0.0
         self.net: Surface=None
+        #self.grid: Surface = self.draw_grid(35)
+        #self.grid.subsurface.
 
 
     def init_vars(self):
@@ -113,17 +118,6 @@ class Simulation():
         self.fitness = {'points': [], 'lifetime': []}
         self.map_time = 0.0
         self.follow_time: float = 0.0
-        
-#    def create_rock2(self, vert_num: int, size: int, position: Vec2d):
-#        ang_step = (2*PI)/vert_num
-#        vertices = []
-#        for v in range(vert_num):
-#            vert_ang = v*ang_step + (random()*2-1)*ang_step*0.4
-#            x = sin(vert_ang)*size + (random()*2-1)*size*0.4
-#            y = cos(vert_ang)*size + (random()*2-1)*size*0.4
-#            vertices.append(Vec2d(x, y)+position)
-#        rock = Rock(self.screen, self.space, vertices, 3, Color('grey40'), Color('grey'))
-#        self.wall_list.append(rock)
 
     def create_rock(self, vert_num: int, size: int, position: Vec2d):
         rock: Rock=Rock(self.space, vert_num, size, position, 2)
@@ -280,16 +274,13 @@ class Simulation():
             self.show_dist_and_ang = not self.show_dist_and_ang
         if event.key == pygame.K_F4:
             self.statistics.plot()
-#        if event.key == pygame.K_F5:
-#            self.statistics.plot('creatures')
-#        if event.key == pygame.K_F6:
-#            self.statistics.plot('neuros')
-#        if event.key == pygame.K_F7:
-#            self.statistics.plot('fitness')
+
         if event.key == pygame.K_F9:
             self.follow = not self.follow
         if event.key == pygame.K_F10:
             self.render = not self.render
+        if event.key == pygame.K_F11:
+            self.draw_eng_bars = not self.draw_eng_bars
         if event.key == pygame.K_KP_PLUS:
             self.camera.zoom_out()
         if event.key == pygame.K_KP_MINUS:
@@ -423,6 +414,8 @@ class Simulation():
             if self.follow and self.selected != None:
                 self.camera.focus_camera(Vector2(int(self.selected.position.x), int(self.selected.position.y)))
             self.screen.fill(Color('black'))
+            coords=self.camera.get_offset_tuple()
+            #self.screen.blit(self.grid, [-coords[0], -coords[1]])
             self.draw_rocks()
             self.draw_meat()
             self.draw_plants()
@@ -445,7 +438,7 @@ class Simulation():
                 if self.show_dist_and_ang:
                     dist, x, y = creature.draw_dist(camera=self.camera)
                     self.manager.add_text2(dist, x, y, Color('orange'), False, False, False, True)
-            if creature.draw(screen=self.screen, camera=self.camera, selected=self.selected):
+            if creature.draw(screen=self.screen, camera=self.camera, selected=self.selected, draw_eng_bars=self.draw_eng_bars):
                 if self.show_specie_name:
                     name, x, y = creature.draw_name(camera=self.camera)
                     self.manager.add_text2(name, x, y, Color('skyblue'), False, False, False, True)
@@ -483,7 +476,7 @@ class Simulation():
                 if isinstance(self.selected, Creature):
                     #self.manager.draw_net(self.selected.neuro)
                     if self.selected.brain_just_used:
-                        self.net = draw_net2(network=self.selected.neuro)
+                        self.net = self.manager.draw_net(network=self.selected.neuro)
                 else:
                     self.net=None
             else:
@@ -495,12 +488,12 @@ class Simulation():
 
     def calc_time(self):
         self.time += self.dt*0.1
-        if self.time > 6000:
+        if self.time > 100000:
             self.cycles += 1
-            self.time = self.time % 6000
+            self.time = self.time % 100000
 
     def get_time(self, digits: int = None):
-        return self.cycles*6000 + round(self.time, digits)
+        return self.cycles*100000 + round(self.time, digits)
 
     def kill_all_creatures(self):
         for creature in self.creature_list:
@@ -736,7 +729,7 @@ class Simulation():
     def clock_step(self):
         pygame.display.flip()
         self.dt = self.clock.tick(cfg.FPS)/1000*cfg.TIME
-        time = self.cycles*6000 + round(self.time)
+        time = self.cycles*100000 + round(self.time)
         self.display_caption(time)
 
     def display_caption(self, time):
@@ -777,9 +770,9 @@ class Simulation():
         return creature
 
     def auto_save(self):
-        if floor((self.cycles*6000+self.time)-self.last_save_time) >= cfg.AUTO_SAVE_TIME:
+        if floor((self.cycles*100000+self.time)-self.last_save_time) >= cfg.AUTO_SAVE_TIME:
             self.manager.save_project()
-            self.last_save_time = round((self.cycles*6000+self.time), 1)
+            self.last_save_time = round((self.cycles*100000+self.time), 1)
     
     def set_icon(self, icon_file: str):
         img = image.load(icon_file)
@@ -807,7 +800,35 @@ class Simulation():
             self.clock_step()
             self.first_run=False
 
+    def draw_grid(self, cell_size: int) -> Surface:
+        grid: Surface=Surface([cfg.WORLD[0], cfg.WORLD[1]])
+        col_num = round(cfg.WORLD[0]/cell_size)
+        row_num = round(cfg.WORLD[1]/cell_size)
+        pic=self.perlin(col_num, row_num)
+        for col in range(col_num):
+            for row in range(row_num):
+                r = int(255*pic[col][row])
+                draw.rect(grid, Color(r,r,r), Rect(cell_size*col, cell_size*row, cell_size-1, cell_size-1), 0)
+        return grid
 
+    def perlin(self, col_num: int, row_num: int) -> []:
+        noise1 = PerlinNoise(octaves=4)
+        noise2 = PerlinNoise(octaves=8)
+        noise3 = PerlinNoise(octaves=16)
+        noise4 = PerlinNoise(octaves=24)
+
+        xpix, ypix = col_num, row_num
+        pic = []
+        for i in range(xpix):
+            row = []
+            for j in range(ypix):
+                noise_val = noise1([i/xpix, j/ypix])
+                noise_val += 0.5 * noise2([i/xpix, j/ypix])
+                noise_val += 0.25 * noise3([i/xpix, j/ypix])
+                noise_val += 0.125 * noise4([i/xpix, j/ypix])
+                row.append(clamp(noise_val, 0, 1))
+            pic.append(row)
+        return pic
 
 def set_win_pos(x: int = 20, y: int = 20):
     x_winpos = x
